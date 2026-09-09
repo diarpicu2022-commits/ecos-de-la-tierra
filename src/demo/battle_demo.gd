@@ -1,11 +1,13 @@
 extends Node
 
 ## Prueba de concepto del sistema de combate, sin interfaz gráfica todavía.
-## Ejecuta dos combates automáticos y escribe el registro por consola:
+## Ejecuta varios combates automáticos y escribe el registro por consola:
 ##
 ##   1. Bosque de las Cenizas: demuestra que la fuerza bruta no cierra el
 ##      combate (el monstruo se regenera) y que la Línea Cortafuegos sí.
-##   2. Cripta de la Avaricia: demuestra la tabla Q del jefe final, comparando a
+##   2. Llanura Marchita: demuestra los clones del Espectro del Monocultivo,
+##      que se suman a la ronda en curso.
+##   3. Cripta de la Avaricia: demuestra la tabla Q del jefe final, comparando a
 ##      un jugador que repite siempre la misma habilidad con otro que las
 ##      combina.
 ##
@@ -25,9 +27,38 @@ var _round: int = 0
 
 func _ready() -> void:
 	randomize()
+	_check_regeneration_rule()
 	_run_forest_battle()
+	_run_specter_battle()
 	_run_boss_battle(false)
 	_run_boss_battle(true)
+
+
+# --- Regla 1: la fuerza bruta no cierra el combate --------------------------
+
+## Comprobación directa, sin combate de por medio: se tira al monstruo a 0 PV
+## dos veces, antes y después de aplicar la contramedida, y se mira qué pasa.
+func _check_regeneration_rule() -> void:
+	_print_header("REGLA 1 — el monstruo se regenera hasta que se ataja la causa")
+
+	var monster := DeforestationFlame.new()
+	add_child(monster)
+	print("   PV iniciales: %d de %d" % [monster.hp, monster.max_hp])
+
+	monster.take_damage(monster.max_hp * 4, Enums.EcoType.NONE, true)
+	print("   Tras un golpe que lo dejaría a 0 sin purificar: %d PV, purificado = %s" % [
+		monster.hp, monster.is_purified
+	])
+
+	var counter := SkillLibrary.firebreak_line()
+	for line in monster.receive_eco_skill(counter):
+		print("   %s" % line)
+
+	monster.take_damage(monster.max_hp * 4, Enums.EcoType.NONE, true)
+	print("   Tras el mismo golpe ya purificado: %d PV, sigue en pie = %s" % [
+		monster.hp, monster.is_alive()
+	])
+	monster.queue_free()
 
 
 # --- Combate 1: Bosque de las Cenizas ---------------------------------------
@@ -47,7 +78,29 @@ func _run_forest_battle() -> void:
 	_start([bruma, coral], [monster])
 
 
-# --- Combate 2: Cripta de la Avaricia ---------------------------------------
+# --- Combate 2: Llanura Marchita --------------------------------------------
+
+## Comprueba la Multiplicación: el Espectro genera clones que entran en la ronda
+## en curso y que también hay que purificar uno a uno.
+func _run_specter_battle() -> void:
+	_print_header("LLANURA MARCHITA — Espectro del Monocultivo y sus clones")
+
+	# En este punto de la historia Ilan ya viaja con Nix y con Suri: tres contra
+	# el Espectro y sus dos clones.
+	var ilan: Character = PartyLibrary.ilan()
+	var nix: Character = PartyLibrary.nix()
+	var suri: Character = PartyLibrary.suri()
+	for character in [ilan, nix, suri]:
+		character.gain_knowledge(Enums.EcoType.MONOCULTURE)
+		character.gain_knowledge(Enums.EcoType.PLASTIC)
+
+	var monster := MonocultureSpecter.new()
+	_brute_force_left = 0
+	_rotate_eco_skills = false
+	_start([ilan, nix, suri], [monster])
+
+
+# --- Combate 3: Cripta de la Avaricia ---------------------------------------
 
 func _run_boss_battle(rotate: bool) -> void:
 	var title: String = "combinando las cinco contramedidas" if rotate else "repitiendo siempre la misma"
@@ -95,6 +148,10 @@ func _start(players: Array, enemies: Array) -> void:
 	inventory.add(ItemLibrary.healing_herb(), 3)
 	inventory.add(ItemLibrary.purified_water(), 2)
 
+	for enemy in enemy_party:
+		if enemy is Monster:
+			(enemy as Monster).regenerated.connect(_on_monster_regenerated.bind(enemy))
+
 	_manager.round_started.connect(_on_round_started)
 	_manager.action_resolved.connect(_on_action_resolved)
 	_manager.combatant_defeated.connect(_on_combatant_defeated)
@@ -120,7 +177,13 @@ func _on_action_resolved(log_lines: Array) -> void:
 
 
 func _on_combatant_defeated(combatant: Combatant) -> void:
-	print("   ** %s cae derrotado. **" % combatant.display_name)
+	print("   ** %s queda fuera de combate. **" % combatant.display_name)
+
+
+func _on_monster_regenerated(current_hp: int, monster: Combatant) -> void:
+	print("   ** %s se rehace: vuelve a %d PV. El daño no se atajó. **" % [
+		monster.display_name, current_hp
+	])
 
 
 func _on_enemy_joined(enemy: Combatant) -> void:
@@ -130,7 +193,7 @@ func _on_enemy_joined(enemy: Combatant) -> void:
 func _on_battle_ended(result: Enums.BattleResult) -> void:
 	match result:
 		Enums.BattleResult.VICTORY: print("\n   >> Victoria del grupo.")
-		Enums.BattleResult.DEFEAT: print("\n   >> El grupo cae.")
+		Enums.BattleResult.DEFEAT: print("\n   >> El grupo queda fuera de combate.")
 		Enums.BattleResult.FLED: print("\n   >> El grupo se retira.")
 		_: print("\n   >> Combate interrumpido.")
 
@@ -160,11 +223,45 @@ func _on_player_input_required(character: Character) -> void:
 		_manager.submit_action(BattleAction.attack(character, target))
 		return
 
+	# Antes de atacar, atiende al grupo si alguien está muy tocado. Así la
+	# prueba recorre también el Filtro Biológico y la Bolsa.
+	var support: BattleAction = _choose_support_action(character)
+	if support != null:
+		_manager.submit_action(support)
+		return
+
 	var skill: Skill = _choose_eco_skill(character, target)
 	if skill != null:
 		_manager.submit_action(BattleAction.use_skill(character, skill, target))
 	else:
 		_manager.submit_action(BattleAction.attack(character, target))
+
+
+## Curar o usar un objeto cuando alguien del grupo baja del 45 % de sus PV.
+## Devuelve null si no hace falta o si no hay con qué.
+func _choose_support_action(character: Character) -> BattleAction:
+	var ally: Combatant = _weakest_ally()
+	if ally == null or ally.get_hp_ratio() > 0.45:
+		return null
+
+	for skill in character.get_usable_skills():
+		if skill is EcoSkill and (skill as EcoSkill).ally_healing > 0:
+			return BattleAction.use_skill(character, skill, ally)
+
+	for item in _manager.inventory.get_battle_items():
+		if item is HealingItem and (item as HealingItem).heal_amount > 0:
+			return BattleAction.use_item(character, item, ally)
+	return null
+
+
+func _weakest_ally() -> Combatant:
+	var weakest: Combatant = null
+	for member in _manager.player_party:
+		if not member.is_alive():
+			continue
+		if weakest == null or member.get_hp_ratio() < weakest.get_hp_ratio():
+			weakest = member
+	return weakest
 
 
 ## Elige la Habilidad Ecológica adecuada según el monstruo que haya delante.

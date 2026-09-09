@@ -16,4 +16,4 @@ func blocks_action() -> bool:
 
 
 func on_turn_start() -> String:
-	return "%s está aturdido y no puede actuar." % target.display_name
+	return "%s no puede actuar: aturdimiento." % target.display_name

@@ -15,6 +15,27 @@ está en `EcosDeLaTierra Propuesta Videojuego.md`.
    lanza la prueba de concepto del combate y escribe el registro en la consola
    de salida del editor.
 
+También se puede ejecutar sin abrir el editor, desde la carpeta del proyecto:
+
+```
+godot --headless --path . --quit-after 3
+```
+
+## La prueba de concepto
+
+`scenes/main.tscn` ejecuta cuatro escenarios seguidos y los escribe por consola:
+
+1. **Regla 1** — comprobación directa: se tira al monstruo a 0 PV sin la
+   contramedida (se regenera) y después con ella aplicada (cae).
+2. **Bosque de las Cenizas** — combate real: dos turnos de fuerza bruta y luego
+   la Línea Cortafuegos. Termina en victoria.
+3. **Llanura Marchita** — el Espectro del Monocultivo se multiplica y sus clones
+   entran en la ronda en curso; hay que purificarlos uno a uno.
+4. **Cripta de la Avaricia** — el mismo combate dos veces: repitiendo siempre la
+   misma Habilidad Ecológica, el jefe aprende a resistirla (resistencia ~0,67 en
+   su tabla Q) y el grupo tiene que retirarse; combinando las cinco, el jefe se
+   purifica y el grupo gana.
+
 ## Qué hay implementado
 
 - Clases base del combate por turnos, con la arquitectura descrita en `src/README.md`.
@@ -24,6 +45,7 @@ está en `EcosDeLaTierra Propuesta Videojuego.md`.
   resistencia a la habilidad que el jugador repite.
 - Los cinco monstruos de región, el jefe final, los cinco personajes jugables,
   el catálogo de habilidades, los estados alterados y la Bolsa.
+- Prueba de concepto por consola que verifica todo lo anterior sin interfaz.
 
 ## Qué falta
 

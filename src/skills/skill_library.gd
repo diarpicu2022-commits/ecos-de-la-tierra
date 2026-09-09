@@ -234,6 +234,6 @@ static func basic_attack() -> AttackSkill:
 	var skill := AttackSkill.new()
 	skill.display_name = "Atacar"
 	skill.description = "Golpe directo. Nunca purifica a un monstruo."
-	skill.power = 4
+	skill.power = 12
 	skill.eco_type = Enums.EcoType.NONE
 	return skill
