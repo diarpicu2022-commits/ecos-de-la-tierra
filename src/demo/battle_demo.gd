@@ -16,7 +16,7 @@ extends Node
 ## Turnos que el grupo malgasta atacando antes de aplicar la contramedida.
 const BRUTE_FORCE_TURNS: int = 3
 ## Tope de rondas para que un combate sin salida no se quede colgado.
-const MAX_ROUNDS: int = 14
+const MAX_ROUNDS: int = 22
 
 var _manager: BattleManager = null
 var _brute_force_left: int = 0

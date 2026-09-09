@@ -8,7 +8,10 @@ está en `EcosDeLaTierra Propuesta Videojuego.md`.
 
 ## Abrir el proyecto
 
-1. Instalar **Godot Engine 4.3 o superior** (versión estándar, no la de .NET).
+1. Instalar **Godot Engine 4.3 o superior**, versión **estándar (no la .NET)**.
+   La .NET solo añade soporte de C#, que este proyecto no usa —es todo GDScript—
+   y encima exige instalar aparte el SDK de .NET.
+   Verificado en 4.3 y en 4.7.2.
 2. Abrir Godot → *Import* → seleccionar el archivo `project.godot` de esta
    carpeta.
 3. Ejecutar con F5. La escena principal es `scenes/main.tscn`, que por ahora
