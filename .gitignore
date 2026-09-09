@@ -1,0 +1,28 @@
+# Godot 4
+.godot/
+/android/
+export_presets.cfg
+*.translation
+
+# Exportaciones
+/build/
+/exports/
+*.exe
+*.pck
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# Aseprite
+*.aseprite~
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
