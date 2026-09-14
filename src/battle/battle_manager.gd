@@ -112,6 +112,13 @@ func is_awaiting_player_input() -> bool:
 	return _awaiting_player_input
 
 
+## Turnos que quedan por jugarse en la ronda, sin contar a quien actúa ahora.
+## Lo consulta la interfaz para responder «¿y después de mí, quién?». Es solo
+## lectura: no cambia nada del flujo.
+func get_pending_turns() -> Array[Combatant]:
+	return _turn_manager.get_pending() if _turn_manager != null else []
+
+
 func _start_round() -> void:
 	var participants: Array[Combatant] = []
 	participants.append_array(player_party)

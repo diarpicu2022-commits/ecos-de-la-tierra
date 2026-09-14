@@ -55,6 +55,21 @@ func get_usable_skills() -> Array[Skill]:
 	return usable
 
 
+## Habilidades que el personaje **sabe** usar, tenga o no energía ahora mismo.
+##
+## Es distinto de `get_usable_skills()`, que además exige poder pagarlas. La
+## interfaz usa esta: muestra todas las conocidas y marca en rojo el coste de
+## las que no alcanzan. Ocultar una opción impide aprender que existe, que es
+## el fallo del menú de batalla de Final Fantasy VI recogido en el anexo de UX.
+func get_known_skills() -> Array[Skill]:
+	var known: Array[Skill] = []
+	for skill in skills:
+		if skill is EcoSkill and not has_knowledge((skill as EcoSkill).weakness_type):
+			continue
+		known.append(skill)
+	return known
+
+
 func get_eco_skills() -> Array[Skill]:
 	var eco_skills: Array[Skill] = []
 	for skill in skills:

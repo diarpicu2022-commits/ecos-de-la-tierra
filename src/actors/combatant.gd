@@ -7,6 +7,13 @@ extends Node
 
 signal hp_changed(current: int, maximum: int)
 signal energy_changed(current: int, maximum: int)
+## Daño realmente aplicado, ya pasado por defensa y por resistencias. La
+## interfaz lo usa para escribir la cifra sobre el objetivo; hasta ahora el
+## único aviso era la frase del registro, de la que habría que extraer el
+## número con análisis de texto, que es frágil.
+signal damage_taken(amount: int, eco_type: Enums.EcoType, resisted: bool)
+## Vida realmente recuperada, que puede ser menor que la curación pedida.
+signal healing_received(amount: int)
 signal status_applied(effect: StatusEffect)
 signal status_removed(effect: StatusEffect)
 signal defeated()
@@ -92,6 +99,9 @@ func take_damage(amount: int, eco_type: Enums.EcoType = Enums.EcoType.NONE, igno
 	final_damage = mini(final_damage, hp)
 	hp -= final_damage
 	hp_changed.emit(hp, max_hp)
+	# Se avisa antes de comprobar si cayó: la cifra pertenece al golpe, y el
+	# monstruo puede regenerarse justo después.
+	damage_taken.emit(final_damage, eco_type, get_resistance_for(eco_type) > 0.0)
 	if hp <= 0:
 		_on_hp_depleted()
 	return final_damage
@@ -107,7 +117,18 @@ func heal(amount: int) -> int:
 	var healed: int = mini(amount, max_hp - hp)
 	hp += healed
 	hp_changed.emit(hp, max_hp)
+	if healed > 0:
+		healing_received.emit(healed)
 	return healed
+
+
+## Fracción del daño de un tipo que este combatiente resiste, de 0 a 1.
+##
+## La base no resiste nada. `Monster` lo sobrescribe con el sistema de debilidad
+## ambiental, y es lo que permite a la interfaz distinguir un golpe que hizo
+## mella de uno que el monstruo se quitó de encima.
+func get_resistance_for(_eco_type: Enums.EcoType) -> float:
+	return 0.0
 
 
 func has_energy(cost: int) -> bool:
