@@ -6,6 +6,10 @@ Godot Engine 4 + GDScript, exportable a PC y Android desde el mismo proyecto.
 La propuesta completa (historia, personajes, regiones y justificación técnica)
 está en `EcosDeLaTierra Propuesta Videojuego.md`.
 
+El juego se construye **por partes, una por sesión**. Qué está hecho, qué toca
+ahora y qué decisiones ya están cerradas: `docs/plan-de-trabajo.md`. Es lo
+primero que conviene leer antes de tocar nada.
+
 ## Abrir el proyecto
 
 1. Instalar **Godot Engine 4.3 o superior**, versión **estándar (no la .NET)**.

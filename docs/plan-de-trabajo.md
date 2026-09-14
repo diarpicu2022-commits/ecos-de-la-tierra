@@ -1,0 +1,122 @@
+# Plan de trabajo — *Ecos de la Tierra*
+
+Última actualización: 2026-09-14
+
+**Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
+qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
+ni volver a leer el proyecto entero.
+
+---
+
+## Cómo se trabaja: una parte por sesión
+
+El juego completo no se hace en un día y no se intenta. El trabajo va **por
+partes, y las partes van por sesiones**, por dos motivos distintos y los dos
+válidos:
+
+1. **De diseño.** Al terminar cada parte se muestra lo hecho y se para a esperar
+   visto bueno. Un desvío corregido al final de una parte es un daño pequeño; el
+   mismo desvío descubierto con el juego entero montado obliga a rehacer.
+2. **De coste.** Una sesión que abarca demasiado se queda sin contexto a mitad,
+   y lo que sigue se hace peor y más caro en tokens. Una parte por sesión —dos
+   si salen cortas— mantiene la sesión con contexto de sobra.
+
+### Reglas de sesión
+
+- **Se abre leyendo este archivo**, no explorando el repositorio. Aquí está el
+  punto de retome exacto.
+- **Se cierra actualizando este archivo** —marcar la parte, mover el punto de
+  retome, anotar lo que quedó a medias— **y commiteando**. Una sesión que
+  termina sin commit obliga a la siguiente a reconstruir qué pasó.
+- **No se abre la parte siguiente sin cerrar la actual.** Si sobra sesión, se
+  pule lo hecho o se verifica; no se adelanta trabajo a medio hacer.
+- **No se releen los anexos enteros** salvo que la parte los necesite. Para
+  saber qué se decidió basta la sección «Decisiones cerradas» de aquí abajo.
+
+---
+
+## Punto de retome
+
+> **Parte 1 — Tokens de mundo, tileset y cámara.**
+> Bloqueada hasta cerrar la fase 4 del anexo de exploración: falta elegir
+> dirección y responder si los encuentros son visibles en el mapa o aleatorios.
+> La fase 3 (investigación) quedó corriendo el 2026-09-14.
+
+---
+
+## Las doce partes
+
+Van en este orden porque cada una se apoya en la anterior: no hay diálogo sin
+zonas, ni progresión sin encuentros.
+
+| # | Parte | Estado |
+|---|---|---|
+| — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
+| — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
+| 1 | Tokens de mundo, tileset y cámara | Siguiente |
+| 2 | Movimiento, colisiones y transición entre zonas | |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
+| 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
+| 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
+| 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
+| 7 | Puzzles ambientales, uno por región | |
+| 8 | Menú fuera de combate: grupo, bolsa, habilidades | |
+| 9 | Guardado de partida | |
+| 10 | Pantalla de título y opciones | |
+| 11 | Audio | |
+| 12 | Final y créditos | |
+
+Las partes 3, 5 y 7 son las caras, y no por código sino por **contenido**: siete
+zonas dibujadas tile a tile, cinco personajes con arco y cinco puzzles distintos
+son trabajo de autoría. Es previsible que cada una ocupe varias sesiones y se
+subdivida —una zona por sesión, por ejemplo—. Cuando eso pase, se anota aquí la
+subdivisión en vez de dejar la parte abierta indefinidamente.
+
+---
+
+## Decisiones cerradas — no se vuelven a discutir
+
+Salvo información nueva. Si alguna se enmienda, se anota con fecha.
+
+- **Alcance: el juego completo, las cinco regiones.** Decidido por el usuario el
+  2026-09-14. **Anula** la nota de recorte de `CONTEXTO.md`, que permitía
+  quitar Llanura Marchita y Cumbre Menguante si apretaba el tiempo. No hay
+  versión de muestra: se entrega el juego entero.
+- **Motor y lenguaje:** Godot 4, GDScript. Nada de C#: su exportación a Android
+  es experimental.
+- **Plataforma priorizada:** PC con teclado. Fijado en el contrato de la batalla.
+- **Identidad visual:** «Ceniza y Brasa», contrato bloqueado el 2026-09-13 en
+  `docs/ux/anexos/2026-09-13-pantalla-de-batalla.md`. El mundo la hereda; lo
+  suyo propio se firma en el anexo de exploración.
+- **Resolución:** viewport 480×270 escalado por múltiplos enteros. Filtro
+  `Nearest`, `stretch/scale_mode = integer`.
+- **El verde `vital_500` es solo purificación.** En todo el juego, no solo en la
+  batalla. Regla de acento único, no negociable.
+- **Radio de esquina 0 px** en toda la interfaz.
+- **Código en inglés, textos de jugador en español.** Clases en `PascalCase` con
+  `class_name`, archivos en `snake_case`.
+- **La interfaz se construye en GDScript**, no en escenas `.tscn` montadas a
+  mano: es el patrón que ya sigue `src/ui/`, y mantiene el diseño en un sitio
+  donde se puede leer y auditar.
+- **Sin firma de herramientas** en commits, código ni documentación.
+
+---
+
+## Decisiones abiertas
+
+| Qué | Dónde se resuelve |
+|---|---|
+| Dirección visual del mundo | Fase 4 del anexo de exploración |
+| Encuentros visibles en el mapa o aleatorios | Fase 4 del anexo de exploración |
+| Si la paleta de 13 colores basta para un paisaje | Fase 4; si no basta, sale enmienda fechada |
+
+---
+
+## Dónde está cada cosa
+
+```
+docs/plan-de-trabajo.md      Este archivo. Punto de retome de cada sesión.
+docs/ux/anexos/              Un anexo por pantalla. Contratos de diseño.
+src/README.md                Arquitectura del código.
+README.md                    Cómo abrir y ejecutar el proyecto.
+```
