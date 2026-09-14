@@ -135,3 +135,105 @@ static func load_settings() -> void:
 ## estado final en lugar de recorrerlo.
 static func duration(seconds: float) -> float:
 	return 0.0 if reduced_motion else seconds
+
+
+# ---------------------------------------------------------------------------
+# Mundo — contrato «Vereda», bloqueado el 2026-09-14 en
+# docs/ux/anexos/2026-09-14-exploracion-top-down.md
+#
+# Enmienda 1 de aquel contrato, autorizada por el usuario: la paleta de
+# «Ceniza y Brasa» tiene ocho grises de un mismo violeta apagado, y en vista
+# cenital suelo, agua y follaje colapsan en una sola masa. Se añaden tres
+# rampas de material con techo de saturación 0,22 en HSV, muy por debajo de
+# brasa (0,80) y de vital (0,70): el mundo sigue apagado y la regla del acento
+# único no se toca.
+#
+# Los nueve valores no se eligieron a ojo. Salen de una búsqueda que exige, a
+# la vez: saturación <= 0,22; el verde de purificación y la brasa legibles
+# sobre cualquier terreno (3:1, mínimo gráfico de WCAG 1.4.11); separación
+# perceptual dentro de una misma rampa >= 7 de dE, que es sombreado del mismo
+# material; y separación contra los grises que tocan el terreno.
+#
+# Lo que NO se consiguió, y se dice: la separación entre materiales distintos
+# queda en dE 9,2, no en los 12 que me había fijado como margen. Nueve tonos no
+# caben con esa holgura en un rango de valor tan estrecho, y al forzar que el
+# verde se lea sobre el follaje hubo que oscurecerlo, lo que apretó todavía
+# más. dE 9,2 sigue siendo unas cuatro veces el mínimo perceptible y basta para
+# áreas planas contiguas, pero el color no puede cargar solo con distinguir
+# materiales: el contorno y la silueta del contrato tienen que acompañar.
+# ---------------------------------------------------------------------------
+
+## Suelo. Matiz 24°, el extremo cálido de la tierra removida.
+const SOIL_700 := Color("#403732")  ## Tierra en sombra.
+const SOIL_500 := Color("#594d46")  ## Tierra, tono base.
+const SOIL_300 := Color("#73645a")  ## Camino pisado y borde iluminado.
+
+## Agua. Matiz 196°, frío. Es la rampa más oscura de las tres: el agua de
+## Solmira está enferma y no refleja cielo.
+const WATER_700 := Color("#1e2426")  ## Fondo y agua profunda.
+const WATER_500 := Color("#364145")  ## Agua, tono base.
+const WATER_300 := Color("#4e5e63")  ## Orilla y reflejo.
+
+## Follaje sin purificar. Matiz 68°, oliva sucio. No es verde: el verde de este
+## juego tiene un solo significado y no se gasta en decorado.
+const FLORA_700 := Color("#434536")  ## Follaje en sombra.
+const FLORA_500 := Color("#575946")  ## Follaje, tono base.
+const FLORA_300 := Color("#6a6e56")  ## Hoja iluminada.
+
+## Techo de saturación de todo token de mundo que se añada en el futuro.
+## Superarlo rompe la regla del acento único, porque empieza a competir con la
+## brasa y con el verde.
+const WORLD_SATURATION_CEILING := 0.22
+
+
+# --- Lenguaje del entorno --------------------------------------------------
+# Se declara una vez y no se contradice. Lo que responde lleva contorno sólido
+# y es más claro que su fondo; el decorado no lleva contorno y es más oscuro.
+
+const WORLD_OUTLINE_INTERACTIVE := ASH_050  ## Contorno de lo que responde.
+const WORLD_PURIFIED := VITAL_500           ## Follaje y agua ya purificados.
+const WORLD_PURIFIED_SHADOW := VITAL_700    ## Su sombra de 1 px.
+
+
+# --- Rejilla ---------------------------------------------------------------
+
+const TILE_SIZE := 16
+
+## El mapa es mayor que el viewport, así que los tiles cortados en el borde de
+## la pantalla son el comportamiento normal del scroll, no un defecto.
+
+
+# --- Cámara ----------------------------------------------------------------
+# Zona muerta medida, no estimada: sale del devlog de *Odd Verdure*, que la
+# amplió de 28 px a 48 px de alto entre la jam y la publicación.
+
+const CAMERA_DEADZONE_WIDTH := 28
+const CAMERA_DEADZONE_HEIGHT := 48
+
+## El personaje va sesgado hacia el borde inferior de la zona muerta: en vista
+## cenital importa más ver hacia dónde se va que de dónde se viene.
+const CAMERA_BIAS_DOWN := 12
+
+## Anticipación en la dirección del avance, tope del devlog citado.
+const CAMERA_LOOKAHEAD := 30
+
+
+# --- Velocidades -----------------------------------------------------------
+# No son números de gusto: son la razón por la que la cámara puede redondearse
+# a píxel entero sin tirones. A 60 Hz dan un número entero de píxeles por
+# cuadro, así que no hay fracción que redondear. Cualquier velocidad nueva debe
+# ser múltiplo de 60 px/s o rompe el trato.
+
+const WALK_SPEED := 60.0   ## 1 píxel por cuadro.
+const RUN_SPEED := 120.0   ## 2 píxeles por cuadro.
+
+## Caminar NO se anima. Es la acción de teclado más repetida del juego, y
+## amortiguarla la vuelve lenta. El techo de 300 ms del contrato de batalla es
+## para eventos —purificar, entrar en combate, abrir un diálogo—, no un permiso
+## para suavizar movimiento continuo.
+
+
+# --- Duraciones del mundo --------------------------------------------------
+
+const DUR_PLACE_LABEL := 0.16  ## Rótulo del lugar: entra y se va.
+const DUR_ZONE_FADE := 0.12    ## Medio fundido. Cruzar una zona son dos.

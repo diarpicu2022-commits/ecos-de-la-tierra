@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-14
+Última actualización: 2026-09-14 (sesión 2)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -37,10 +37,18 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 1 — Tokens de mundo, tileset y cámara.**
-> Bloqueada hasta cerrar la fase 4 del anexo de exploración: falta elegir
-> dirección y responder si los encuentros son visibles en el mapa o aleatorios.
-> La fase 3 (investigación) quedó corriendo el 2026-09-14.
+> **Parte 1 — Tokens de mundo, tileset y cámara.** En curso.
+>
+> Hecho: fases 1 a 4 del anexo de exploración (contrato «Vereda» bloqueado), y
+> el **paso 1 de la fase 5 — los tokens**, con sus dos enmiendas. Verificado:
+> el proyecto carga y `verify_usability.tscn` sigue dando 16/16.
+>
+> **Siguiente: paso 2 de la fase 5 — el componente clave**, que aquí es el
+> tileset de terreno enfermo y purificado, porque es el que carga la decisión
+> dominante. La cámara entra después, en el esqueleto (paso 3): es
+> infraestructura, no es lo que decide el jugador.
+>
+> Esperando visto bueno de los tokens en el punto de control.
 
 ---
 
@@ -53,7 +61,7 @@ zonas, ni progresión sin encuentros.
 |---|---|---|
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
-| 1 | Tokens de mundo, tileset y cámara | Siguiente |
+| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens hechos |
 | 2 | Movimiento, colisiones y transición entre zonas | |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
@@ -99,6 +107,18 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   mano: es el patrón que ya sigue `src/ui/`, y mantiene el diseño en un sitio
   donde se puede leer y auditar.
 - **Sin firma de herramientas** en commits, código ni documentación.
+- **Dirección del mundo: «Vereda»** (2026-09-14). Mundo contiguo con cámara
+  viva, zona muerta de 28×48 px y cámara ajustada a píxel entero. Contrato en
+  `docs/ux/anexos/2026-09-14-exploracion-top-down.md`.
+- **Caminar no se anima.** Velocidades atadas a la rejilla: 60 px/s al andar y
+  120 al correr, que a 60 Hz son 1 y 2 píxeles por cuadro exactos. Cualquier
+  velocidad nueva debe ser múltiplo de 60 px/s.
+- **Encuentros visibles en el mapa**, y el mapa **no se estrecha** para impedir
+  que se esquive el combate.
+- **Purificar abre paso y devuelve fauna**, no solo repinta. Cada zona se traza
+  con un paso cerrado que la purificación abre.
+- **Paleta de mundo: tres rampas de material** (suelo, agua, follaje) con techo
+  de saturación 0,22. Enmienda 1 del contrato de exploración, autorizada.
 
 ---
 
@@ -106,9 +126,8 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Dirección visual del mundo | Fase 4 del anexo de exploración |
-| Encuentros visibles en el mapa o aleatorios | Fase 4 del anexo de exploración |
-| Si la paleta de 13 colores basta para un paisaje | Fase 4; si no basta, sale enmienda fechada |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta enmienda 2 | Fase 6 del anexo de exploración |
+| Mobbin y Pinterest, no consultadas | Requieren la extensión de Chrome conectada |
 
 ---
 
