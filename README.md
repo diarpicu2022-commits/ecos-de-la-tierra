@@ -14,9 +14,12 @@ está en `EcosDeLaTierra Propuesta Videojuego.md`.
    Verificado en 4.3 y en 4.7.2.
 2. Abrir Godot → *Import* → seleccionar el archivo `project.godot` de esta
    carpeta.
-3. Ejecutar con F5. La escena principal es `scenes/main.tscn`, que por ahora
-   lanza la prueba de concepto del combate y escribe el registro en la consola
-   de salida del editor.
+3. Ejecutar con F5. La escena principal es `scenes/main.tscn`: abre el selector
+   de región, desde el que se entra a cualquiera de los seis combates. Se juega
+   con las flechas o WASD, Enter o Espacio para confirmar y Escape para volver
+   atrás.
+   La prueba de concepto por consola sigue disponible en
+   `tools/console_demo.tscn` (F6 con esa escena abierta).
 
 También se puede ejecutar sin abrir el editor, desde la carpeta del proyecto:
 
@@ -50,12 +53,26 @@ godot --headless --path . --quit-after 3
   el catálogo de habilidades, los estados alterados y la Bolsa.
 - Prueba de concepto por consola que verifica todo lo anterior sin interfaz.
 
+## La interfaz de batalla
+
+Diseñada siguiendo el proceso documentado en
+`docs/ux/anexos/2026-09-13-pantalla-de-batalla.md`, bajo la dirección
+«Ceniza y Brasa»: el mundo está apagado en grises y el único color saturado del
+juego es el verde de la purificación, que vuelve a la pantalla cuando el jugador
+ataja la causa del daño.
+
+- `src/ui/design_tokens.gd` — paleta, espaciado, forma y duraciones. Ninguna
+  escena escribe un color suelto.
+- `src/ui/battle/` — la pantalla y sus componentes.
+- `tools/gen_font.py`, `gen_sprites.py`, `gen_characters.py` — generan la fuente
+  y todos los sprites. Los assets se pueden regenerar con
+  `python tools/gen_sprites.py`.
+
 ## Qué falta
 
-- La interfaz de batalla y del mundo (menú, HUD, diálogos, inventario).
-- Los sprites y tilemaps: `assets/` está preparado pero vacío.
 - La exploración top-down y los puzzles ambientales de cada región.
-- El guardado de partida.
+- Los diálogos, el inventario fuera de combate y el guardado de partida.
+- Audio.
 
 ## Estructura
 

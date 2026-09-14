@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://ch2y13x263bxt"
+path="res://.godot/imported/ceniza.fnt-441093bf060a3a50dcf312f62e203a58.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/ceniza.fnt"
+dest_files=["res://.godot/imported/ceniza.fnt-441093bf060a3a50dcf312f62e203a58.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2
