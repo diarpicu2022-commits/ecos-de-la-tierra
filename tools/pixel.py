@@ -36,6 +36,17 @@ PALETTE: dict[str, tuple[int, int, int, int]] = {
     "vital_500": (0x4A, 0xDE, 0x80, 255),
     "vital_700": (0x2B, 0x9D, 0x5A, 255),
     "vital_900": (0x1A, 0x5E, 0x38, 255),
+    # Mundo: tres rampas de material, enmienda 1 del contrato «Vereda»
+    # (2026-09-14). Techo de saturación 0,22: el mundo sigue apagado.
+    "soil_700": (0x40, 0x37, 0x32, 255),
+    "soil_500": (0x59, 0x4D, 0x46, 255),
+    "soil_300": (0x73, 0x64, 0x5A, 255),
+    "water_700": (0x1E, 0x24, 0x26, 255),
+    "water_500": (0x36, 0x41, 0x45, 255),
+    "water_300": (0x4E, 0x5E, 0x63, 255),
+    "flora_700": (0x43, 0x45, 0x36, 255),
+    "flora_500": (0x57, 0x59, 0x46, 255),
+    "flora_300": (0x6A, 0x6E, 0x56, 255),
     "transparent": (0, 0, 0, 0),
 }
 

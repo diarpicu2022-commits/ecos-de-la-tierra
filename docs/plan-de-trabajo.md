@@ -1,10 +1,15 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-14 (sesión 2)
+Última actualización: 2026-09-23 (sesión 3)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
 ni volver a leer el proyecto entero.
+
+**Lo segundo es `docs/guia-de-continuacion.md`**: el protocolo de diseño
+completo, el repertorio del juego y las instrucciones de cada parte. Está
+escrita para que cualquiera del equipo, con o sin la skill de dirección de
+diseño, siga con el mismo criterio.
 
 ---
 
@@ -39,16 +44,18 @@ válidos:
 
 > **Parte 1 — Tokens de mundo, tileset y cámara.** En curso.
 >
-> Hecho: fases 1 a 4 del anexo de exploración (contrato «Vereda» bloqueado), y
-> el **paso 1 de la fase 5 — los tokens**, con sus dos enmiendas. Verificado:
-> el proyecto carga y `verify_usability.tscn` sigue dando 16/16.
+> Hecho: fases 1 a 4 del anexo de exploración (contrato «Vereda» bloqueado) y
+> el **paso 1 de la fase 5, los tokens, aprobados por Diego el 2026-09-23**.
+> En la sesión 3 también se cerró la deriva de paleta entre `pixel.py` y
+> `design_tokens.gd` y se añadió `tools/verify_palette.py`.
 >
-> **Siguiente: paso 2 de la fase 5 — el componente clave**, que aquí es el
-> tileset de terreno enfermo y purificado, porque es el que carga la decisión
-> dominante. La cámara entra después, en el esqueleto (paso 3): es
-> infraestructura, no es lo que decide el jugador.
+> **Siguiente: paso 2a — catálogo de lo que responde** (guía §5, parte 1), y
+> después el **paso 2b — tileset** de terreno enfermo y purificado. El catálogo
+> va primero porque la regla de negación decide qué tiles pueden existir.
 >
-> Esperando visto bueno de los tokens en el punto de control.
+> **Esperando respuesta de Diego sobre P1 y P2** (guía §3.2). P1 afecta a la
+> purificación de zona (parte 4) y P2 al movimiento (parte 2): **no bloquean**
+> el tileset.
 
 ---
 
@@ -61,7 +68,7 @@ zonas, ni progresión sin encuentros.
 |---|---|---|
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
-| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens hechos |
+| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens aprobados 2026-09-23 |
 | 2 | Movimiento, colisiones y transición entre zonas | |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
@@ -126,8 +133,22 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta enmienda 2 | Fase 6 del anexo de exploración |
-| Mobbin y Pinterest, no consultadas | Requieren la extensión de Chrome conectada |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 3** | Paso 2b, sobre la captura del tileset |
+| **P1** — ola de purificación en tramado, 900 ms | Diego. Guía §3.2 |
+| **P2** — diagonal sin normalizar (1+1 px por cuadro) | Diego. Guía §3.2 |
+| Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
+| Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
+| Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
+
+## Hallazgos medidos — 2026-09-23
+
+- **El verde y la brasa se separan casi solo por matiz** (`VITAL_500` /
+  `EMBER_300`: 1,08:1 de contraste; con deuteranopía `VITAL_500` / `EMBER_400`
+  baja a 1,22:1). Purificado frente a causa activa nunca depende solo del
+  color. Detalle en la guía §2.3.
+- **Deriva de paleta cerrada:** `EMBER_700` y `VITAL_900` se usaban en los
+  sprites sin estar declarados. Ya están en `design_tokens.gd`; no son colores
+  nuevos. Los 17 sprites pasan `verify_palette.py image`.
 
 ---
 
@@ -135,6 +156,9 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 ```
 docs/plan-de-trabajo.md      Este archivo. Punto de retome de cada sesión.
+docs/guia-de-continuacion.md Protocolo, repertorio e instrucciones por parte.
+CLAUDE.md                    Lo que cualquier Claude lee al abrir el proyecto.
+tools/verify_palette.py      Paleta, saturación y visión del color, medidas.
 docs/ux/anexos/              Un anexo por pantalla. Contratos de diseño.
 src/README.md                Arquitectura del código.
 README.md                    Cómo abrir y ejecutar el proyecto.

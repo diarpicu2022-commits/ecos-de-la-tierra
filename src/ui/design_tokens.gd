@@ -33,6 +33,10 @@ const ASH_050 := Color("#e8e4ee")  ## Texto primario y cifras.
 const EMBER_500 := Color("#e8562e")
 const EMBER_400 := Color("#f08a3c")  ## Texto de aviso (5,7:1 sobre ASH_800).
 const EMBER_300 := Color("#ffc14d")  ## Cursor, foco y cifras críticas (8,8:1).
+## Borde apagado de la llama. Solo sprites: en uso en tools/pixel.py desde el
+## 2026-09-13 sin estar declarado aquí. Se declara el 2026-09-23 para cerrar la
+## deriva que detectó tools/verify_palette.py; no es un color nuevo.
+const EMBER_700 := Color("#7a2518")
 
 
 # --- Acento único: la purificación ------------------------------------------
@@ -41,6 +45,9 @@ const EMBER_300 := Color("#ffc14d")  ## Cursor, foco y cifras críticas (8,8:1).
 ## en todo el juego: «la causa se atajó». Las barras de vida NO son verdes.
 const VITAL_500 := Color("#4ade80")  ## 8,2:1 sobre ASH_800.
 const VITAL_700 := Color("#2b9d5a")  ## Sombra del verde, 1 px.
+## Fondo de las variantes purificadas. Solo sprites; misma historia que
+## EMBER_700: ya estaba en tools/pixel.py y se declara para cerrar la deriva.
+const VITAL_900 := Color("#1a5e38")
 
 
 # --- Papeles semánticos ------------------------------------------------------

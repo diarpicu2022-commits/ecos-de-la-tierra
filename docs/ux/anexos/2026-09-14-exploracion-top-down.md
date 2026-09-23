@@ -628,7 +628,9 @@ opuestas y se priorizó el verde, que es el que carga el mensaje del juego.
 dE 9,2 sigue siendo unas cuatro veces el mínimo perceptible y basta para áreas
 planas contiguas, pero **el color no puede cargar solo con distinguir
 materiales**: el contorno y la silueta declarados en el contrato tienen que
-acompañar. Si en la verificación se ve que no basta, sale enmienda 2.
+acompañar. Si en la verificación se ve que no basta, sale una enmienda nueva
+(la **3**: la 2 ya se usó para el ajuste a píxel; numeración corregida el
+2026-09-23).
 
 Peor caso medido del verde sobre terreno: **3,03:1**. De la brasa: **3,27:1**.
 
@@ -638,3 +640,38 @@ partió en `rendering/2d/snap/snap_2d_transforms_to_pixel` y
 `snap_2d_vertices_to_pixel`, ambas apagadas por defecto, y `Camera2D` no tiene
 ajuste a píxel propio. Se activan las dos. En la batalla no se notaba porque
 nada se movía en subpíxel.
+
+---
+
+## Fase 5 — Implementación
+
+### Paso 1 — Tokens · 2026-09-14, aprobado 2026-09-23
+
+- `src/ui/design_tokens.gd`: rampas `SOIL_*`, `WATER_*`, `FLORA_*`, techo
+  `WORLD_SATURATION_CEILING`, lenguaje del entorno, rejilla, cámara,
+  velocidades y duraciones del mundo.
+- `project.godot`: ajuste a píxel (enmienda 2).
+
+**Cláusulas:** «Enmienda 1», «Cámara», «Movimiento del personaje»,
+«Movimiento (duraciones)».
+
+**Visto bueno de Diego: 2026-09-23.**
+
+**Añadido en la misma revisión:**
+
+- `tools/pixel.py` recibe las nueve tintas de mundo: sin ellas, el generador del
+  tileset no podía usar los tokens aprobados.
+- `tools/verify_palette.py` detectó **deriva**: `EMBER_700` y `VITAL_900` se
+  usaban en los sprites desde el 2026-09-13 sin estar en `design_tokens.gd`. Se
+  declaran allí; no son colores nuevos. Resultado: 24 tokens coinciden y los 17
+  sprites pasan con todos sus píxeles dentro del contrato.
+- Medido con `verify_palette.py cvd`: `VITAL_500` frente a `EMBER_300` da 1,08:1
+  de contraste en visión normal, y `VITAL_500` frente a `EMBER_400` baja a
+  1,22:1 con deuteranopía. El verde y la brasa se separan casi solo por matiz.
+  Confirma, ahora con cifras, la cláusula del lenguaje del entorno: **el estado
+  se lee por valor y silueta, no por color.** El tileset tendrá que pasar
+  `verify_palette.py value` con cociente ≥ 1,5 en las cuatro visiones.
+
+**Siguiente:** paso 2a, catálogo de lo que responde; después, paso 2b,
+tileset. Instrucciones en `docs/guia-de-continuacion.md`, §5, parte 1.
+
