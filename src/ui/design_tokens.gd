@@ -244,3 +244,26 @@ const RUN_SPEED := 120.0   ## 2 píxeles por cuadro.
 
 const DUR_PLACE_LABEL := 0.16  ## Rótulo del lugar: entra y se va.
 const DUR_ZONE_FADE := 0.12    ## Medio fundido. Cruzar una zona son dos.
+
+## La ola de purificación de zona. Enmienda 3, autorizada el 2026-09-23: pasa
+## de 300 a 900 ms porque ocurre siete veces en toda la partida, no cientos.
+## El verde avanza desde el lugar del combate en un tramado ordenado de 4x4, y
+## cada píxel es enfermo o purificado, nunca una mezcla: no hay tokens nuevos.
+## El tramado es exclusivo de este momento; no se usa en ninguna otra parte.
+const DUR_ZONE_PURIFY := 0.90
+const PURIFY_DITHER_STEPS := 8
+
+## Matriz de Bayer 4x4. Un píxel pasa a purificado en el paso
+## floor(umbral / 2) de los ocho, contado desde que el frente de la ola lo toca.
+const BAYER_4X4 := [
+	[0, 8, 2, 10],
+	[12, 4, 14, 6],
+	[3, 11, 1, 9],
+	[15, 7, 13, 5],
+]
+
+## Diagonal. Enmienda 4, autorizada el 2026-09-23: la velocidad se cumple POR
+## EJE. En diagonal se avanzan WALK_SPEED en X y WALK_SPEED en Y, sin
+## normalizar: normalizar daría 0,707 px por cuadro, fracciones de píxel que la
+## cámara a entero convierte en tirones.
+const DIAGONAL_NORMALIZED := false

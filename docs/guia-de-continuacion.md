@@ -279,7 +279,7 @@ purificar se note más como un retorno?** Si no, sobra.
 | Brasa `EMBER_500/400` | La causa activa y el aviso | Adorno |
 | `EMBER_300` | Foco y cursor (ya contratado en batalla) | Relleno de zonas grandes |
 | Contorno `ASH_050` 1 px | «Esto responde» | Decorado, marcos de UI del mundo |
-| **Tramado ordenado 4×4** (propuesta P1) | **Solo** el avance de la purificación | Transiciones, sombras, fondos |
+| **Tramado ordenado 4×4** (enmienda 3) | **Solo** el avance de la purificación | Transiciones, sombras, fondos |
 | Fundido a negro 2×120 ms | Solo el cambio de zona | Combate, diálogo |
 | Persiana horizontal (propuesta, parte 4) | Solo la entrada al combate | Cualquier otra transición |
 | Panel `ASH_800` + borde `ASH_600` 1 px | Todo texto que se lee (diálogo, menú, rótulo) | El mundo en sí |
@@ -289,17 +289,19 @@ purificar se note más como un retorno?** Si no, sobra.
 Si al revisar una pantalla ves una forma haciendo el trabajo de otra, o una
 forma nueva que no está en la tabla, **para y pregunta**.
 
-### 3.2 Propuestas que tocan contratos bloqueados — NO se implementan sin el «sí» de Diego
+### 3.2 Enmiendas aprobadas por Diego el 2026-09-23
+
+Nacieron como propuestas P1 y P2 de esta guía. **Ya son contrato**: enmiendas 3
+y 4 del anexo de exploración, con sus tokens en `design_tokens.gd`
+(`DUR_ZONE_PURIFY`, `PURIFY_DITHER_STEPS`, `BAYER_4X4`, `DIAGONAL_NORMALIZED`).
 
 | # | Propuesta | Qué enmienda | Argumento |
 |---|---|---|---|
 | **P1** | **La ola de purificación.** Al purificar una zona, el verde no aparece de golpe: avanza desde el lugar del combate en un tramado ordenado de 4×4 (Bayer), en 8 pasos, **900 ms**, y la fauna entra detrás de la ola. | Tabla de duraciones de «Vereda»: la purificación de zona pasa de 300 a 900 ms. | El techo de 300 ms existe porque la batalla se ve cientos de veces. La purificación de zona ocurre **siete veces en toda la partida**: es el momento más raro y más importante del juego. Kowalski lo dice: lo que se ve pocas veces puede ser más expresivo (https://emilkowal.ski/ui/great-animations). El tramado es la técnica propia del pixel art para fundir dos estados sin inventar colores intermedios (https://en.wikipedia.org/wiki/Ordered_dithering): **no añade ni un token**. Con movimiento reducido: salto directo al estado final. |
 | **P2** | **Diagonal sin normalizar.** En diagonal, 1 px en X **y** 1 px en Y por cuadro al andar (2+2 al correr). | Aclara «Movimiento del personaje»: la velocidad múltiplo de 60 px/s se cumple **por eje**. | Normalizar la diagonal da 42,4 px/s por eje, que son 0,707 px por cuadro: **fracciones de píxel**, justo lo que el contrato prohíbe porque produce tirones con la cámara a píxel entero. La diagonal un 41 % más rápida es la solución clásica de los juegos de 16 bits y es invisible jugando. |
 
-Si Diego rechaza P1, la purificación de zona queda en 300 ms y el tramado
-**no se usa en ningún sitio** (se borra de §3.1). Si rechaza P2, hay que
-proponer otra solución que mantenga posiciones enteras (por ejemplo, alternar
-cuadros 1-1-0), **no** normalizar sin más.
+La purificación del **monstruo** en batalla no cambia: sigue en 300 ms. Con
+movimiento reducido, la ola salta directamente al estado final.
 
 ---
 
@@ -313,7 +315,7 @@ Se atienden cuando su parte lo permita; no se olvidan.
 | Fondo de batalla por región + parallax de 3 capas | Pendiente desde el paso 5 del anexo de batalla. Hoy son dos bandas planas. Reutilizar las **mismas rampas** del tileset de la región (coherencia mundo↔combate) y bajar su contraste bajo los paneles. | Parte 4, al conectar mundo y combate. |
 | Mobbin y Pinterest sin consultar en el anexo de exploración | Consultar con navegador; si no aportan a un juego, registrarlas como «no aplicable» con motivo. | Primera sesión con navegador. |
 | F5 abre el selector de región de pruebas | Mantener `region_select.gd` como herramienta de depuración, no como escena principal. | Parte 10. |
-| Numeración de enmiendas del anexo de exploración | Corregida en esta sesión: si la separación dE 9,2 no basta, la siguiente es la **Enmienda 3**. | Hecho. |
+| Numeración de enmiendas del anexo de exploración | Corregida en esta sesión: si la separación dE 9,2 no basta, la siguiente libre es la **5** (la 3 y la 4 son P1 y P2). | Hecho. |
 
 ---
 
@@ -337,16 +339,20 @@ pantalla, dónde está el daño y hacia dónde sigue el camino, sin carteles.
 
 **Contrato:** «Vereda» (`docs/ux/anexos/2026-09-14-exploracion-top-down.md`).
 
-**Paso 2a — Catálogo de lo que responde (antes que el tileset).** La regla de
-negación decide qué tiles pueden existir. Escribir en el anexo una tabla:
+**Paso 2a — Catálogo de lo que responde · HECHO 2026-09-23, pendiente de visto
+bueno.** Está en el anexo de exploración (fase 5, paso 2a) y, legible por
+máquina, en `data/world/interactables.json`. Lo esencial para dibujar:
 
-| Región | Clase que responde | Qué hace el jugador | Por qué esta clase no puede existir como adorno |
-|---|---|---|---|
-
-Semillas (confirmar con la propuesta del juego y con Diego):
-Bosque → tocón replantable; Cuenca → válvula o tubería que gotea; Costa → red
-con residuos; Llanura → surco de monocultivo; Cumbre → grieta de deshielo;
-Valdehoja → el jardín de Yara. **Punto de control con Diego.**
+- **Dos verbos:** usar y empujar. **Hueco de tamaño:** se recoge ≤ 8×8 px, se
+  usa o empuja ≥ 16×16 px, nada entre medias.
+- Lo que responde es **rectangular** con contorno `ASH_050`; el decorado
+  enfermo, **diagonal**; el purificado, **redondo**.
+- Clases globales: persona, semillero, hatillo, monstruo, paso cerrado.
+- Una clase por región, que es el ensayo de su contramedida: maleza seca
+  (Bosque), barrera absorbente (Cuenca), fardo + contenedor (Costa), parcela
+  cercada (Llanura), manto reflectante (Cumbre).
+- **Los tocones son decorado**, no clase: son la mejor señal de la tala.
+- Lo resuelto **desaparece o se transforma**; nunca se queda como adorno.
 
 **Paso 2b — Tileset (componente clave).**
 
@@ -375,7 +381,7 @@ python tools/verify_palette.py value <tile_enfermo.png> <tile_purificado.png>   
 Y una escena `tools/tileset_sheet.tscn` que pinte un mapa de prueba de
 30×17 tiles con los tres materiales en los dos estados y capture a 480×270.
 Sobre esa captura se decide la decisión abierta: **si dE 9,2 entre materiales
-basta o hace falta la Enmienda 3.** Criterio medido: tres personas nombran el
+basta o hace falta la enmienda 5.** Criterio medido: tres personas nombran el
 material de 10 recortes de 64×64 sin error, o no basta.
 **Punto de control con Diego.**
 
@@ -394,7 +400,7 @@ verde, dE resuelto, plan actualizado y commit.
 **Para qué:** moverse no debe costar pensamiento. Se pulsa y se mueve, se suelta
 y se para.
 
-**Contrato:** «Vereda» + P2 si se aprueba.
+**Contrato:** «Vereda» + enmienda 4 (diagonal sin normalizar).
 
 - Acciones de entrada nuevas en `project.godot`: `run` (Mayús izquierda) e
   `interact` (reutiliza `confirm`). Nada de teclas nuevas para lo que ya existe.
@@ -517,11 +523,12 @@ con personas.
 
 **Dirección recomendada: el puzzle es el ensayo de la contramedida.** El puzzle
 de cada región es **la misma idea que la habilidad ecológica que vence al jefe,
-pero en el mundo y sin presión**: en el Bosque se abre una línea cortafuegos
-entre dos tocones para que el fuego no pase; en la Cuenca se colocan barreras
-absorbentes en el cauce; en la Costa se separan residuos en su origen; en la
-Llanura se rota el cultivo de los surcos; en la Cumbre se cubre el hielo para
-que refleje. Resolverlo **es** el Conocimiento Ambiental que desbloquea la
+pero en el mundo y sin presión**: en el Bosque se desbrozan haces de maleza
+seca para abrir una línea cortafuegos que el fuego no cruza; en la Cuenca se
+empujan barreras absorbentes hasta cerrar el canal; en la Costa se empujan los
+fardos a su contenedor; en la Llanura se rotan los cultivos de las parcelas
+cercadas; en la Cumbre se despliega el manto sobre la roca oscura. Las clases y
+sus reglas ya están fijadas en el catálogo (parte 1, paso 2a). Resolverlo **es** el Conocimiento Ambiental que desbloquea la
 habilidad. Así, cuando el jugador llega al combate, ya ha hecho con las manos lo
 que el combate le pide, y «¿por qué pierdo?» tiene una respuesta que ya conoce.
 Semilla a verificar en fase 3: el esquema de introducir, practicar, complicar y

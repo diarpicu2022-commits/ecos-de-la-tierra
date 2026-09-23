@@ -629,8 +629,8 @@ dE 9,2 sigue siendo unas cuatro veces el mínimo perceptible y basta para áreas
 planas contiguas, pero **el color no puede cargar solo con distinguir
 materiales**: el contorno y la silueta declarados en el contrato tienen que
 acompañar. Si en la verificación se ve que no basta, sale una enmienda nueva
-(la **3**: la 2 ya se usó para el ajuste a píxel; numeración corregida el
-2026-09-23).
+(la siguiente libre, hoy la **5**: la 2 ya se usó para el ajuste a píxel y la
+3 y la 4 para P1 y P2; numeración corregida el 2026-09-23).
 
 Peor caso medido del verde sobre terreno: **3,03:1**. De la brasa: **3,27:1**.
 
@@ -640,6 +640,44 @@ partió en `rendering/2d/snap/snap_2d_transforms_to_pixel` y
 `snap_2d_vertices_to_pixel`, ambas apagadas por defecto, y `Camera2D` no tiene
 ajuste a píxel propio. Se activan las dos. En la batalla no se notaba porque
 nada se movía en subpíxel.
+
+**Enmienda 3 — 2026-09-23. La ola de purificación (P1).**
+Autorizada expresamente por Diego el 2026-09-23. Propuesta en
+`docs/guia-de-continuacion.md`, §3.2.
+
+La purificación de **zona** deja de ser un cambio de 300 ms en bloque y pasa a
+ser una **ola**: el verde avanza desde el lugar donde se ganó el combate, en un
+tramado ordenado de 4×4 (Bayer), en **8 pasos**, durante **900 ms**, y la fauna
+entra detrás del frente de la ola.
+
+| Transición | Antes | Ahora |
+|---|---|---|
+| Purificación de zona | 300 ms, `ease-out` | **900 ms, 8 pasos de tramado, lineal por paso** |
+
+Por qué no rompe el techo de 300 ms: ese techo existe porque la batalla se ve
+cientos de veces por sesión. La purificación de zona ocurre **siete veces en toda
+la partida**; es el momento más raro y el que carga el mensaje. El tramado es el
+recurso propio del pixel art para fundir dos estados sin fabricar colores
+intermedios, así que **no añade ni un token**: cada píxel es enfermo o
+purificado, nunca una mezcla.
+
+**Repertorio:** el tramado ordenado queda reservado **solo** para el avance de la
+purificación. No se usa en transiciones, sombras ni fondos.
+**Movimiento reducido:** salto directo al estado final, sin ola.
+La purificación del **monstruo** en batalla no cambia: sigue en 300 ms.
+
+**Enmienda 4 — 2026-09-23. Diagonal sin normalizar (P2).**
+Autorizada expresamente por Diego el 2026-09-23.
+
+En diagonal, el personaje avanza **1 px en X y 1 px en Y por cuadro** al andar,
+y 2 + 2 al correr. La regla de velocidades se lee **por eje**: cada eje se mueve
+un número entero de píxeles por cuadro.
+
+Por qué: normalizar el vector da 60 / √2 = 42,4 px/s por eje, que son 0,707 px
+por cuadro. Son fracciones de píxel, justo lo que la cláusula «Cámara» prohíbe
+porque, con la cámara ajustada a entero, producen tirones. La diagonal queda un
+41 % más rápida en distancia recorrida, la solución habitual de los juegos de
+16 bits, y jugando no se nota.
 
 ---
 
@@ -674,4 +712,116 @@ nada se movía en subpíxel.
 
 **Siguiente:** paso 2a, catálogo de lo que responde; después, paso 2b,
 tileset. Instrucciones en `docs/guia-de-continuacion.md`, §5, parte 1.
+
+### Paso 2a — Catálogo de lo que responde · 2026-09-23
+
+Va antes que el tileset porque **la regla de negación decide qué tiles pueden
+existir**. Dibujar primero y catalogar después obliga a redibujar.
+
+**Cláusulas:** «Lenguaje del entorno» (tabla responde/decorado y regla de
+negación), «Purificación» (paso cerrado que se abre), «Encuentros»; enmiendas 3
+y 4.
+**Referentes, ya en el contrato:** Schatz (forma rectangular = afordancia,
+diagonal = peligro, redonda = seguridad; el objeto que responde es *la única*
+forma rectangular de su vecindad), Phan (hueco métrico: se prohíben los casos
+limítrofes) y Maglione (contorno y valor como diales de «esto responde»).
+
+#### Cuatro reglas que salen de los referentes
+
+1. **Dos verbos en todo el juego.** **Usar** (`confirm` mirando al objeto, a un
+   tile de distancia) y **Empujar** (caminar contra el objeto). Hablar es usar
+   sobre una persona. No hay tercer verbo: cada verbo nuevo es otra cosa que el
+   jugador tiene que descubrir sin cartel.
+2. **Gramática de forma.** Lo que responde es **rectangular**, lleva contorno
+   `ASH_050` y es más claro que su fondo. El decorado enfermo es **diagonal y
+   roto**; el purificado, **redondo**. Ningún decorado del juego tiene silueta
+   rectangular sólida ni contorno.
+3. **Hueco métrico de tamaño** (Phan). Lo que se recoge mide **≤ 8×8 px**. Lo
+   que se empuja o se usa mide **≥ 16×16 px**. **Nada mide entre 9 y 15 px**:
+   el tamaño dice el verbo antes de probarlo.
+4. **Resuelto no es decorado.** Un objeto resuelto deja de responder, así que no
+   puede quedarse en el mapa tal cual: sería un ejemplar decorativo de una
+   clase que responde. **Desaparece o se transforma en una silueta de otra
+   familia.** Cada clase declara su forma resuelta.
+
+#### Clases globales
+
+| Id | Clase | Verbo | Firma visual | Resuelto | Consecuencia de la negación |
+|---|---|---|---|---|---|
+| `person` | Persona | Usar (hablar) | 16×24, contorno | — | **No hay personas de fondo.** Todo humano del mundo habla; nada de multitudes decorativas. |
+| `seedbed` | Semillero (guardar) | Usar | Cajón de madera 16×16 con un brote `VITAL`: tierra ya curada | — | No hay cajones ni macetas de adorno. El primero está en el jardín de Yara. |
+| `bundle` | Hatillo (objeto o material) | Usar (recoger) | Fardo atado de 8×8, contorno | Desaparece | Todo bulto pequeño se recoge. No hay sacos ni cajas de atrezo. |
+| `monster` | Monstruo | Contacto → combate | Brasa, en movimiento | Purificado; ola (enmienda 3) | Ya contratado. |
+| `blocker` | Paso cerrado | **Ninguno**: lo abre la purificación | Diagonal, puntiagudo, **sin contorno**, valor bajo | Desaparece con la ola | No responde al jugador y **no existe como decorado**: cada ejemplar es un paso que se abrirá. |
+
+**Lo que nunca responde:** la fauna. No lleva contorno y solo aparece en zona
+purificada. Nada vivo responde salvo personas y monstruos. El ave mensajera de
+Yara llega en escenas, nunca como objeto del mapa.
+
+#### Clases regionales — una por región, y es el ensayo de su contramedida
+
+Cada una es la habilidad ecológica del jefe, hecha con las manos y sin presión
+(guía, parte 7). Resolverla es el Conocimiento Ambiental que desbloquea la
+habilidad.
+
+| Región | Id | Clase | Verbo | Qué ensaya | Firma visual | Resuelto |
+|---|---|---|---|---|---|---|
+| Valdehoja | — | *Solo clases globales* | — | Andar, hablar, guardar | — | — |
+| Bosque de las Cenizas | `dry_brush` | Haz de maleza seca | Usar (desbrozar) | **Línea Cortafuegos**: abrir un hueco para que el frente de fuego no pase | Bloque 16×16 de ramas atadas | Desaparece: queda suelo pisado |
+| Cuenca de Alquitrán | `boom` | Barrera absorbente | Empujar sobre el agua | **Barrera Absorbente**: cerrar un canal para contener la mancha | Rollo flotante 32×16 | Anclada: se funde con la orilla como tile de borde |
+| Costa Quebrada | `waste_bale` | Fardo de residuos | Empujar | **Separación en la Fuente** | Fardo 16×16. El material se lee **por silueta**: botellas (trazos verticales), red (cuadrícula), latas (círculos) | Entra en su contenedor y desaparece |
+| Costa Quebrada | `sorting_bin` | Contenedor | Recibe un fardo | Ídem | 16×24 con **la misma silueta** del material en el frente. **Nunca por color** (medición del paso 1) | Lleno: tapa cerrada y sin contorno, otra familia de forma |
+| Llanura Marchita | `plot` | Parcela cercada | Usar (cambiar cultivo) | **Rotación de Cultivos**: que dos parcelas vecinas nunca repitan cultivo | 16×16 con cerca de 1 px. Cultivo por silueta: cereal (trazos verticales), legumbre (puntos redondos), barbecho (tierra lisa) | Crece en follaje redondo purificado |
+| Cumbre Menguante | `albedo_cover` | Manto reflectante | Usar (desplegar) | **Escudo de Albedo**: cubrir la roca oscura que derrite el puente de hielo | Lona doblada 16×16 | Desplegado: pasa a ser superficie de puente, tile de suelo |
+| Cripta de la Avaricia | — | *Las cinco clases juntas* | — | La combinación, como el jefe | — | — |
+
+#### Lo que cambia respecto a la semilla de la guía
+
+- **El Bosque no usa el tocón: usa la maleza.** El tocón es la señal más clara
+  de la tala. Si respondiera, la regla de negación lo prohibiría como decorado
+  en todo el juego y la región perdería su mejor señal de daño. Además la
+  maleza ensaya mejor la Línea Cortafuegos, que consiste en quitar combustible,
+  no en plantar. **Los tocones quedan libres como decorado**, diagonales y
+  rotos.
+- **La Costa tiene dos clases.** La separación necesita origen y destino. Es la
+  única región con dos, y se acepta porque el contenedor no se mueve: el verbo
+  sigue siendo uno, empujar.
+
+#### Lo que queda libre para contar el daño (decorado permitido)
+
+| Región | Decorado del daño (diagonal, roto, sin contorno) |
+|---|---|
+| Bosque | Tocones, troncos caídos, árboles calcinados, ceniza |
+| Cuenca | Manchas de crudo, barriles volcados, tuberías partidas |
+| Costa | Basura **suelta y dispersa**, nunca atada ni en fardos. Arena con puntos de microplástico |
+| Llanura | Hileras interminables de un solo cultivo, **sin cerca**. Las terrazas de Valdehoja se dibujan como franjas escalonadas largas, nunca como parcelas cuadradas cercadas |
+| Cumbre | Roca oscura expuesta, grietas, agua de deshielo |
+
+#### Riesgo que se declara, no se esconde
+
+**Cumbre Menguante y la regla «más claro que su fondo».** Si el suelo
+purificado de la Cumbre es nieve clara, el manto reflectante deja de ser más
+claro que su fondo. No afecta al puzzle, que ocurre con la zona enferma (roca
+oscura), pero sí a cualquier manto que siguiera visible tras purificar. Por eso
+el manto **se transforma** al resolverse (regla 4) y no queda ninguno a la
+vista después de la ola. El contraste del contorno contra cada fondo de la
+región **se mide sobre el render** en el paso 2b; si falla, se para y se avisa.
+
+#### Resolución de una tensión interna del anexo
+
+La fase 2 dice que lo interactuable «aparece al acercarse, no antes», y el
+contrato pide contorno `ASH_050` en todo lo que responde. **Manda el
+contrato**: el contorno es permanente porque es la firma de la clase y lo que
+permite leer el paisaje de lejos. «Al alcance» no añade marca ni efecto: si el
+jugador está a un tile mirando al objeto, **usar funciona**, y eso es todo. No
+entra ninguna forma nueva en el repertorio.
+
+#### Datos para la verificación
+
+`data/world/interactables.json` recoge este catálogo en formato legible por
+máquina. La prueba `verify_zone.gd` de la parte 3 lo lee para comprobar que
+ningún tile decorativo pertenece a una clase que responde y que ningún objeto
+mide entre 9 y 15 px.
+
+**Punto de control.** Pendiente del visto bueno de Diego antes del paso 2b.
 

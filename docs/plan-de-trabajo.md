@@ -49,13 +49,11 @@ válidos:
 > En la sesión 3 también se cerró la deriva de paleta entre `pixel.py` y
 > `design_tokens.gd` y se añadió `tools/verify_palette.py`.
 >
-> **Siguiente: paso 2a — catálogo de lo que responde** (guía §5, parte 1), y
-> después el **paso 2b — tileset** de terreno enfermo y purificado. El catálogo
-> va primero porque la regla de negación decide qué tiles pueden existir.
+> **Paso 2a — catálogo de lo que responde: hecho** (anexo de exploración, fase
+> 5, y `data/world/interactables.json`). **Esperando visto bueno de Diego.**
 >
-> **Esperando respuesta de Diego sobre P1 y P2** (guía §3.2). P1 afecta a la
-> purificación de zona (parte 4) y P2 al movimiento (parte 2): **no bloquean**
-> el tileset.
+> **Siguiente: paso 2b — tileset** de terreno enfermo y purificado (guía §5,
+> parte 1). P1 y P2 aprobados el 2026-09-23: son las enmiendas 3 y 4.
 
 ---
 
@@ -126,6 +124,11 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   con un paso cerrado que la purificación abre.
 - **Paleta de mundo: tres rampas de material** (suelo, agua, follaje) con techo
   de saturación 0,22. Enmienda 1 del contrato de exploración, autorizada.
+- **La ola de purificación** (2026-09-23): la purificación de zona avanza en
+  tramado ordenado 4×4, 8 pasos, 900 ms. El tramado es exclusivo de ese
+  momento. Enmienda 3.
+- **Diagonal sin normalizar** (2026-09-23): 1 + 1 px por cuadro; las
+  velocidades se cumplen por eje. Enmienda 4.
 
 ---
 
@@ -133,9 +136,8 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 3** | Paso 2b, sobre la captura del tileset |
-| **P1** — ola de purificación en tramado, 900 ms | Diego. Guía §3.2 |
-| **P2** — diagonal sin normalizar (1+1 px por cuadro) | Diego. Guía §3.2 |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 5** | Paso 2b, sobre la captura del tileset |
+| Visto bueno del catálogo de lo que responde | Diego, antes del paso 2b |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |

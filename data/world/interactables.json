@@ -1,0 +1,19 @@
+{
+  "_doc": "Catálogo de lo que responde. Fuente: docs/ux/anexos/2026-09-14-exploracion-top-down.md, fase 5, paso 2a. Si una clase aparece aquí, ningún ejemplar decorativo de ella puede existir en el juego.",
+  "verbs": ["use", "push"],
+  "size_gap_px": {"pickup_max": 8, "object_min": 16},
+  "classes": [
+    {"id": "person", "scope": "global", "verb": "use", "size": [16, 24], "outline": true, "resolved": null},
+    {"id": "seedbed", "scope": "global", "verb": "use", "size": [16, 16], "outline": true, "resolved": null},
+    {"id": "bundle", "scope": "global", "verb": "use", "size": [8, 8], "outline": true, "resolved": "vanish"},
+    {"id": "monster", "scope": "global", "verb": "contact", "size": null, "outline": false, "resolved": "purified_wave"},
+    {"id": "blocker", "scope": "global", "verb": null, "size": [16, 16], "outline": false, "resolved": "vanish_with_wave"},
+    {"id": "dry_brush", "scope": "ashen_forest", "verb": "use", "size": [16, 16], "outline": true, "rehearses": "Línea Cortafuegos", "resolved": "vanish"},
+    {"id": "boom", "scope": "tar_basin", "verb": "push", "size": [32, 16], "outline": true, "rehearses": "Barrera Absorbente", "resolved": "shore_edge_tile"},
+    {"id": "waste_bale", "scope": "broken_coast", "verb": "push", "size": [16, 16], "outline": true, "rehearses": "Separación en la Fuente", "resolved": "vanish_into_bin"},
+    {"id": "sorting_bin", "scope": "broken_coast", "verb": "receive", "size": [16, 24], "outline": true, "rehearses": "Separación en la Fuente", "resolved": "closed_bin_no_outline"},
+    {"id": "plot", "scope": "withered_plain", "verb": "use", "size": [16, 16], "outline": true, "rehearses": "Rotación de Cultivos", "resolved": "purified_round_foliage"},
+    {"id": "albedo_cover", "scope": "waning_peak", "verb": "use", "size": [16, 16], "outline": true, "rehearses": "Escudo de Albedo", "resolved": "bridge_floor_tile"}
+  ],
+  "decor_forbidden": ["background_person", "interactive_fauna", "crate", "sack", "brush_bundle", "floating_roll", "tied_bale", "bin", "fenced_plot", "folded_tarp", "blocker_as_decor"]
+}
