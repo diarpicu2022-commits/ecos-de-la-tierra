@@ -354,7 +354,10 @@ máquina, en `data/world/interactables.json`. Lo esencial para dibujar:
 - **Los tocones son decorado**, no clase: son la mejor señal de la tala.
 - Lo resuelto **desaparece o se transforma**; nunca se queda como adorno.
 
-**Paso 2b — Tileset (componente clave).**
+**Paso 2b — Tileset (componente clave) · EN CURSO.** Ya empezado: el estado,
+las mediciones, las iteraciones descartadas y los cuatro pendientes están en el
+anexo de exploración, fase 5, paso 2b. **Empieza por ahí, no desde cero.** Lo
+que sigue es la especificación original, que ya está implementada:
 
 - Generador nuevo `tools/gen_tiles.py` → `assets/tilesets/world.png`, con
   semilla fija y la paleta de `tools/pixel.py`. Tile de 16 px.

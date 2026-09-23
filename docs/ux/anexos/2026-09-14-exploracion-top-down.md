@@ -825,3 +825,62 @@ mide entre 9 y 15 px.
 
 **Punto de control.** Pendiente del visto bueno de Diego antes del paso 2b.
 
+**Visto bueno de Diego al catálogo: 2026-09-23.**
+
+### Paso 2b — Tileset · EN CURSO desde el 2026-09-23 (lo termina otra persona del equipo)
+
+**Lo que ya existe:**
+
+- `tools/gen_tiles.py` → `assets/tilesets/world.png` (atlas de 16×7 tiles). Base
+  plana con pocas formas contadas. Enfermo: diagonal y roto. Purificado:
+  redondo. Columnas 0-15 = máscara de vecinos N1 E2 S4 O8.
+- `src/world/world_tiles.gd` (`WorldTiles`): construye el `TileSet`, calcula la
+  máscara y pinta un mapa de texto (`.` suelo, `=` camino, `~` agua,
+  `#` follaje).
+- `tools/tileset_sheet.tscn`: captura enfermo, purificado y partido a 480×270.
+  Capturas en `docs/ux/capturas/2026-09-23-tileset-*.png`.
+- `tools/verify_tileset.py`: valor en cuatro visiones, dE entre materiales,
+  contorno `ASH_050` y acentos contra el terreno.
+
+**Iteraciones ya descartadas, para no repetirlas:** ruido umbralizado píxel a
+píxel (se leía como letras); rizos del agua en arco junto a un punto (se leían
+como caras); guijarros en cruz (se leían como destellos); dos matas verdes por
+tile (confeti); parches que cruzan el borde del tile (salen partidos en
+astillas).
+
+**Medición actual (`python tools/verify_tileset.py`):**
+
+| Regla | Resultado |
+|---|---|
+| Todo píxel es token, saturación ≤ 0,22 | OK |
+| Valor purificado/enfermo ≥ 1,5 en 4 visiones | Suelo 1,56–1,59 OK · Agua 2,25–2,31 OK · Follaje 1,92–2,20 OK · **Camino 1,48–1,49 FALLA** |
+| dE entre materiales ≥ 9 | OK, mínimo 9,1 (suelo/camino enfermos) |
+| Contorno `ASH_050` sobre el terreno ≥ 3:1 | OK, peor caso 4,21:1 |
+| `VITAL_500` / `EMBER_300` sobre el terreno ≥ 3:1 | OK, 3,03 y 3,27 |
+| `EMBER_500` sobre el terreno | **AVISO** 1,46:1 → requisito para la parte 4 |
+
+**Pendiente, en este orden:**
+
+1. **Decisión de Diego sobre el camino (1,48 frente a 1,5).** Con nueve tintas de
+   mundo, las dos reglas medidas chocan: oscurecer el camino enfermo lo acerca al
+   suelo enfermo (dE < 9), y el camino purificado ya está en `SOIL_300`, la
+   tinta más clara. Opciones: **(a)** aceptar 1,48 para el camino, porque su
+   estado lo cargan también la silueta del borde (sierra frente a festón) y la
+   textura (grietas frente a liso); el piso de 1,5 lo fijé yo, y el contrato
+   pide «valor bajo/alto» sin cifra. Es la recomendada. **(b)** Enmienda 5: un
+   token nuevo `SOIL_200` para el camino purificado. Da margen, pero añade una
+   décima tinta y acerca el camino al contorno `ASH_050` de lo que responde.
+2. **Revisar el follaje purificado.** Es la masa más cargada de la pantalla.
+   Medido, cumple; a ojo, sus copas repetidas tienden a papel pintado. Enseñar
+   la captura a Diego y preguntar si se calma (menos copas y más base
+   `VITAL_700`) o si se acepta como la recompensa de la zona.
+3. **Prueba con personas de los materiales** (decisión abierta de la enmienda 1):
+   tres personas nombran el material de 10 recortes de 64×64 de las capturas. Si
+   fallan, sale la enmienda 5 (o la 6, si la 5 se usó para el camino).
+4. **Punto de control con Diego** con las tres capturas y la salida de
+   `verify_tileset.py`. Sin su visto bueno no se pasa al paso 3 (cámara).
+
+**Requisito que se arrastra a la parte 4:** un monstruo en el mapa lleva
+siempre borde `EMBER_300` o contorno. `EMBER_500` solo mide 1,46:1 sobre el
+follaje enfermo.
+

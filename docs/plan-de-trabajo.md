@@ -49,11 +49,16 @@ válidos:
 > En la sesión 3 también se cerró la deriva de paleta entre `pixel.py` y
 > `design_tokens.gd` y se añadió `tools/verify_palette.py`.
 >
-> **Paso 2a — catálogo de lo que responde: hecho** (anexo de exploración, fase
-> 5, y `data/world/interactables.json`). **Esperando visto bueno de Diego.**
+> **Paso 2a — catálogo: hecho y aprobado** (2026-09-23).
 >
-> **Siguiente: paso 2b — tileset** de terreno enfermo y purificado (guía §5,
-> parte 1). P1 y P2 aprobados el 2026-09-23: son las enmiendas 3 y 4.
+> **Paso 2b — tileset: EN CURSO.** Hay atlas, generador, clase `WorldTiles`,
+> capturas y prueba medida. Todo pasa salvo el valor del camino (1,48 frente a
+> 1,5). **El estado exacto y los cuatro pendientes están en el anexo de
+> exploración, fase 5, paso 2b.** Lo primero es la decisión de Diego sobre el
+> camino. Después viene el paso 3, la cámara (guía §5, parte 1).
+>
+> A partir de aquí **lo continúa otra persona del equipo** siguiendo
+> `docs/guia-de-continuacion.md`.
 
 ---
 
@@ -137,7 +142,8 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Qué | Dónde se resuelve |
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 5** | Paso 2b, sobre la captura del tileset |
-| Visto bueno del catálogo de lo que responde | Diego, antes del paso 2b |
+| Camino: aceptar 1,48 de valor o enmienda 5 con `SOIL_200` | Diego. Anexo de exploración, paso 2b |
+| Follaje purificado: calmarlo o aceptarlo | Diego, con la captura partida |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
