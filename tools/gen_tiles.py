@@ -176,8 +176,13 @@ def flora_tile(purified: bool) -> list[list[str]]:
     # Follaje vivo: copas redondas de tamaños distintos y colocación irregular.
     # Una rejilla de copas iguales se leía como escamas, y el verde pasaba de
     # recompensa a papel pintado. Luz solo en el borde superior izquierdo.
+    #
+    # Calmado el 2026-09-29: con tres copas por tile la masa seguía leyéndose
+    # como escamas. Dos copas y más base `VITAL_700` (SLYNYRD: espacio negativo
+    # antes que más detalle). Una sola copa por tile se descartó: dibujaba una
+    # retícula perfecta de lunares, peor que las escamas.
     g = flat("vital_700")
-    for cx, cy, r in ((4, 4, 4), (13, 7, 3), (6, 13, 3)):
+    for cx, cy, r in ((5, 5, 4), (12, 12, 3)):
         clump(g, cx, cy, r, "vital_700", "vital_500", "vital_900")
     return g
 

@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-23 (sesión 3)
+Última actualización: 2026-09-29 (sesión 4)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -51,11 +51,15 @@ válidos:
 >
 > **Paso 2a — catálogo: hecho y aprobado** (2026-09-23).
 >
-> **Paso 2b — tileset: EN CURSO.** Hay atlas, generador, clase `WorldTiles`,
-> capturas y prueba medida. Todo pasa salvo el valor del camino (1,48 frente a
-> 1,5). **El estado exacto y los cuatro pendientes están en el anexo de
-> exploración, fase 5, paso 2b.** Lo primero es la decisión de Diego sobre el
-> camino. Después viene el paso 3, la cámara (guía §5, parte 1).
+> **Paso 2b — tileset: EN CURSO.** Sesión 4 (2026-09-29): camino aceptado en
+> 1,48 (opción a), follaje purificado calmado a dos copas por tile y
+> `verify_tileset.py` **en verde**, capturas del motor rehechas
+> (`docs/ux/capturas/2026-09-29-*`). Quedan dos cosas, en orden:
+> **(1)** la prueba con tres personas usando los recortes de
+> `docs/ux/prueba-materiales/`; **(2)** el punto de control con Diego, en el
+> PR de la rama `parte-1/tileset`.
+> Detalle en el anexo de exploración, fase 5, paso 2b, «Sesión del
+> 2026-09-29». Después viene el paso 3, la cámara (guía §5, parte 1).
 >
 > A partir de aquí **lo continúa otra persona del equipo** siguiendo
 > `docs/guia-de-continuacion.md`.
@@ -134,6 +138,11 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   momento. Enmienda 3.
 - **Diagonal sin normalizar** (2026-09-23): 1 + 1 px por cuadro; las
   velocidades se cumplen por eje. Enmienda 4.
+- **Camino en 1,48 de valor** (2026-09-29): se acepta sin token nuevo, porque
+  su estado lo cargan también la silueta del borde y la textura. Piso propio de
+  1,47 en `verify_tileset.py`.
+- **Follaje purificado con dos copas por tile** (2026-09-29): con tres se leía
+  como papel pintado y con una salía una retícula de lunares.
 
 ---
 
@@ -142,8 +151,6 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Qué | Dónde se resuelve |
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 5** | Paso 2b, sobre la captura del tileset |
-| Camino: aceptar 1,48 de valor o enmienda 5 con `SOIL_200` | Diego. Anexo de exploración, paso 2b |
-| Follaje purificado: calmarlo o aceptarlo | Diego, con la captura partida |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
