@@ -224,6 +224,14 @@ const CAMERA_BIAS_DOWN := 12
 ## Anticipación en la dirección del avance, tope del devlog citado.
 const CAMERA_LOOKAHEAD := 30
 
+## Ritmo de la anticipación. Enmienda 5, autorizada el 2026-09-30: se abre a
+## 1 px por cuadro mientras se avanza por un eje y, al soltarlo, vuelve a neutro
+## a 30 px/s, 1 px cada dos cuadros, la cifra del mismo devlog. Los dos ritmos
+## se cuentan en píxeles enteros: la cámara nunca queda en subpíxel. Con
+## movimiento reducido no hay anticipación, y la cámara es solo zona muerta.
+const CAMERA_LOOKAHEAD_OPEN_SPEED := 60.0
+const CAMERA_LOOKAHEAD_RETURN_SPEED := 30.0
+
 
 # --- Velocidades -----------------------------------------------------------
 # No son números de gusto: son la razón por la que la cámara puede redondearse

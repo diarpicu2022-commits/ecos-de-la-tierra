@@ -679,6 +679,34 @@ porque, con la cámara ajustada a entero, producen tirones. La diagonal queda un
 41 % más rápida en distancia recorrida, la solución habitual de los juegos de
 16 bits, y jugando no se nota.
 
+**Enmienda 5 — 2026-09-30. Ritmo de la anticipación de la cámara.**
+Autorizada expresamente por Diego el 2026-09-30, al abrir el paso 3.
+
+La cláusula «Cámara» fijaba el tope de la anticipación (30 px) pero no su ritmo.
+Se fija así, con tokens `CAMERA_LOOKAHEAD_OPEN_SPEED` y
+`CAMERA_LOOKAHEAD_RETURN_SPEED`:
+
+| | Ritmo | A 60 Hz |
+|---|---|---|
+| Abrir, mientras se avanza por un eje | 60 px/s | 1 px por cuadro, tope en 30 cuadros |
+| Volver a neutro, al soltar ese eje | 30 px/s | 1 px cada 2 cuadros, 60 cuadros |
+
+Los 30 px/s de vuelta son la cifra del devlog de *Odd Verdure* (fase 3, B.1).
+Los dos ritmos avanzan en píxeles enteros, así que la cámara sigue sin
+subpíxel. Se lee por eje, como la diagonal (enmienda 4).
+
+**Sesgo, aclarado el mismo día:** los 12 px de `CAMERA_BIAS_DOWN` colocan la
+zona muerta 12 px por debajo del centro de la pantalla. En reposo, el personaje
+queda ahí y se ve más terreno al norte.
+
+**Movimiento reducido:** sin anticipación. La cámara es solo zona muerta. Es la
+lectura de la regla general («salto directo al estado final») para un
+movimiento continuo, donde saltar 30 px de golpe sería peor que no moverse.
+Confirmado por Diego en el punto de control del paso 3, el 2026-09-30.
+
+La siguiente enmienda libre pasa a ser la **6** (la de dE entre materiales, si
+la prueba con personas la pide).
+
 ---
 
 ## Fase 5 — Implementación
@@ -876,7 +904,8 @@ astillas).
    `VITAL_700`) o si se acepta como la recompensa de la zona.
 3. **Prueba con personas de los materiales** (decisión abierta de la enmienda 1):
    tres personas nombran el material de 10 recortes de 64×64 de las capturas. Si
-   fallan, sale la enmienda 5 (o la 6, si la 5 se usó para el camino).
+   fallan, sale la enmienda 5 (o la 6, si la 5 se usó para el camino). *Nota del
+   2026-09-30: la 5 se usó para la cámara; la de materiales sería la 6.*
 4. **Punto de control con Diego** con las tres capturas y la salida de
    `verify_tileset.py`. Sin su visto bueno no se pasa al paso 3 (cámara).
 
@@ -886,7 +915,7 @@ astillas).
 camino lo cargan también la silueta del borde y la textura. En
 `verify_tileset.py`, el camino tiene un piso propio de **1,47**: se acepta lo
 medido, pero un retroceso por debajo sigue dando FALLA. Sin tokens nuevos; la
-enmienda 5 sigue libre.
+enmienda 5 sigue libre. *(2026-09-30: la 5 se usó al final para la cámara.)*
 
 **2. Follaje purificado: calmado.** Propuesto en la sesión; aprobado por Diego el 2026-09-30. Se probaron
 dos variantes contra la actual con una réplica en Python del pintado de
@@ -943,3 +972,61 @@ delatan.
 siempre borde `EMBER_300` o contorno. `EMBER_500` solo mide 1,46:1 sobre el
 follaje enfermo.
 
+### Paso 3 — Cámara (esqueleto) · 2026-09-30, aprobado el 2026-09-30
+
+**Cláusulas:** «Cámara», «Movimiento del personaje», enmienda 2 (ajuste a
+píxel), enmienda 4 (diagonal por eje) y enmienda 5 (ritmo de la anticipación).
+
+- `src/world/world_camera.gd` — `WorldCamera`, un `Camera2D` con el suavizado y
+  el arrastre de Godot apagados, porque trabajan en fracciones y `Camera2D` no
+  tiene ajuste a píxel propio (B.1). La cuenta se hace en enteros: zona muerta
+  de 28×48 px centrada 12 px bajo el centro de la pantalla. La anticipación
+  empuja la zona hacia atrás hasta 30 px por eje, con el ritmo de la enmienda 5.
+  La cámara se procesa después de quien mueve al personaje
+  (`process_physics_priority`), así que lo sigue en el mismo cuadro.
+- `tools/verify_camera.tscn` — la prueba medida. `tools/camera_sheet.tscn` —
+  las capturas.
+- Tokens nuevos: `CAMERA_LOOKAHEAD_OPEN_SPEED` y `CAMERA_LOOKAHEAD_RETURN_SPEED`.
+
+**Medición (`godot --headless --path . res://tools/verify_camera.tscn`): 37 de
+37, salida 0.**
+
+| Qué | Resultado |
+|---|---|
+| Ajuste a píxel en `project.godot`, física a 60 Hz, 1 y 2 px por cuadro | OK |
+| En reposo, el personaje 12 px bajo el centro y en el centro de la zona | OK |
+| Holgura de la zona: la cámara espera 7 cuadros al este y 12 al norte | OK, lo que da la cuenta |
+| 600 cuadros × 8 direcciones × andar y correr: cámara y personaje enteros, personaje dentro de la zona, anticipación ≤ 30 px y ≤ 1 px por cuadro | OK, 16 de 16. Salto máximo de cámara: 2 px por cuadro andando y 3 corriendo |
+| Anticipación: abre en 30 cuadros, vuelve en 60, diagonal en los dos ejes, al girar no salta | OK |
+| Movimiento reducido: sin anticipación, zona muerta intacta | OK |
+| En el motor, 120 cuadros con reloj real: `get_screen_center_position()` entero y igual a la cuenta | OK, 0 cuadros con subpíxel |
+
+**La prueba se ha comprobado a sí misma.** Con el sesgo invertido y la vuelta
+de la anticipación convertida en un salto, da 18 fallos. Restaurado el código,
+vuelve a 37 de 37.
+
+**Capturas a 480×270** (`docs/ux/capturas/2026-09-30-camara-{reposo,andando,parado}.png`),
+sobre el mapa del tileset repetido 2×2. La zona muerta y el punto seguido van
+dibujados encima en `EMBER_300` como marca de herramienta. Las tres pasan
+`verify_palette.py image`. Recorrido hacia el este: el personaje avanza 45 px y
+la cámara 61 (45 + 30 de anticipación − 14 de holgura). Un segundo después de
+parar, la anticipación está en 0 y la cámara ha vuelto solo 2 px.
+
+**Hallazgo que se declara:** «volver a neutro» no recentra al personaje. Con
+zona muerta pura, al parar tras andar hacia el este queda en el borde izquierdo
+de la zona, 14 px a la izquierda del centro, y la cámara solo retrocede 2 px.
+Es lo que describe el devlog de *Odd Verdure* y lo que fija el contrato. Si en
+la parte 2, ya con el personaje de verdad, se nota como descentrado, la opción
+sería recentrar al parar, y eso exige otra enmienda.
+
+**No incluido, a propósito:** los límites de la cámara en el borde del mapa.
+Van con las zonas y las transiciones (parte 2). Cuando la cámara choque con el
+borde, el personaje sí saldrá de la zona muerta, y la prueba tendrá que
+distinguir ese caso.
+
+**Visto bueno de Diego: 2026-09-30.** Aprueba el paso 3, la cámara sin
+anticipación con movimiento reducido y dejar el descentrado al parar como lo
+fija el contrato, para revisarlo en la parte 2.
+
+**Siguiente:** la parte 1 se cierra cuando se haga la prueba con tres personas
+(dE entre materiales).

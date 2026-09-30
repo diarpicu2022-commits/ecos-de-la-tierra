@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-29 (sesión 4)
+Última actualización: 2026-09-30 (sesión 5)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -58,7 +58,17 @@ válidos:
 > **hecho** (2026-09-30, PR #1): aprueba camino y follaje. Queda la prueba con
 > tres personas usando los recortes de `docs/ux/prueba-materiales/`.
 > Detalle en el anexo de exploración, fase 5, paso 2b, «Sesión del
-> 2026-09-29». Después viene el paso 3, la cámara (guía §5, parte 1).
+> 2026-09-29».
+>
+> **Paso 3 — cámara: HECHO y aprobado** (2026-09-30, rama
+> `parte-1/camara`). `WorldCamera` en `src/world/world_camera.gd`,
+> `verify_camera.tscn` **37 de 37**, capturas `docs/ux/capturas/2026-09-30-camara-*`.
+> Enmienda 5: ritmo de la anticipación. Detalle en el anexo de exploración,
+> fase 5, paso 3.
+>
+> **Para cerrar la parte 1 falta solo** la prueba con tres personas de los
+> recortes (dE entre materiales). Después, la parte 2, que revisa también el
+> descentrado de la cámara al parar (anexo, paso 3).
 >
 > A partir de aquí **lo continúa otra persona del equipo** siguiendo
 > `docs/guia-de-continuacion.md`.
@@ -74,7 +84,7 @@ zonas, ni progresión sin encuentros.
 |---|---|---|
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
-| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens aprobados 2026-09-23 |
+| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
@@ -143,6 +153,9 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 - **Follaje purificado con dos copas por tile** (2026-09-29, aprobado por Diego el
   2026-09-30): con tres se leía como papel pintado y con una salía una
   retícula de lunares.
+- **Cámara** (2026-09-30, enmienda 5): la anticipación abre a 60 px/s y vuelve
+  a 30 px/s, por eje. Zona muerta 12 px bajo el centro de la pantalla. Con
+  movimiento reducido, sin anticipación.
 
 ---
 
@@ -150,7 +163,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 5** | Paso 2b, sobre la captura del tileset |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
