@@ -384,7 +384,7 @@ python tools/verify_palette.py value <tile_enfermo.png> <tile_purificado.png>   
 Y una escena `tools/tileset_sheet.tscn` que pinte un mapa de prueba de
 30×17 tiles con los tres materiales en los dos estados y capture a 480×270.
 Sobre esa captura se decide la decisión abierta: **si dE 9,2 entre materiales
-basta o hace falta la enmienda 5.** Criterio medido: tres personas nombran el
+basta o hace falta la enmienda 6** (la 5 se usó para la cámara el 2026-09-30). Criterio medido: tres personas nombran el
 material de 10 recortes de 64×64 sin error, o no basta.
 **Punto de control con Diego.**
 
