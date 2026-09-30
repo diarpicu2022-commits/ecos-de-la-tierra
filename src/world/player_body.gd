@@ -134,3 +134,16 @@ func _blocked(from: Transform2D, delta: Vector2i) -> bool:
 
 func _shift(delta: Vector2i) -> void:
 	global_position += Vector2(delta)
+
+
+## Marcador provisional hasta que exista el sprite (paso 5): la firma de
+## «persona» del catálogo, 16x24 con contorno `ASH_050`, con los pies en el
+## origen del nodo.
+func _draw() -> void:
+	var r := Rect2i(Vector2i(-8, -24), Vector2i(16, 24))
+	draw_rect(r, DesignTokens.ASH_400)
+	var c := DesignTokens.WORLD_OUTLINE_INTERACTIVE
+	draw_rect(Rect2(r.position, Vector2(r.size.x, 1)), c)
+	draw_rect(Rect2(r.position + Vector2i(0, r.size.y - 1), Vector2(r.size.x, 1)), c)
+	draw_rect(Rect2(r.position, Vector2(1, r.size.y)), c)
+	draw_rect(Rect2(r.position + Vector2i(r.size.x - 1, 0), Vector2(1, r.size.y)), c)

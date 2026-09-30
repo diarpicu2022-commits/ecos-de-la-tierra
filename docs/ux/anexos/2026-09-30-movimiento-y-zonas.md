@@ -242,8 +242,10 @@ GitHub; se anota aquí para que conste.
 Juan José Rueda en la sesión del 2026-09-30. **Diego la confirma en el PR del
 paso 2.**
 
-**Paso 2 — Componente clave: el cuerpo · HECHO el 2026-09-30, pendiente del
-visto bueno de Diego.** Rama `parte-2/cuerpo`.
+**Paso 2 — Componente clave: el cuerpo · HECHO y aprobado el 2026-09-30**
+(PR #5). Diego aprobó el paso y confirmó las dos decisiones: la colisión es el
+tile entero y el rótulo mantiene los 2 s con movimiento reducido. Visto bueno
+comunicado a Juan José Rueda fuera de GitHub; el PR no tiene revisión escrita.
 
 - `src/world/player_body.gd` (`PlayerBody`, hereda de `CharacterBody2D`):
   - El origen del nodo son los pies. La caja de 12×8 va justo encima, con los
@@ -346,6 +348,91 @@ Sin regresiones:
   de dibujo por altura es del paso 5.
 - **Aún no hay escena jugable.** El cuerpo se mueve con el teclado de verdad
   en la prueba, pero la zona de prueba con dos salidas es el paso 3.
+
+**Paso 3 — Esqueleto: zona de prueba con dos salidas · HECHO el 2026-09-30,
+pendiente del visto bueno de Diego.** Rama `parte-2/esqueleto`.
+
+- `data/world/zones/prueba_a.txt` (40×20, mayor que la pantalla) y
+  `prueba_b.txt` (30×17): mapas de texto con la leyenda de `WorldTiles`.
+  **Son solo zonas de prueba.** El formato de mapa de las zonas de verdad
+  (texto o pintado en el editor) lo sigue decidiendo Diego en la parte 3.
+- `data/world/exits.json`, como pide el contrato: casilla de origen → zona y
+  casilla de destino. Cuatro salidas, dos por zona.
+- `src/world/zone_rules.gd` (`ZoneRules`): carga las zonas y las salidas, y
+  comprueba las reglas del contrato:
+  - cada salida es camino y está en el borde;
+  - ningún borde pisable deja de ser salida;
+  - hay como mucho `MAX_EXITS_PER_SCREEN` salidas en cualquier ventana de
+    30×17 tiles;
+  - cada salida lleva a una casilla pisable junto a una salida de vuelta.
+  La prueba de cada zona de la parte 3 podrá reutilizarla.
+- `src/world/world_root.gd` (`WorldRoot`) y la escena jugable
+  `scenes/world/test_zone.tscn`, que se puede abrir y jugar con el teclado:
+  - pinta la zona y monta el cuerpo y la cámara;
+  - cuando el centro de la caja sale del mapa por una salida, carga la zona de
+    destino con un **corte directo** y pone los pies en `to_cell`, un tile
+    dentro, sin tocar hacia dónde mira;
+  - como el cuerpo lee el teclado en cada cuadro, con la tecla pulsada se
+    sigue andando.
+- `src/world/player_body.gd`: un **marcador provisional**, 16×24 con contorno
+  `ASH_050` (la firma de «persona» del catálogo), para que el cuerpo se vea
+  hasta que exista su sprite en el paso 5.
+- `tools/zone_sheet.tscn` → `docs/ux/capturas/2026-09-30-esqueleto-{antes,llegada,despues}.png`.
+
+**Cláusulas:** salidas, densidad de salidas, arquitectura prohibida, datos de
+salida y «al cruzar» del contrato «Umbral». Esto último en parte: el
+fundido es del paso 4.
+
+#### Verificado
+
+`verify_movement.tscn`: **58 de 58**. A los 35 casos del paso 2 se suman:
+
+- `prueba_a` y `prueba_b` cumplen las reglas de salida.
+- Cada regla detecta su incumplimiento en un mapa o en unas salidas
+  estropeados a propósito: un borde abierto, una salida que no es camino,
+  tres salidas en una pantalla, una llegada al agua y una salida sin vuelta.
+- Las cuatro salidas, cruzadas con el teclado de verdad:
+  - se llega a la zona de destino;
+  - en el cuadro del cambio, los pies están **exactamente** en `to_cell`;
+  - se mira igual que al salir;
+  - y, con la tecla pulsada, se sigue andando 1 px en cada uno de los 20
+    cuadros siguientes, sin uno parado.
+- Posición entera en 3187 cuadros.
+
+**La prueba se comprobó rompiéndola a propósito:**
+
+- Sin control tras cargar la zona fallan 15 casos. Esa rotura quita el control
+  desde el arranque, no solo al cruzar, así que es más burda que el caso real.
+- Apareciendo un tile desplazado fallan 6.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: sin deriva.
+- `verify_tileset.py`: dentro del contrato.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+- `test_zone.tscn`: arranca sin errores.
+- `project.godot`: sin tocar.
+
+#### FALLA medido, y se dice: la cámara enseña el vacío junto a las salidas
+
+`verify_palette.py image` sobre las tres capturas encuentra `#4c4c4c`, el
+fondo sin mapa, en **51 840, 59 112 y 52 704 px**: entre el 40 % y el 46 % de
+la pantalla. Las salidas están por definición en el borde, y la cámara todavía
+no tiene límites. Es la cláusula «Cámara en el borde», que el orden de la
+fase 5 pone en el paso 4. La captura demuestra que ese paso es imprescindible
+antes de enseñar el juego a nadie.
+
+**Pendiente, y se dice:**
+
+- El cambio de zona es un corte directo. Faltan el fundido, el rótulo,
+  `GameState` y los límites de la cámara (paso 4).
+- En la captura «después» los pies avanzaron 19 px en 20 cuadros: la hoja
+  congela el cuerpo un cuadro para capturar la llegada. Es un efecto de la
+  herramienta, no del juego: `verify_movement` mide 1 px en cada cuadro.
+- Una salida hacia el oeste o el norte aparece en `to_cell` con el cuerpo de
+  espaldas a la zona nueva, porque sigue mirando hacia donde iba. Es lo que
+  pide el contrato («mirando igual»).
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo

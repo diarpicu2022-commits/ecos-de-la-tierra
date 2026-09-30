@@ -46,11 +46,14 @@ válidos:
 > Abierta el 2026-09-30 con permiso de Diego, aunque la parte 1 deja una
 > prueba pendiente (abajo). Anexo `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`:
 > fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Paso 1 (tokens):
-> hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho el
-> 2026-09-30 por Juan José Rueda**, rama `parte-2/cuerpo`, pendiente del visto
-> bueno de Diego. `PlayerBody` con `test_move` por eje y deslizamiento en
-> esquina; `verify_movement.tscn` da **35 de 35**. **Lo siguiente es el paso 3:
-> el esqueleto**, una zona de prueba con dos salidas.
+> hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho y
+> aprobado** (2026-09-30, PR #5). **Paso 3 (esqueleto): hecho el 2026-09-30
+> por Juan José Rueda**, rama `parte-2/esqueleto`, pendiente del visto bueno de
+> Diego. Dos zonas de prueba con dos salidas cada una, `ZoneRules`, `WorldRoot`
+> y la escena jugable `scenes/world/test_zone.tscn`; `verify_movement.tscn` da
+> **58 de 58**. **Lo siguiente es el paso 4:** fundido, rótulo, `GameState` y
+> **límites de la cámara**. Estos últimos son urgentes: sin ellos, junto a una
+> salida casi media pantalla es vacío (medido en el anexo).
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.
@@ -176,6 +179,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   los pies, deslizamiento en esquina de 4 px, salidas solo donde el camino
   cruza el borde (máximo 2 por pantalla), con la tecla pulsada se sigue
   andando tras el fundido.
+- **Colisión del terreno = tile entero** (2026-09-30, parte 2, paso 2): no
+  sigue la silueta en sierra; entre la caja y el borde dibujado quedan 1–3 px.
+- **Rótulo de lugar con movimiento reducido** (2026-09-30): mantiene la espera
+  de 2 s; solo desaparece el fundido.
 - **Módulo de IA ampliado** (2026-09-30), guía §3.3: IA-1 monstruos que
   patrullan y persiguen; IA-2 fauna en bandada; IA-3 pistas adaptativas de
   Yara; IA-4 bot de equilibrado; **IA-5 sintonía del grupo**: el jugador solo
@@ -191,7 +198,6 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Qué | Dónde se resuelve |
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
-| Rótulo de lugar con movimiento reducido: (a) mantener los 2 s, elegida en sesión el 2026-09-30 | Diego la confirma en el PR del paso 2 |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
