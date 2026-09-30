@@ -880,6 +880,65 @@ astillas).
 4. **Punto de control con Diego** con las tres capturas y la salida de
    `verify_tileset.py`. Sin su visto bueno no se pasa al paso 3 (cámara).
 
+#### Sesión del 2026-09-29 — pendientes 1 a 3
+
+**1. Camino: opción (a), aceptar 1,48.** Propuesto el 2026-09-29; aprobado por Diego el 2026-09-30. El estado del
+camino lo cargan también la silueta del borde y la textura. En
+`verify_tileset.py`, el camino tiene un piso propio de **1,47**: se acepta lo
+medido, pero un retroceso por debajo sigue dando FALLA. Sin tokens nuevos; la
+enmienda 5 sigue libre.
+
+**2. Follaje purificado: calmado.** Propuesto en la sesión; aprobado por Diego el 2026-09-30. Se probaron
+dos variantes contra la actual con una réplica en Python del pintado de
+`tileset_sheet.gd`, que sale **idéntica píxel a píxel** a las tres capturas de
+Godot del 2026-09-23 (comprobado antes de usarla):
+
+| Variante | Copas por tile | Veredicto |
+|---|---|---|
+| Actual | 3 | Escamas: la repetición de 16 px se ve como papel pintado |
+| **B** | **2**, más base `VITAL_700` | **Elegida.** Más calmada y sin retícula visible |
+| C | 1 grande | Descartada: dibuja una retícula perfecta de lunares, peor que las escamas |
+
+Referente: SLYNYRD (espacio negativo antes que más detalle). Medido en la zona
+de follaje de la captura: un 26 % menos de píxeles `VITAL_500` y un 20 % menos
+de `VITAL_900`. El valor del follaje sube un poco: 1,94–2,22, frente a 1,92–2,20.
+
+**Medición tras los dos cambios (`python tools/verify_tileset.py`): «Tileset
+dentro del contrato», salida 0.** `verify_palette.py image --world` sobre el
+atlas: todo píxel es token. `verify_palette.py tokens`: 24 coinciden, sin deriva.
+
+**3. Prueba con personas: material preparado, prueba sin hacer.**
+`tools/material_crops.py` corta diez recortes de 64×64, escalados a 4×, de las
+capturas enferma y purificada. Salen cinco enfermos y cinco purificados, con
+los cuatro materiales en los dos estados y el orden barajado con semilla fija.
+La clave se imprime por consola y no se guarda junto a los recortes. Pregunta
+a cada persona: «¿de qué material es el centro?». Resultado: **pendiente**.
+
+**Capturas del motor, 2026-09-29.** `tools/tileset_sheet.tscn` se relanzó con
+Godot 4.7.2 → `docs/ux/capturas/2026-09-29-tileset-{enfermo,purificado,partido}.png`.
+Las tres miden 480×270, pasan `verify_palette.py image --world` y coinciden
+píxel a píxel con la vista previa con la que se eligió la variante B. Las del
+2026-09-23 se conservan como «antes».
+
+Recortes de la prueba cortados de esas capturas en `docs/ux/prueba-materiales/`.
+Clave, que no se enseña a quien hace la prueba: 1 camino enfermo · 2 suelo
+purificado · 3 follaje purificado · 4 follaje enfermo · 5 suelo enfermo · 6 agua
+purificada · 7 follaje enfermo · 8 suelo purificado · 9 agua enferma · 10 camino
+purificado.
+
+Sin regresiones: `verify_usability.tscn` sigue en **16 de 16**.
+
+**Queda:** la prueba con tres personas.
+
+**Punto de control con Diego, 2026-09-30.** Revisado el PR #1: se reprodujeron
+`verify_tileset.py` (salida 0), `verify_palette.py tokens` e `image --world`
+(atlas y tres capturas), la regeneración del atlas (idéntica píxel a píxel), los
+diez recortes (idénticos, cada uno sobre su material) y `verify_usability.tscn`
+(16 de 16). Aprueba el camino en 1,48 y el follaje a dos copas. Nota para
+después: las dos copas dibujan una diagonal regular cada 16 px, menos marcada
+que las escamas; se vuelve a mirar si la prueba con personas o la cámara lo
+delatan.
+
 **Requisito que se arrastra a la parte 4:** un monstruo en el mapa lleva
 siempre borde `EMBER_300` o contorno. `EMBER_500` solo mide 1,46:1 sobre el
 follaje enfermo.

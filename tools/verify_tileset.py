@@ -41,6 +41,11 @@ INTERIOR = 15
 ROWS = {"camino": 1, "agua": 3, "follaje": 5}
 
 VALUE_FLOOR = 1.5
+# Excepción decidida el 2026-09-29 (opción a del paso 2b): el camino se acepta
+# en 1,48 porque su estado lo cargan también la silueta del borde (sierra frente
+# a festón) y la textura (grietas frente a liso). El piso baja solo lo aceptado:
+# cualquier retroceso por debajo de lo medido ese día sigue siendo FALLA.
+VALUE_FLOOR_BY_MATERIAL = {"camino": 1.47}
 DE_FLOOR = 9.0
 GRAPHIC_FLOOR = 3.0
 
@@ -78,12 +83,14 @@ def main() -> int:
     print("=== VALOR: purificado / enfermo (piso %.1f) ===" % VALUE_FLOOR)
     for name in sick:
         ls, lp = mean_linear(sick[name]), mean_linear(pure[name])
+        floor = VALUE_FLOOR_BY_MATERIAL.get(name, VALUE_FLOOR)
         cells = []
         for kind in [None, *CVD]:
             ratio = (luminance(simulate(lp, kind)) + 0.05) / (luminance(simulate(ls, kind)) + 0.05)
-            ok &= ratio >= VALUE_FLOOR
-            cells.append(f"{(kind or 'normal')[:6]} {ratio:.2f}{'' if ratio >= VALUE_FLOOR else ' FALLA'}")
-        print(f"  {name:8} " + " | ".join(cells))
+            ok &= ratio >= floor
+            cells.append(f"{(kind or 'normal')[:6]} {ratio:.2f}{'' if ratio >= floor else ' FALLA'}")
+        note = f"  (piso aceptado {floor:.2f}, decisión 2026-09-29)" if floor != VALUE_FLOOR else ""
+        print(f"  {name:8} " + " | ".join(cells) + note)
 
     print("\n=== SEPARACIÓN ENTRE MATERIALES, dE (piso %.1f) ===" % DE_FLOOR)
     for state, group in (("enfermo", sick), ("purificado", pure)):
