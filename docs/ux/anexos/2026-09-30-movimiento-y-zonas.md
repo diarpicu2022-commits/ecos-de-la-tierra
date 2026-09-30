@@ -7,7 +7,9 @@ diagonal por eje, movimiento sin aceleración, cámara a píxel entero, fundido 
 zona de 2 × 120 ms, rótulo de lugar de 160 ms. Este anexo decide solo lo que el
 contrato deja abierto.
 
-**Estado:** fases 1 a 4 escritas. **Esperando la elección de Diego** (fase 4).
+**Estado:** fases 1 a 4 hechas. **Dirección A, «Umbral», elegida por Diego el
+2026-09-30** y bloqueada como contrato al final de este anexo. Siguiente:
+fase 5, paso 1 (tokens).
 
 ---
 
@@ -137,4 +139,51 @@ Puntos de entrada: la tarea. Nada decorativo entre el jugador y su dirección.
 Riesgo que se evita: flechas de salida, colisiones invisibles, control perdido en el fundido.
 ```
 
-**Pregunta a Diego:** ¿A, B o C? Hasta su respuesta no se implementa nada.
+**Pregunta a Diego:** ¿A, B o C? — **Respuesta, 2026-09-30: A.**
+
+---
+
+## Contrato «Umbral» — bloqueado el 2026-09-30
+
+**Elegido por Diego el 2026-09-30: dirección A.** Desde aquí se cumple. Nada
+de valor, forma ni duración fuera de este contrato y de «Vereda».
+
+| Cláusula | Valor | Token |
+|---|---|---|
+| Caja de colisión | 12 × 8 px, centrada en la base del tile del personaje | `PLAYER_HITBOX` |
+| Deslizamiento en esquina | Hasta 4 px, a 1 px lateral por cuadro | `CORNER_SLIP` |
+| Motor de colisión | `test_move()` por eje y en pasos de 1 px. Nunca `move_and_slide()` ni `move_and_collide()` | — |
+| Pared plana | En diagonal, sigue por el eje libre; en recto, se para | — |
+| Salidas | Solo donde el camino pisado cruza el borde del mapa | — |
+| Densidad de salidas | Máximo 2 por pantalla de 480 px | `MAX_EXITS_PER_SCREEN` |
+| Arquitectura prohibida | Ningún borde de mapa pisable que no sea salida | — |
+| Datos de salida | `data/world/exits.json`: casilla de origen → zona y casilla de destino | — |
+| Al cruzar | Fundido 120 + 120 ms, lineal (`DUR_ZONE_FADE`); se aparece un tile dentro, mirando igual; **con la tecla pulsada se sigue andando** | — |
+| Movimiento reducido | Corte directo, sin fundido | — |
+| Rótulo de lugar | Entra en 160 ms `ease-out` (`DUR_PLACE_LABEL`), panel `ASH_800`, texto 1×, arriba a la izquierda con margen `SPACE_8`, se va solo a los 2 s | `PLACE_LABEL_HOLD` |
+| Cámara en el borde | Encerrada en los límites de la zona, en enteros; un mapa menor que la pantalla se centra en ese eje | — |
+| Entrada | `run` = Mayús izquierda (mantener, no alternar); `interact` = `confirm` | — |
+| Estado global | Autoload `GameState`: grupo, bolsa, zona y banderas | — |
+
+**Tokens nuevos que abre el contrato:** `PLAYER_HITBOX`, `CORNER_SLIP`,
+`MAX_EXITS_PER_SCREEN` y `PLACE_LABEL_HOLD`. Ningún color nuevo.
+
+## Fase 5 — Implementación
+
+Orden: tokens → componente clave (el cuerpo: `test_move` por eje, deslizamiento
+en esquina) → esqueleto (zona de prueba con dos salidas) → resto (fundido,
+rótulo, `GameState`, límites de la cámara) → pantalla completa → estados
+(movimiento reducido, borde del mapa, salida pulsando la tecla). Cada paso se
+cierra con captura, cláusula que lo respalda y visto bueno de Diego.
+
+**Paso 1 — Tokens · SIGUIENTE.** Añadir a `src/ui/design_tokens.gd` los cuatro
+tokens de la tabla y a `project.godot` la acción `run` (Mayús izquierda,
+`physical_keycode` 4194325, `location` 1). **Cuidado:** abrir o ejecutar Godot
+reescribe `project.godot` y borra sus comentarios; si aparece modificado sin
+motivo, descartar con `git checkout project.godot` antes del commit.
+
+**Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
+cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo
+de 16 px siempre se cruza y uno de 0 nunca; una esquina a 4 px o menos se
+rodea y a 5 px no; duración del fundido medida; la tecla pulsada sigue andando
+tras cruzar; y, en el borde del mapa, la cámara nunca enseña fuera de la zona.

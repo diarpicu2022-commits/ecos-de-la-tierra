@@ -33,7 +33,7 @@ El protagonista emprende un viaje por cinco regiones de Solmira para recolectar 
 
 **Barón Ezra Cendral** fundó, tres generaciones atrás, la **Compañía Áurea**: la corporación minera e industrial responsable de iniciar la explotación descontrolada de Solmira. Ya ha fallecido al inicio del juego, pero su legado sigue activo a través de la Compañía. A mitad de la historia se revela que la desaparición de los padres de Ilan está ligada a una expedición de la Compañía Áurea, dando un motivo personal al conflicto.
 
-**Comandante Rasgo**, líder de las tropas de la Compañía que persiguen al grupo, funciona como antagonista recurrente con arco de redención: cree genuinamente que protege empleos y estabilidad, y hacia el tramo final debe decidir si sigue sirviendo a la Compañía o ayuda a Ilan.
+**Comandante Rasgo**, líder de las tropas de la Compañía que persiguen al grupo, funciona como antagonista recurrente con arco de redención: cree genuinamente que protege empleos y estabilidad, y hacia el tramo final debe decidir si sigue sirviendo a la Compañía o ayuda a Ilan. Es originario de la Llanura Marchita, donde su familia se arruinó con el monocultivo, y sirvió como soldado raso en la expedición en la que desaparecieron los padres de Ilan. Su decisión final depende de lo que el jugador haya hecho con su gente y con los trabajadores de la Compañía a lo largo del viaje.
 
 ### 2.5 Clímax y desenlace
 
@@ -76,6 +76,15 @@ El componente de IA del juego se concentra en el comportamiento de los enemigos,
 
 - **Monstruos comunes**: usan un sistema de decisión por pesos (una variante ligera de máquina de estados finitos) que elige la siguiente acción según el HP restante del jugador, los estados alterados ya aplicados y el número de turno, en lugar de atacar siempre igual.
 - **Jefe final — la Sombra de la Avaricia**: implementa un modelo simple de **aprendizaje por refuerzo** (una tabla Q entrenada mediante partidas simuladas durante el desarrollo) que adapta su resistencia según qué tipo de Habilidad Ecológica ha usado más el jugador durante la pelea. Si el jugador repite la misma habilidad una y otra vez, el jefe aumenta su resistencia a ese tipo específico, obligando a combinar las habilidades de los cinco personajes en vez de abusar de una sola.
+
+**Ampliación del 2026-09-30.** El módulo crece fuera del combate, siempre en GDScript y sin servicios externos (detalle en `docs/guia-de-continuacion.md`, §3.3):
+
+- **Monstruos en el mapa**: patrullan, detectan, persiguen con búsqueda de caminos (A*) y se rinden, sin salir nunca de su zona de daño.
+- **Fauna en bandada** (*boids*) que vuelve a las zonas purificadas.
+- **Pistas adaptativas**: un modelo del jugador decide cuándo la Anciana Yara envía una pista y de qué nivel.
+- **Bot de equilibrado** que simula combates, entrena la tabla Q del jefe y da los pesos iniciales de los compañeros.
+- **Sintonía del grupo**: el jugador dirige a Ilan como líder y los compañeros actúan solos. Una red neuronal pequeña aprende del estilo del líder, y la calidad de sus decisiones hace que el grupo juegue mejor o peor.
+- **Memoria del Comandante Rasgo**: recuerda cinco actos del jugador, uno por región, y su arco termina en alianza, retirada o enemistad.
 
 Esta decisión refuerza el mensaje central del juego dentro de la propia mecánica de combate: ninguna solución ambiental aislada basta para revertir el daño acumulado, se necesita una combinación de soluciones. La tabla Q se implementa directamente en GDScript como una estructura de datos simple, sin dependencias externas de machine learning, viable dentro del alcance de un proyecto de curso.
 
