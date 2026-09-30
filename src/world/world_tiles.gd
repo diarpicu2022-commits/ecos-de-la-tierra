@@ -39,19 +39,45 @@ const LEGEND := {
 }
 
 
+## Materiales que no se pisan. Contrato «Umbral», fase 2: suelo y camino se
+## pisan; follaje y agua, no. Vale igual enfermos que purificados: purificar
+## abre paso retirando un `blocker` del catálogo, no volviendo pisable el agua.
+const SOLID := [Terrain.WATER, Terrain.FLORA]
+
+## Capa de física del terreno sólido.
+const PHYSICS_LAYER := 0
+
+
 ## TileSet de una sola fuente con el atlas entero.
 static func build_tileset() -> TileSet:
 	var tileset := TileSet.new()
 	tileset.tile_size = Vector2i(DesignTokens.TILE_SIZE, DesignTokens.TILE_SIZE)
+	tileset.add_physics_layer()
 	var source := TileSetAtlasSource.new()
 	source.texture = load(ATLAS_PATH)
 	source.texture_region_size = tileset.tile_size
+	tileset.add_source(source, 0)
 	var columns := source.texture.get_width() / DesignTokens.TILE_SIZE
 	var rows := source.texture.get_height() / DesignTokens.TILE_SIZE
+	var solid_rows := []
+	for material in SOLID:
+		solid_rows.append(OVERLAY_ROW[material])
+		solid_rows.append(OVERLAY_ROW[material] + 1)
+	# El tile sólido bloquea entero, en enteros: su silueta enferma o purificada
+	# se retira de 1 a 3 px del borde, pero la colisión no la sigue. Seguir la
+	# sierra haría que el cuerpo se enganchara en cada diente (dirección B,
+	# descartada), y el deslizamiento en esquina ya cubre los cantos.
+	var half := DesignTokens.TILE_SIZE / 2
+	var square := PackedVector2Array([
+		Vector2(-half, -half), Vector2(half, -half), Vector2(half, half), Vector2(-half, half),
+	])
 	for y in rows:
 		for x in columns:
 			source.create_tile(Vector2i(x, y))
-	tileset.add_source(source, 0)
+			if y in solid_rows:
+				var data := source.get_tile_data(Vector2i(x, y), 0)
+				data.add_collision_polygon(PHYSICS_LAYER)
+				data.set_collision_polygon_points(PHYSICS_LAYER, 0, square)
 	return tileset
 
 
