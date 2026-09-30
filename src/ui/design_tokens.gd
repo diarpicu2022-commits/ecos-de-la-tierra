@@ -210,6 +210,26 @@ const TILE_SIZE := 16
 ## la pantalla son el comportamiento normal del scroll, no un defecto.
 
 
+# --- Cuerpo y salidas ------------------------------------------------------
+# Contrato «Umbral», bloqueado el 2026-09-30
+# (docs/ux/anexos/2026-09-30-movimiento-y-zonas.md).
+
+## Caja de colisión del personaje: 12 x 8 px, centrada en la base de su tile,
+## en los pies. Un paso de un tile (16 px) siempre cabe con 2 px de margen a
+## cada lado, y uno de cero tiles nunca: no hay huecos que caben a medias
+## (la «zona muerta métrica» de Nic Phan).
+const PLAYER_HITBOX := Vector2i(12, 8)
+
+## Deslizamiento en esquina: si al chocar sobran 4 px o menos para librar la
+## esquina, el personaje avanza 1 px lateral por cuadro hasta librarla y sigue
+## recto. A 5 px o más, se para.
+const CORNER_SLIP := 4
+
+## Salidas: solo donde el camino pisado cruza el borde del mapa, y como mucho
+## dos en cualquier pantalla de 480 px.
+const MAX_EXITS_PER_SCREEN := 2
+
+
 # --- Cámara ----------------------------------------------------------------
 # Zona muerta medida, no estimada: sale del devlog de *Odd Verdure*, que la
 # amplió de 28 px a 48 px de alto entre la jam y la publicación.
@@ -252,6 +272,9 @@ const RUN_SPEED := 120.0   ## 2 píxeles por cuadro.
 
 const DUR_PLACE_LABEL := 0.16  ## Rótulo del lugar: entra y se va.
 const DUR_ZONE_FADE := 0.12    ## Medio fundido. Cruzar una zona son dos.
+## Tiempo que el rótulo del lugar se queda en pantalla antes de irse solo.
+## Contrato «Umbral».
+const PLACE_LABEL_HOLD := 2.0
 
 ## La ola de purificación de zona. Enmienda 3, autorizada el 2026-09-23: pasa
 ## de 300 a 900 ms porque ocurre siete veces en toda la partida, no cientos.

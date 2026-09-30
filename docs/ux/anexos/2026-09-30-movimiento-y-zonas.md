@@ -176,11 +176,63 @@ rótulo, `GameState`, límites de la cámara) → pantalla completa → estados
 (movimiento reducido, borde del mapa, salida pulsando la tecla). Cada paso se
 cierra con captura, cláusula que lo respalda y visto bueno de Diego.
 
-**Paso 1 — Tokens · SIGUIENTE.** Añadir a `src/ui/design_tokens.gd` los cuatro
-tokens de la tabla y a `project.godot` la acción `run` (Mayús izquierda,
-`physical_keycode` 4194325, `location` 1). **Cuidado:** abrir o ejecutar Godot
-reescribe `project.godot` y borra sus comentarios; si aparece modificado sin
-motivo, descartar con `git checkout project.godot` antes del commit.
+**Paso 1 — Tokens · HECHO el 2026-09-30, pendiente del visto bueno de Diego.**
+Añadir a `src/ui/design_tokens.gd` los cuatro tokens de la tabla y a
+`project.godot` la acción `run` (Mayús izquierda, `physical_keycode` 4194325,
+`location` 1). **Cuidado:** abrir o ejecutar Godot reescribe `project.godot` y
+borra sus comentarios; si aparece modificado sin motivo, descartar con
+`git checkout project.godot` antes del commit.
+
+Entregado (rama `parte-2/tokens`):
+
+- `src/ui/design_tokens.gd`:
+  - `PLAYER_HITBOX` = 12×8, `CORNER_SLIP` = 4 y `MAX_EXITS_PER_SCREEN` = 2,
+    en una sección nueva, «Cuerpo y salidas».
+  - `PLACE_LABEL_HOLD` = 2,0 s, junto a las duraciones del mundo.
+  - Ningún color nuevo.
+- `project.godot`: acción `run` en Mayús izquierda, tecla física. Se añadió a
+  mano. `interact` no se crea: reutiliza `confirm`.
+
+**Cláusulas:** tabla del contrato «Umbral»: caja de colisión,
+deslizamiento en esquina, densidad de salidas, rótulo de lugar y entrada.
+
+**Verificado en Godot 4.7.2** con una comprobación que carga los tokens y el
+`InputMap` en el motor: **10 de 10**.
+
+- Los cuatro valores coinciden con el contrato.
+- La caja deja 2 px de margen a cada lado en un paso de 16 px, y cabe en un
+  tile en alto.
+- `run` existe y es Mayús **izquierda** con tecla física.
+- Ninguna otra acción usa Mayús, y no existe una acción `interact` aparte.
+
+La comprobación no se guarda como herramienta: sus reglas pasan a
+`verify_movement.gd`, que las mide ya en movimiento.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: 24 coinciden, sin deriva.
+- `verify_tileset.py`: dentro del contrato.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+
+`project.godot`: Godot no lo reescribió; el diff son solo las 5 líneas de
+`run`.
+
+**Sin captura, y se dice:** ninguno de estos tokens es visible por sí solo (son
+medidas de colisión, recuentos y una espera). La primera captura de la parte es
+la del paso 2, el cuerpo contra paredes y esquinas.
+
+**Pregunta abierta para Diego:** con movimiento reducido, el contrato quita el
+fundido, pero no dice nada de la espera del rótulo (`PLACE_LABEL_HOLD`). Hay
+dos lecturas:
+
+- **(a)** Se mantiene en 2 s. Es una espera y no una animación, y quitarla
+  dejaría al jugador sin tiempo para leer el nombre del lugar.
+  **Recomendada.**
+- **(b)** Pasa por `DesignTokens.duration()`, como las transiciones, y queda
+  en 0.
+
+Se decide antes del paso 4, que es cuando se implementa el rótulo.
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo
