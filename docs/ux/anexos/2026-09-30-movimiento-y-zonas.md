@@ -176,7 +176,7 @@ rótulo, `GameState`, límites de la cámara) → pantalla completa → estados
 (movimiento reducido, borde del mapa, salida pulsando la tecla). Cada paso se
 cierra con captura, cláusula que lo respalda y visto bueno de Diego.
 
-**Paso 1 — Tokens · HECHO el 2026-09-30, pendiente del visto bueno de Diego.**
+**Paso 1 — Tokens · HECHO y aprobado el 2026-09-30.**
 Añadir a `src/ui/design_tokens.gd` los cuatro tokens de la tabla y a
 `project.godot` la acción `run` (Mayús izquierda, `physical_keycode` 4194325,
 `location` 1). **Cuidado:** abrir o ejecutar Godot reescribe `project.godot` y
@@ -233,6 +233,119 @@ dos lecturas:
   en 0.
 
 Se decide antes del paso 4, que es cuando se implementa el rótulo.
+
+**Visto bueno de Diego al paso 1: 2026-09-30,** por mensaje de texto a Juan
+José Rueda, que fusionó el PR #4 por indicación suya. No quedó revisión en
+GitHub; se anota aquí para que conste.
+
+**Rótulo con movimiento reducido: opción (a), mantener los 2 s.** La eligió
+Juan José Rueda en la sesión del 2026-09-30. **Diego la confirma en el PR del
+paso 2.**
+
+**Paso 2 — Componente clave: el cuerpo · HECHO el 2026-09-30, pendiente del
+visto bueno de Diego.** Rama `parte-2/cuerpo`.
+
+- `src/world/player_body.gd` (`PlayerBody`, hereda de `CharacterBody2D`):
+  - El origen del nodo son los pies. La caja de 12×8 va justo encima, con los
+    bordes en píxel entero.
+  - Cada cuadro lee `move_*` y `run` y avanza 1 o 2 sub-pasos de 1 px, con
+    `test_move()` por eje. Nunca `move_and_slide()`.
+  - En una pared plana, en diagonal sigue por el eje libre y en recto se para.
+  - En una esquina, yendo recto, se desliza hasta `CORNER_SLIP` px, a 1 px
+    lateral por cuadro también corriendo. Si hay hueco igual de cerca a los dos
+    lados, se para.
+  - Guarda `facing`, que el paso 4 usará para aparecer mirando igual al cruzar
+    una salida.
+- `src/world/world_tiles.gd`: el tileset tiene capa de física. El agua y el
+  follaje, enfermos y purificados, bloquean con el tile entero; el suelo y el
+  camino se pisan.
+- `tools/verify_movement.tscn`: la prueba de la parte, con los casos del
+  cuerpo. Los pasos siguientes añaden los suyos.
+- `tools/body_sheet.tscn` → `docs/ux/capturas/2026-09-30-cuerpo-{guias,limpio}.png`.
+
+**Cláusulas:** caja de colisión, deslizamiento en esquina, motor de colisión
+y pared plana del contrato «Umbral», más las velocidades y la diagonal por eje
+de «Vereda» (enmienda 4).
+
+#### Hallazgo medido: `test_move` cuenta como choque llegar a tocar
+
+La primera versión sondaba 1 px con `test_move()` y la prueba dio **24 de 35**:
+
+- el cuerpo se paraba a 1 px del muro;
+- un paso de 16 px solo se cruzaba hasta 5 px descentrado, en vez de 6;
+- cada esquina pedía 1 px más de deslizamiento, y la de 4 px ya no se rodeaba.
+
+Se midió la causa con consultas directas al motor. El muro estaba donde
+debía: el píxel 79 es muro y el 80 no. Pero `test_move()` devuelve «choca»
+cuando el movimiento **acaba tocando** la pared, con margen 0, 0,001 o el de
+serie, 0,08. Bajar el margen, que fue la primera hipótesis, no cambiaba nada,
+y se descartó.
+
+**Solución:** se sonda cada píxel a **0,99 px** (`PlayerBody.PROBE`) y después
+se avanza el píxel entero. Tocando ya, choca; con 1 px de hueco, no; en
+paralelo a la pared, no. Da lo mismo con cualquier margen. Sigue siendo
+`test_move()` por eje y en pasos de 1 px, como pide el contrato.
+
+#### Decisión — la colisión es el tile entero, no la silueta
+
+La silueta enferma (en sierra) y la purificada (festoneada) se retiran de 1 a
+3 px del borde del tile. La colisión no las sigue: seguir la sierra haría que
+el cuerpo se enganchara en cada diente, que es justo el defecto por el que se
+descartó la dirección B. Consecuencia visible en la captura: **entre la caja
+y el borde dibujado del follaje quedan de 1 a 3 px**. En una vista cenital,
+con el cuerpo pintado encima, no se lee como un hueco. Se revisa en el paso 5
+con el sprite de verdad.
+
+#### Verificado
+
+`verify_movement.tscn`: **35 de 35**, con 2880 cuadros medidos.
+
+- Andando, 1 px por cuadro; corriendo, 2 px; en diagonal, 1 + 1 y 2 + 2.
+- Con el teclado de verdad: 1 px en el mismo cuadro de la pulsación, 0 px en
+  el cuadro en que se suelta, y Mayús izquierda corre desde el primer cuadro.
+- Un paso de 16 px se cruza descentrado hasta ±6 px (2 de margen + 4 de
+  deslizamiento), y a ±7 no.
+- Un paso de 0 px nunca se cruza, ni de follaje ni de agua, y el cuerpo se para
+  tocando el muro, sin hueco.
+- Una esquina a 1–4 px se rodea deslizando exactamente esos píxeles, a 1 px
+  por cuadro, andando y corriendo. A 5 px se para sin deslizar.
+- Con una pared plana: en diagonal sigue por el eje libre; rozándola en
+  paralelo no se frena; en recto se para sin deslizar.
+- Posición entera en todos los cuadros.
+
+**La prueba se comprobó rompiéndola a propósito:**
+
+- Sin el tope de 1 px lateral por cuadro, fallan 3 casos.
+- Dejando deslizar 5 px en vez de 4, fallan 4.
+- La versión que sondaba 1 px ya había dado 11 fallos.
+
+**Captura:** tres cuerpos en la misma pantalla, a 480×270.
+
+- A cruza un paso de un tile entrando descentrado 5 px, y se desliza 3.
+- B se para contra un canto metido 5 px.
+- C sube en diagonal contra el agua y sigue por el eje libre.
+
+Las dos versiones (con y sin guías) pasan `verify_palette.py image`.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: sin deriva.
+- `verify_tileset.py`: dentro del contrato.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+
+`project.godot`: sin tocar.
+
+**Pendiente, y se dice:**
+
+- **El caso de hueco igual de cerca a los dos lados** no se da con tiles de
+  16 px: un obstáculo de un tile ya es más ancho que la caja. Está en el
+  código, pero ninguna prueba lo ejercita hasta que existan objetos menores de
+  12 px.
+- **El marcador tapa lo que tiene al norte** porque se pinta encima. El orden
+  de dibujo por altura es del paso 5.
+- **Aún no hay escena jugable.** El cuerpo se mueve con el teclado de verdad
+  en la prueba, pero la zona de prueba con dos salidas es el paso 3.
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo

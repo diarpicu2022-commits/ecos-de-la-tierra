@@ -45,12 +45,12 @@ válidos:
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. EN CURSO.**
 > Abierta el 2026-09-30 con permiso de Diego, aunque la parte 1 deja una
 > prueba pendiente (abajo). Anexo `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`:
-> fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Fase 5, paso 1
-> (tokens): hecho el 2026-09-30 por Juan José Rueda**, rama `parte-2/tokens`,
-> pendiente del visto bueno de Diego. Queda una pregunta abierta sobre el
-> rótulo con movimiento reducido (anexo, paso 1). **Lo siguiente es el paso 2:
-> el cuerpo** (`test_move` por eje en pasos de 1 px y deslizamiento en
-> esquina).
+> fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Paso 1 (tokens):
+> hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho el
+> 2026-09-30 por Juan José Rueda**, rama `parte-2/cuerpo`, pendiente del visto
+> bueno de Diego. `PlayerBody` con `test_move` por eje y deslizamiento en
+> esquina; `verify_movement.tscn` da **35 de 35**. **Lo siguiente es el paso 3:
+> el esqueleto**, una zona de prueba con dos salidas.
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.
@@ -191,7 +191,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Qué | Dónde se resuelve |
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
-| Rótulo de lugar con movimiento reducido: mantener la espera de 2 s (a, recomendada) o anularla (b) | Diego, antes del paso 4 de la parte 2 |
+| Rótulo de lugar con movimiento reducido: (a) mantener los 2 s, elegida en sesión el 2026-09-30 | Diego la confirma en el PR del paso 2 |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
