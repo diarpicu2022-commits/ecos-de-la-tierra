@@ -882,13 +882,13 @@ astillas).
 
 #### Sesión del 2026-09-29 — pendientes 1 a 3
 
-**1. Camino: opción (a), aceptar 1,48.** Decidido el 2026-09-29. El estado del
+**1. Camino: opción (a), aceptar 1,48.** Propuesto el 2026-09-29; aprobado por Diego el 2026-09-30. El estado del
 camino lo cargan también la silueta del borde y la textura. En
 `verify_tileset.py`, el camino tiene un piso propio de **1,47**: se acepta lo
 medido, pero un retroceso por debajo sigue dando FALLA. Sin tokens nuevos; la
 enmienda 5 sigue libre.
 
-**2. Follaje purificado: calmado.** Decisión delegada en la sesión. Se probaron
+**2. Follaje purificado: calmado.** Propuesto en la sesión; aprobado por Diego el 2026-09-30. Se probaron
 dos variantes contra la actual con una réplica en Python del pintado de
 `tileset_sheet.gd`, que sale **idéntica píxel a píxel** a las tres capturas de
 Godot del 2026-09-23 (comprobado antes de usarla):
@@ -928,7 +928,16 @@ purificado.
 
 Sin regresiones: `verify_usability.tscn` sigue en **16 de 16**.
 
-**Queda:** la prueba con tres personas y el punto de control con Diego.
+**Queda:** la prueba con tres personas.
+
+**Punto de control con Diego, 2026-09-30.** Revisado el PR #1: se reprodujeron
+`verify_tileset.py` (salida 0), `verify_palette.py tokens` e `image --world`
+(atlas y tres capturas), la regeneración del atlas (idéntica píxel a píxel), los
+diez recortes (idénticos, cada uno sobre su material) y `verify_usability.tscn`
+(16 de 16). Aprueba el camino en 1,48 y el follaje a dos copas. Nota para
+después: las dos copas dibujan una diagonal regular cada 16 px, menos marcada
+que las escamas; se vuelve a mirar si la prueba con personas o la cámara lo
+delatan.
 
 **Requisito que se arrastra a la parte 4:** un monstruo en el mapa lleva
 siempre borde `EMBER_300` o contorno. `EMBER_500` solo mide 1,46:1 sobre el

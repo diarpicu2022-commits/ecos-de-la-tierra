@@ -54,10 +54,9 @@ válidos:
 > **Paso 2b — tileset: EN CURSO.** Sesión 4 (2026-09-29): camino aceptado en
 > 1,48 (opción a), follaje purificado calmado a dos copas por tile y
 > `verify_tileset.py` **en verde**, capturas del motor rehechas
-> (`docs/ux/capturas/2026-09-29-*`). Quedan dos cosas, en orden:
-> **(1)** la prueba con tres personas usando los recortes de
-> `docs/ux/prueba-materiales/`; **(2)** el punto de control con Diego, en el
-> PR de la rama `parte-1/tileset`.
+> (`docs/ux/capturas/2026-09-29-*`). Punto de control con Diego
+> **hecho** (2026-09-30, PR #1): aprueba camino y follaje. Queda la prueba con
+> tres personas usando los recortes de `docs/ux/prueba-materiales/`.
 > Detalle en el anexo de exploración, fase 5, paso 2b, «Sesión del
 > 2026-09-29». Después viene el paso 3, la cámara (guía §5, parte 1).
 >
@@ -138,11 +137,12 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   momento. Enmienda 3.
 - **Diagonal sin normalizar** (2026-09-23): 1 + 1 px por cuadro; las
   velocidades se cumplen por eje. Enmienda 4.
-- **Camino en 1,48 de valor** (2026-09-29): se acepta sin token nuevo, porque
-  su estado lo cargan también la silueta del borde y la textura. Piso propio de
-  1,47 en `verify_tileset.py`.
-- **Follaje purificado con dos copas por tile** (2026-09-29): con tres se leía
-  como papel pintado y con una salía una retícula de lunares.
+- **Camino en 1,48 de valor** (2026-09-29, aprobado por Diego el 2026-09-30):
+  se acepta sin token nuevo, porque su estado lo cargan también la silueta del
+  borde y la textura. Piso propio de 1,47 en `verify_tileset.py`.
+- **Follaje purificado con dos copas por tile** (2026-09-29, aprobado por Diego el
+  2026-09-30): con tres se leía como papel pintado y con una salía una
+  retícula de lunares.
 
 ---
 
