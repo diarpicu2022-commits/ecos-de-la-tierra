@@ -303,6 +303,184 @@ y 4 del anexo de exploración, con sus tokens en `design_tokens.gd`
 La purificación del **monstruo** en batalla no cambia: sigue en 300 ms. Con
 movimiento reducido, la ola salta directamente al estado final.
 
+### 3.3 Módulo de IA ampliado — aprobado por Diego el 2026-09-30
+
+Hasta aquí la IA vivía solo en el combate: pesos para los monstruos comunes y
+tabla Q para la Sombra de la Avaricia (propuesta §3.5, `src/actors/`). Diego
+aprobó el 2026-09-30 seis piezas más. **Todas se rigen por la misma regla que
+la tabla Q:** GDScript puro, sin librerías de aprendizaje automático, con
+semilla fija donde haya azar y **una prueba en `tools/` que dé OK o FALLA**.
+Ninguna llama a servicios externos. Un modelo de lenguaje en directo se
+descartó ese mismo día: pide conexión, cuesta por partida, no se puede
+verificar y enviaría datos del jugador a un tercero.
+
+Cada pieza se diseña en el anexo de **su** parte, con las cuatro etapas de §1.1.
+Lo de aquí son semillas y reglas que no se discuten; los valores (duraciones,
+radios, umbrales) se fijan en ese anexo y van a `DesignTokens`.
+
+| # | Pieza | Técnica | Parte | Prueba |
+|---|---|---|---|---|
+| IA-1 | Monstruos que patrullan, ven y persiguen en el mapa | Máquina de estados + `AStarGrid2D` | 4 | `verify_encounters.gd` |
+| IA-2 | Fauna que vuelve en bandada | *Boids* de Reynolds con posición entera | 3 (con la ola) | `verify_fauna.gd` |
+| IA-3 | Pistas adaptativas de Yara por el ave mensajera | Modelo del jugador por monstruo (trazado de conocimiento simplificado) | 5 y 6 | `verify_hints.gd` |
+| IA-4 | Bot de equilibrado (solo desarrollo) | Simulación de combates con varias políticas | Desde la 4 | `tools/balance_bot.gd` |
+| IA-5 | **Sintonía del grupo:** los compañeros aprenden del líder | Red neuronal pequeña, aprendida en partida | 4 y 6 | `verify_party_ai.gd` |
+| IA-6 | **Memoria de Rasgo:** su arco depende de lo que el jugador hizo | Memoria de actos + ramas en datos | 5 y 6 | `verify_rasgo.gd` |
+
+#### IA-1 · Monstruos en el mapa (parte 4)
+
+- Cuatro estados: **patrulla → alerta → persecución → se rinde**. Al rendirse,
+  vuelve a su ruta. **Nunca sale de su zona de daño** (ya contratado en la
+  parte 4): su presencia sigue explicando el terreno que lo rodea.
+- Camino con `AStarGrid2D` sobre la rejilla de 16 px. Movimiento en píxeles
+  enteros por cuadro, como todo lo demás. **Velocidad de persecución = andar
+  (60 px/s):** quien corre (120) siempre puede escapar. Esquivar es una decisión
+  del jugador, no una lotería. Mapa que no se estrecha: ya contratado.
+- **Cada estado se lee sin color** (§2.3): postura, silueta o movimiento. La
+  alerta no puede depender solo de la brasa. El anexo de la parte 4 elige cómo
+  se lee; prohibido el «!» flotante de fábrica sin referente.
+- Prueba: la ruta nunca pisa fuera de la zona; con el jugador corriendo en
+  línea recta, el monstruo nunca lo alcanza; cada transición de estado se
+  fuerza y se comprueba.
+
+#### IA-2 · Fauna en bandada (parte 3)
+
+- Solo en zonas purificadas (repertorio §3.1: la fauna animada es «zona
+  purificada», nunca enferma). Entra **detrás del frente de la ola** de
+  purificación (enmienda 3).
+- *Boids*: separación, alineación y cohesión, más una regla para apartarse del
+  jugador. La velocidad se calcula en decimales, pero **la posición avanza en
+  píxeles enteros con un acumulador por eje** (el método de *Perfect Diagonal
+  Movement*, citado en el anexo de la parte 2). Nada se dibuja en subpíxel.
+- Es la IA que más sostiene la tesis del juego (§3): lo que vuelve **se
+  comporta** como vivo, no se limita a estar.
+- Prueba: todas las posiciones enteras en cada cuadro, ningún animal fuera de
+  su zona ni en una zona enferma, tope de individuos por pantalla y coste
+  medido por cuadro.
+
+#### IA-3 · Pistas adaptativas de Yara (partes 5 y 6)
+
+- El juego lleva, por monstruo, un **modelo del jugador**: una probabilidad de
+  que haya entendido la contramedida. Sube cuando la usa bien y baja con cada
+  turno en que ataca sin atajar la causa o cae derrotado.
+- Si la probabilidad baja de un umbral, llega el ave mensajera con **una pista
+  graduada en tres niveles**: sutil, concreta y directa. Se sube de nivel solo
+  si la anterior no bastó. Es la jerarquía de *The Level Design Book*: primero
+  la ayuda más sutil y solo después la más explícita. Quien juega bien no ve
+  nunca una pista.
+- Responde a la deuda de §4 («¿Por qué pierdo?»): la prueba con personas dice
+  si hace falta, y este sistema es la recuperación si falla.
+- Textos en `data/dialogue/`, dentro de la regla de 3 líneas × 65 caracteres
+  de la parte 5.
+- Prueba: un jugador simulado que acierta no recibe ninguna pista; uno que
+  falla recibe los tres niveles en orden y nunca dos veces el mismo.
+
+#### IA-4 · Bot de equilibrado (herramienta, desde la parte 4)
+
+- `tools/balance_bot.gd`, sin ventana: juega miles de combates por región con
+  tres políticas (aleatoria, voraz y experta) y escribe
+  `docs/balance/AAAA-MM-DD-<region>.csv` con turnos, victorias y habilidades
+  usadas.
+- **Entrena la tabla Q de la Sombra** con partidas simuladas, como ya decía la
+  propuesta, y da los **pesos iniciales** de la red de IA-5.
+- Criterio medido: la política experta gana siempre; la voraz, que repite una
+  sola habilidad, pierde contra la Sombra. Si no, el mensaje del juego no se
+  cumple y se reequilibra.
+
+#### IA-5 · Sintonía del grupo: el jugador es el líder (partes 4 y 6)
+
+**La idea de Diego:** el jugador es el **orquestador y el líder**. Sus
+compañeros actúan por su cuenta **según vean actuar al líder**. Si el líder
+juega bien, ellos juegan bien; si juega mal, ellos también.
+
+- **Qué cambia en el combate:** el jugador decide **solo el turno de Ilan**.
+  Bruma, Coral, Nix y Suri deciden solos. **Esto enmienda el contrato de
+  batalla «Ceniza y Brasa»**, que hoy da un menú a cada personaje. Se tramita
+  como enmienda en su anexo, con fecha. Semilla de dirección que ese anexo debe
+  comparar con otra: una **orden de líder** por ronda («seguidme», «cubríos»,
+  «atajad la causa»), para orquestar sin volver a manejar a los cinco.
+- **Capa 1 — imitación, con red neuronal.** Cada compañero lleva una red
+  pequeña (perceptrón multicapa de unas 12 entradas, 16 neuronas ocultas y 5
+  salidas: atacar, contramedida, curar, defender, objeto), escrita en GDScript
+  sin librerías. Entradas: PV y energía del grupo, si la causa del monstruo
+  sigue activa, estados alterados, turno y tipo de las últimas habilidades
+  usadas. **Tras cada decisión del líder, la red se entrena un paso** (descenso
+  por gradiente) con el par «situación → lo que hizo Ilan». Los compañeros
+  aprenden su **estilo**: si el líder cura pronto, curan pronto; si abusa de
+  una habilidad, abusan también. Parte de pesos iniciales sensatos que da
+  IA-4, y los pesos se guardan con la partida (parte 9).
+- **Capa 2 — sintonía, la calidad del liderazgo.** Un valor de 0 a 1, en media
+  móvil, que sube con decisiones buenas del líder (usar la contramedida
+  correcta, atajar la causa antes de atacar, curar a tiempo, combinar tipos de
+  habilidad) y baja con las malas. Modula **cuánto aciertan** los compañeros:
+  con sintonía alta ejecutan su política con precisión y toman la iniciativa en
+  combinaciones; con sintonía baja dudan y se equivocan con más frecuencia.
+- **Por qué refuerza el mensaje:** se une a la tabla Q de la Sombra. Un líder
+  que repite una sola habilidad **enseña** a su grupo a repetirla, y la Sombra
+  se hace resistente a todo el grupo a la vez. La lección «ninguna solución
+  aislada basta» pasa de ser una regla del jefe a ser una consecuencia del
+  liderazgo.
+- **Reglas de diseño que no se saltan:**
+  1. **La influencia se ve.** El jugador tiene que saber que es él quien
+     arrastra al grupo: una reacción breve del compañero en el registro de
+     batalla («Coral duda») y una entrada en el cuaderno (parte 8). Un castigo
+     que no se entiende es un error de diseño, no dificultad. La señal no
+     puede ser solo de color (§2.3).
+  2. **Siempre se sale.** La sintonía se recupera más deprisa de lo que cae:
+     unas pocas decisiones buenas seguidas sacan al grupo del tramo bajo. El
+     número exacto lo fija el bot (IA-4).
+  3. **Accesibilidad:** en opciones (parte 10), un modo que fija la sintonía en
+     un valor neutro, para quien necesite el combate sin esa presión.
+- Prueba (`verify_party_ai.gd`, semilla fija): la red aprende un estilo
+  sintético (más del 80 % de acierto sobre un líder guionizado tras N
+  decisiones); con un líder bueno guionizado la sintonía sube y el grupo gana
+  en menos turnos; con uno malo baja; desde la sintonía mínima, K decisiones
+  buenas la devuelven al tramo medio.
+
+#### IA-6 · La memoria de Rasgo (partes 5 y 6) — historia ampliada
+
+El Comandante Rasgo «cree genuinamente que protege empleos y estabilidad»
+(propuesta §2). Su arco deja de ser un guion fijo: **Rasgo recuerda lo que el
+jugador hace**, y en cada región hay **un acto** que él presencia o del que se
+entera. Casi todos se deciden con la acción, no con un menú de diálogo.
+
+| Región | Acto | Lo que Rasgo recuerda |
+|---|---|---|
+| Bosque de las Cenizas | Tras vencer a su patrulla, sus soldados quedan heridos entre los tocones. El jugador puede dejarles un ungüento de Yara o seguir de largo. | Si trataste a su gente como enemigos o como personas. |
+| Cuenca de Alquitrán | Purificar cierra la refinería. Antes, el jugador puede llevar al capataz a Valdehoja, donde Yara ofrece trabajo de restauración a los obreros. | Si pensaste en los empleos que él dice proteger. |
+| Costa Quebrada | La planta de plásticos: el jugador puede destruir la maquinaria o reconvertirla para el Reciclaje Químico (la contramedida de la región, con Nix). | Si destruiste o reconvertiste. |
+| Llanura Marchita | **Revelación nueva:** Rasgo es de la Llanura. Su familia se arruinó con el monocultivo, como la de Suri, y entró en la Compañía por el sueldo. Suri lo reconoce, y el jugador decide si la deja contarlo o la hace callar. | Si su historia se trató con respeto. |
+| Cumbre Menguante | El glaciar partido deja a Rasgo atrapado. El jugador puede rescatarlo, aunque le cueste un objeto o un rodeo, o seguir hacia el monstruo. | Si le salvaste la vida. |
+
+**El secreto que desbloquea:** la propuesta dice que la desaparición de los
+padres de Ilan está ligada a una expedición de la Compañía. **Ampliación:**
+Rasgo iba en esa expedición como soldado raso y sabe qué pasó. Con memoria alta
+se lo cuenta a Ilan y le entrega el diario de la expedición antes de la Ciudad
+Dorada. Con memoria baja se lo calla, y el jugador solo lo descubre en los
+créditos, si es que llega a descubrirlo.
+
+**Tres desenlaces**, según cuántos actos pesaron a su favor (umbrales fijados en
+el anexo de la parte 5 y comprobados por la prueba):
+
+- **Aliado:** en la Ciudad Dorada abre la compuerta de la Cripta y se queda
+  fuera protegiendo a los obreros de la Compañía mientras el grupo baja. Su
+  etiqueta pasa de brasa a ceniza (el momento memorable ya propuesto en la
+  parte 5). En los créditos se le ve replantando la Llanura.
+- **Se retira:** deja la Compañía, pero no ayuda. La etiqueta pasa a ceniza
+  solo en los créditos.
+- **Enemigo:** acompaña a la Sombra en la primera fase del combate final, y su
+  etiqueta sigue en brasa hasta el final.
+
+**Por qué funciona:** la tesis de Rasgo es la objeción real a la ecología
+(«¿y los empleos?»). Aquí esa objeción **se responde jugando**: la reparación
+ambiental que también cuida a las personas convence a Rasgo; la que solo
+destruye, no. Es la idea de **transición justa**, contada sin sermón.
+
+**Técnica:** memoria de actos en `GameState` (`rasgo_memory`) y ramas de
+diálogo en `data/dialogue/rasgo_*.json`. Prueba (`verify_rasgo.gd`): recorre
+las **32 combinaciones** de los cinco actos. Cada una da exactamente un
+desenlace, los tres desenlaces son alcanzables y cada rama tiene su texto.
+
 ---
 
 ## 4. Deudas que no están en la tabla de partes
@@ -403,7 +581,9 @@ verde, dE resuelto, plan actualizado y commit.
 **Para qué:** moverse no debe costar pensamiento. Se pulsa y se mueve, se suelta
 y se para.
 
-**Contrato:** «Vereda» + enmienda 4 (diagonal sin normalizar).
+**Contrato:** «Vereda» + enmienda 4 (diagonal sin normalizar) + **«Umbral»**,
+bloqueado el 2026-09-30 en `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`.
+**Empieza por ese anexo**: fases 1 a 4 hechas; toca la fase 5, paso 1.
 
 - Acciones de entrada nuevas en `project.godot`: `run` (Mayús izquierda) e
   `interact` (reutiliza `confirm`). Nada de teclas nuevas para lo que ya existe.
@@ -452,6 +632,7 @@ primera zona.
   desde lejos: la silueta del árbol quemado mayor, la torre de la refinería, la
   montaña de basura, el silo, el glaciar partido.
 - Diseño **por columnas**: cada franja de 480 px contiene al menos una pista.
+- **IA-2:** la fauna de cada zona purificada, en bandada (§3.3).
 
 **Verificación por zona** (`tools/verify_zone.gd <zona>`):
 1. Búsqueda en anchura desde la entrada: la salida es **inalcanzable** con la
@@ -478,6 +659,9 @@ mundo sin romperlo.
   sin nuevo contacto, para que no se encadene el combate.
 - Victoria → vuelta al mapa → **ola de purificación** (P1) desde el punto del
   combate → se abre el paso.
+- **IA-1** (patrulla, alerta, persecución, rendición), **IA-4** (bot de
+  equilibrado) y la primera mitad de **IA-5** (enmienda del contrato de batalla
+  y red de imitación): §3.3.
 
 **Verificación:** prueba que entra, gana y sale, y compara el estado del grupo
 antes y después (idéntico al resultado del combate); prueba de huida con los
@@ -505,6 +689,8 @@ caja de diálogo supera 3 líneas de 65 caracteres.** Script
   va en **brasa** mientras sirve a la Compañía Áurea, porque la brasa significa
   «causa activa». En su redención, la etiqueta pasa a ceniza. Es un cambio de
   un solo token que cuenta su arco sin una línea de texto.
+- **IA-3** (pistas de Yara por el ave mensajera) e **IA-6** (memoria de Rasgo,
+  con la historia ampliada): §3.3.
 
 ### Parte 6 — Progresión
 
@@ -518,6 +704,9 @@ caja de diálogo supera 3 líneas de 65 caracteres.** Script
   guardado y el título.
 - **Sin barras de experiencia nuevas en el mundo.** El progreso se lee en
   Valdehoja (parte 3) y en el cuaderno (parte 8).
+- En `GameState`: la sintonía y los pesos de la red de **IA-5**, el modelo del
+  jugador de **IA-3** y `rasgo_memory` de **IA-6** (§3.3). El cuaderno (parte 8)
+  enseña la sintonía y los actos de Rasgo ya vistos.
 
 ### Parte 7 — Puzzles ambientales
 

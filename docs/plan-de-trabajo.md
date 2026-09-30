@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-30 (sesión 5)
+Última actualización: 2026-09-30 (sesión 5, cierre)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,7 +42,21 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 1 — Tokens de mundo, tileset y cámara.** En curso.
+> **Parte 2 — Movimiento, colisiones y transición entre zonas. EN CURSO.**
+> Abierta el 2026-09-30 con permiso de Diego, aunque la parte 1 deja una
+> prueba pendiente (abajo). Anexo `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`:
+> fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Lo siguiente es la
+> fase 5, paso 1: los tokens** (`PLAYER_HITBOX`, `CORNER_SLIP`,
+> `MAX_EXITS_PER_SCREEN`, `PLACE_LABEL_HOLD` y la acción `run`). Está escrito
+> en el anexo, con el aviso sobre `project.godot`.
+>
+> **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
+> la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.
+>
+> ---
+>
+> **Parte 1 — Tokens de mundo, tileset y cámara.** Todo hecho y aprobado salvo
+> **la prueba con tres personas** de los recortes. Sigue abierta por eso.
 >
 > Hecho: fases 1 a 4 del anexo de exploración (contrato «Vereda» bloqueado) y
 > el **paso 1 de la fase 5, los tokens, aprobados por Diego el 2026-09-23**.
@@ -67,8 +81,8 @@ válidos:
 > fase 5, paso 3.
 >
 > **Para cerrar la parte 1 falta solo** la prueba con tres personas de los
-> recortes (dE entre materiales). Después, la parte 2, que revisa también el
-> descentrado de la cámara al parar (anexo, paso 3).
+> recortes (dE entre materiales). La parte 2, ya abierta, revisa también el
+> descentrado de la cámara al parar (anexo de exploración, paso 3).
 >
 > A partir de aquí **lo continúa otra persona del equipo** siguiendo
 > `docs/guia-de-continuacion.md`.
@@ -85,7 +99,7 @@ zonas, ni progresión sin encuentros.
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
-| 2 | Movimiento, colisiones y transición entre zonas | |
+| 2 | Movimiento, colisiones y transición entre zonas | **En curso** — contrato «Umbral» bloqueado 2026-09-30 |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
@@ -156,6 +170,17 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 - **Cámara** (2026-09-30, enmienda 5): la anticipación abre a 60 px/s y vuelve
   a 30 px/s, por eje. Zona muerta 12 px bajo el centro de la pantalla. Con
   movimiento reducido, sin anticipación.
+- **Movimiento y zonas: «Umbral»** (2026-09-30): caja de colisión de 12×8 px en
+  los pies, deslizamiento en esquina de 4 px, salidas solo donde el camino
+  cruza el borde (máximo 2 por pantalla), con la tecla pulsada se sigue
+  andando tras el fundido.
+- **Módulo de IA ampliado** (2026-09-30), guía §3.3: IA-1 monstruos que
+  patrullan y persiguen; IA-2 fauna en bandada; IA-3 pistas adaptativas de
+  Yara; IA-4 bot de equilibrado; **IA-5 sintonía del grupo**: el jugador solo
+  maneja a Ilan y los compañeros aprenden de él con una red neuronal (enmienda
+  pendiente del contrato de batalla); **IA-6 memoria de Rasgo**, con la
+  historia ampliada y tres desenlaces. Sin librerías ni servicios externos;
+  un modelo de lenguaje en directo se descartó.
 
 ---
 
@@ -165,6 +190,8 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
+| IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
+| IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
 | Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 
