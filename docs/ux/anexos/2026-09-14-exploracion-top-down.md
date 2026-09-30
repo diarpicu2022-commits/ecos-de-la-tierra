@@ -701,8 +701,8 @@ queda ahí y se ve más terreno al norte.
 
 **Movimiento reducido:** sin anticipación. La cámara es solo zona muerta. Es la
 lectura de la regla general («salto directo al estado final») para un
-movimiento continuo, donde saltar 30 px de golpe sería peor que no moverse; se
-confirma en el punto de control del paso 3.
+movimiento continuo, donde saltar 30 px de golpe sería peor que no moverse.
+Confirmado por Diego en el punto de control del paso 3, el 2026-09-30.
 
 La siguiente enmienda libre pasa a ser la **6** (la de dE entre materiales, si
 la prueba con personas la pide).
@@ -972,7 +972,7 @@ delatan.
 siempre borde `EMBER_300` o contorno. `EMBER_500` solo mide 1,46:1 sobre el
 follaje enfermo.
 
-### Paso 3 — Cámara (esqueleto) · 2026-09-30, pendiente de visto bueno
+### Paso 3 — Cámara (esqueleto) · 2026-09-30, aprobado el 2026-09-30
 
 **Cláusulas:** «Cámara», «Movimiento del personaje», enmienda 2 (ajuste a
 píxel), enmienda 4 (diagonal por eje) y enmienda 5 (ritmo de la anticipación).
@@ -1024,5 +1024,9 @@ Van con las zonas y las transiciones (parte 2). Cuando la cámara choque con el
 borde, el personaje sí saldrá de la zona muerta, y la prueba tendrá que
 distinguir ese caso.
 
-**Siguiente:** visto bueno de Diego al paso 3. La parte 1 se cierra cuando se
-haga la prueba con tres personas (dE entre materiales).
+**Visto bueno de Diego: 2026-09-30.** Aprueba el paso 3, la cámara sin
+anticipación con movimiento reducido y dejar el descentrado al parar como lo
+fija el contrato, para revisarlo en la parte 2.
+
+**Siguiente:** la parte 1 se cierra cuando se haga la prueba con tres personas
+(dE entre materiales).

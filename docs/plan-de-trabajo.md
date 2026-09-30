@@ -60,14 +60,15 @@ válidos:
 > Detalle en el anexo de exploración, fase 5, paso 2b, «Sesión del
 > 2026-09-29».
 >
-> **Paso 3 — cámara: HECHO, pendiente de visto bueno** (2026-09-30, rama
+> **Paso 3 — cámara: HECHO y aprobado** (2026-09-30, rama
 > `parte-1/camara`). `WorldCamera` en `src/world/world_camera.gd`,
 > `verify_camera.tscn` **37 de 37**, capturas `docs/ux/capturas/2026-09-30-camara-*`.
 > Enmienda 5: ritmo de la anticipación. Detalle en el anexo de exploración,
 > fase 5, paso 3.
 >
-> **Para cerrar la parte 1 falta:** el visto bueno del paso 3 y la prueba con
-> tres personas de los recortes (dE entre materiales). Después, la parte 2.
+> **Para cerrar la parte 1 falta solo** la prueba con tres personas de los
+> recortes (dE entre materiales). Después, la parte 2, que revisa también el
+> descentrado de la cámara al parar (anexo, paso 3).
 >
 > A partir de aquí **lo continúa otra persona del equipo** siguiendo
 > `docs/guia-de-continuacion.md`.
@@ -83,7 +84,7 @@ zonas, ni progresión sin encuentros.
 |---|---|---|
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
-| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara hecha, pendiente de visto bueno; falta la prueba con personas |
+| 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
