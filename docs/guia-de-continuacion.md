@@ -611,6 +611,10 @@ en el mismo cuadro de la pulsación), duración del fundido medida.
 **Para qué:** que el paisaje cuente el problema ambiental antes que cualquier
 texto, y que el jugador sepa siempre hacia dónde seguir.
 
+**Anexo:** `docs/ux/anexos/2026-10-01-las-siete-zonas.md`. Fases 1 a 3 hechas
+el 2026-10-01; la fase 4 espera las dos pruebas con personas
+(`docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`). **Empieza por ese anexo.**
+
 **Subdividir: una zona por sesión**, en este orden: Valdehoja → Bosque de las
 Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura Marchita → Cumbre
 Menguante → Cripta de la Avaricia. Anotar la subdivisión en el plan.

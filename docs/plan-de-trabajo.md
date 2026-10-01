@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-09-30 (sesión 5, cierre)
+Última actualización: 2026-10-01 (sesión 6)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,22 +42,26 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 2 — Movimiento, colisiones y transición entre zonas. EN CURSO.**
-> Abierta el 2026-09-30 con permiso de Diego, aunque la parte 1 deja una
-> prueba pendiente (abajo). Anexo `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`:
-> fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Paso 1 (tokens):
-> hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho y
-> aprobado** (2026-09-30, PR #5). **Paso 3 (esqueleto): hecho**, PR #6,
-> fusionado el 2026-10-01 sin revisión escrita de Diego. **Paso 4 (límites de
-> la cámara, fundido, rótulo y `GameState`): hecho**, PR #7, fusionado con
-> permiso de Diego dado en persona. **Paso 5 (pantalla completa, el sprite de
-> Ilan): hecho**, PR #8. **Paso 6 (estados): hecho el 2026-10-01 por Juan
-> José Rueda**, rama `parte-2/estados`, pendiente del visto bueno de Diego.
-> Cierra dos huecos: las bandas `ASH_950` de un mapa menor que la pantalla y
-> el pintado de la zona purificada según `GameState`. `verify_movement.tscn`
-> da **99 de 99**. **Con el visto bueno al paso 6, la parte 2 queda cerrada.**
-> Diego tiene pendiente juzgar el GIF del follaje purificado en movimiento
-> (anexo, paso 6).
+> **Parte 3 — Las siete zonas. ABIERTA el 2026-10-01, en espera de dos
+> pruebas con personas.** Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`:
+> fases 1 a 3 hechas (usuarios, comunicación e investigación con 8 fuentes de
+> dominio). **La fase 4 (direcciones) no se abre** hasta tener:
+> 1. **La prueba «¿Por qué pierdo?»** (guía §4: antes de la parte 3; si
+>    falla, cambia cómo se diseñan las zonas).
+> 2. **La prueba de los materiales,** que además cierra la parte 1.
+>
+> Las dos se hacen en una sola sentada con las mismas tres personas, siguiendo
+> `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. **Lo siguiente es registrar
+> sus resultados** en los anexos de batalla y de exploración, y entonces
+> plantear a Diego 2 o 3 direcciones para las zonas, junto con la decisión de
+> mapas en texto o en el editor. Después, una zona por sesión: Valdehoja,
+> Bosque, Cuenca, Costa, Llanura, Cumbre y Cripta.
+>
+> **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
+> 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
+> da **99 de 99**. Los PR #6 a #9 los fusionó Juan José Rueda con permiso de
+> Diego, sin revisión escrita en GitHub. Queda para Diego juzgar el GIF del
+> follaje purificado en movimiento (anexo de la parte 2, paso 6).
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.
@@ -108,8 +112,8 @@ zonas, ni progresión sin encuentros.
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
-| 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01), pendiente del visto bueno al paso 6 — `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
+| 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **Abierta** (2026-10-01) — anexo, fases 1-3; espera las pruebas con personas. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -205,7 +209,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
-| Prueba con personas de «¿Por qué pierdo?» | Antes de la parte 3. Guía §4 |
+| Prueba con personas de «¿Por qué pierdo?» | Antes de la fase 4 de la parte 3. Hoja: `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 
 ## Hallazgos medidos — 2026-09-23
