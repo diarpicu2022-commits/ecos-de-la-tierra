@@ -8,8 +8,9 @@ extends Node2D
 ##            pista de que por ahí se sale.
 ##   llegada  el cuadro del cambio: aparece un tile dentro de `prueba_b`.
 ##   despues  20 cuadros más tarde, sin haber soltado la tecla.
-## El cambio es un corte directo; el fundido, el rótulo y los límites de la
-## cámara son del paso 4.
+## Es la hoja del paso 3 y reproduce lo que entonces había: se fuerza el
+## movimiento reducido para que el cambio sea un corte directo. El fundido y el
+## rótulo del paso 4 tienen su propia hoja, `tools/umbral_sheet.tscn`.
 ##   godot --path . res://tools/zone_sheet.tscn
 
 const OUT_DIR := "res://docs/ux/capturas/"
@@ -22,6 +23,8 @@ func _ready() -> void:
 	_world.start_zone = "prueba_a"
 	_world.start_cell = Vector2i(32, 9)
 	add_child(_world)
+	# Después de añadir el mundo: su _ready vuelve a leer el ajuste del proyecto.
+	DesignTokens.reduced_motion = true
 	await get_tree().physics_frame
 	Input.action_press("move_right")
 	var before_done := false

@@ -47,13 +47,13 @@ válidos:
 > prueba pendiente (abajo). Anexo `docs/ux/anexos/2026-09-30-movimiento-y-zonas.md`:
 > fases 1 a 4 hechas y **contrato «Umbral» bloqueado**. **Paso 1 (tokens):
 > hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho y
-> aprobado** (2026-09-30, PR #5). **Paso 3 (esqueleto): hecho el 2026-09-30
-> por Juan José Rueda**, rama `parte-2/esqueleto`, pendiente del visto bueno de
-> Diego. Dos zonas de prueba con dos salidas cada una, `ZoneRules`, `WorldRoot`
-> y la escena jugable `scenes/world/test_zone.tscn`; `verify_movement.tscn` da
-> **58 de 58**. **Lo siguiente es el paso 4:** fundido, rótulo, `GameState` y
-> **límites de la cámara**. Estos últimos son urgentes: sin ellos, junto a una
-> salida casi media pantalla es vacío (medido en el anexo).
+> aprobado** (2026-09-30, PR #5). **Paso 3 (esqueleto): hecho**, PR #6,
+> fusionado el 2026-10-01 sin revisión escrita de Diego. **Paso 4 (límites de
+> la cámara, fundido, rótulo y `GameState`): hecho el 2026-10-01 por Juan José
+> Rueda**, rama `parte-2/transicion`, pendiente del visto bueno de Diego, con
+> cuatro decisiones menores para confirmar. `verify_movement.tscn` da **81 de
+> 81** y el vacío junto a las salidas ya no aparece. **Lo siguiente es el
+> paso 5: la pantalla completa** (sprite del personaje y orden de dibujo).
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.

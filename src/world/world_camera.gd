@@ -23,6 +23,12 @@ var lookahead := Vector2i.ZERO
 ## Centro de la pantalla en coordenadas del mundo.
 var center := Vector2i.ZERO
 
+## Límites de la zona, en píxeles del mundo. Contrato «Umbral», cláusula
+## «Cámara en el borde»: la pantalla nunca enseña fuera de la zona, y un mapa
+## menor que la pantalla se centra en ese eje. Vacío = sin límites. Junto al
+## borde el personaje sí sale de la zona muerta: es lo que pide el contrato.
+var limits := Rect2i()
+
 var _last_target := Vector2i.ZERO
 ## Presupuesto acumulado de la anticipación, en píxeles por tick: cuando llega
 ## a `Engine.physics_ticks_per_second`, se avanza un píxel. Así un ritmo de
@@ -57,6 +63,7 @@ func snap_to_target() -> void:
 	lookahead = Vector2i.ZERO
 	_open_budget = Vector2i.ZERO
 	_return_budget = Vector2i.ZERO
+	_clamp_to_limits()
 	global_position = Vector2(center)
 
 
@@ -74,7 +81,32 @@ func advance() -> void:
 			center[axis] -= zone.position[axis] - p[axis]
 		elif p[axis] > zone.end[axis]:
 			center[axis] += p[axis] - zone.end[axis]
+	_clamp_to_limits()
 	global_position = Vector2(center)
+
+
+## Rectángulo del mundo que se ve, con el centro actual.
+func visible_rect() -> Rect2i:
+	var half := _half_screen()
+	return Rect2i(center - half, half * 2)
+
+
+## Encierra el centro en `limits`, en enteros. Un eje en el que el mapa no
+## llena la pantalla queda centrado en el mapa.
+func _clamp_to_limits() -> void:
+	if not limits.has_area():
+		return
+	var half := _half_screen()
+	for axis in 2:
+		if limits.size[axis] <= half[axis] * 2:
+			center[axis] = limits.position[axis] + limits.size[axis] / 2
+		else:
+			center[axis] = clampi(center[axis], limits.position[axis] + half[axis],
+				limits.end[axis] - half[axis])
+
+
+func _half_screen() -> Vector2i:
+	return Vector2i(get_viewport_rect().size) / 2
 
 
 ## Donde el personaje puede moverse sin que la cámara lo siga, en coordenadas

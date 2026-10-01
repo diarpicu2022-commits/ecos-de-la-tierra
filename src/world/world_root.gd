@@ -1,19 +1,24 @@
 class_name WorldRoot
 extends Node2D
 
-## El mundo explorable: una zona pintada, el cuerpo del personaje y la cámara.
-## Contrato «Umbral», fase 5, paso 3 (esqueleto).
+## El mundo explorable: una zona pintada, el cuerpo del personaje, la cámara,
+## el fundido y el rótulo de lugar. Contrato «Umbral», fase 5, pasos 3 y 4.
 ##
 ## Cambio de zona: cuando el centro de la caja de colisión sale del mapa por
-## una salida, se carga la zona de destino y el cuerpo aparece en la casilla
-## `to_cell`, un tile dentro, mirando igual. El cuerpo lee el teclado en cada
-## cuadro, así que **con la tecla pulsada se sigue andando**: el control no se
-## pierde al cruzar.
+## una salida, empieza el fundido. Son dos medios fundidos lineales de
+## `DUR_ZONE_FADE` en `ASH_950`, el color más profundo de la paleta (no hay
+## token «negro»). Durante el de salida el cuerpo se detiene. Con la pantalla
+## ya cubierta se carga la zona de destino, el cuerpo aparece en `to_cell`
+## mirando igual y **vuelve a leer el teclado**: si la tecla sigue pulsada,
+## sigue andando mientras la zona nueva aparece. Con movimiento reducido no hay
+## fundido: corte directo, en el mismo cuadro.
 ##
-## En este paso el cambio es un corte directo. El fundido de 120 + 120 ms, el
-## rótulo de lugar, `GameState` y los límites de la cámara son del paso 4.
+## El fundido se cuenta en cuadros de física (120 ms = 7 cuadros a 60 Hz) para
+## que la prueba lo mida cuadro a cuadro.
 
 signal zone_changed(zone_id: String)
+
+enum Fade { NONE, OUT, IN }
 
 ## Zona y casilla con las que arranca la escena.
 @export var start_zone := "prueba_a"
@@ -23,14 +28,39 @@ var zone_id := ""
 var zone_size := Vector2i.ZERO
 var body := PlayerBody.new()
 var camera := WorldCamera.new()
+var label := PlaceLabel.new()
+
+## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
+var fade := Fade.NONE
+var curtain := ColorRect.new()
 
 var _layer: TileMapLayer = null
 var _exits: Array = []
 var _zone_exits: Array = []
+var _names: Dictionary = {}
+var _pending: Dictionary = {}
+var _fade_frame := 0
+var _fade_frames := 0
 
 
 func _ready() -> void:
+	DesignTokens.load_settings()
 	_exits = ZoneRules.load_exits()
+	_names = ZoneRules.load_names()
+	# El rótulo va por debajo de la cortina: aparece con la zona, no encima del
+	# negro.
+	var label_layer := CanvasLayer.new()
+	label_layer.layer = 5
+	label_layer.add_child(label)
+	add_child(label_layer)
+	var fade_layer := CanvasLayer.new()
+	fade_layer.layer = 10
+	curtain.color = DesignTokens.ASH_950
+	curtain.size = get_viewport_rect().size
+	curtain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	curtain.modulate.a = 0.0
+	fade_layer.add_child(curtain)
+	add_child(fade_layer)
 	add_child(body)
 	camera.target = body
 	add_child(camera)
@@ -56,7 +86,13 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	zone_size = Vector2i(lines[0].length(), lines.size())
 	_zone_exits = ZoneRules.exits_from(id, _exits)
 	body.global_position = Vector2(feet_of(cell))
+	camera.limits = Rect2i(Vector2i.ZERO, zone_size * DesignTokens.TILE_SIZE)
 	camera.snap_to_target()
+	label.show_name(_names.get(id, id))
+	var state := get_node_or_null("/root/GameState")
+	if state != null:
+		state.facing = body.facing
+		state.set_zone(id)
 	zone_changed.emit(id)
 
 
@@ -67,9 +103,37 @@ static func feet_of(cell: Vector2i) -> Vector2i:
 
 
 func _physics_process(_delta: float) -> void:
-	var exit := _exit_crossed()
-	if not exit.is_empty():
-		enter_zone(exit["to"], ZoneRules.cell_of(exit, "to_cell"))
+	match fade:
+		Fade.NONE:
+			var exit := _exit_crossed()
+			if exit.is_empty():
+				return
+			_fade_frames = roundi(DesignTokens.duration(DesignTokens.DUR_ZONE_FADE)
+				* Engine.physics_ticks_per_second)
+			if _fade_frames == 0:
+				enter_zone(exit["to"], ZoneRules.cell_of(exit, "to_cell"))
+				return
+			_pending = exit
+			body.input_enabled = false
+			_start(Fade.OUT)
+		Fade.OUT:
+			_fade_frame += 1
+			curtain.modulate.a = float(_fade_frame) / _fade_frames
+			if _fade_frame >= _fade_frames:
+				enter_zone(_pending["to"], ZoneRules.cell_of(_pending, "to_cell"))
+				body.input_enabled = true
+				_start(Fade.IN)
+		Fade.IN:
+			_fade_frame += 1
+			curtain.modulate.a = 1.0 - float(_fade_frame) / _fade_frames
+			if _fade_frame >= _fade_frames:
+				curtain.modulate.a = 0.0
+				_start(Fade.NONE)
+
+
+func _start(f: Fade) -> void:
+	fade = f
+	_fade_frame = 0
 
 
 ## La salida por la que el cuerpo acaba de dejar el mapa, o `{}`.
