@@ -37,6 +37,15 @@ extends Node2D
 ##   - el sprite mira hacia donde se anda (en diagonal manda el eje horizontal);
 ##   - la pose cambia cada STRIDE px recorridos, andando o corriendo, se pone
 ##     de pie al soltar y no da pasos empujando una pared.
+##
+## Paso 6 — los estados.
+##   - un mapa menor que la pantalla se queda centrado, con bandas ASH_950;
+##   - la bandera purified_<zona> de GameState pinta la zona purificada;
+##   - las salidas hacia y desde la zona pequeña se cruzan con la tecla pulsada
+##     (casos añadidos a «cruzar una salida»).
+## El movimiento reducido, el borde del mapa y la salida con la tecla pulsada
+## ya se miden en los pasos 3 y 4; la hoja `world_states_sheet.tscn` fuerza
+## cada estado para verlo.
 
 const T := DesignTokens.TILE_SIZE
 const HALF := DesignTokens.PLAYER_HITBOX.x / 2
@@ -91,6 +100,9 @@ func _ready() -> void:
 
 	print("\n=== PANTALLA: SPRITE ===")
 	await _test_sprite()
+
+	print("\n=== ESTADOS ===")
+	await _test_states()
 
 	_check("posicion entera en los %d cuadros medidos" % _frames, _fractional == 0,
 		"%d cuadros con subpixel" % _fractional)
@@ -251,7 +263,8 @@ func _test_flat_wall() -> void:
 func _test_exit_rules() -> void:
 	var exits := ZoneRules.load_exits()
 	var zones := {"prueba_a": ZoneRules.load_zone("prueba_a"),
-		"prueba_b": ZoneRules.load_zone("prueba_b")}
+		"prueba_b": ZoneRules.load_zone("prueba_b"),
+		"prueba_c": ZoneRules.load_zone("prueba_c")}
 	for id in zones:
 		var problems := ZoneRules.check(id, zones, exits)
 		_check("%s cumple las reglas de salida" % id, problems.is_empty(), "; ".join(problems))
@@ -293,6 +306,10 @@ func _test_crossings() -> void:
 			"prueba_a", Vector2i(38, 9), Vector2i.LEFT],
 		["norte: prueba_b -> prueba_a", "prueba_b", Vector2i(15, 3), "move_up",
 			"prueba_a", Vector2i(12, 18), Vector2i.UP],
+		["norte: prueba_a -> prueba_c (menor que la pantalla)", "prueba_a", Vector2i(25, 4), "move_up",
+			"prueba_c", Vector2i(10, 8), Vector2i.UP],
+		["sur: prueba_c -> prueba_a", "prueba_c", Vector2i(10, 6), "move_down",
+			"prueba_a", Vector2i(25, 1), Vector2i.DOWN],
 	]
 	for c in cases:
 		world.enter_zone(c[1], c[2])
@@ -584,6 +601,45 @@ func _test_sprite() -> void:
 	_check("empujando una pared no da pasos: se distingue de andar",
 		poses.count(0) == poses.size() and b.last_step == Vector2i.ZERO,
 		"poses %s, ultimo paso %s" % [poses.slice(0, 12), b.last_step])
+
+	world.queue_free()
+	await get_tree().physics_frame
+
+
+func _test_states() -> void:
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	world.body.input_enabled = false
+	var state := get_node("/root/GameState")
+
+	# Mapa menor que la pantalla en los dos ejes: se centra, y lo que queda
+	# alrededor es ASH_950, las bandas del viewport.
+	world.enter_zone("prueba_c", Vector2i(10, 8))
+	var map := Rect2i(Vector2i.ZERO, world.zone_size * T)
+	for dir in [Vector2i(-1, -1), Vector2i(1, -1), Vector2i(1, 1)]:
+		for _i in 60:
+			world.body.step(dir, true)
+			world.camera.advance()
+	_check("mapa menor que la pantalla (%dx%d): la camara se queda centrada" % [map.size.x, map.size.y],
+		world.camera.center == map.get_center(), "centro %s, mapa %s" % [world.camera.center, map])
+	_check("  y las bandas de alrededor son ASH_950, no el gris de Godot",
+		RenderingServer.get_default_clear_color() == DesignTokens.ASH_950,
+		"%s" % RenderingServer.get_default_clear_color())
+
+	# Bandera de zona purificada: el mundo pinta el estado que dice GameState.
+	var flora_cell := Vector2i(5, 12)  # follaje de prueba_b
+	state.set_zone_purified("prueba_b", false)
+	world.enter_zone("prueba_b", Vector2i(10, 9))
+	var sick_row: int = world._layer.get_cell_atlas_coords(flora_cell).y
+	state.set_zone_purified("prueba_b", true)
+	world.enter_zone("prueba_b", Vector2i(10, 9))
+	var pure_row: int = world._layer.get_cell_atlas_coords(flora_cell).y
+	state.set_zone_purified("prueba_b", false)
+	var flora_row: int = WorldTiles.OVERLAY_ROW[WorldTiles.Terrain.FLORA]
+	_check("sin bandera, la zona se pinta enferma; con purified_<zona>, purificada",
+		sick_row == flora_row and pure_row == flora_row + 1,
+		"fila enferma %d, purificada %d" % [sick_row, pure_row])
 
 	world.queue_free()
 	await get_tree().physics_frame

@@ -28,6 +28,19 @@ var bag := Inventory.new()
 var flags: Dictionary = {}
 
 
+## Bandera de zona purificada: `purified_<id de zona>`. La escribe la ola de
+## purificación (parte 4); el mundo la lee al pintar la zona.
+const PURIFIED_PREFIX := "purified_"
+
+
+func is_zone_purified(id: String) -> bool:
+	return bool(flag(PURIFIED_PREFIX + id))
+
+
+func set_zone_purified(id: String, value := true) -> void:
+	set_flag(PURIFIED_PREFIX + id, value)
+
+
 func set_zone(id: String) -> void:
 	zone_id = id
 	zone_changed.emit(id)

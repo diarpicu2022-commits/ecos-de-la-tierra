@@ -5,6 +5,8 @@
     {"from": "prueba_a", "cell": [39, 9], "to": "prueba_b", "to_cell": [1, 8]},
     {"from": "prueba_a", "cell": [12, 19], "to": "prueba_b", "to_cell": [15, 1]},
     {"from": "prueba_b", "cell": [0, 8], "to": "prueba_a", "to_cell": [38, 9]},
-    {"from": "prueba_b", "cell": [15, 0], "to": "prueba_a", "to_cell": [12, 18]}
+    {"from": "prueba_b", "cell": [15, 0], "to": "prueba_a", "to_cell": [12, 18]},
+    {"from": "prueba_a", "cell": [25, 0], "to": "prueba_c", "to_cell": [10, 8]},
+    {"from": "prueba_c", "cell": [10, 9], "to": "prueba_a", "to_cell": [25, 1]}
   ]
 }
