@@ -568,8 +568,10 @@ Sin regresiones:
   rótulo sale al entrar en una zona); se señala por si en la parte 10 la
   primera entrada debe tratarse distinto.
 
-**Paso 5 — Pantalla completa: el sprite de Ilan · HECHO el 2026-10-01,
-pendiente del visto bueno de Diego.** Rama `parte-2/pantalla`.
+**Paso 5 — Pantalla completa: el sprite de Ilan · HECHO el 2026-10-01.** PR
+#8, fusionado por Juan José Rueda. El PR no tiene revisión escrita de Diego, y
+las dos decisiones (contorno oscuro y poses por distancia) quedan aceptadas con
+la fusión.
 
 - `tools/gen_world_sprites.py` → `assets/sprites/world/ilan.png`: una hoja de
   2 poses por 4 orientaciones, de 16×24 px, con los pies en la última fila.
@@ -672,6 +674,106 @@ Sin regresiones:
 - **El orden por altura todavía no tiene nada que ordenar:** el cuerpo es la
   única entidad. Se comprueba de verdad en la parte 3, con la primera persona
   o el primer objeto del catálogo.
+
+**Paso 6 — Estados · HECHO el 2026-10-01, pendiente del visto bueno de
+Diego.** Rama `parte-2/estados`. **Con este paso, la parte 2 queda completa.**
+
+Lo que el anexo pedía para este paso (movimiento reducido, borde del mapa y
+salida con la tecla pulsada) ya se mide en los pasos 3 y 4. Este paso fuerza
+cada estado en una hoja y cierra **dos huecos que salieron al repasarlos**:
+
+1. **Un mapa menor que la pantalla.** El contrato lo cubre (se centra), pero no
+   había ninguna zona así, y alrededor se habría visto el gris por defecto de
+   Godot (`#4c4c4c`), que no es un token. `WorldRoot` fija como color de fondo
+   `ASH_950`, cuyo papel en la paleta ya era «fondo más profundo y bandas del
+   viewport». No se añade ningún color. Zona nueva `prueba_c` (20×10, menor
+   que la pantalla en los dos ejes), unida al norte de `prueba_a`; con esa
+   tercera salida, `prueba_a` sigue cumpliendo el máximo de 2 por pantalla.
+2. **El estado «purificado» del mundo.** Todo se pintaba enfermo. `WorldRoot`
+   lee ahora la bandera `purified_<zona>` de `GameState`
+   (`is_zone_purified`, `set_zone_purified`). La ola que la escribe sigue
+   siendo de la parte 4: aquí solo se pinta el estado final.
+
+Además:
+
+- `tools/world_states_sheet.tscn` → `docs/ux/capturas/2026-10-01-estados-*.png`,
+  nueve estados forzados: reposo, andando, pared, borde, fundido, llegada,
+  movimiento reducido, zona pequeña y zona purificada.
+- `tools/frames_to_gif.py` y `2026-10-01-estados-recorrido-purificado.gif`:
+  40 cuadros seguidos corriendo hacia el este sobre `prueba_a` purificada.
+
+**Cláusulas:** «Cámara en el borde» (un mapa menor que la pantalla se centra),
+«Movimiento reducido», «Al cruzar», «Estado global» y la cláusula
+«Purificación» de «Vereda».
+
+#### Verificado
+
+`verify_movement.tscn`: **99 de 99**. A los 87 casos anteriores se suman:
+
+- `prueba_c` cumple las reglas de salida, y `prueba_a` las sigue cumpliendo
+  con su tercera salida.
+- Las salidas A → C y C → A se cruzan con la tecla pulsada: los pies llegan
+  exactos, mirando igual, y el cuerpo sigue andando.
+- En la zona pequeña, la cámara se queda centrada en (160, 80) corriendo hacia
+  tres esquinas, y el fondo de alrededor es `ASH_950`.
+- Sin bandera, la zona se pinta enferma; con `purified_<zona>`, purificada
+  (fila del atlas comprobada en una celda de follaje).
+
+**La prueba se comprobó rompiéndola a propósito:**
+
+- Sin el fondo `ASH_950`, falla 1 caso.
+- Ignorando la bandera, falla 1.
+
+**Capturas:** ocho de los nueve estados pasan `verify_palette.py image` (todo
+píxel es un token), y también los 40 cuadros del recorrido. `fundido` no pasa,
+como en el paso 4: la cortina mezcla con opacidad.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: sin deriva.
+- `verify_tileset.py`: dentro del contrato.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+- `test_zone.tscn` y `main.tscn` arrancan sin errores.
+- `project.godot`: sin tocar.
+
+#### Para Diego: la nota del follaje, en movimiento
+
+Su nota del paso 2b decía: «las dos copas dibujan una diagonal regular cada
+16 px; se vuelve a mirar si la prueba con personas o la cámara lo delatan».
+**No se puede medir, solo mirar,** así que se le entrega el material para que
+lo juzgue: el GIF del recorrido. Son 40 cuadros reales del motor, corriendo a
+2 px por cuadro, montados a 33 ms por cuadro. Es la mitad de la velocidad
+real, porque la mayoría de visores de GIF no bajan de 20 ms por cuadro. **No
+se da por bueno ni por malo.**
+
+#### Pendiente, y se dice
+
+- **En la zona purificada todavía no hay fauna.** «Vereda» dice que purificar
+  devuelve la fauna. Es la parte 3 (IA-2, fauna en bandada), no este paso.
+- **El orden por altura** se comprueba de verdad en la parte 3, con la primera
+  entidad que no sea el cuerpo.
+- **`prueba_c` pide su propia prueba de cámara en el borde.** En un mapa menor
+  que la pantalla, la pantalla enseña siempre las bandas, así que la regla
+  «nunca enseña fuera de la zona» solo se aplica en los ejes donde el mapa
+  llena la pantalla. Así lo mide ya la prueba: centrado, no encerrado.
+
+### Cierre de la parte 2
+
+**Hecho cuando** (guía §5): `verify_movement` en verde con todo lo que pide
+este anexo. Comprobado el 2026-10-01: **99 de 99**.
+
+- Posición entera en cada cuadro.
+- 1 y 2 px por cuadro y eje, y cero cuadros de aceleración.
+- Un pasillo de 16 px se cruza y uno de 0 px no.
+- Una esquina a 4 px o menos se rodea, y a 5 no.
+- El fundido, medido cuadro a cuadro.
+- Con la tecla pulsada se sigue andando tras cruzar.
+- La cámara nunca enseña fuera de la zona.
+
+A eso se suman el sprite, las zonas de prueba con sus reglas de salida, el
+rótulo, `GameState` y los estados. **Falta el visto bueno de Diego al paso 6**
+para dar la parte por cerrada.
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo

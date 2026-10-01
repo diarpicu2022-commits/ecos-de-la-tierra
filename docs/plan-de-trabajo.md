@@ -51,10 +51,13 @@ válidos:
 > fusionado el 2026-10-01 sin revisión escrita de Diego. **Paso 4 (límites de
 > la cámara, fundido, rótulo y `GameState`): hecho**, PR #7, fusionado con
 > permiso de Diego dado en persona. **Paso 5 (pantalla completa, el sprite de
-> Ilan): hecho el 2026-10-01 por Juan José Rueda**, rama `parte-2/pantalla`,
-> pendiente del visto bueno de Diego, con dos decisiones para confirmar:
-> contorno oscuro y dos poses por distancia. `verify_movement.tscn` da **87 de
-> 87**. **Lo siguiente es el paso 6, los estados**, que cierra la parte 2.
+> Ilan): hecho**, PR #8. **Paso 6 (estados): hecho el 2026-10-01 por Juan
+> José Rueda**, rama `parte-2/estados`, pendiente del visto bueno de Diego.
+> Cierra dos huecos: las bandas `ASH_950` de un mapa menor que la pantalla y
+> el pintado de la zona purificada según `GameState`. `verify_movement.tscn`
+> da **99 de 99**. **Con el visto bueno al paso 6, la parte 2 queda cerrada.**
+> Diego tiene pendiente juzgar el GIF del follaje purificado en movimiento
+> (anexo, paso 6).
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.
@@ -105,7 +108,7 @@ zonas, ni progresión sin encuentros.
 | — | Motor de combate por turnos, IA por pesos, tabla Q del jefe | **Hecho**, verificado por consola |
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
-| 2 | Movimiento, colisiones y transición entre zonas | **En curso** — contrato «Umbral» bloqueado 2026-09-30 |
+| 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01), pendiente del visto bueno al paso 6 — `verify_movement` 99/99 |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |

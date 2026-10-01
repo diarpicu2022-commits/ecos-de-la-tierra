@@ -50,6 +50,11 @@ var _fade_frames := 0
 
 func _ready() -> void:
 	DesignTokens.load_settings()
+	# Fuera de la zona solo se ve cuando el mapa es menor que la pantalla, en
+	# las bandas que deja al centrarse. Ese es el papel de `ASH_950` en la
+	# paleta («fondo más profundo y bandas del viewport»); sin esto, Godot pinta
+	# su gris por defecto, que no es un token.
+	RenderingServer.set_default_clear_color(DesignTokens.ASH_950)
 	_exits = ZoneRules.load_exits()
 	_names = ZoneRules.load_names()
 	# El rótulo va por debajo de la cortina: aparece con la zona, no encima del
@@ -88,7 +93,9 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	_layer.tile_set = WorldTiles.build_tileset()
 	add_child(_layer)
 	move_child(_layer, 0)
-	WorldTiles.paint(_layer, WorldTiles.parse(lines), func(_c: Vector2i) -> bool: return false)
+	var state := get_node_or_null("/root/GameState")
+	var purified: bool = state != null and state.is_zone_purified(id)
+	WorldTiles.paint(_layer, WorldTiles.parse(lines), func(_c: Vector2i) -> bool: return purified)
 	zone_id = id
 	zone_size = Vector2i(lines[0].length(), lines.size())
 	_zone_exits = ZoneRules.exits_from(id, _exits)
@@ -96,7 +103,6 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	camera.limits = Rect2i(Vector2i.ZERO, zone_size * DesignTokens.TILE_SIZE)
 	camera.snap_to_target()
 	label.show_name(_names.get(id, id))
-	var state := get_node_or_null("/root/GameState")
 	if state != null:
 		state.facing = body.facing
 		state.set_zone(id)

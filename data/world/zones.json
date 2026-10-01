@@ -3,6 +3,7 @@
   "version": 1,
   "zones": {
     "prueba_a": {"name": "Claro de prueba"},
-    "prueba_b": {"name": "Ribera de prueba"}
+    "prueba_b": {"name": "Ribera de prueba"},
+    "prueba_c": {"name": "Hondonada de prueba"}
   }
 }

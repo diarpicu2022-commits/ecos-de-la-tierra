@@ -22,7 +22,12 @@ Orden de lectura en cada sesión:
 | Pantalla de batalla «Ceniza y Brasa» | `src/ui/battle/` | `tools/verify_usability.tscn` → **16/16** (re-ejecutado 2026-09-23) |
 | Tokens de interfaz y de mundo | `src/ui/design_tokens.gd` | `python tools/verify_palette.py tokens` |
 | Fuente de mapa de bits | `assets/fonts/ceniza.fnt` | `tools/verify_font.gd` |
-| Sprites de monstruos y grupo | `assets/sprites/` | `python tools/verify_palette.py image <png>` → 17/17 limpios |
+| Sprites de monstruos, grupo e Ilan en el mundo | `assets/sprites/` | `python tools/verify_palette.py image <png>` → 18/18 limpios (2026-10-01) |
+| Tileset de terreno, con su colisión | `assets/tilesets/world.png`, `src/world/world_tiles.gd` | `python tools/verify_tileset.py` |
+| Cámara del mundo | `src/world/world_camera.gd` | `tools/verify_camera.tscn` → **37/37** |
+| Mundo: cuerpo, zonas, salidas, fundido, rótulo, estados | `src/world/`, `data/world/` | `tools/verify_movement.tscn` → **99/99** (2026-10-01) |
+| Estado global | `src/core/game_state.gd` (autoload `GameState`) | `tools/verify_movement.tscn` |
+| Escena jugable del mundo | `scenes/world/test_zone.tscn` | Abrirla en el editor y pulsar F6 |
 
 Ejecutar Godot sin editor (Godot 4.3+ estándar, **no** .NET):
 
