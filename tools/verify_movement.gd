@@ -20,8 +20,17 @@ extends Node2D
 ##     cada regla detecta su incumplimiento en un mapa estropeado a propósito;
 ##   - al cruzar una salida con la tecla pulsada se llega a la casilla de
 ##     destino, mirando igual, y se sigue andando sin perder un solo cuadro.
-## Los pasos siguientes añaden aquí sus casos (fundido, rótulo, límites de la
-## cámara).
+##
+## Paso 4 — el resto: límites de la cámara, fundido, rótulo y GameState.
+##   - la pantalla nunca enseña fuera de la zona, en ningún cuadro, y un mapa
+##     menor que la pantalla se centra;
+##   - el fundido dura DUR_ZONE_FADE + DUR_ZONE_FADE, es lineal, el cuerpo se
+##     detiene durante el de salida y sigue andando solo durante el de entrada;
+##   - con movimiento reducido, corte directo en el mismo cuadro;
+##   - el rótulo dice el nombre de la zona, arriba a la izquierda, y entra, se
+##     queda PLACE_LABEL_HOLD y se va; con movimiento reducido no se anima,
+##     pero la espera se mantiene;
+##   - GameState sabe en qué zona se está y hacia dónde se mira.
 
 const T := DesignTokens.TILE_SIZE
 const HALF := DesignTokens.PLAYER_HITBOX.x / 2
@@ -64,6 +73,15 @@ func _ready() -> void:
 	_body.queue_free()
 	await get_tree().physics_frame
 	await _test_crossings()
+
+	print("\n=== RESTO: LIMITES DE LA CAMARA ===")
+	await _test_camera_limits()
+
+	print("\n=== RESTO: FUNDIDO Y GAMESTATE ===")
+	await _test_fade()
+
+	print("\n=== RESTO: ROTULO DE LUGAR ===")
+	await _test_label()
 
 	_check("posicion entera en los %d cuadros medidos" % _frames, _fractional == 0,
 		"%d cuadros con subpixel" % _fractional)
@@ -300,6 +318,187 @@ func _test_crossings() -> void:
 		_check("  mira igual al llegar", world.body.facing == c[6], "mira %s" % world.body.facing)
 		_check("  con la tecla pulsada sigue andando, 1 px en cada cuadro", steady)
 	world.queue_free()
+
+
+func _test_camera_limits() -> void:
+	# Un mapa menor que la pantalla se centra en ese eje.
+	var cam := WorldCamera.new()
+	var dot := Node2D.new()
+	add_child(dot)
+	cam.target = dot
+	add_child(cam)
+	cam.limits = Rect2i(0, 0, 320, 160)
+	dot.position = Vector2(30, 40)
+	cam.snap_to_target()
+	var still := cam.center
+	dot.position = Vector2(300, 150)
+	for _i in 60:
+		cam.advance()
+	_check("un mapa menor que la pantalla se centra (320x160 -> centro 160,80)",
+		still == Vector2i(160, 80) and cam.center == Vector2i(160, 80),
+		"centro %s y luego %s" % [still, cam.center])
+	cam.queue_free()
+	dot.queue_free()
+
+	# Recorrido hacia las cuatro esquinas de cada zona, corriendo.
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	world.camera.set_physics_process(false)
+	world.body.input_enabled = false
+	var outside := 0
+	var frames := 0
+	var outside_deadzone := 0
+	for zone in ["prueba_a", "prueba_b"]:
+		for dir in [Vector2i(-1, -1), Vector2i(1, -1), Vector2i(1, 1), Vector2i(-1, 1)]:
+			world.enter_zone(zone, Vector2i(5, 8) if zone == "prueba_a" else Vector2i(10, 9))
+			await get_tree().physics_frame
+			for _i in 160:
+				world.body.step(dir, true)
+				world.camera.advance()
+				frames += 1
+				var map := Rect2i(Vector2i.ZERO, world.zone_size * T)
+				if not map.encloses(world.camera.visible_rect()):
+					outside += 1
+				# La zona muerta cuenta sus dos bordes como dentro (WorldCamera.deadzone).
+				var dz := world.camera.deadzone()
+				if not Rect2i(dz.position, dz.size + Vector2i.ONE).has_point(
+						Vector2i(world.body.global_position)):
+					outside_deadzone += 1
+	_check("hacia las esquinas la pantalla nunca sale de la zona (%d cuadros)" % frames,
+		outside == 0, "%d cuadros enseñan fuera" % outside)
+	# El contrato lo admite y la prueba lo distingue: junto al borde el cuerpo
+	# sale de la zona muerta. Si nunca saliera, los límites no estarían actuando.
+	_check("  y junto al borde el cuerpo sale de la zona muerta, como admite el contrato",
+		outside_deadzone > 0, "nunca sale")
+	world.queue_free()
+	await get_tree().physics_frame
+
+
+func _test_fade() -> void:
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	var ticks := Engine.physics_ticks_per_second
+	var expected := roundi(DesignTokens.DUR_ZONE_FADE * ticks)
+
+	for reduced in [false, true]:
+		DesignTokens.reduced_motion = reduced
+		world.enter_zone("prueba_a", Vector2i(37, 9))
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		Input.action_press("move_right")
+		var alphas := []
+		var phases := []
+		var still_while_out := 0
+		var moving_while_in := 0
+		var camera_out := 0
+		var cross_frame := -1
+		var swap_frame := -1
+		for f in 60:
+			var before := world.body.global_position
+			var zone_before := world.zone_id
+			await get_tree().physics_frame
+			var map := Rect2i(Vector2i.ZERO, world.zone_size * T)
+			if not map.encloses(world.camera.visible_rect()):
+				camera_out += 1
+			phases.append(world.fade)
+			alphas.append(world.curtain.modulate.a)
+			if cross_frame < 0 and (world.fade != WorldRoot.Fade.NONE or world.zone_id != zone_before):
+				cross_frame = f
+			if swap_frame < 0 and world.zone_id != zone_before:
+				swap_frame = f
+			# El cuadro del cruce cuenta ya como fundido, pero en él el cuerpo sí
+			# avanzó: ese paso es el que lo sacó del mapa. Se mide desde el siguiente.
+			if world.fade == WorldRoot.Fade.OUT and f != cross_frame 					and world.body.global_position == before:
+				still_while_out += 1
+			if world.fade == WorldRoot.Fade.IN and world.body.global_position != before:
+				moving_while_in += 1
+		Input.action_release("move_right")
+		await get_tree().physics_frame
+		var outs := phases.count(WorldRoot.Fade.OUT)
+		var ins := phases.count(WorldRoot.Fade.IN)
+		var state := get_node("/root/GameState")
+		if not reduced:
+			var ms := 1000.0 / ticks
+			_check("fundido de salida: %d cuadros (%.0f ms; contrato %d ms)" % [
+				expected, expected * ms, roundi(DesignTokens.DUR_ZONE_FADE * 1000)],
+				swap_frame - cross_frame == expected,
+				"el cambio llega %d cuadros tras cruzar" % (swap_frame - cross_frame))
+			_check("fundido de entrada: %d cuadros" % expected, ins == expected,
+				"%d cuadros en IN" % ins)
+			var out_alphas := alphas.slice(cross_frame + 1, swap_frame + 1)
+			var linear := out_alphas.size() == expected
+			for i in out_alphas.size():
+				linear = linear and is_equal_approx(out_alphas[i], float(i + 1) / expected)
+			_check("  lineal, y la zona cambia con la pantalla cubierta (opacidad 1)",
+				linear, "opacidades %s" % [out_alphas])
+			_check("  el cuerpo se detiene durante el fundido de salida, tras el paso que cruza",
+				still_while_out == outs - 1, "%d de %d cuadros quieto" % [still_while_out, outs - 1])
+			_check("  y con la tecla pulsada anda durante el de entrada, sin soltarla",
+				moving_while_in == ins, "%d de %d cuadros andando" % [moving_while_in, ins])
+			_check("  al acabar, la cortina queda transparente", alphas.back() == 0.0)
+		else:
+			_check("movimiento reducido: corte directo, la zona cambia en el cuadro de cruzar",
+				swap_frame >= 0 and swap_frame == cross_frame,
+				"cruza %d, cambia %d" % [cross_frame, swap_frame])
+			_check("  sin un solo cuadro de cortina",
+				alphas.max() == 0.0 and outs == 0 and ins == 0, "opacidad maxima %s" % alphas.max())
+		_check("  la pantalla nunca enseña fuera de la zona al cruzar", camera_out == 0,
+			"%d cuadros" % camera_out)
+		_check("  GameState sabe la zona y hacia donde se mira",
+			state.zone_id == "prueba_b" and state.facing == Vector2i.RIGHT,
+			"%s mirando %s" % [state.zone_id, state.facing])
+	DesignTokens.reduced_motion = false
+	world.queue_free()
+	await get_tree().physics_frame
+
+
+func _test_label() -> void:
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	var ticks := Engine.physics_ticks_per_second
+	var in_frames := roundi(DesignTokens.DUR_PLACE_LABEL * ticks)
+	var hold := roundi(DesignTokens.PLACE_LABEL_HOLD * ticks)
+	for reduced in [false, true]:
+		DesignTokens.reduced_motion = reduced
+		world.enter_zone("prueba_b", Vector2i(10, 9))
+		var lbl := world.label
+		var phases := []
+		var alphas := []
+		for _i in in_frames * 2 + hold + 10:
+			phases.append(lbl.phase)
+			alphas.append(lbl.modulate.a)
+			await get_tree().physics_frame
+		var ins := phases.count(PlaceLabel.Phase.IN)
+		var holds := phases.count(PlaceLabel.Phase.HOLD)
+		var outs := phases.count(PlaceLabel.Phase.OUT)
+		if not reduced:
+			_check("rotulo: dice el nombre de la zona", lbl.text == "Ribera de prueba", lbl.text)
+			_check("  arriba a la izquierda, margen SPACE_8",
+				lbl.panel_rect().position == Vector2i(DesignTokens.SPACE_8, DesignTokens.SPACE_8),
+				"%s" % lbl.panel_rect())
+			var first_step: float = alphas[1] - alphas[0]
+			var last_step: float = alphas[in_frames] - alphas[in_frames - 1]
+			_check("  entra en %d cuadros (%d ms; contrato %d ms)" % [
+				in_frames, roundi(in_frames * 1000.0 / ticks), roundi(DesignTokens.DUR_PLACE_LABEL * 1000)],
+				ins == in_frames and alphas[in_frames] == 1.0,
+				"%d cuadros en IN; opacidades %s" % [ins, alphas.slice(0, in_frames + 1)])
+			_check("  con curva de salida: el primer cuadro sube mas que el ultimo",
+				first_step > last_step, "primero %.3f, ultimo %.3f" % [first_step, last_step])
+			_check("  se queda %d cuadros (%.1f s)" % [hold, DesignTokens.PLACE_LABEL_HOLD],
+				holds == hold, "%d cuadros" % holds)
+			_check("  y se va solo en %d cuadros" % in_frames,
+				outs == in_frames and alphas.back() == 0.0, "%d cuadros en OUT" % outs)
+		else:
+			_check("rotulo con movimiento reducido: entra de golpe, sin animarse",
+				ins == 0 and outs == 0 and alphas[0] == 1.0, "%d IN, %d OUT" % [ins, outs])
+			_check("  pero la espera de %.1f s se mantiene" % DesignTokens.PLACE_LABEL_HOLD,
+				holds == hold and alphas.back() == 0.0, "%d cuadros de espera" % holds)
+	DesignTokens.reduced_motion = false
+	world.queue_free()
+	await get_tree().physics_frame
 
 
 func _count_frame(body: Node2D) -> void:

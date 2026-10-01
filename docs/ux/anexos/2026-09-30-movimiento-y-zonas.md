@@ -349,8 +349,9 @@ Sin regresiones:
 - **Aún no hay escena jugable.** El cuerpo se mueve con el teclado de verdad
   en la prueba, pero la zona de prueba con dos salidas es el paso 3.
 
-**Paso 3 — Esqueleto: zona de prueba con dos salidas · HECHO el 2026-09-30,
-pendiente del visto bueno de Diego.** Rama `parte-2/esqueleto`.
+**Paso 3 — Esqueleto: zona de prueba con dos salidas · HECHO el 2026-09-30.**
+PR #6, fusionado por Juan José Rueda el 2026-10-01. **El PR no tiene revisión
+escrita de Diego**, aunque se le pidió dejarla allí.
 
 - `data/world/zones/prueba_a.txt` (40×20, mayor que la pantalla) y
   `prueba_b.txt` (30×17): mapas de texto con la leyenda de `WorldTiles`.
@@ -433,6 +434,138 @@ antes de enseñar el juego a nadie.
 - Una salida hacia el oeste o el norte aparece en `to_cell` con el cuerpo de
   espaldas a la zona nueva, porque sigue mirando hacia donde iba. Es lo que
   pide el contrato («mirando igual»).
+
+**Paso 4 — Resto: límites de la cámara, fundido, rótulo y `GameState` ·
+HECHO el 2026-10-01, pendiente del visto bueno de Diego.** Rama
+`parte-2/transicion`.
+
+- `src/world/world_camera.gd`: `limits` y `visible_rect()`. El centro se
+  encierra en la zona, en enteros, al final de cada `advance()` y en
+  `snap_to_target()`. Un eje en el que el mapa no llena la pantalla queda
+  centrado. Sin `limits`, la cámara se comporta igual que antes, así que
+  `verify_camera` sigue en 37 de 37.
+- `src/world/world_root.gd`: el fundido. Son dos medios fundidos lineales de
+  `DUR_ZONE_FADE`, contados en cuadros de física: 120 ms son **7 cuadros a
+  60 Hz, 117 ms**. La zona cambia con la pantalla cubierta. Con movimiento
+  reducido, corte directo en el mismo cuadro.
+- `src/world/place_label.gd` (`PlaceLabel`): el rótulo de lugar.
+  - Panel `PANEL_FILL` con borde `BORDER_IDLE` de 1 px, como pide el
+    repertorio de la guía §3.1, y texto 1× en `TEXT_PRIMARY`.
+  - Relleno `SPACE_4`, como el HUD de la batalla.
+  - Arriba a la izquierda, con margen `SPACE_8`.
+  - Entra en `DUR_PLACE_LABEL`, **10 cuadros (167 ms)**, con la curva de
+    salida de la batalla (`EASE_OUT_TRANS`, cúbica). Se queda
+    `PLACE_LABEL_HOLD` (120 cuadros) y se va solo en otros 10.
+  - Con movimiento reducido entra y se va de golpe, pero la espera de 2 s se
+    mantiene.
+- `src/core/game_state.gd`: autoload `GameState`, registrado a mano en
+  `project.godot`. Guarda la zona, hacia dónde se mira, el grupo, la bolsa
+  (`Inventory`) y las banderas. En esta parte solo escribe el mundo.
+- `data/world/zones.json`: el nombre visible de cada zona («Claro de prueba»,
+  «Ribera de prueba»).
+- `tools/umbral_sheet.tscn` → `docs/ux/capturas/2026-10-01-umbral-{antes,fundido,llegada,esquina}.png`.
+- `tools/zone_sheet.tscn`, la hoja del paso 3, se fija en movimiento reducido
+  para que siga reproduciendo el corte directo de entonces. Sus capturas
+  históricas no se tocan.
+
+**Cláusulas:** «Al cruzar», «Movimiento reducido», «Rótulo de lugar»,
+«Cámara en el borde» y «Estado global» del contrato «Umbral», más las
+duraciones de «Vereda».
+
+#### Decisiones que el contrato no fijaba, tomadas con tokens existentes
+
+Las cuatro se señalan en el PR para que Diego las confirme:
+
+1. **Color del fundido: `ASH_950`.** El contrato dice «fundido a negro», pero
+   no hay token negro. `ASH_950` es el fondo más profundo de la paleta, y no
+   se añade ningún color.
+2. **El cuerpo se detiene durante el fundido de salida** (6 cuadros, después
+   del paso que cruza) y vuelve a leer el teclado al cambiar de zona. Con la
+   tecla pulsada sigue andando durante el fundido de entrada sin soltarla.
+   Seguir andando durante la salida lo llevaría fuera del mapa, ya sin
+   cámara que lo siga.
+3. **El rótulo se anima solo con opacidad,** y va **por debajo de la
+   cortina**: aparece con la zona nueva, no encima del negro.
+4. **Fundido y rótulo se cuentan en cuadros de física,** no con un `Tween`, para
+   poder medirlos cuadro a cuadro. Al redondear a cuadros enteros, 120 ms se
+   quedan en 117 ms y 160 ms suben a 167 ms.
+
+#### Verificado
+
+`verify_movement.tscn`: **81 de 81**. A los 58 casos anteriores se suman:
+
+- **Límites:**
+  - Un mapa de 320×160 se centra en (160, 80) y no se mueve.
+  - En 1280 cuadros corriendo hacia las cuatro esquinas de las dos zonas, la
+    pantalla nunca sale de la zona.
+  - Junto al borde el cuerpo sí sale de la zona muerta, como admite el
+    contrato.
+- **Fundido:**
+  - El cambio llega 7 cuadros después de cruzar, con opacidades exactas 1/7 …
+    7/7 (lineal) y la pantalla cubierta.
+  - La entrada dura 7 cuadros.
+  - El cuerpo se queda quieto durante la salida y anda en cada cuadro de la
+    entrada sin soltar la tecla.
+  - Al acabar, la cortina queda transparente.
+  - La pantalla nunca enseña fuera de la zona al cruzar.
+- **Movimiento reducido:** la zona cambia en el mismo cuadro de cruzar, sin
+  ningún cuadro de cortina.
+- **`GameState`:** sabe la zona de destino y que se mira al este.
+- **Rótulo:**
+  - Dice «Ribera de prueba», en (8, 8).
+  - Entra en 10 cuadros con curva de salida: el primer cuadro sube más que el
+    último.
+  - Se queda 120 cuadros y se va en 10.
+  - Con movimiento reducido no se anima, y la espera sigue siendo de 120
+    cuadros.
+
+**La prueba se comprobó rompiéndola a propósito:**
+
+- Sin límites de cámara fallan 5 casos.
+- Con un fundido curvo falla 1.
+- Aplicando el movimiento reducido a la espera del rótulo falla 1.
+
+**Corregido durante el paso, en la prueba:**
+
+1. Contaba como cuadro de fundido el mismo cuadro del cruce, en el que el
+   cuerpo sí avanza.
+2. La comprobación «el cuerpo sale de la zona muerta» pasaba también **sin**
+   límites, así que no medía nada. La zona muerta de `WorldCamera` cuenta sus
+   dos bordes como dentro y `Rect2i.has_point` excluye el final. Corregida, y
+   ahora falla sin límites.
+3. Una variable con el mismo nombre que la del bucle impedía cargar la prueba
+   (`zone`). Se renombró.
+
+**Capturas:**
+
+- `antes`, `llegada` y `esquina` pasan `verify_palette.py image`: **todo
+  píxel es un token**. El vacío del paso 3 desaparece: era el 40–46 % de la
+  pantalla, y ahora es 0.
+- `fundido` no pasa, y es lo que se espera: la cortina mezcla con opacidad,
+  igual que el velo de la pantalla de desenlace de la batalla.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: sin deriva.
+- `verify_tileset.py`: dentro del contrato.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+- `test_zone.tscn` y `main.tscn` arrancan sin errores con el autoload.
+- `project.godot`: solo las 4 líneas de `[autoload]`.
+
+**Pendiente, y se dice:**
+
+- **Paso 5 (pantalla completa):** el sprite del personaje en lugar del
+  marcador, el orden de dibujo por altura y revisar el hueco de 1–3 px entre
+  la caja y el borde dibujado.
+- **Paso 6 (estados):** el fundido es la única transición del mundo que se
+  mide cuadro a cuadro. Faltan los estados forzados en una hoja
+  (`states_sheet`) y comprobar con la cámara en movimiento sobre zona
+  purificada la nota de Diego sobre el follaje.
+- **El rótulo del arranque** se ve todavía en la captura `antes`, porque el
+  cuerpo llega a la salida antes de los 2 s. Es lo que dice el contrato (el
+  rótulo sale al entrar en una zona); se señala por si en la parte 10 la
+  primera entrada debe tratarse distinto.
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo

@@ -1,0 +1,8 @@
+{
+  "_doc": "Nombre visible de cada zona, el que enseña el rótulo de lugar al entrar (contrato «Umbral»). Clave = id del mapa en data/world/zones/. Las zonas «prueba_*» son de la parte 2 y no forman parte del mundo.",
+  "version": 1,
+  "zones": {
+    "prueba_a": {"name": "Claro de prueba"},
+    "prueba_b": {"name": "Ribera de prueba"}
+  }
+}

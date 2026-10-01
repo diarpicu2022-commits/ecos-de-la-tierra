@@ -16,6 +16,7 @@ extends RefCounted
 
 const ZONES_DIR := "res://data/world/zones/"
 const EXITS_PATH := "res://data/world/exits.json"
+const NAMES_PATH := "res://data/world/zones.json"
 
 ## Pantalla en tiles: 480 x 270 px con tiles de 16 px. La última fila visible
 ## queda cortada a 14 px, así que una pantalla abarca hasta 17 filas.
@@ -37,6 +38,16 @@ static func load_zone(zone_id: String) -> PackedStringArray:
 static func load_exits() -> Array:
 	var data = JSON.parse_string(FileAccess.get_file_as_string(EXITS_PATH))
 	return data["exits"] if data is Dictionary else []
+
+
+## Nombre visible de cada zona, por id: `{"prueba_a": "Claro de prueba"}`.
+static func load_names() -> Dictionary:
+	var data = JSON.parse_string(FileAccess.get_file_as_string(NAMES_PATH))
+	var names := {}
+	if data is Dictionary:
+		for id in data["zones"]:
+			names[id] = data["zones"][id]["name"]
+	return names
 
 
 ## Las salidas que parten de `zone_id`.
