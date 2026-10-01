@@ -42,20 +42,15 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 3 — Las siete zonas. ABIERTA el 2026-10-01, en espera de dos
-> pruebas con personas.** Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`:
-> fases 1 a 3 hechas (usuarios, comunicación e investigación con 8 fuentes de
-> dominio). **La fase 4 (direcciones) no se abre** hasta tener:
-> 1. **La prueba «¿Por qué pierdo?»** (guía §4: antes de la parte 3; si
->    falla, cambia cómo se diseñan las zonas).
-> 2. **La prueba de los materiales,** que además cierra la parte 1.
->
-> Las dos se hacen en una sola sentada con las mismas tres personas, siguiendo
-> `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. **Lo siguiente es registrar
-> sus resultados** en los anexos de batalla y de exploración, y entonces
-> plantear a Diego 2 o 3 direcciones para las zonas, junto con la decisión de
-> mapas en texto o en el editor. Después, una zona por sesión: Valdehoja,
-> Bosque, Cuenca, Costa, Llanura, Cumbre y Cripta.
+> **Parte 3 — Las siete zonas. EN CURSO.** Anexo
+> `docs/ux/anexos/2026-10-01-las-siete-zonas.md`: fases 1 a 4 escritas.
+> **Diego aplazó las dos pruebas con personas** (2026-10-01, comunicado a Juan
+> José Rueda en persona). La fase 4 se plantea con la hipótesis prudente: que
+> «¿Por qué pierdo?» no llega y la zona tiene que enseñar la causa antes del
+> combate. **Lo siguiente es que Diego elija la dirección** (A «Rastro»,
+> recomendada; B «Claro»; C «Antes y después») **y el formato de mapa**
+> (texto, recomendado, o editor), y confirme la hipótesis. Con eso se bloquea
+> el contrato y empieza Valdehoja, una zona por sesión.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -113,7 +108,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **Abierta** (2026-10-01) — anexo, fases 1-3; espera las pruebas con personas. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — anexo, fases 1-4; Diego elige dirección y formato de mapa. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -209,7 +204,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
-| Prueba con personas de «¿Por qué pierdo?» | Antes de la fase 4 de la parte 3. Hoja: `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
+| Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 
 ## Hallazgos medidos — 2026-09-23

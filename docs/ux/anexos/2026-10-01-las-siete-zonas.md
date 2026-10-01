@@ -14,11 +14,10 @@ allí **no se vuelve a decidir aquí**:
 
 Este anexo decide **cómo se compone cada zona**.
 
-**Estado:** fases 1 a 3 hechas. **La fase 4 (direcciones) espera a dos
-pruebas con personas**, como pide la guía §4: la de «¿Por qué pierdo?» (antes
-de la parte 3; si falla, cambia cómo se diseñan las zonas) y la de los
-materiales (dE de la parte 1). La hoja para hacerlas está en
-`docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
+**Estado:** fases 1 a 4 escritas. **Las dos pruebas con personas quedan
+aplazadas por decisión de Diego** (2026-10-01; ver «Pruebas aplazadas»), y la
+fase 4 se plantea con la hipótesis prudente. **Falta que Diego elija la
+dirección y el formato de mapa.**
 
 **Subdivisión (guía §5): una zona por sesión,** en este orden: Valdehoja →
 Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura
@@ -137,7 +136,152 @@ cuenta para las seis.
 de verdad, más 2 del listado obligatorio que aportan una regla. Se supera el
 mínimo de seis sin contar las no aplicables.
 
-## Antes de la fase 4 — lo que tienen que decidir las pruebas y Diego
+
+## Pruebas aplazadas — decisión de Diego, 2026-10-01
+
+Diego decidió **aplazar las dos pruebas con personas** «para agilizar», y se
+lo comunicó en persona a Juan José Rueda, que lo trasladó a la sesión del
+2026-10-01. No hay registro escrito suyo en GitHub. Se anota aquí, con fecha y
+con sus consecuencias:
+
+- **«¿Por qué pierdo?»:** sin resultado. **La fase 4 se diseña con la
+  hipótesis prudente: que no llega.** Es decir, que el combate no enseña solo
+  que hay que atajar la causa, y por tanto **la zona tiene que enseñarla
+  antes**. Si algún día la prueba dice que sí llega, el paisaje solo
+  refuerza lo que el combate ya enseña: se pierde poco. Lo contrario, suponer
+  que llega y equivocarse, dejaría siete zonas mudas. Diego confirma esta
+  hipótesis al elegir la dirección.
+- **Materiales:** sin resultado. La separación dE 9,2 sigue sin comprobar con
+  personas, así que **la parte 1 sigue abierta** solo por esto. Las zonas se
+  dibujan sobre el tileset aprobado y, si la prueba falla más adelante, la
+  enmienda 6 cambia tintas y no mapas: los mapas son de material, no de color.
+- **Las dos siguen como deuda** en la guía §4 y en el plan, con la hoja lista
+  en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
+
+## Fase 4 — Direcciones
+
+Las tres respetan «Vereda» y «Umbral»: el tileset, la colisión, las salidas en
+el camino, la cámara, el catálogo y el paso cerrado que la purificación abre.
+**No cambian la paleta.** Cambian **cómo se recorre una zona y en qué orden
+aparece la causa**.
+
+Las tres comparten estas piezas:
+
+- **Un hito por zona**, la única forma nueva. Es una silueta de varios tiles
+  en la capa de entidades, ordenada por altura, que no se pisa ni responde y
+  por tanto va sin contorno (Lynch, fuente 1).
+- **El gradiente de daño por densidad de decorado** (SLYNYRD, fuente 7).
+- **La fauna con *boids*, solo tras purificar** (IA-2, fuente 8).
+- **Las reglas medidas de la parte 2.**
+
+### A · «Rastro» — la zona es el camino hacia la causa · recomendada
+
+- **Cómo se recorre:** un camino pisado principal lleva desde la entrada
+  hasta la **fuente del daño**, donde está el monstruo. A lo largo del camino
+  hay **tres viñetas de causa y efecto encadenadas**, cada una más cerca de la
+  causa y más dañada que la anterior (Carson, fuente 2: «following
+  Saknussemm»; Smith y Worch, fuente 3: dos objetos que el jugador une). En el
+  Bosque, por ejemplo:
+  1. tocones con el corte limpio (tala);
+  2. troncos apilados junto a un claro sin árboles;
+  3. el primer árbol quemado, con la ceniza todavía en diagonal hacia la
+     fuente.
+- **El hito** está en la fuente. Se ve por primera vez a media zona y se
+  pierde detrás del follaje antes de reaparecer más cerca: negación y
+  recompensa (fuente 5).
+- **El paso cerrado** está **al otro lado de la fuente**: para seguir hay que
+  pasar por el monstruo de la fuente. No contradice «el mapa no se estrecha»:
+  ese monstruo es **combate de historia**, y «Vereda» ya dice que los combates
+  de historia no se esquivan. Los encuentros comunes (IA-1, parte 4) patrullan
+  fuera del camino principal, y se pueden rodear. Purificar abre el paso y
+  devuelve la fauna detrás de la ola.
+- **Caminos secundarios:** cortos, con espacio negativo y alguna persona o
+  algún semillero. Ninguna viñeta de causa fuera del camino principal.
+- **Por qué se recomienda:** es la única de las tres que **garantiza** que
+  todo jugador ve la causa antes de pelear, sin depender de un texto. Responde
+  directamente a la hipótesis prudente. Y el camino ya es la pista contratada
+  en cada columna, así que **no añade ninguna forma más que el hito**.
+- **Coste:** medio. Tres viñetas por zona salen de un juego pequeño de
+  decorado por región, que ya está catalogado como «decorado del daño» en el
+  paso 2a.
+- **Riesgo:** linealidad. Se mitiga con caminos secundarios, pero la zona es,
+  en esencia, un recorrido.
+
+### B · «Claro» — la zona gira alrededor de un centro
+
+- **Cómo se recorre:** la entrada da a un **claro central** (el nodo de
+  Lynch) del que salen tres o cuatro ramales. Uno lleva a la fuente; los
+  otros, a personas, semilleros, objetos y el puzzle (parte 7). Es el
+  esquema de centro y radios de Disneyland (Rogers, fuente 4): desde el centro
+  se ven varios hitos menores y el jugador **elige**.
+- **La causa** se concentra en el claro. Es un pueblo o un campamento afectado,
+  con **una persona que la nombra** en diálogo (parte 5) y las viñetas
+  alrededor.
+- **El hito** se ve desde el claro y marca el ramal de la fuente.
+- **A favor:** la más exploratoria; casa con el puzzle de cada región, que
+  está en un ramal.
+- **En contra:** **la causa depende en parte de un texto**, y la fase 2 dice
+  «texto que explique la causa: no va». Además, un jugador que vaya derecho al
+  monstruo puede no pasar por las viñetas. Con la hipótesis prudente, esto es
+  justo lo que hay que evitar. Y adelanta trabajo de la parte 5.
+
+### C · «Antes y después» — la zona son dos mapas
+
+- **Cómo se recorre:** la zona enferma es **estrecha**, un único corredor
+  denso de daño hasta la fuente. Al purificar no solo se abre el paso:
+  **cambia la topología**. Se abren dos o tres pasos a la vez, aparece una ruta
+  que antes no existía y, por ella, la vuelta corta a Valdehoja. El
+  mapa purificado es otro mapa.
+- **La causa** está en el corredor, y es imposible no verla.
+- **El hito** es el propio paso cerrado, enorme y visible desde la entrada:
+  lo que no deja pasar.
+- **A favor:** la más memorable, y la que más hace sentir la tesis de que el
+  color se devuelve y vuelve con caminos (guía §3).
+- **En contra:**
+  - **dobla el coste de autoría**, con dos estados de mapa por zona y siete
+    zonas;
+  - **choca con «el mapa no se estrecha»** («Vereda», encuentros visibles): un
+    corredor obliga al combate. Con encuentros visibles, eso exige una
+    enmienda.
+  - tensa la regla de máximo 2 salidas por pantalla en el estado purificado.
+
+### Design Read (dirección A)
+
+```
+Registro y audiencia: juego, exploración con lectura obligada; jugador sin dominio ambiental.
+Escena de uso: partida larga, el jugador avanza por el camino y mira hacia donde va.
+Tesis visual: el camino lleva a la causa, y la causa se ve antes de tocarla.
+Jerarquía y decisión dominante: «¿hacia dónde sigo?» → hito, gradiente, camino, viñeta, paso cerrado.
+Materiales: tiles aprobados; decorado del daño por región; un hito por zona; ningún color nuevo.
+Repertorio: hito = dónde está la fuente; viñeta = qué la causó; camino = por dónde; paso cerrado = qué falta.
+Puntos de entrada: la tarea; el hito asoma por delante en la dirección del camino.
+Riesgo que se evita: la zona-decorado que no explica nada, y el cartel que lo explica todo.
+```
+
+### Segunda decisión: el formato de los mapas
+
+| | Texto (`data/world/zones/<zona>.txt`) · **recomendado** | Pintado en el editor de Godot |
+|---|---|---|
+| Qué hay hoy | Las tres zonas de prueba ya son texto. `ZoneRules` las valida, y `verify_movement` las recorre. | Nada. Habría que guardar el `TileMapLayer` en una escena por zona. |
+| Revisar un cambio | Se lee en el diff del PR, carácter a carácter. | El diff de un `.tscn` es binario en la práctica: no se puede revisar. |
+| Pintar | Hay que escribir los caracteres a mano. Una leyenda ampliada (decorado y viñetas) lo hace más largo de escribir. | Más cómodo y visual. |
+| Riesgo con «Vereda» | Ninguno. | El editor reescribe archivos al guardar, igual que pasa ya con `project.godot`. |
+
+La recomendación es **texto**, por coherencia con lo que ya existe y porque el
+criterio de la asignatura se evalúa leyendo. El decorado y el hito pueden ir
+en una segunda capa de texto por zona (`<zona>.deco.txt`) con su propia
+leyenda, para que el mapa de materiales siga siendo legible.
+
+### Pregunta a Diego
+
+1. **¿Dirección A, B o C?** Recomendada: **A, «Rastro»**.
+2. **¿Mapas en texto o en el editor?** Recomendado: **texto**.
+3. **¿Confirmas la hipótesis prudente** de que, sin la prueba, las zonas
+   enseñan la causa antes del combate?
+
+**Respuesta:** pendiente.
+
+## Tensiones que recogió la fase 3 (resueltas en la fase 4)
 
 Se enumeran **sin recomendar ninguna**: las direcciones se plantean cuando
 estén los resultados.
