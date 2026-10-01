@@ -28,6 +28,11 @@ var zone_id := ""
 var zone_size := Vector2i.ZERO
 var body := PlayerBody.new()
 var camera := WorldCamera.new()
+## Capa de lo que se mueve o se alza sobre el suelo, ordenada por altura: lo
+## que está más al sur se dibuja encima. Hoy solo tiene al cuerpo; las
+## personas, los monstruos y los objetos del catálogo entran aquí en las
+## partes 3 y 4.
+var entities := Node2D.new()
 var label := PlaceLabel.new()
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
@@ -61,7 +66,9 @@ func _ready() -> void:
 	curtain.modulate.a = 0.0
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
-	add_child(body)
+	entities.y_sort_enabled = true
+	add_child(entities)
+	entities.add_child(body)
 	camera.target = body
 	add_child(camera)
 	camera.make_current()

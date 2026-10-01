@@ -31,6 +31,12 @@ extends Node2D
 ##     queda PLACE_LABEL_HOLD y se va; con movimiento reducido no se anima,
 ##     pero la espera se mantiene;
 ##   - GameState sabe en qué zona se está y hacia dónde se mira.
+##
+## Paso 5 — la pantalla completa: el sprite.
+##   - el cuerpo está en la capa de entidades, ordenada por altura;
+##   - el sprite mira hacia donde se anda (en diagonal manda el eje horizontal);
+##   - la pose cambia cada STRIDE px recorridos, andando o corriendo, se pone
+##     de pie al soltar y no da pasos empujando una pared.
 
 const T := DesignTokens.TILE_SIZE
 const HALF := DesignTokens.PLAYER_HITBOX.x / 2
@@ -82,6 +88,9 @@ func _ready() -> void:
 
 	print("\n=== RESTO: ROTULO DE LUGAR ===")
 	await _test_label()
+
+	print("\n=== PANTALLA: SPRITE ===")
+	await _test_sprite()
 
 	_check("posicion entera en los %d cuadros medidos" % _frames, _fractional == 0,
 		"%d cuadros con subpixel" % _fractional)
@@ -497,6 +506,85 @@ func _test_label() -> void:
 			_check("  pero la espera de %.1f s se mantiene" % DesignTokens.PLACE_LABEL_HOLD,
 				holds == hold and alphas.back() == 0.0, "%d cuadros de espera" % holds)
 	DesignTokens.reduced_motion = false
+	world.queue_free()
+	await get_tree().physics_frame
+
+
+func _test_sprite() -> void:
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	world.body.input_enabled = false
+	world.body.set_physics_process(false)
+	var b := world.body
+
+	_check("el cuerpo esta en la capa de entidades, ordenada por altura",
+		b.get_parent() == world.entities and world.entities.y_sort_enabled)
+
+	var rows := {
+		"abajo": [Vector2i.DOWN, PlayerBody.ROW_DOWN],
+		"arriba": [Vector2i.UP, PlayerBody.ROW_UP],
+		"izquierda": [Vector2i.LEFT, PlayerBody.ROW_LEFT],
+		"derecha": [Vector2i.RIGHT, PlayerBody.ROW_RIGHT],
+		"diagonal arriba-derecha (manda el eje horizontal)": [Vector2i(1, -1), PlayerBody.ROW_RIGHT],
+	}
+	var rows_ok := true
+	var bad := []
+	for label in rows:
+		world.enter_zone("prueba_a", Vector2i(10, 6))
+		b.step(rows[label][0], false)
+		if b.sprite_row != rows[label][1]:
+			rows_ok = false
+			bad.append(label)
+	_check("el sprite mira hacia donde se anda, en las 4 orientaciones y en diagonal",
+		rows_ok, "falla en %s" % [bad])
+
+	# Andando: la pose cambia exactamente a los 8, 16 y 24 px recorridos,
+	# echando a andar desde parado.
+	world.enter_zone("prueba_a", Vector2i(5, 9))
+	b.step(Vector2i.ZERO, false)
+	var changes := []
+	var last := b.pose
+	for f in range(1, 33):
+		b.step(Vector2i.RIGHT, false)
+		if b.pose != last:
+			changes.append(f)
+			last = b.pose
+	_check("andando, la pose cambia cada %d px (a los 8, 16, 24 y 32)" % PlayerBody.STRIDE,
+		changes == [8, 16, 24, 32], "cambia en los cuadros %s" % [changes])
+
+	# Corriendo: la misma distancia en la mitad de cuadros.
+	world.enter_zone("prueba_a", Vector2i(5, 9))
+	b.step(Vector2i.ZERO, false)
+	changes = []
+	last = b.pose
+	for f in range(1, 17):
+		b.step(Vector2i.RIGHT, true)
+		if b.pose != last:
+			changes.append(f)
+			last = b.pose
+	_check("corriendo, cambia cada 4 cuadros (la misma distancia)",
+		changes == [4, 8, 12, 16], "cambia en los cuadros %s" % [changes])
+
+	# Al parar, de pie en ese mismo cuadro.
+	for _i in 9:
+		b.step(Vector2i.RIGHT, false)
+	b.step(Vector2i.ZERO, false)
+	_check("al soltar, de pie en el mismo cuadro", b.pose == 0, "pose %d" % b.pose)
+
+	# Empujando una pared: primero se llega a tocarla; desde ahí el cuerpo no
+	# avanza y el sprite no da pasos.
+	world.enter_zone("prueba_a", Vector2i(10, 1))
+	for _i in 20:
+		b.step(Vector2i.UP, false)
+	var poses := []
+	for _i in 40:
+		b.step(Vector2i.UP, false)
+		poses.append(b.pose)
+	_check("empujando una pared no da pasos: se distingue de andar",
+		poses.count(0) == poses.size() and b.last_step == Vector2i.ZERO,
+		"poses %s, ultimo paso %s" % [poses.slice(0, 12), b.last_step])
+
 	world.queue_free()
 	await get_tree().physics_frame
 

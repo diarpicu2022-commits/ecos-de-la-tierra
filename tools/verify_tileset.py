@@ -18,6 +18,10 @@ Mide sobre `assets/tilesets/world.png`, no sobre los tokens:
    midió la enmienda 1 (3,27:1). EMBER_500 se informa como aviso: sobre el
    follaje no llega, así que un sprite de monstruo en el mundo nunca puede
    apoyarse solo en él (requisito para la parte 4).
+6. El sprite del jugador contra cada tinta del terreno: en cada una, la
+   túnica clara (`ash_050`) o el contorno oscuro (`ash_950`) llega a 3:1. Una
+   sola tinta no basta: sobre el verde purificado la túnica se pierde, y es el
+   contorno el que separa a Ilan del fondo (parte 2, paso 5).
 
 Sale con código 1 si algo falla.
 """
@@ -134,6 +138,17 @@ def main() -> int:
         print(f"  {mark} {accent} peor caso sobre {worst}: {c:.2f}:1")
     print("        -> un monstruo en el mapa lleva siempre borde EMBER_300 o contorno;")
     print("           EMBER_500 solo no se lee sobre el follaje (parte 4).")
+
+    print("\n=== SPRITE DEL JUGADOR CONTRA EL TERRENO (piso 3:1, la mejor de sus dos tintas) ===")
+    tunic, outline_dark = to_linear(tokens["ash_050"]), to_linear(tokens["ash_950"])
+    ground = [n for n in used if not n.startswith("ember_")]
+    best = {n: max(contrast(tunic, to_linear(tokens[n])), contrast(outline_dark, to_linear(tokens[n])))
+            for n in ground}
+    worst = min(best, key=best.get)
+    for n in ground:
+        ok &= best[n] >= GRAPHIC_FLOOR
+        if best[n] < GRAPHIC_FLOOR or n == worst:
+            print(f"  {'OK   ' if best[n] >= GRAPHIC_FLOOR else 'FALLA'} sobre {n}: {best[n]:.2f}:1{'  (peor caso)' if n == worst else ''}")
 
     print("\n" + ("Tileset dentro del contrato." if ok else "Hay fallos: se informan, no se maquillan."))
     return 0 if ok else 1

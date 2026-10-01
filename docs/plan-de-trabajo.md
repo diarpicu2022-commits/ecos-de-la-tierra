@@ -49,11 +49,12 @@ válidos:
 > hecho y aprobado** (2026-09-30, PR #4). **Paso 2 (el cuerpo): hecho y
 > aprobado** (2026-09-30, PR #5). **Paso 3 (esqueleto): hecho**, PR #6,
 > fusionado el 2026-10-01 sin revisión escrita de Diego. **Paso 4 (límites de
-> la cámara, fundido, rótulo y `GameState`): hecho el 2026-10-01 por Juan José
-> Rueda**, rama `parte-2/transicion`, pendiente del visto bueno de Diego, con
-> cuatro decisiones menores para confirmar. `verify_movement.tscn` da **81 de
-> 81** y el vacío junto a las salidas ya no aparece. **Lo siguiente es el
-> paso 5: la pantalla completa** (sprite del personaje y orden de dibujo).
+> la cámara, fundido, rótulo y `GameState`): hecho**, PR #7, fusionado con
+> permiso de Diego dado en persona. **Paso 5 (pantalla completa, el sprite de
+> Ilan): hecho el 2026-10-01 por Juan José Rueda**, rama `parte-2/pantalla`,
+> pendiente del visto bueno de Diego, con dos decisiones para confirmar:
+> contorno oscuro y dos poses por distancia. `verify_movement.tscn` da **87 de
+> 87**. **Lo siguiente es el paso 6, los estados**, que cierra la parte 2.
 >
 > **Módulo de IA ampliado** (2026-09-30): seis piezas nuevas, IA-1 a IA-6, en
 > la guía §3.3. Cada una entra en su parte; ninguna toca la parte 2.

@@ -39,6 +39,27 @@ var last_step := Vector2i.ZERO
 ## después el píxel entero, así que la posición sigue siendo entera.
 const PROBE := 0.99
 
+## Hoja del sprite (`tools/gen_world_sprites.py`): 2 poses por 4 orientaciones
+## de 16x24, con los pies en la última fila.
+const SPRITE_PATH := "res://assets/sprites/world/ilan.png"
+const SPRITE_SIZE := Vector2i(16, 24)
+## Fila de la hoja por orientación.
+const ROW_DOWN := 0
+const ROW_UP := 1
+const ROW_LEFT := 2
+const ROW_RIGHT := 3
+## La pose cambia cada medio tile recorrido. Va por distancia y no por
+## tiempo: se para justo cuando el cuerpo se para y no añade ninguna duración
+## (aclaración de «caminar no se anima», anexo de la parte 2, paso 5).
+const STRIDE := 8
+
+## Pose y fila que enseña el sprite. Las leen las pruebas.
+var pose := 0
+var sprite_row := ROW_DOWN
+
+var _sprite := Sprite2D.new()
+var _travelled := 0
+
 
 func _init() -> void:
 	var shape := RectangleShape2D.new()
@@ -48,6 +69,12 @@ func _init() -> void:
 	collider.position = Vector2(0, -DesignTokens.PLAYER_HITBOX.y / 2)
 	add_child(collider)
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	_sprite.texture = load(SPRITE_PATH)
+	_sprite.centered = false
+	_sprite.region_enabled = true
+	_sprite.offset = Vector2(-SPRITE_SIZE.x / 2, -SPRITE_SIZE.y)
+	add_child(_sprite)
+	_update_sprite()
 
 
 func _physics_process(_delta: float) -> void:
@@ -90,6 +117,25 @@ func step(direction: Vector2i, run: bool) -> void:
 				_shift(side)
 				slipped = true
 	last_step = Vector2i(global_position) - start
+	_update_sprite()
+
+
+## Fila según hacia dónde mira (en diagonal manda el eje horizontal) y pose
+## según la distancia recorrida. Sin avance, de pie: también empujando una
+## pared, que así se distingue de andar.
+func _update_sprite() -> void:
+	if facing.x != 0:
+		sprite_row = ROW_RIGHT if facing.x > 0 else ROW_LEFT
+	else:
+		sprite_row = ROW_DOWN if facing.y > 0 else ROW_UP
+	if last_step == Vector2i.ZERO:
+		_travelled = 0
+		pose = 0
+	else:
+		_travelled += maxi(absi(last_step.x), absi(last_step.y))
+		pose = (_travelled / STRIDE) % 2
+	_sprite.region_rect = Rect2(Vector2(pose * SPRITE_SIZE.x, sprite_row * SPRITE_SIZE.y),
+		Vector2(SPRITE_SIZE))
 
 
 ## Hacia qué lado librar la esquina, o `ZERO` si no se libra.
@@ -135,15 +181,3 @@ func _blocked(from: Transform2D, delta: Vector2i) -> bool:
 func _shift(delta: Vector2i) -> void:
 	global_position += Vector2(delta)
 
-
-## Marcador provisional hasta que exista el sprite (paso 5): la firma de
-## «persona» del catálogo, 16x24 con contorno `ASH_050`, con los pies en el
-## origen del nodo.
-func _draw() -> void:
-	var r := Rect2i(Vector2i(-8, -24), Vector2i(16, 24))
-	draw_rect(r, DesignTokens.ASH_400)
-	var c := DesignTokens.WORLD_OUTLINE_INTERACTIVE
-	draw_rect(Rect2(r.position, Vector2(r.size.x, 1)), c)
-	draw_rect(Rect2(r.position + Vector2i(0, r.size.y - 1), Vector2(r.size.x, 1)), c)
-	draw_rect(Rect2(r.position, Vector2(1, r.size.y)), c)
-	draw_rect(Rect2(r.position + Vector2i(r.size.x - 1, 0), Vector2(1, r.size.y)), c)
