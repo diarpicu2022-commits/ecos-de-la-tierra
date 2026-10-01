@@ -1,0 +1,10 @@
+{
+  "_doc": "Salidas entre zonas. Contrato «Umbral» (docs/ux/anexos/2026-09-30-movimiento-y-zonas.md): solo donde el camino pisado cruza el borde del mapa, como mucho 2 por pantalla de 480 px, y ningún borde pisable que no sea salida. «cell» es la casilla del borde por la que se sale; «to_cell», la casilla un tile dentro de la zona de destino donde se aparece. Las zonas «prueba_*» son de la parte 2 y no forman parte del mundo.",
+  "version": 1,
+  "exits": [
+    {"from": "prueba_a", "cell": [39, 9], "to": "prueba_b", "to_cell": [1, 8]},
+    {"from": "prueba_a", "cell": [12, 19], "to": "prueba_b", "to_cell": [15, 1]},
+    {"from": "prueba_b", "cell": [0, 8], "to": "prueba_a", "to_cell": [38, 9]},
+    {"from": "prueba_b", "cell": [15, 0], "to": "prueba_a", "to_cell": [12, 18]}
+  ]
+}

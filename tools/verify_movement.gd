@@ -14,8 +14,14 @@ extends Node2D
 ##   - pared plana: en diagonal se sigue por el eje libre; en recto, se para
 ##     tocándola, sin hueco;
 ##   - posición entera en todos los cuadros.
-## Los pasos siguientes de la fase 5 añaden aquí sus casos (fundido, salidas,
-## límites de la cámara).
+##
+## Paso 3 — el esqueleto: zonas de prueba con dos salidas.
+##   - las reglas de salida del contrato se cumplen en las zonas de prueba, y
+##     cada regla detecta su incumplimiento en un mapa estropeado a propósito;
+##   - al cruzar una salida con la tecla pulsada se llega a la casilla de
+##     destino, mirando igual, y se sigue andando sin perder un solo cuadro.
+## Los pasos siguientes añaden aquí sus casos (fundido, rótulo, límites de la
+## cámara).
 
 const T := DesignTokens.TILE_SIZE
 const HALF := DesignTokens.PLAYER_HITBOX.x / 2
@@ -47,6 +53,17 @@ func _ready() -> void:
 
 	print("\n=== CUERPO: PARED PLANA ===")
 	await _test_flat_wall()
+
+	print("
+=== ESQUELETO: REGLAS DE SALIDA ===")
+	_test_exit_rules()
+
+	print("
+=== ESQUELETO: CRUZAR UNA SALIDA ===")
+	_layer.queue_free()
+	_body.queue_free()
+	await get_tree().physics_frame
+	await _test_crossings()
 
 	_check("posicion entera en los %d cuadros medidos" % _frames, _fractional == 0,
 		"%d cuadros con subpixel" % _fractional)
@@ -202,6 +219,107 @@ func _test_flat_wall() -> void:
 		ok = ok and _body.last_step == Vector2i.ZERO
 	_check("recto contra pared plana: se para y no desliza", ok,
 		"ultimo paso %s" % _body.last_step)
+
+
+func _test_exit_rules() -> void:
+	var exits := ZoneRules.load_exits()
+	var zones := {"prueba_a": ZoneRules.load_zone("prueba_a"),
+		"prueba_b": ZoneRules.load_zone("prueba_b")}
+	for id in zones:
+		var problems := ZoneRules.check(id, zones, exits)
+		_check("%s cumple las reglas de salida" % id, problems.is_empty(), "; ".join(problems))
+
+	# Cada regla, contra un mapa estropeado a propósito.
+	var open_border := zones.duplicate()
+	open_border["prueba_a"] = _edit(zones["prueba_a"], Vector2i(0, 5), ".")
+	_expect_problem("un borde pisable que no es salida se detecta",
+		ZoneRules.check("prueba_a", open_border, exits), "borde pisable")
+	var not_path := zones.duplicate()
+	not_path["prueba_a"] = _edit(zones["prueba_a"], Vector2i(39, 9), ".")
+	_expect_problem("una salida que no es camino se detecta",
+		ZoneRules.check("prueba_a", not_path, exits), "no es camino")
+	var crowded := exits.duplicate()
+	crowded.append({"from": "prueba_b", "cell": [29, 9], "to": "prueba_a", "to_cell": [38, 9]})
+	var crowded_zones := zones.duplicate()
+	crowded_zones["prueba_b"] = _edit(zones["prueba_b"], Vector2i(29, 9), "=")
+	_expect_problem("tres salidas en una pantalla se detectan",
+		ZoneRules.check("prueba_b", crowded_zones, crowded), "salidas en la pantalla")
+	var into_water := exits.duplicate(true)
+	into_water[0]["to_cell"] = [20, 12]
+	_expect_problem("una llegada que no se pisa se detecta",
+		ZoneRules.check("prueba_a", zones, into_water), "no se pisa")
+	var one_way := exits.filter(func(e): return e["from"] != "prueba_b")
+	_expect_problem("una salida sin vuelta se detecta",
+		ZoneRules.check("prueba_a", zones, one_way), "de vuelta")
+
+
+func _test_crossings() -> void:
+	var world := WorldRoot.new()
+	add_child(world)
+	await get_tree().physics_frame
+	var cases := [
+		["este: prueba_a -> prueba_b", "prueba_a", Vector2i(36, 9), "move_right",
+			"prueba_b", Vector2i(1, 8), Vector2i.RIGHT],
+		["sur: prueba_a -> prueba_b", "prueba_a", Vector2i(12, 16), "move_down",
+			"prueba_b", Vector2i(15, 1), Vector2i.DOWN],
+		["oeste: prueba_b -> prueba_a", "prueba_b", Vector2i(3, 8), "move_left",
+			"prueba_a", Vector2i(38, 9), Vector2i.LEFT],
+		["norte: prueba_b -> prueba_a", "prueba_b", Vector2i(15, 3), "move_up",
+			"prueba_a", Vector2i(12, 18), Vector2i.UP],
+	]
+	for c in cases:
+		world.enter_zone(c[1], c[2])
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		Input.action_press(c[3])
+		var arrived_at := Vector2i(-1, -1)
+		var frames := 0
+		while world.zone_id == c[1] and frames < 200:
+			await get_tree().physics_frame
+			frames += 1
+			_count_frame(world.body)
+		arrived_at = Vector2i(world.body.global_position)
+		# Tras llegar, la tecla sigue pulsada: el cuerpo tiene que seguir
+		# andando en cada cuadro, sin uno solo parado.
+		var steady := true
+		for _i in 20:
+			var before := world.body.global_position
+			await get_tree().physics_frame
+			_count_frame(world.body)
+			steady = steady and (world.body.global_position - before) == Vector2(c[6])
+		Input.action_release(c[3])
+		await get_tree().physics_frame
+		var feet := WorldRoot.feet_of(c[5])
+		# `WorldRoot` decide la salida después del paso del cuerpo, así que en el
+		# cuadro del cambio los pies están exactamente en la casilla de destino.
+		var off := arrived_at - feet
+		_check("%s: llega a %s" % [c[0], c[4]], world.zone_id == c[4],
+			"sigue en %s tras %d cuadros" % [world.zone_id, frames])
+		_check("  aparece en la casilla de destino %s" % [c[5]],
+			off == Vector2i.ZERO, "pies en %s, esperados %s" % [arrived_at, feet])
+		_check("  mira igual al llegar", world.body.facing == c[6], "mira %s" % world.body.facing)
+		_check("  con la tecla pulsada sigue andando, 1 px en cada cuadro", steady)
+	world.queue_free()
+
+
+func _count_frame(body: Node2D) -> void:
+	_frames += 1
+	if body.global_position != body.global_position.round():
+		_fractional += 1
+
+
+func _expect_problem(label: String, problems: PackedStringArray, needle: String) -> void:
+	var found := false
+	for p in problems:
+		found = found or needle in p
+	_check(label, found, "problemas: %s" % "; ".join(problems))
+
+
+func _edit(lines: PackedStringArray, cell: Vector2i, ch: String) -> PackedStringArray:
+	var out := lines.duplicate()
+	var row := out[cell.y]
+	out[cell.y] = row.substr(0, cell.x) + ch + row.substr(cell.x + 1)
+	return out
 
 
 # --- Ayudas ------------------------------------------------------------------
