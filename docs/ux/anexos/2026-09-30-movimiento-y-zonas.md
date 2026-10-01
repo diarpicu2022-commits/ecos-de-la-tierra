@@ -436,8 +436,9 @@ antes de enseñar el juego a nadie.
   pide el contrato («mirando igual»).
 
 **Paso 4 — Resto: límites de la cámara, fundido, rótulo y `GameState` ·
-HECHO el 2026-10-01, pendiente del visto bueno de Diego.** Rama
-`parte-2/transicion`.
+HECHO el 2026-10-01.** PR #7, fusionado por Juan José Rueda con permiso de
+Diego dado en persona. Las cuatro decisiones de abajo quedan aceptadas con esa
+fusión. No hay una confirmación una por una, ni revisión escrita en GitHub.
 
 - `src/world/world_camera.gd`: `limits` y `visible_rect()`. El centro se
   encierra en la zona, en enteros, al final de cada `advance()` y en
@@ -566,6 +567,111 @@ Sin regresiones:
   cuerpo llega a la salida antes de los 2 s. Es lo que dice el contrato (el
   rótulo sale al entrar en una zona); se señala por si en la parte 10 la
   primera entrada debe tratarse distinto.
+
+**Paso 5 — Pantalla completa: el sprite de Ilan · HECHO el 2026-10-01,
+pendiente del visto bueno de Diego.** Rama `parte-2/pantalla`.
+
+- `tools/gen_world_sprites.py` → `assets/sprites/world/ilan.png`: una hoja de
+  2 poses por 4 orientaciones, de 16×24 px, con los pies en la última fila.
+  - Cada pose está dibujada como una cuadrícula de letras, un token por
+    píxel, para que se pueda leer y revisar en un diff.
+  - Frente y espalda se dibujan a media anchura y se reflejan; el perfil
+    izquierdo es el derecho reflejado.
+  - Sigue la rampa de ceniza del sprite de batalla: túnica clara, pelo oscuro
+    y, de espaldas, el Fragmento del Vínculo.
+- `src/world/player_body.gd`: el sprite sustituye al marcador provisional.
+  - **Fila:** según hacia dónde mira; en diagonal manda el eje horizontal.
+  - **Pose:** cambia cada `STRIDE` = 8 px recorridos.
+  - **De pie:** en cuanto el cuerpo no avanza.
+- `src/world/world_root.gd`: capa `entities` con `y_sort_enabled`, a la que
+  pasa el cuerpo. Ahí entran en las partes 3 y 4 las personas, los monstruos
+  y los objetos del catálogo.
+- `tools/verify_tileset.py`: regla 6, el sprite del jugador contra el terreno.
+- `tools/player_sheet.tscn` → `docs/ux/capturas/2026-10-01-ilan-{muestrario,andando,pared}.png`.
+
+**Cláusulas:** la firma de «persona» del catálogo (16×24), el lenguaje del
+entorno («más claro que su fondo») y la regla del verde: el sprite no lleva
+ningún `VITAL_*`.
+
+#### Dos decisiones que el contrato no fijaba
+
+Las eligió Juan José Rueda en la sesión del 2026-10-01; **Diego las confirma
+en el PR**.
+
+1. **Contorno oscuro, `ASH_950`, no `ASH_050`.**
+   - En el repertorio (guía §3.1), el contorno `ASH_050` significa «esto
+     responde», y el catálogo se lo da a las personas con las que se habla.
+     Si el jugador lo llevara, la misma forma tendría dos trabajos, y en la
+     parte 5 no se distinguiría de los personajes con los que se habla.
+   - **Lo confirma una medida.** Sobre el verde purificado, la túnica clara
+     solo llega a 1,39:1, y es el contorno oscuro el que separa a Ilan del
+     fondo (10,45:1). Con un contorno `ASH_050`, Ilan no se distinguiría
+     sobre el verde.
+2. **Dos poses de paso, por distancia.** La cláusula «caminar no se anima» se
+   escribió contra la aceleración y la amortiguación (Kowalski), pero leída
+   al pie de la letra es ambigua. **Aclaración:** la prohibición es de
+   duraciones, curvas y amortiguación en el movimiento. Un cambio de pose
+   atado a la distancia recorrida no tiene duración, no retrasa nada y se
+   para en el mismo cuadro que el cuerpo. Además, distingue «andar» de
+   «empujar una pared», cosa que un sprite estático no hace.
+
+#### Verificado
+
+`verify_movement.tscn`: **87 de 87**. A los 81 casos anteriores se suman:
+
+- El cuerpo está en la capa de entidades, ordenada por altura.
+- El sprite mira hacia donde se anda en las 4 orientaciones y en diagonal.
+- Andando, la pose cambia exactamente a los 8, 16, 24 y 32 px; corriendo,
+  cada 4 cuadros.
+- Al soltar, el sprite queda de pie en el mismo cuadro.
+- Empujando una pared no da pasos.
+
+**La prueba se comprobó rompiéndola a propósito:**
+
+- Sin ponerse de pie al parar, fallan 3 casos.
+- Si en diagonal mandara el eje vertical, falla 1.
+
+`verify_tileset.py`, regla nueva: en cada tinta del terreno, la túnica
+(`ASH_050`) o el contorno (`ASH_950`) llega a 3:1. **Peor caso: 4,21:1, sobre
+`FLORA_300`.** Ninguna de las dos tintas basta sola:
+
+- la túnica baja a 1,39:1 sobre `VITAL_500`;
+- el contorno baja a 1,16:1 sobre `WATER_700`.
+
+Paleta:
+
+- `ilan.png` y las tres capturas: todo píxel es un token.
+- Los 18 sprites del juego pasan `verify_palette.py image`.
+
+**Corregido durante el paso, en la prueba y en la hoja:**
+
+1. La prueba empezaba con el contador de distancia arrastrado de los casos
+   anteriores, y la pose cambiaba a los 3 px. Ahora cada secuencia arranca
+   desde parado, que es el caso real.
+2. El caso «empujando una pared» empezaba 8 px antes del muro y medía esos
+   8 px de paso. Ahora mide desde que el cuerpo toca la pared.
+3. En el muestrario, la primera y la última fila de sprites salían cortadas.
+
+Sin regresiones:
+
+- `verify_palette.py tokens`: sin deriva.
+- `verify_usability.tscn`: 16 de 16.
+- `verify_camera.tscn`: 37 de 37.
+- `test_zone.tscn` y `main.tscn` arrancan sin errores.
+- `project.godot`: sin tocar.
+
+#### Se dice, para decidir en la revisión
+
+- **El Fragmento de la espalda se lee como un anillo**, no como el rombo de
+  la batalla: a 2 px de ancho no cabe un rombo.
+- **En perfil, la túnica clara solo va por delante**, y se puede leer como un
+  delantal.
+- **Con el sprite de verdad, el hueco de 1 a 3 px** entre la caja y el borde
+  dibujado del follaje no se ve: la cabeza y el cuerpo se dibujan sobre el
+  follaje que queda al norte. Ver la captura `pared`.
+- **El orden por altura todavía no tiene nada que ordenar:** el cuerpo es la
+  única entidad. Se comprueba de verdad en la parte 3, con la primera persona
+  o el primer objeto del catálogo.
 
 **Verificación de la parte** (`tools/verify_movement.gd`): posición entera en
 cada cuadro; 1 y 2 px por cuadro y eje; cero cuadros de aceleración; un pasillo
