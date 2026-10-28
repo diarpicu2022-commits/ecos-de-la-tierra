@@ -100,11 +100,12 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	# Estado por casilla: en Valdehoja, cada parte sigue a su región.
 	var purified_at := WorldDecor.purified_lookup(id, state)
 	WorldTiles.paint(_layer, WorldTiles.parse(lines), purified_at)
-	for child in entities.get_children():
+	# Fuera del árbol antes de liberarlos: así el decorado de la zona anterior
+	# no choca de nombre con el nuevo ni cuenta para la física de este cuadro.
+	for child in entities.get_children() + solids.get_children():
 		if child != body:
+			child.get_parent().remove_child(child)
 			child.queue_free()
-	for child in solids.get_children():
-		child.queue_free()
 	WorldDecor.build(id, purified_at, entities, solids)
 	zone_id = id
 	zone_size = Vector2i(lines[0].length(), lines.size())

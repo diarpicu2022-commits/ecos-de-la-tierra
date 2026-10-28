@@ -576,7 +576,7 @@ enmiendas 6, 7 y 8.
 
 **Visto bueno de Diego al paso 2: 2026-10-28** («sí, dale»).
 
-### Paso 3 — Valdehoja en el motor · ESCRITO, sin ejecutar
+### Paso 3 — Valdehoja en el motor · HECHO, espera visto bueno
 
 **Cláusulas:** «Umbral» (colisión del tile entero, capa de entidades ordenada
 por altura); contrato «Rastro» (formato de los mapas); enmiendas 6 y 7.
@@ -606,29 +606,39 @@ por altura); contrato «Rastro» (formato de los mapas); enmiendas 6 y 7.
   jardín, era con la Costa purificada y con todo purificado).
 - `tools/valdehoja_play.tscn`: para pasear por Valdehoja con el teclado.
 
+#### Verificado en Godot 4.7.2 (2026-10-28, con permiso de Diego en la sesión)
+
+- `--import`: limpio; `project.godot` no se reescribió.
+- `verify_zone.tscn -- valdehoja`: **41 de 41**, más 2 pendientes declarados
+  (la salida al Bosque sin dibujar y la prueba de entrecerrar). En el motor:
+  - 377 sprites ordenados por altura y 146 cuerpos sólidos;
+  - andando hacia la puerta de una casa, Ilan se para fuera;
+  - el jardín está purificado al empezar y la arboleda no;
+  - con el Bosque purificado, vuelven la arboleda y su fauna.
+- `verify_movement`: **99 de 99**. `verify_usability`: **16 de 16**.
+  `verify_camera`: **37 de 37**. Las zonas de prueba no cambian.
+- **Dos fallos que la prueba cazó en la primera pasada, y se corrigieron:**
+  - Al volver a entrar en la zona, el decorado viejo seguía en el árbol hasta
+    el final del cuadro y Godot renombraba el nuevo. Ahora `WorldRoot` lo
+    saca del árbol antes de liberarlo.
+  - **La arboleda no tenía fauna:** el pájaro previsto caía bajo un árbol y
+    el generador lo descartó. Se añadió una en (36, 23). Era un defecto de
+    contenido, no de la prueba.
+- **Capturas del motor**, a 480 × 270: `docs/ux/capturas/2026-10-28-valdehoja-motor-casa.png`,
+  `-jardin.png`, `-era.png` (con la Costa purificada) y `-todo.png`. Salen
+  iguales a las de `zone_preview.py`.
+- `verify_palette.py image --world` sobre las cuatro: **FALLA solo por el
+  sprite de Ilan** (`ash_950`, 72 px; `ash_900`, 2 px), el hallazgo ya anotado
+  en el paso 2. Todo el decorado y el terreno son tokens dentro del contrato.
+
 #### Pendiente, y se dice
 
-- **Nada de este paso se ha ejecutado.** En la nube no hubo permiso para
-  lanzar Godot. El código está revisado línea a línea, pero no se da por
-  bueno hasta que pasen:
-
-  ```
-  godot --headless --path . --import
-  godot --headless --path . res://tools/verify_zone.tscn -- valdehoja
-  godot --headless --path . res://tools/verify_movement.tscn   # 99/99
-  godot --headless --path . res://tools/verify_usability.tscn  # 16/16
-  xvfb-run -a godot --path . res://tools/valdehoja_capture.tscn
-  ```
-
-  El `--import` es obligatorio: los 34 sprites y la fila 7 del atlas son
-  nuevos y no tienen `.import`.
-- **Las capturas del motor** (`2026-10-28-valdehoja-motor-*.png`) no existen
-  todavía. Cuando existan, pasan por `verify_palette.py image --world` y por la
-  prueba de entrecerrar.
+- **Prueba de entrecerrar**: no tiene todavía una medida automática; se
+  propone escribirla en el paso 4.
 - **El juego principal (`scenes/main.tscn`) todavía no lleva al mundo**: sigue
   abriendo la demo de batalla. El paso del mundo al combate es la parte 4.
 - **Enmienda 8 (movimiento):** paso 4, estados.
+- **El sprite de Ilan frente a `--world`:** lo decide Diego.
 
-**Siguiente:** ejecutar lo de arriba en Godot y, con las capturas del motor,
-el paso 4 (estados: la ola por partes, el agua y la hierba que se mueven, los
-animales que andan).
+**Siguiente:** paso 4, estados: la ola por partes, el agua y la hierba que se
+mueven y los animales que andan (enmienda 8), y la prueba de entrecerrar.
