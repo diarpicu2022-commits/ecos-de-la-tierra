@@ -320,6 +320,10 @@ tres opciones recomendadas:
 | **7 · Animales domésticos siempre** | Gallinas, perro y cabras viven en Valdehoja desde el principio, sin responder. La fauna silvestre (pájaros, mariposas) solo está dentro de una parte purificada. | `verify_zone` comprueba que la fauna silvestre está dentro de una parte. |
 | **8 · Movimiento solo en lo purificado** | El agua brilla, las flores y la hierba se mecen y los animales andan donde ya está sano. Lo enfermo queda quieto. | Sustituye a «nada se mueve solo salvo la fauna» del contrato «Rastro». En el motor se implementa en el paso de estados de cada zona. |
 
+**Enmienda 9 — la arena** (2026-10-28): material nuevo `:` para la Costa, sin
+color nuevo. Enferma, `ASH_700` con microplástico; purificada, `WOOD_500` con
+ondas. Piso propio de dE 6 frente al camino purificado (medido 6,9).
+
 ### 3.3 Módulo de IA ampliado — aprobado por Diego el 2026-09-30
 
 Hasta aquí la IA vivía solo en el combate: pesos para los monstruos comunes y
@@ -579,7 +583,7 @@ python tools/verify_palette.py value <tile_enfermo.png> <tile_purificado.png>   
 Y una escena `tools/tileset_sheet.tscn` que pinte un mapa de prueba de
 30×17 tiles con los tres materiales en los dos estados y capture a 480×270.
 Sobre esa captura se decide la decisión abierta: **si dE 9,2 entre materiales
-basta o hace falta la enmienda 9** (la 5 se usó para la cámara el 2026-09-30, y la 6 a la 8 para Valdehoja el 2026-10-28). Criterio medido: tres personas nombran el
+basta o hace falta la enmienda 10** (la 5 se usó para la cámara el 2026-09-30, la 6 a la 8 para Valdehoja y la 9 para la arena el 2026-10-28). Criterio medido: tres personas nombran el
 material de 10 recortes de 64×64 sin error, o no basta.
 **Punto de control con Diego.**
 
