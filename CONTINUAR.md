@@ -13,7 +13,7 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 ## 1. Lo primero: el visto bueno a la Cumbre y a la Cripta
 
 El 2026-10-28 se cerraron **Valdehoja y cuatro regiones** (PR #13, #14 y
-#15). La **Cumbre Menguante** (PR #16, abierto) y la **Cripta de la Avaricia**
+#15). La **Cumbre Menguante** (PR #16, fusionado) y la **Cripta de la Avaricia**
 quedaron hechas, a la espera del visto bueno de Diego. La Cripta tiene cinco bóvedas, una por región, y la enmienda 10 (la piedra). Queda una
 pregunta suya: si la Cripta, que hoy no tiene paso cerrado ni salida de ida
 por ser el final, lleva una salida a la superficie detrás de la Sombra. Con
@@ -150,7 +150,7 @@ En un servidor sin pantalla: `xvfb-run -a $GODOT --path . res://tools/<x>.tscn`
 
 ## 5. Reglas que no se saltan
 
-Resumen; el texto completo está en `CLAUDE.md` y en la guía §1.
+Resumen; el texto completo está en `AGENTS.md` y en la guía §1.
 
 - **Abrir leyendo** `docs/plan-de-trabajo.md` y la guía; no explorar el repo.
 - **Una parte por sesión** (en la parte 3, una zona por sesión). No se abre la
@@ -172,13 +172,3 @@ Resumen; el texto completo está en `CLAUDE.md` y en la guía §1.
   commits directos a `master`. **Sin firma de herramientas** en nada.
 - **Al cerrar la sesión**: actualizar `docs/plan-de-trabajo.md` (y este
   archivo si cambia el bloqueo) y hacer commit.
-
----
-
-## 6. Nota sobre la copia local del PC
-
-La copia en el PC de Diego está en `master` **atrasada** (llega solo al PR #3)
-y tiene `project.godot` modificado sin commit: es el editor de Godot que
-reordenó secciones y borró los comentarios, y además le falta
-`2d/snap/snap_2d_vertices_to_pixel=true`. No hay que subir ese cambio. Para
-ponerla al día: `git checkout -- project.godot && git pull`.

@@ -55,8 +55,8 @@ válidos:
 >
 > **Llanura Marchita: aprobada** (2026-10-28, PR #15).
 >
-> **Cumbre Menguante: HECHA el 2026-10-28**, espera visto bueno en el PR #16
-> (abierto).
+> **Cumbre Menguante: HECHA el 2026-10-28**, espera visto bueno (PR #16,
+> fusionado).
 >
 > **Cripta de la Avaricia: HECHA el 2026-10-28, espera visto bueno.**
 > - Cinco bóvedas, una por región (Diego): lo que la Compañía se llevó de
@@ -289,7 +289,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 ```
 docs/plan-de-trabajo.md      Este archivo. Punto de retome de cada sesión.
 docs/guia-de-continuacion.md Protocolo, repertorio e instrucciones por parte.
-CLAUDE.md                    Lo que cualquier Claude lee al abrir el proyecto.
+AGENTS.md                    Reglas para quien abra el proyecto.
 tools/verify_palette.py      Paleta, saturación y visión del color, medidas.
 docs/ux/anexos/              Un anexo por pantalla. Contratos de diseño.
 src/README.md                Arquitectura del código.
