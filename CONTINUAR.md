@@ -19,8 +19,9 @@ domésticos y movimiento en lo purificado. Los pasos 1 y 2 de Valdehoja están
 entregados y esperan visto bueno. Antes de seguir:
 
 1. Diego aprobó el paso 2. El **paso 3** (Valdehoja en el motor, con
-   `WorldDecor`) está escrito y **sin ejecutar**. Hay que pasar en Godot los
-   cinco comandos del anexo (Valdehoja, paso 3), empezando por `--import`.
+   `WorldDecor`) está hecho y verificado en Godot (`verify_zone` 41/41), y
+   espera visto bueno. En la nube, Godot se descarga como dice el §4 de
+   este archivo; hace falta que Diego permita ejecutarlo.
 2. Decidir qué se hace con el sprite de Ilan frente a `--world` (anexo de la
    parte 3, Valdehoja, «FALLA medido»).
 3. Paso 4: estados y movimiento en lo purificado (enmienda 8).
@@ -38,7 +39,7 @@ entregados y esperan visto bueno. Antes de seguir:
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1-2 aprobados y paso 3 escrito sin ejecutar (2026-10-28) |
+| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1-2 aprobados y paso 3 verificado en Godot (2026-10-28) |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
