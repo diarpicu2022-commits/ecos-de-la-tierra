@@ -21,6 +21,7 @@
 ; f = decor, flower, pisable             flores (mustias en lo enfermo)
 ; b = decor, litter, pisable             basura suelta (daño de la Costa)
 ; r = decor, crop_row, pisable           hilera de un solo cultivo (daño de la Llanura)
+; X = entity, blocker, sólido, 2x2       paso cerrado: la bocamina tapiada; se abre al purificar la Cripta (enmienda 12)
 ; S = entity, seedbed, sólido            semillero del jardín de Yara
 ; p = entity, person, sólido             Yara
 ; k = animal, chicken, pisable           gallina (enmienda 7)
@@ -30,10 +31,10 @@
 ; m = fauna, butterfly, pisable          mariposa: solo en lo purificado
 ; @ = spawn, start, pisable              aparición al empezar la partida
 ---
-UUTTTTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
-UUTTTTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
-TT   w     e   e   w              UUTTTTUU   w          TT
-TT   rrrrrrrrrrrrrr  e     mv  YYYUUTTTTUU egw   g      TT
+UUu TTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
+UUu TTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
+TT XXw     e   e   w              UUTTTTUU   w          TT
+TT XXrrrrrrrrrrrrrr  e     mv  YYYUUTTTTUU egw   g      TT
 TT   rrrrrrrrrrrrrr       f fm YYY                 TT   UU
 TT                         f   YYY                 TT  gUU
 UU         g   u    veg   f u  YYYv  w  TT w           eTT

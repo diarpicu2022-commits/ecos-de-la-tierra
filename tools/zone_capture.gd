@@ -79,6 +79,11 @@ const SHOTS := {
 		["fuente", Vector2i(30, 46), false],
 		["fuente-purificada", Vector2i(30, 46), true],
 		["galeria-purificada", Vector2i(23, 7), true],
+		# Enmienda 12: el túnel detrás de la Sombra y el pozo a Valdehoja.
+		["tunel", Vector2i(33, 30), false],
+		["reja-pozo", Vector2i(33, 5), false],
+		["tunel-abierto", Vector2i(33, 12), true],
+		["pozo-abierto", Vector2i(33, 3), true],
 	],
 }
 const MOTION := {"ashen_forest": Vector2i(52, 11), "tar_basin": Vector2i(40, 38),

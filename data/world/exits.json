@@ -19,6 +19,8 @@
     {"from": "withered_plain", "cell": [52, 39], "to": "waning_peak", "to_cell": [52, 1]},
     {"from": "waning_peak", "cell": [52, 0], "to": "withered_plain", "to_cell": [52, 38]},
     {"from": "waning_peak", "cell": [0, 36], "to": "greed_crypt", "to_cell": [58, 36]},
-    {"from": "greed_crypt", "cell": [59, 36], "to": "waning_peak", "to_cell": [1, 36]}
+    {"from": "greed_crypt", "cell": [59, 36], "to": "waning_peak", "to_cell": [1, 36]},
+    {"from": "greed_crypt", "cell": [33, 0], "to": "valdehoja", "to_cell": [3, 1]},
+    {"from": "valdehoja", "cell": [3, 0], "to": "greed_crypt", "to_cell": [33, 1]}
   ]
 }

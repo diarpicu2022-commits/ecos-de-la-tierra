@@ -1212,6 +1212,58 @@ def gold(pure: bool) -> Canvas:
     return c
 
 
+def gate_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Cripta, 16x16: la reja de oro de la Compañía que
+    cierra el túnel y el pozo detrás de la Sombra (enmienda 12). Barrotes en
+    punta, sin contorno. Desaparece con la ola, como el resto del oro."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    for x in (1, 14):
+        line(c, x, 15, x, 2, "ember_700")
+    for x in (4, 7, 10):
+        line(c, x, 15, x, 3, "ember_400")
+        line(c, x + 1, 15, x + 1, 4, "ember_700")
+        c.set(x, 2, color("ember_300"))
+    line(c, 1, 6, 14, 6, "ember_700")
+    line(c, 1, 11, 14, 11, "ember_700")
+    for x in (4, 7, 10):
+        c.set(x, 6, color("ember_300"))
+    return c
+
+
+def mine_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de Valdehoja, 32x32 (2x2 tiles): la bocamina, con su marco
+    de madera de dos postes y dintel, la boca oscura y tablones clavados en
+    cruz (enmienda 12). Se abre al purificar la Cripta: purificada, ya no
+    está."""
+    c = Canvas(32, 32)
+    if pure:
+        return c
+    ground_shadow(c, 16, 30, 14, "soil_700")
+    # La boca: oscura, con la piedra del monte asomando por los bordes.
+    for y in range(7, 31):
+        line(c, 6, y, 25, y, "water_700")
+    for x, y in ((6, 8), (25, 9), (7, 20), (24, 24), (6, 27)):
+        c.set(x, y, color("ash_600"))
+    # El marco: dos postes y el dintel, con la luz por la izquierda.
+    for x in (3, 26):
+        for dx, ink in ((0, "wood_300"), (1, "wood_500"), (2, "wood_700")):
+            line(c, x + dx, 30, x + dx, 5, ink)
+    for dy, ink in ((0, "wood_300"), (1, "wood_500"), (2, "wood_700")):
+        line(c, 1, 3 + dy, 30, 3 + dy, ink)
+    # Los tablones, en cruz sobre la boca, y los clavos.
+    for x0, y0, x1, y1 in ((6, 27, 25, 9), (6, 9, 25, 27)):
+        line(c, x0, y0, x1, y1, "wood_500")
+        line(c, x0, y0 + 1, x1, y1 + 1, "wood_700")
+    line(c, 6, 17, 25, 17, "wood_300")
+    line(c, 6, 18, 25, 18, "wood_700")
+    for x, y in ((7, 17), (24, 17), (15, 17), (7, 9), (24, 9)):
+        c.set(x, y, color("ash_400"))
+    return c
+
+
 def coins(pure: bool, seed: int) -> Canvas:
     """Monedas sueltas por el suelo, 16x16: el oro que se derrama hacia la
     fuente (el gradiente de la Cripta). Purificado, ya no está."""
@@ -1857,6 +1909,9 @@ def pieces() -> dict[str, Canvas]:
         out[f"baron_statue_{state}"] = baron_statue(pure)
         out[f"monster_greed_crypt_{state}"] = greed_monster(pure)
         out[f"banner_{state}"] = banner(pure)
+        out[f"blocker_greed_crypt_{state}"] = gate_blocker(pure)
+        # Valdehoja: la bocamina que sube de la Cripta (enmienda 12).
+        out[f"blocker_valdehoja_{state}"] = mine_blocker(pure)
     out["boulder_sick"] = boulder(77)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)

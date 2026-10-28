@@ -1338,3 +1338,61 @@ estandartes se apoyan también en el muro.
 
 **Siguiente:** el visto bueno de Diego a la Cripta y su respuesta sobre la
 salida detrás de la Sombra. Con eso, **la parte 3 queda cerrada**.
+
+### Enmienda 12 — la salida de la Cripta, autorizada por Diego el 2026-10-28
+
+Diego aprueba la Cumbre y la Cripta, y responde a la pregunta: **sí, la Cripta
+lleva salida, y sale a Valdehoja.** Ilan vuelve a casa por el mismo camino que
+deja abierto la ola; el final (parte 12) queda en el pueblo purificado.
+
+**El choque, y cómo se resolvió (decisión de Diego).** La regla 4 de
+«Umbral» pide una salida de vuelta junto a cada llegada. Una salida de
+Valdehoja a la Cripta abierta desde el principio dejaría entrar al final desde
+casa, y Valdehoja no admitía pasos cerrados. Diego eligió **un único paso
+cerrado en Valdehoja** frente a la salida de un solo sentido o quedarse sin
+salida.
+
+**En la Cripta:**
+
+- Detrás de la Sombra sale un **túnel** de una casilla hacia el norte, en la
+  columna 33. Cruza la galería norte y sigue por un **pozo** hasta el borde,
+  en (33, 0).
+- Lo cierran **dos rejas de oro de la Compañía** (`blocker`, 16 × 16, rampa
+  EMBER): una en la boca del túnel (33, 11) y otra en el pozo (33, 2). Se van
+  con la ola, como el resto del oro.
+- Enferma, el túnel se recorre desde la cámara y acaba en la reja: es el paso
+  cerrado detrás de la fuente, como en las otras regiones.
+
+**En Valdehoja:**
+
+- En el noroeste, el camino de las terrazas sube a una **bocamina tapiada**
+  (`blocker`, 2 × 2): dos postes y un dintel de madera, la boca oscura y
+  tablones en cruz. Sale al borde en (3, 0).
+- La bocamina es **la parte `greed_crypt`** del pueblo: sigue la bandera de la
+  Cripta y no la de Valdehoja. El motor no cambia; el sistema de partes ya
+  lo hacía.
+- Las dos casillas de la boca son camino: abierta, queda la boca de tierra
+  hasta el borde, sin parche de color.
+
+**Medido:**
+
+- `verify_zone -- greed_crypt`: **48 de 48**. Ya no hay excepción de «la
+  Cripta es el final»: su salida de ida no se alcanza enferma y sí al
+  purificar.
+- `verify_zone -- valdehoja`: **55 de 55**. Comprobaciones nuevas: un solo
+  paso cerrado, en la bocamina; la salida a la Cripta no se alcanza al empezar
+  y sí al abrirla. Las entidades de varios tiles se comprueban por pieza.
+- Las otras cinco zonas siguen en verde. `verify_movement` 99/99,
+  `verify_usability` 16/16, `verify_camera` 37/37, tokens sin deriva (47) y
+  tileset dentro del contrato.
+- `verify_palette --world --strict` sobre los dos sprites nuevos: todo píxel
+  es un token. `verify_squint` OK en la Cripta y en Valdehoja.
+- **Un fallo, y se dice:** la primera bocamina medía 16 × 16 y apenas se leía
+  entre los árboles del borde. Diego pidió el marco de 2 × 2. En esa versión,
+  al abrirse, la tierra de la boca se pintaba como un cuadrado verde de canto
+  recto; pasó a camino.
+- **Capturas del motor:** `2026-10-28-cripta-motor-tunel.png`,
+  `-reja-pozo.png`, `-tunel-abierto.png`, `-pozo-abierto.png`, y
+  `2026-10-28-valdehoja-motor-bocamina.png` y `-bocamina-abierta.png`.
+
+**La parte 3 queda cerrada.** Siguiente: la parte 4.

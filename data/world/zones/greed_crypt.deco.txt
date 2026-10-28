@@ -4,7 +4,7 @@
 ;
 ; Cinco bóvedas, una por región (Diego, 2026-10-28): en cada una, lo que la
 ; Compañía se llevó de esa región junto al oro que sacó de ello. Piedra en
-; muro y losa (enmienda 10). Es el final: detrás de la Sombra no hay paso.
+; muro y losa (enmienda 10). Detrás de la Sombra, un túnel y un pozo suben a Valdehoja (enmienda 12).
 ;
 ; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
 ; L = vignette, v1_log_pile, sólido, 2x2      bóveda 1: la madera del Bosque, apilada
@@ -19,6 +19,7 @@
 ; 5 = vignette, v5_gold, sólido               y su oro
 ; Y = landmark, baron_statue, sólido, 2x3     hito: la estatua de oro del Barón Cendral
 ; M = entity, monster, sólido                 la Sombra de la Avaricia (combate final)
+; X = entity, blocker, sólido                 paso cerrado: reja de oro de la Compañía (detrás de la Sombra y en el pozo)
 ; C = decor, pillar, sólido                   columna, también sobre el muro
 ; r = decor, root, sólido                     raíces que bajan por el muro
 ; B = decor, banner, sólido                   estandarte rasgado de la Compañía, en el muro
@@ -30,7 +31,7 @@
 ---
 
                  G  G  G  G
-
+                                 X
                     G    G
 
             C               q B     B     B
@@ -39,7 +40,7 @@
 
           o       q             k  q  o
       q               2                  q
-     B     BC     B     B     B     r     B      C     C
+     B     BC     B     B     B  X  r     B      C     C
 
                                                    q
 
