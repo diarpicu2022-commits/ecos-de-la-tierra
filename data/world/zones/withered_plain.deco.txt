@@ -1,0 +1,68 @@
+; Llanura Marchita — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md), zona regional. Mismo tamaño
+; que withered_plain.txt. El estado lo da la bandera purified_withered_plain.
+;
+; Las hileras de monocultivo van SIN CERCA: la parcela cercada es la clase que
+; responde de la Llanura (catálogo 2a).
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; 1 = vignette, v1_stump, sólido              tocón del seto arrancado
+; a = vignette, v1_crop_row, pisable          la hilera de un solo cultivo que ocupa su sitio
+; b = vignette, v2_sack, sólido               saco de abono químico abierto
+; 2 = vignette, v2_salt, pisable              la costra de sal que deja en el suelo
+; c = vignette, v3_sprayer, sólido, 2x1       la pulverizadora tumbada
+; 3 = vignette, v3_wilted_row, pisable        la hilera marchita
+; Y = landmark, silo, sólido, 3x4             hito: el silo de la aldea Grano de Sal
+; M = entity, monster, sólido                 el Espectro del Monocultivo (combate de historia)
+; X = entity, blocker, sólido                 paso cerrado: alambre de espino en diagonal
+; S = entity, seedbed, sólido                 semillero del campo del norte
+; T = decor, tree, sólido, 2x2                árbol del seto
+; U = decor, tree_b, sólido, 2x2              árbol del seto, segunda copa
+; u = decor, bush, sólido                     arbusto del seto, también sobre el follaje
+; r = decor, crop_row, pisable                hilera de un solo cultivo
+; z = decor, salt, pisable                    costra de sal
+; g = decor, grass, pisable                   hierba silvestre del barbecho
+; w = decor, weed, pisable                    matojo
+; R = decor, rock, sólido                     piedra del campo
+; @ = spawn, start, pisable                   llegada desde la Costa
+---
+UUuuuuu   uuuuuuuuuuu TTu u u u UUuuuuuuuuUUu uuu uuuu  uuuu uu uuuuuuuuuuuu uuu uTT  uuuu
+UUu uu uuu uuuuuuuuuuuTT u uuu uUUuuuu uuuUU uu uu u  uu uuuuu uu   uuuuuuuuu uuuuTTuu uuu
+                                                                            g        r  r
+        g   w gg  w  r   Rg   grr   rrr r            r  r rR    rr r R r r  rr rb b  2 R
+ R       r        w         r S     r    rr  g        rr  r g rr  grg   rr       2r2 wb
+   w     g                g          r  rrr wr  rr  R   gR   r r r      r r
+ gw   r  R                r r r r   r rg rr rg r grr  r  rrr  R   grr  r  g g  r  rr  2
+    R R   R         r   grR  r  rr r r  rrg    rR  g  rr rr r    r r r  rr  r   gr r  rr
+ w     R   R      r          r     rrr r  r  r   R Rr r           r  wr r r gr r r r   rw
+         1  1aa       r     r rrr    r  r rrrr   rrr    rw rg   rrr r  rr r        R   r
+  r            a1     r  r  R g   r w r     r r       grg  r rrw rr  r    w       g
+ @                                                                              r r    rr
+            1aag   w  w r       rr   rrr rr rr rrrrzwr r rr zrr  r gRg r rr uu u     rrr
+                                                                             uu r  r r g
+ u uUU  TT uuuu  uu UUu uu u  uuUUUUuuu uu  u uu uuuu TTuuuu uUUu u u UU uu u uu      rr
+u u UUuuTT u  uuuuuuUU uuu uuuuuUUUUuuuuuuuuuuuu u u uTT u u uUUuuuuuuUU u uuu ur r
+uuuu uuuTTuu uUUTTTTuuuuuuUUu UUuuTTUU uuuUUuuu uu          uuuuuu uTTTTuu uuuuur  g    r
+u uu uuuTTu uuUUTTTTuuu uuUUuuUUuuTTUUuu  UUuuu uu rrz r   ruuu uuu TTTT uuuu  u      r
+uuu  uuuuuuu  u uuu  u uu  uuuu u UUuu u  uuuu    r rrr YYY z   u u UU  u  uTT uRr w g r
+uuu u uu  u uuu uuu uu uu  u uuuu UUuuu uuuu u  zzr  R  YYYrzrr  u uUUuuuu uTTuu r r r rr
+uuuuuuUUu   UUuuTTu  uu   uuTTu u uuuuuuuu u   z  rrr zgYYYrrrrg  uuuu u  u uuuu rr   r g
+uuuuuuUUuuuuUUuuTT uuuuuuuu TT uu uuu uuuuu  z  grrrz  RYYYr  rr   uuu uuu uuuu r gr
+UU   u uUU uTTuu uuuuu  TTuu uuuTTu uuuuuuuuz r z rzzz   Mrrrrrrrruu uuuuuuu  uu r r
+UUuu uu UUuuTTuuuuuuuuuuTTuuu uuTTuu u u u       w      r   rrzrz uuuuuuuu uuuuu  g    rr
+ uuuuuu u uuTTuuuuu u uu uUU uu u  uuuuuuuuu rrrRrgz rrrg           UUu UUUU uuu   R   wr
+ uuu uu  uuuTTuuu u u uuuuUUu uu u uuu uuu u       r   rrrr   grrr  UUu UUUUuuu    w
+UUuuu TTuuTTuu uu u uu  UUuuu  u uuuUU uUUuuUUTTrzz   r  Rgg R  rr  uuuu uuu uTTr    rgrr
+UUuuuuTTuuTTuuuu uuu uuuUU   uuuu uuUUuuUUuuUUTT      zz  z r       uuuuuuuuuuTTrr r  r r
+u TT uTTUU uu uuuuUUuuu uuTTuuuuUUTTTTuu u uuuuuu uu  TTUU   rrrzr gz R   g    r rg   r
+u TTuuTTUU uuuuuuuUU uuuuuTTuuuuUUTTTTuuu  uuu uu uu  TTUUr  rzrrr  z rrwRrgrr r rr  rR r
+TTUUuuu uuuuuuUU uUU uuuUUuuuuuuuuUUu uuTTuu uu UUuu  UUTTrz rz  z r Rccr g     r  R r  r
+TTUU uuuuu uuuUUuuUU uuuUUuuu  uuuUUuuuuTTuu u uUUuuX UUTT    rrrR r 3r 333r  r g    rr r
+u uu uuuuuu  uTTuuuuuuTTuu uuu uuuuuTTuuuu uUU uu     u  uuurzrzrw                   r  r
+ uuuuu  uuuuuuTT uuuuuTTuu u uuuuu  TTuu uuuUUu u uu  u uuuur r rrrr     rw r      rr  rr
+uuuuuuUUu UUuuuu uuuuuuuuuUU   uTTu u u u TTuuuuu uu  uuuu   r r   w g       rwr   rr   r
+ uu   UUuuUU uuu uuuuu u uUUuuuuTTuuuuu  uTTuuu  uuu  uuuuuuRr rr rr r   rr   rrr r  r g
+ uu u  uuuuuu uuu uuTTuuTTuuuuuuu u  uuuUUuuuuuuuuuu  uuTTUU    rrr w   w  w  r  r r r  r
+ uuuuu uu uuuu  u uuTTuuTT   uuuuu uuuuuUUuuuuuuu uu  uuTTUU
+   uTTuuTTuuUUuuuuu uuuu uUUuuuuuuu uu uu uuTTuuuuuu  uuuu uTTuuTT u uuuuuuuTT uuu uuuTTuu
+uuuuTTuuTTuuUUuuu  u  u  uUUuuuuuuuuu u uuuuTTuuuuu   uuuu uTT  TTu u u u  uTTu uuu uuTTu

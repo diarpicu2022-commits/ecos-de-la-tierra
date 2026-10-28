@@ -10,15 +10,14 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el visto bueno a la Costa, y la Llanura
+## 1. Lo primero: el visto bueno a la Llanura, y la Cumbre
 
-El 2026-10-28 se cerraron **Valdehoja, el Bosque y la Cuenca** (PR #13 y #14),
-y la **Costa Quebrada** quedó hecha, a la espera del visto bueno de Diego.
-Trae la enmienda 9, la arena. El mundo va en cadena: la siguiente zona es la
-**Llanura Marchita**, que entra por el oeste desde la salida (95, 21) de la
-Costa. Cada zona sigue la misma secuencia (anexo de la parte 3): composición
-medida con `verify_zone`, arte con `gen_world_decor.py` y capturas con
-`zone_capture.tscn`.
+El 2026-10-28 se cerraron **Valdehoja, el Bosque, la Cuenca y la Costa**, y la
+**Llanura Marchita** quedó hecha, a la espera del visto bueno de Diego. El
+mundo va en cadena. La siguiente es la **Cumbre Menguante**, la última zona
+regional, que entra por el norte desde la salida (52, 39) de la Llanura.
+Después viene la **Cripta de la Avaricia**. Cada zona sigue la misma secuencia
+(anexo de la parte 3).
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -33,7 +32,7 @@ medida con `verify_zone`, arte con `gen_world_decor.py` y capturas con
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: Valdehoja, Bosque y Cuenca cerrados; Costa hecha (2026-10-28); siguiente, la Llanura |
+| 3 | Las siete zonas | **En curso**: Valdehoja, Bosque, Cuenca y Costa cerrados; Llanura hecha (2026-10-28); siguiente, la Cumbre |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -138,6 +137,7 @@ $GODOT --headless --path . res://tools/verify_zone.tscn -- ashen_forest
 xvfb-run -a $GODOT --path . res://tools/zone_capture.tscn -- ashen_forest
 $GODOT --headless --path . res://tools/verify_zone.tscn -- tar_basin
 $GODOT --headless --path . res://tools/verify_zone.tscn -- broken_coast
+$GODOT --headless --path . res://tools/verify_zone.tscn -- withered_plain
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

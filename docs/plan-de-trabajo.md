@@ -51,15 +51,17 @@ válidos:
 >
 > **Cuenca de Alquitrán: aprobada** (2026-10-28, PR #14).
 >
-> **Costa Quebrada: HECHA el 2026-10-28, espera visto bueno.**
-> - Enmienda 9: la **arena**, un material nuevo sin color nuevo, con un piso
->   propio de dE 6 frente al camino purificado, aceptado por Diego.
-> - Dunas, playa y mar; el vertedero con la montaña de basura, que
->   purificada es una duna.
-> - `verify_zone` **45/45**.
+> **Costa Quebrada: aprobada** (2026-10-28). Trae la enmienda 9, la arena.
 >
-> **Lo siguiente:** el visto bueno a la Costa; después, la **Llanura
-> Marchita**, que entra por el oeste desde la salida (95, 21) de la Costa.
+> **Llanura Marchita: HECHA el 2026-10-28, espera visto bueno.**
+> - Campos de monocultivo sin cerca partidos por setos; el silo de Grano de
+>   Sal como hito.
+> - Viñetas: setos arrancados, sacos de abono con sal, pulverizadora.
+> - `verify_zone` **44/44**.
+>
+> **Lo siguiente:** el visto bueno a la Llanura; después, la **Cumbre
+> Menguante** (la última regional), que entra por el norte desde la salida
+> (52, 39) de la Llanura. Luego, la Cripta de la Avaricia.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -134,7 +136,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja, Bosque y Cuenca cerrados; **Costa** hecha (2026-10-28). Siguiente: Llanura |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja, Bosque, Cuenca y Costa cerrados; **Llanura** hecha (2026-10-28). Siguiente: Cumbre |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |

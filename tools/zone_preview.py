@@ -39,7 +39,8 @@ SCREEN = (480, 270)
 # Sprite de cada id de la leyenda cuando no se llama igual.
 # Lo que desaparece al purificar: el mismo listado que WorldDecor.VANISH_WHEN_PURE.
 VANISH_WHEN_PURE = ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
-                    "v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag")
+                    "v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag",
+                    "v2_sack", "v2_salt", "salt")
 SPRITE = {"person": "yara", "chicken": "chicken_0", "bird": "bird_0", "butterfly": "butterfly_0"}
 ENTRY = re.compile(r"^; (\S) = (\w+), (\w+), (sólido|pisable)(?:, (\d+)x(\d+))?")
 
