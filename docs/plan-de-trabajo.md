@@ -49,17 +49,17 @@ válidos:
 > entrecerrar en lo enfermo: opción (b), el camino se lee por silueta y no por
 > luz.
 >
-> **Cuenca de Alquitrán: HECHA el 2026-10-28, espera visto bueno.**
-> - Rodeo vertical de 80 × 52: barriles, tubería partida y barcas varadas, y
->   la refinería de Puerto Brea como hito, que se apaga al purificar.
-> - Vegetación de marisma.
-> - `verify_zone` **44/44**.
+> **Cuenca de Alquitrán: aprobada** (2026-10-28, PR #14).
 >
-> El mundo va en cadena; la salida de la Cuenca está al oeste.
+> **Costa Quebrada: HECHA el 2026-10-28, espera visto bueno.**
+> - Enmienda 9: la **arena**, un material nuevo sin color nuevo, con un piso
+>   propio de dE 6 frente al camino purificado, aceptado por Diego.
+> - Dunas, playa y mar; el vertedero con la montaña de basura, que
+>   purificada es una duna.
+> - `verify_zone` **45/45**.
 >
-> **Lo siguiente:** el visto bueno a la Cuenca; después, la **Costa
-> Quebrada**, que entra por el este, con la misma secuencia y
-> `tools/zone_capture.tscn`.
+> **Lo siguiente:** el visto bueno a la Costa; después, la **Llanura
+> Marchita**, que entra por el oeste desde la salida (95, 21) de la Costa.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -134,7 +134,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja y Bosque cerrados; **Cuenca** hecha (2026-10-28). Siguiente: Costa |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja, Bosque y Cuenca cerrados; **Costa** hecha (2026-10-28). Siguiente: Llanura |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -208,6 +208,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   paleta rica con color al purificar (madera, tejado, agua viva, flores,
   prado); animales domésticos siempre y fauna silvestre al purificar;
   movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
+- **Enmienda 9, la arena** (2026-10-28, Diego): material nuevo (`:`) para la
+  Costa, sin color nuevo; piso propio de dE 6 entre arena y camino
+  purificados (medido 6,9). La reserva para el dE entre materiales pasa a la
+  siguiente enmienda libre.
 - **Entrecerrar en lo enfermo** (2026-10-28, Diego, opción b): el camino
   enfermo se lee por silueta y textura, no por luz; `verify_squint` mide que no
   mande el decorado.
@@ -247,7 +251,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 10** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja; la 9, para la arena) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |

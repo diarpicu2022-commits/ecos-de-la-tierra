@@ -156,7 +156,7 @@ con sus consecuencias:
 - **Materiales:** sin resultado. La separación dE 9,2 sigue sin comprobar con
   personas, así que **la parte 1 sigue abierta** solo por esto. Las zonas se
   dibujan sobre el tileset aprobado y, si la prueba falla más adelante, la
-  enmienda 9 (antes reservada como 6) cambia tintas y no mapas: los mapas son de material, no de color.
+  enmienda 10 (antes reservada como 6 y como 9) cambia tintas y no mapas: los mapas son de material, no de color.
 - **Las dos siguen como deuda** en la guía §4 y en el plan, con la hoja lista
   en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
 
@@ -400,7 +400,7 @@ estén los resultados.
      y 3), y quizá un nodo con una persona que la nombre (parte 5). Es una
      dirección distinta, más densa.
 2. **Los materiales (prueba B):** si la separación dE 9,2 no basta, hace falta
-   la enmienda 9 (antes reservada como 6) antes de dibujar siete zonas sobre el tileset.
+   la enmienda 10 (antes reservada como 6 y como 9) antes de dibujar siete zonas sobre el tileset.
 3. **Formato de mapa: texto o editor.** Lo decide Diego en la primera zona
    (guía §5). Las zonas de prueba de la parte 2 ya son texto, y `ZoneRules`
    las valida: es lo que existe hoy.
@@ -973,5 +973,110 @@ sólido: un muro fantasma. `verify_zone` lo mide.
 - El capataz y los obreros (IA-6), la barrera absorbente (parte 7) y la ola
   (parte 4) no están en el mapa; cada uno entra en su parte.
 
-**Siguiente:** el visto bueno de Diego a la Cuenca; después, la **Costa
-Quebrada**, que entra por el este.
+**Visto bueno de Diego a la Cuenca: 2026-10-28** («sí, dale»). PR #14.
+
+## Fase 5 · Costa Quebrada — 2026-10-28
+
+### Enmienda 9 — la arena, autorizada por Diego el 2026-10-28
+
+Con el tileset de «Vereda», todo suelo purificado se vuelve prado, también la
+playa. Diego autorizó un **material nuevo, la arena** (`:` en los mapas), sin
+color nuevo:
+
+| | Enferma | Purificada |
+|---|---|---|
+| Base | arena gris `ASH_700` | arena limpia `WOOD_500` |
+| Textura | ondas rotas `ASH_600` y puntos de microplástico `SOIL_300` | ondas redondas `WOOD_700` |
+
+Es la fila 9 (enferma) y 10 (purificada) del atlas, se pisa y lleva su borde.
+
+**Lo que midió `verify_tileset`, y lo que se aceptó:**
+
+- **Primer intento:**
+  - con base `SOIL_500`, la arena enferma quedaba a dE 3,3 del camino;
+  - los puntos `ASH_400` bajaban el contorno de lo que responde a 2,31:1.
+- **La arena purificada no llega a dE 9 del camino purificado con ningún token
+  existente** que pase el contorno y los acentos:
+  - `WOOD_300` falla con el verde (2,62:1);
+  - `ROOF_300` falla con el verde (2,46:1);
+  - `WOOD_100` falla el contorno (2,35:1).
+- **Diego aceptó un piso propio de dE 6 para ese par**, como el valor del
+  camino el 2026-09-29, porque la diferencia la cargan las ondas y el borde.
+  Medido: **dE 6,9** y valor 1,56.
+- **Se dice un error propio:** al preguntar a Diego se le dijo que `WOOD_300`
+  pasaba contraste y acentos. No era verdad: el informe solo enseñaba el peor
+  caso. La solución final es `WOOD_500`, que sí pasa todo.
+
+La enmienda reservada para revisar el dE entre materiales pasa a ser la
+siguiente libre.
+
+### La zona
+
+**La fuente** es el vertedero: la montaña de basura (el hito, 64 × 80 sobre su
+base de 4 × 4) y el Golem de Plástico. El paso cerrado, chatarra y plástico
+retorcidos, está al este del vertedero y abre la Llanura.
+
+**La basura de decorado es suelta, tumbada y en diagonal**, nunca en fardo ni
+en contenedor, que son las clases que responden de la Costa (catálogo 2a).
+
+**Composición** (`broken_coast.txt` y `.deco.txt`, 96 × 40): mar al oeste y al
+sur, playa de arena y dunas con matorral.
+
+1. **Llegada desde la Cuenca** por el este. **Viñeta 1:** arbustos con bolsas
+   enganchadas y botellas en la duna, lo que trae el viento.
+2. **Ida por el norte:** **la montaña asoma al 29 % del camino.**
+3. **Bajada por la playa oeste.** **Viñeta 2:** la red fantasma enredada en las
+   rocas y su boya varada.
+4. **Vuelta por la orilla** hacia el este y subida al vertedero. **Viñeta 3:**
+   bolsas rotas y el reguero en diagonal hacia la montaña.
+
+**Al purificar:**
+
+- desaparecen la botella, la boya, las bolsas y el reguero;
+- las rocas y el arbusto quedan limpios;
+- **la montaña se queda, pero es una duna**, con arena, hierba y flores;
+- la playa vuelve clara y el mar, azul.
+
+**Arte nuevo** (89 piezas en total): bolsa enganchada, botella, red fantasma,
+boya, bolsa rota, reguero, montaña de basura, Golem y paso cerrado.
+
+**En el motor:** los arbustos se desplazan como los árboles (también en la
+Cuenca y en Valdehoja). Las capturas de las tres zonas anteriores se
+rehicieron con ese cambio.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- broken_coast`: **45 de 45**, 1 pendiente (la Llanura, sin
+  dibujar).
+  - La primera pasada falló por dos motivos:
+    - la viñeta 3 se quedaba sin sus bolsas, que caían sobre el follaje;
+    - las viñetas 2 y 3 compartían pantalla.
+  - Sus casillas se eligen ahora con las reglas del contrato.
+  - La prueba del suelo purificado buscaba tierra y no arena; se corrigió.
+- **La Cuenca pasa a 0 pendientes**, porque su salida ya lleva a la Costa.
+  Bosque **45/45**, Cuenca **44/44**, Valdehoja **49/49**.
+- `verify_movement` 99/99, `verify_usability` 16/16, `verify_camera` 37/37,
+  `verify_tileset` en verde (con la arena) y tokens sin deriva (47).
+- `verify_palette --world`: pasan las 45 capturas del 2026-10-28. Con
+  `--strict`, pasan los 89 sprites.
+- `verify_squint.py broken_coast`: OK.
+- **Autocrítica antes de entregar:**
+  - la primera Costa se leía como el Bosque (claros de tierra y árboles);
+  - después quedó vacía y con los arbustos en retícula.
+
+  Se pasó a dunas de arena, matorral sin retícula, más basura y la línea de
+  resaca en la orilla.
+- **Capturas del motor:** `docs/ux/capturas/2026-10-28-costa-motor-*.png`
+  (entrada, viento, asomo, red, reguero, fuente, fuente purificada, playa
+  purificada y paso abierto) y `-movimiento.gif`. **Vista de la zona entera:**
+  `2026-10-28-costa-enferma.png` y `-purificada.png`.
+
+#### Pendiente, y se dice
+
+- La Llanura, sin dibujar: la salida de la Costa lleva allí, por el este, en
+  (95, 21).
+- El puzzle de los fardos y los contenedores (parte 7) y la ola (parte 4) no
+  están en el mapa.
+
+**Siguiente:** el visto bueno de Diego a la Costa; después, la **Llanura
+Marchita**.
