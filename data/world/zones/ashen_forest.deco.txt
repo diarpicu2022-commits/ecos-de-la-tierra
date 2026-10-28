@@ -1,0 +1,61 @@
+; Bosque de las Cenizas — capa de decorado, hito y entidades. Contrato
+; «Rastro» (docs/ux/anexos/2026-10-01-las-siete-zonas.md), zona regional.
+; Mismo tamaño que ashen_forest.txt. Un espacio, o el final de una fila más
+; corta, es «nada». El estado lo da la bandera purified_ashen_forest.
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; Las viñetas son de dos elementos que el jugador une; su número es el orden
+; en el camino, de la más lejana a la fuente (1) a la más cercana (3).
+; 1 = vignette, v1_stump, sólido              tala: tocón de corte limpio
+; a = vignette, v1_felled_log, sólido, 2x1    tala: el tronco talado
+; b = vignette, v2_log_pile, sólido, 2x2      la madera que se llevan: troncos apilados
+; 2 = vignette, v2_stump, sólido              el claro pelado que dejan
+; q = vignette, v3_burnt_tree, sólido, 2x2    el fuego: el primer árbol quemado
+; 3 = vignette, v3_ash, pisable               la ceniza, en diagonal hacia la fuente
+; Y = landmark, burnt_oak, sólido, 3x4        hito: el roble quemado mayor, en la fuente
+; M = entity, monster, sólido                 la Llama de la Deforestación (combate de historia)
+; X = entity, blocker, sólido                 paso cerrado: troncos en brasas, detrás de la fuente
+; S = entity, seedbed, sólido                 semillero del ramal norte
+; T = decor, tree, sólido, 2x2                árbol enfermo, en pie
+; U = decor, tree_b, sólido, 2x2              árbol enfermo, segunda copa
+; c = decor, burnt_tree, sólido, 2x2          árbol quemado (el gradiente)
+; t = decor, stump, sólido                    tocón
+; e = decor, ash, pisable                     ceniza
+; g = decor, grass, pisable                   hierba alta
+; R = decor, rock, sólido                     roca partida
+; @ = spawn, start, pisable                   llegada desde Valdehoja
+---
+TTTTUUTTUUUUUUTTTTUUUUTTUUUUTTUUTTTT  UUUUUUTTUUTTTTUUTTTTTTTTTTTTTTUUTTUUTTUUTTTTTTTTTTUUUUTTTTTTTT
+TTTTUUTTUUUUUUTTTTUUUUTTUUUUTTUUTTTT  UUUUUUTTUUTTTTUUTTTTTTTTTTTTTTUUTTUUTTUUTTTTTTTTTTUUUUTTTTTTTT
+TTTTUUTTUUTTTTTTTTTTTTUUTTTTUUUUTTTT    TTTTTTccccccUUccccTTccUUccTTTTTTTTTTUU              TTTTTTTT
+TTTTUUTTUUTTTTTTTTTTTTUUTTTTUUUUTTTT    TTTTTTccccccUUccccTTccUUccTTTTTTTTTTUU       g      TTTTTTTT
+TTTTUUTTTTUUUUUUTTTTTTUU        UUTT    ccccUUTTccccccTTTTTTUUccTTTTccTTUUTTTT    bb bb 2   TTUUUUTT
+TTTTUUTTTTUUUUUUTTTTTTUU    S   UUTT    ccccUUTTccccccTTTTTTUUccTTTTccTTUUTTTT    bb bb     TTUUUUTT
+TTTTUU  TT  UUTTUUUUUU         g  cc    TTccTTTTccccccTTccTTccccccTTTTccccTT                UUUUTTTT
+TTTTUU  TT  UUTTUUUUUU            cc    TTccTTTTccccccTTccTTccccccTTTTccccTT     2  2  2    UUUUTTTT
+UU e          R TTTTTT          UUcc    cc          TT  ccTTccccTTTTccTTccTTccUU     R  UU  TTTTUUTT
+UU              TTTTTT       g  UUcc    cc    e     TTt ccTTccccTTTTccTTccTTccUU        UU  TTTTUUTT
+    aag  1  1     UU                      eee                                     ccccTTTT  TTTTTTTT
+ e                UU                                                              ccccTTTT  TTTTTTTT
+ @                    TTUUUUccTTUUTT  cc    e e  e      ccccccccccUUTTccTTccTTTTTTTTUUUUTT  TTTTTTUU
+       1              TTUUUUccTTUUTT  cc    e    e e    ccccccccccUUTTccTTccTTTTTTTTUUUUTT  TTTTTTUU
+TTUUUU     1  1 TTUUTTTTTTccUUUUTTUU  TTTTTTccccccccccccccccccccccccccccTTccTTcccccccccc      UUTTTT
+TTUUUU          TTUUTTTTTTccUUUUTTUU  TTTTTTccccccccccccccccccccccccccccTTccTTcccccccccc      UUTTTT
+TTTTTTUUTTUUUUUUUUTTTTUUTTccUUcccc    TTcccccccccccc      cc  ccccccccccccTTccUUTTTTUU        TTTTTT
+TTTTTTUUTTUUUUUUUUTTTTUUTTccUUcccc    TTcccccccccccc   e  cc  ccccccccccccTTccUUTTTTUU        TTTTTT
+TTTTUUUUTTUUTTTTTTUUTTTTTTTTUUTTcc    cccccccccc  e   eYYYe  e  ccccccccccccTTccUUTTcc e        TTTT
+TTTTUUUUTTUUTTTTTTUUTTTTTTTTUUTTcc    cccccccccc       YYY     eccccccccccccTTccUUTTcc          TTTT
+TTUUTTUUTTTTTTTTUUTTTTUUTTccccTTcc    cccccccc  e e e  YYY R  e e ccccccccTTTTccTTTTTT        TTUUUU
+TTUUTTUUTTTTTTTTUUTTTTUUTTccccTTcc    cccccccc  e   e  YYY e      ccccccccTTTTccTTTTTT        TTUUUU
+TTTTTTUUTTTTTTTTTTTTTTUUTTUUccccTT    cccccccccceee  e  M           ccccccccTTcccccccccccc    UUTTUU
+TTTTTTUUTTTTTTTTTTTTTTUUTTUUccccTT    cccccccccc eee  e        e    ccccccccTTcccccccccccc    UUTTUU
+TTUUUUTTTTTTTTTTTTTTUUUUccUUccccccTT  cccccccccc   ee    e e                      TTcccccc  UUTTUUTT
+TTUUUUTTTTTTTTTTTTTTUUUUccUUccccccTT  cccccccccc    e e               e  g    e  eTTcccccc  UUTTUUTT
+UUTTTTUUTTTTUUUUTTTTTTUUTTTTUUccTTTT  cccccccccccc       e           e333 e qq      UUUUUU  UUTTTTTT
+UUTTTTUUTTTTUUUUTTTTTTUUTTTTUUccTTTT  cccccccccccc        e          3   33 qq      UUUUUU  UUTTTTTT
+TTTTTTTTTTTTTTUUUUTTUUTTccUUTTccccUU    cccccccccccccccc  cccccccc                          TTTTTTTT
+TTTTTTTTTTTTTTUUUUTTUUTTccUUTTccccUU    cccccccccccccccc  cccccccc            e             TTTTTTTT
+TTTTTTTTTTTTUUUUTTTTUUTTUUccUUTTTTUU    TTTTccccccccccccX cccccccccccc    cc  ccTTccccccUUTTTTUUTTTT
+TTTTTTTTTTTTUUUUTTTTUUTTUUccUUTTTTUU    TTTTcccccccccccc  cccccccccccc    cc  ccTTccccccUUTTTTUUTTTT
+TTUUTTTTUUTTUUUUTTTTTTTTTTTTUUUUccTT    ccTTccUUcccccccc  ccccccccccccccccTTTTccTTTTTTUUTTTTUUUUTTTT
+TTUUTTTTUUTTUUUUTTTTTTTTTTTTUUUUccTT    ccTTccUUcccccccc  ccccccccccccccccTTTTccTTTTTTUUTTTTUUUUTTTT

@@ -158,6 +158,185 @@ def bush(pure: bool, seed: int) -> Canvas:
     return c
 
 
+# --- Bosque de las Cenizas: el daño y su vuelta --------------------------------------
+
+
+def burnt_tree(pure: bool, seed: int) -> Canvas:
+    """Árbol quemado, 32x40: tronco de carbón y ramas rotas en diagonal.
+    Purificado: el carbón sigue, pero rebrota una copa redonda pequeña."""
+    c = Canvas(32, 40)
+    rng = random.Random(seed)
+    ground_shadow(c, 16, 36, 10, "vital_900" if pure else "soil_700")
+    for y in range(10, 37):
+        w = 5 if y < 32 else 6 + (y - 32)
+        for x in range(16 - w // 2, 16 + w // 2 + 1):
+            c.set(x, y, color("ash_700" if x < 17 else "water_700"))
+    line(c, 15, 14, 15, 34, "ash_600")
+    for x0, y0, x1, y1 in ((16, 22, 4, 11), (16, 19, 28, 8), (16, 13, 12, 2), (17, 12, 22, 3),
+                           (8, 15, 3, 8), (24, 12, 29, 4)):
+        for k in range(3):
+            line(c, x0, y0 + k, x1, y1 + k, "ash_700" if k < 2 else "water_700")
+        line(c, x0, y0 - 1, x1, y1 - 1, "ash_600")
+    for _ in range(5):
+        x, y = rng.randint(14, 17), rng.randint(20, 33)
+        c.set(x, y, color("ash_400"))
+    if pure:
+        shade_blob(c, 16, 10, 8, 6, "vital_900", "vital_700", "vital_500", "vital_300")
+        blob(c, 7, 13, 3, 2.5, "vital_700")
+        blob(c, 26, 9, 3, 2.5, "vital_700")
+    return c
+
+
+def burnt_oak(pure: bool) -> Canvas:
+    """El hito del Bosque: el roble quemado mayor, 48x64. Enfermo, con la brasa
+    todavía viva en las grietas: la causa sigue activa. Purificado, la copa
+    vuelve redonda sobre el carbón."""
+    c = Canvas(48, 64)
+    rng = random.Random(31)
+    ground_shadow(c, 24, 58, 18, "vital_900" if pure else "soil_700")
+    for y in range(16, 60):
+        spread = 7 + max(0, y - 50)
+        for x in range(24 - spread, 24 + spread + 1):
+            c.set(x, y, color("ash_700" if x < 25 else "water_700"))
+    for y in range(20, 58, 3):
+        line(c, 19, y, 20, y + 2, "ash_600")
+    for x0, x1 in ((15, 9), (33, 39)):
+        line(c, 24, 54, x0, 60, "ash_700")
+        line(c, 24, 55, x1, 61, "water_700")
+    # Ramas mayores, partidas.
+    for x0, y0, x1, y1 in ((24, 30, 6, 14), (24, 26, 42, 10), (24, 22, 20, 2), (24, 24, 31, 4),
+                           (10, 18, 4, 12), (36, 14, 44, 8), (15, 22, 12, 28)):
+        for k in range(4):
+            line(c, x0, y0 + k, x1, y1 + k, "ash_700" if k < 3 else "water_700")
+        line(c, x0, y0 - 1, x1, y1 - 1, "ash_600")
+    line(c, 21, 24, 21, 56, "ash_600")
+    if pure:
+        for cx, cy, rx, ry in ((10, 14, 9, 7), (38, 12, 9, 7), (22, 8, 12, 8), (30, 18, 8, 6)):
+            shade_blob(c, cx, cy, rx, ry, "vital_900", "vital_700", "vital_500", "vital_300")
+        line(c, 22, 44, 23, 40, "vital_500")
+        c.set(22, 39, color("vital_300"))
+    else:
+        # Brasa en la grieta del tronco: el fuego no se ha apagado.
+        for y in range(34, 50):
+            c.set(26 + (y % 3 == 0), y, color("ember_700"))
+        for y in (37, 41, 45):
+            c.set(26, y, color("ember_500"))
+        c.set(27, 41, color("ember_300"))
+        for _ in range(6):
+            x, y = rng.randint(4, 44), rng.randint(2, 20)
+            if c.filled(x, y):
+                c.set(x, y, color("ember_700"))
+    return c
+
+
+def felled_log(pure: bool) -> Canvas:
+    """Tronco talado, 32x16: tendido, con el corte limpio a la vista."""
+    c = Canvas(32, 16)
+    ground_shadow(c, 16, 13, 14, "vital_900" if pure else "soil_700")
+    c.rect(4, 6, 24, 6, color("wood_500"))
+    line(c, 4, 6, 27, 6, "wood_300")
+    line(c, 4, 11, 27, 11, "wood_700")
+    for x in (9, 15, 22):
+        line(c, x, 7, x + 2, 9, "wood_700")
+    # El corte: anillos, la firma de la tala (no del fuego).
+    blob(c, 28.5, 8.5, 3, 3.2, "wood_300")
+    blob(c, 28.5, 8.5, 2, 2.2, "wood_100")
+    c.set(28, 8, color("wood_300"))
+    if pure:
+        for x, y in ((8, 5), (13, 5), (19, 5)):
+            blob(c, x + 0.5, y + 0.5, 1.6, 1.2, "vital_500")
+        c.set(24, 4, color("bloom_300"))
+        c.set(24, 5, color("vital_700"))
+    return c
+
+
+def log_pile(pure: bool) -> Canvas:
+    """Troncos apilados, 32x32: la madera que se llevan. Tres hileras de cortes."""
+    c = Canvas(32, 32)
+    ground_shadow(c, 16, 29, 14, "vital_900" if pure else "soil_700")
+    rows = ((6, 24, 4), (9, 18, 3), (12, 12, 2))
+    for x0, y, n in rows:
+        for i in range(n):
+            cx = x0 + i * 7 + 3
+            blob(c, cx, y, 3.6, 3.6, "wood_700")
+            blob(c, cx - 0.4, y - 0.4, 2.8, 2.8, "wood_300")
+            blob(c, cx - 0.4, y - 0.4, 1.4, 1.4, "wood_100")
+    if pure:
+        for x, y in ((9, 8), (24, 13)):
+            blob(c, x, y, 2, 1.6, "vital_500")
+            c.set(x, y - 1, color("vital_300"))
+    return c
+
+
+def ash(pure: bool, seed: int) -> Canvas:
+    """Ceniza en el suelo: manchas en diagonal. Purificada, un brote."""
+    c = Canvas(16, 16)
+    rng = random.Random(seed)
+    if pure:
+        x, y = rng.randint(4, 10), rng.randint(8, 12)
+        line(c, x, y + 2, x, y, "vital_700")
+        c.set(x - 1, y, color("vital_500"))
+        c.set(x + 1, y - 1, color("vital_500"))
+        return c
+    for i in range(4):
+        x, y = rng.randint(2, 11), rng.randint(3, 12)
+        line(c, x, y, x + 3, y + 3, "ash_600")
+        c.set(x + 1, y, color("ash_400"))
+    return c
+
+
+def blocker(pure: bool) -> Canvas:
+    """Paso cerrado del Bosque, 16x16: troncos en brasas cruzados en diagonal,
+    puntiagudos y sin contorno (catálogo 2a). Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    for x0, y0, x1, y1 in ((0, 13, 15, 3), (1, 3, 15, 14), (4, 15, 11, 1)):
+        line(c, x0, y0, x1, y1, "ash_700")
+        line(c, x0, y0 - 1, x1, y1 - 1, "water_700")
+    for x, y, ink in ((4, 10, "ember_500"), (8, 8, "ember_300"), (11, 5, "ember_500"),
+                      (6, 5, "ember_700"), (12, 11, "ember_700"), (8, 3, "ember_500")):
+        c.set(x, y, color(ink))
+    return c
+
+
+def flame_monster(pure: bool) -> Canvas:
+    """La Llama de la Deforestación en el mapa, 16x24: brasa con borde
+    EMBER_300, que es lo que se lee sobre el follaje (verify_tileset, parte 4).
+    Purificada, ya no está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 6, "soil_700")
+    rows = [
+        "................",
+        ".......a........",
+        "......aa....a...",
+        "......aba..aa...",
+        ".....abba.aba...",
+        "....abbbbabba...",
+        "....abccbbbba...",
+        "...abccccbbbba..",
+        "...abcddccbbba..",
+        "..abccddddcbba..",
+        "..abcdddddccba..",
+        "..abcddeeddcba..",
+        "..abcdeeeedcba..",
+        "..abcdeeeedcba..",
+        "..abccdeedccba..",
+        "...abccddccba...",
+        "...abbccccbba...",
+        "....abbbbbba....",
+        ".....aabbaa.....",
+        "......a..a......",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "ember_400", "c": "ember_500", "d": "ember_700", "e": "water_700"}, 0, 1)
+    c.set(6, 12, color("ember_300"))
+    c.set(9, 12, color("ember_300"))
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -589,6 +768,15 @@ def pieces() -> dict[str, Canvas]:
     for name, below in (("grass", 12), ("flower", 11), ("weed", 11), ("crop_row", 11)):
         out[f"{name}_pure_1"] = swayed(out[f"{name}_pure"], below)
     out["yara_tree_pure"] = yara_tree()
+    # Bosque de las Cenizas.
+    for state, pure in (("sick", False), ("pure", True)):
+        out[f"burnt_tree_{state}"] = burnt_tree(pure, 41)
+        out[f"burnt_oak_{state}"] = burnt_oak(pure)
+        out[f"felled_log_{state}"] = felled_log(pure)
+        out[f"log_pile_{state}"] = log_pile(pure)
+        out[f"ash_{state}"] = ash(pure, 12)
+        out[f"blocker_ashen_forest_{state}"] = blocker(pure)
+        out[f"monster_ashen_forest_{state}"] = flame_monster(pure)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)
     out["well_sick"] = well()
