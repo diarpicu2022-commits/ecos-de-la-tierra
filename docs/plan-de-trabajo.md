@@ -45,16 +45,22 @@ válidos:
 > **Parte 3 — Las siete zonas. EN CURSO. Valdehoja CERRADA el 2026-10-28.**
 > Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
 >
-> **Lo siguiente, en una sesión nueva: el Bosque de las Cenizas.** Es la
-> primera zona con la composición regional completa del contrato «Rastro»:
-> camino a la fuente, 3 viñetas, hito y paso cerrado. Orden:
-> 1. preguntar a Diego cómo se llega a las otras cuatro regiones (en cadena
->    desde el Bosque o volviendo a Valdehoja);
-> 2. paso 1: el mapa en texto y las comprobaciones regionales de
->    `verify_zone`;
-> 3. paso 2: el decorado del daño (tocones, troncos, árboles calcinados,
->    ceniza), el hito (el árbol quemado mayor) y el `blocker`;
-> 4. paso 3, el motor; paso 4, los estados.
+> **Bosque de las Cenizas, pasos 1 a 3: HECHOS el 2026-10-28** (en la misma
+> sesión, a petición de Diego), esperan visto bueno. El mundo va **en
+> cadena**: el paso cerrado de detrás de cada fuente abre la región
+> siguiente.
+> - La zona es un rodeo de 100 × 34 tiles con las 3 viñetas (tala, madera
+>   apilada, fuego), el roble quemado mayor como hito y el paso cerrado al sur,
+>   hacia la Cuenca.
+> - `verify_zone` ya mide la composición regional: **45/45** en el Bosque y
+>   49/49 en Valdehoja.
+> - **Decisión pendiente de Diego:** la prueba de entrecerrar en lo enfermo.
+>   El follaje brilla más que el camino; se recomienda aceptarlo (opción b
+>   del anexo).
+>
+> **Lo siguiente:** el visto bueno al Bosque; después, la **Cuenca de
+> Alquitrán**, con la misma secuencia (pregunta, mapa y composición, arte,
+> motor y estados).
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -129,7 +135,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. **Valdehoja cerrada** (2026-10-28). Siguiente: Bosque. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. **Valdehoja cerrada**; **Bosque** pasos 1-3 hechos (2026-10-28). Siguiente: Cuenca |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -203,6 +209,9 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   paleta rica con color al purificar (madera, tejado, agua viva, flores,
   prado); animales domésticos siempre y fauna silvestre al purificar;
   movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
+- **El mundo va en cadena** (2026-10-28, Diego): Valdehoja → Bosque → Cuenca →
+  Costa → Llanura → Cumbre → Ciudad Dorada; el paso cerrado de cada fuente
+  abre la región siguiente.
 - **Tinta de personaje** (2026-10-28, Diego): `ash_950` y `ash_900` se aceptan
   en `verify_palette --world` solo como contorno y ojos de personaje; el
   decorado y el terreno se miden con `--strict`.
@@ -239,7 +248,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
-| Cómo se llega a las cuatro regiones tras el Bosque (cadena o vuelta a Valdehoja) | Diego, al abrir el Bosque |
+| Prueba de entrecerrar en lo enfermo: el follaje brilla más que el camino | Diego (anexo de la parte 3, Bosque) |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 

@@ -49,11 +49,22 @@ const SCREEN_COLUMNS := 30  ## 480 px de ancho en tiles de 16.
 const LANDMARK_MIN_SIDE := 2
 const LANDMARK_MAX_SIDE := 4
 const LANDMARK_MIN_AREA := 6  ## 2 × 3 tiles.
+## Composición de una zona regional (contrato «Rastro»). Son reglas de
+## autoría, no de dibujo: viven aquí y no en DesignTokens.
+const VIGNETTE_PATH_DISTANCE := 2     ## Una viñeta, a 2 tiles del camino como mucho.
+const LANDMARK_SOURCE_DISTANCE := 3   ## El hito, a 3 tiles de la fuente como mucho.
+## El hito asoma por primera vez a media zona: entre el 25 % y el 65 % del
+## recorrido del camino principal hasta la fuente.
+const LANDMARK_FIRST_VIEW_MIN := 0.25
+const LANDMARK_FIRST_VIEW_MAX := 0.65
 const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 	"withered_plain", "waning_peak"]
-const TREES_ON_FLORA := ["tree", "tree_b"]
+const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree"]
+## Decorado del daño (catálogo 2a, «decorado permitido»): lo que cuenta para el
+## gradiente.
+const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0
@@ -129,6 +140,8 @@ func _measure_engine(zone_id: String) -> void:
 			"pies en y = %d" % feet_y)
 		break
 
+	if zone_id != HOME_ID and state != null:
+		await _measure_region_engine(world, zone_id, spawn, state)
 	if zone_id != HOME_ID or state == null:
 		world.queue_free()
 		return
@@ -271,6 +284,38 @@ func _measure_ambient(world: WorldRoot, zone_id: String, spawn: Vector2i,
 	amb.set_physics_process(true)
 
 
+## Zona regional en el motor: enferma, el monstruo y el paso cerrado están y
+## son sólidos; purificada (`purified_<zona>`), desaparecen con su cuerpo y el
+## terreno se pinta purificado.
+func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, state: Node) -> void:
+	print("\nZona regional en el motor")
+	var lines := ZoneRules.load_zone(zone_id)
+	var gone := func() -> int:
+		return world.entities.get_children().filter(func(n):
+			var nm := String(n.name)
+			return nm.begins_with("monster") or nm.begins_with("blocker")).size()
+	state.flags.clear()
+	world.enter_zone(zone_id, spawn)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var sick_solids := world.solids.get_child_count()
+	var sick_marks: int = gone.call()
+	_check("enferma: la Llama y el paso cerrado están (%d)" % sick_marks, sick_marks >= 2)
+	state.set_zone_purified(zone_id)
+	world.enter_zone(zone_id, spawn)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	_check("purificada: desaparecen, con su cuerpo (%d -> %d sólidos)" % [
+		sick_solids, world.solids.get_child_count()],
+		gone.call() == 0 and world.solids.get_child_count() == sick_solids - sick_marks)
+	var soil := Vector2i(-1, -1)
+	for c in world._layer.get_used_cells():
+		if lines[c.y][c.x] == "." and soil.x < 0:
+			soil = c
+	_check("purificada: el suelo se pinta purificado", soil.x >= 0 and _cell_pure(world, soil, lines))
+	state.flags.clear()
+
+
 ## ¿La casilla está pintada en su estado purificado? El suelo purificado está
 ## en las columnas 4 a 7 de la fila 0 o en la fila del borde del prado.
 func _cell_pure(world: WorldRoot, cell: Vector2i, lines: PackedStringArray) -> bool:
@@ -387,6 +432,10 @@ func _measure(zone_id: String) -> void:
 	_check("el hito se alcanza", _touches(landmark, reach))
 	for e in ZoneRules.exits_from(zone_id, exits):
 		var cell := ZoneRules.cell_of(e, "cell")
+		# En una zona regional, la salida de ida está detrás del paso cerrado:
+		# se mide en la composición regional. Aquí, solo la de vuelta.
+		if zone_id != HOME_ID and _is_forward(cell, spawn[0]):
+			continue
 		_check("la salida %s se alcanza desde la aparición" % cell, reach.has(cell))
 	for c in _of_kind(cells, legend, "entity"):
 		_check("%s en %s se alcanza" % [legend[cells[c]]["id"], c], _touches([c], reach))
@@ -402,7 +451,7 @@ func _measure(zone_id: String) -> void:
 	if zone_id == HOME_ID:
 		_measure_home(zone_id, lines, cells, legend, spawn[0], reach, landmark)
 	else:
-		_wait("composición regional (camino a la fuente, 3 viñetas, paso cerrado): se mide desde el Bosque")
+		_measure_region(zone_id, lines, cells, legend, spawn[0], landmark, exits)
 	print("  (la paleta y la prueba de entrecerrar se miden aparte: tools/verify_palette.py image --world"
 		+ " sobre las capturas del motor y tools/verify_squint.py %s)" % zone_id)
 
@@ -440,6 +489,185 @@ func _measure_home(zone_id: String, lines: PackedStringArray, cells: Dictionary,
 			stray.append(str(c))
 	_check("la fauna silvestre está dentro de una parte (solo vuelve al purificar)",
 		stray.is_empty(), ", ".join(stray))
+
+
+## La salida de ida de una zona regional: toda la que no está junto a la
+## aparición (la de vuelta es por donde se llega).
+func _is_forward(cell: Vector2i, spawn: Vector2i) -> bool:
+	return absi(cell.x - spawn.x) + absi(cell.y - spawn.y) > 2
+
+
+## La composición regional del contrato «Rastro»: camino a la fuente, tres
+## viñetas, hito en la fuente, paso cerrado detrás y gradiente de daño.
+func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionary,
+		legend: Dictionary, spawn: Vector2i, landmark: Array, exits: Array) -> void:
+	print("\nComposición regional («Rastro»)")
+	var size := Vector2i(lines[0].length(), lines.size())
+	var sources := cells.keys().filter(func(c): return legend[cells[c]]["id"] == "monster")
+	_check("una fuente: el monstruo de historia", sources.size() == 1, "hay %d" % sources.size())
+	if sources.size() != 1:
+		return
+	var source: Vector2i = sources[0]
+	# 1. Paso cerrado: la salida de ida, inalcanzable en enfermo y alcanzable
+	#    sin los blocker.
+	var sick := _flood(spawn, lines, cells, legend, false)
+	var open_cells := cells.duplicate()
+	for c in cells:
+		if legend[cells[c]]["id"] in ["blocker", "monster"]:
+			open_cells.erase(c)
+	var pure := _flood(spawn, lines, open_cells, legend, false)
+	var forward := 0
+	for e in ZoneRules.exits_from(zone_id, exits):
+		var cell := ZoneRules.cell_of(e, "cell")
+		if not _is_forward(cell, spawn):
+			continue
+		forward += 1
+		_check("la salida de ida %s es inalcanzable sin purificar" % cell, not sick.has(cell))
+		_check("y se alcanza al purificar (sin los pasos cerrados)", pure.has(cell))
+	_check("hay salida de ida", forward >= 1)
+	# 2. La fuente, por el camino y sin paso cerrado delante.
+	var on_path := _flood(spawn, lines, cells, legend, true)
+	_check("el camino principal lleva de la llegada a la fuente", _touches([source], on_path))
+	_check("ningún paso cerrado antes de la fuente", _touches([source], sick))
+	# Recorrido del camino principal, de la llegada a la fuente.
+	var route := _route(spawn, source, lines)
+	_check("recorrido del camino principal: %d tiles" % route.size(), route.size() > 1)
+	if route.size() < 2:
+		return
+	var order := {}
+	for i in route.size():
+		order[route[i]] = i
+	# 3. Tres viñetas, de dos elementos, junto al camino, en orden y una por pantalla.
+	var groups := {}
+	for c in cells:
+		var entry: Dictionary = legend[cells[c]]
+		if entry["kind"] != "vignette":
+			continue
+		var n := String(entry["id"]).substr(1, 1).to_int()
+		if not groups.has(n):
+			groups[n] = {"cells": [], "ids": {}}
+		groups[n]["cells"].append(c)
+		groups[n]["ids"][entry["id"]] = true
+	var numbers := groups.keys()
+	numbers.sort()
+	_check("exactamente 3 viñetas, numeradas 1, 2 y 3", numbers == [1, 2, 3], str(numbers))
+	var at_route := {}
+	for n in groups:
+		_check("la viñeta %d une dos elementos (%s)" % [n, ", ".join(groups[n]["ids"].keys())],
+			groups[n]["ids"].size() >= 2)
+		var far := 0
+		var best := route.size()
+		for c: Vector2i in groups[n]["cells"]:
+			var near := route.size()
+			for r: Vector2i in route:
+				if maxi(absi(r.x - c.x), absi(r.y - c.y)) <= VIGNETTE_PATH_DISTANCE:
+					near = mini(near, order[r])
+			if near == route.size():
+				far += 1
+			best = mini(best, near)
+		_check("la viñeta %d está junto al camino principal (≤ %d tiles)" % [
+			n, VIGNETTE_PATH_DISTANCE], far == 0, "%d elementos lejos" % far)
+		at_route[n] = best
+	if numbers == [1, 2, 3]:
+		_check("las viñetas aparecen en orden hacia la fuente (tile %d, %d, %d de %d)" % [
+			at_route[1], at_route[2], at_route[3], route.size()],
+			at_route[1] < at_route[2] and at_route[2] < at_route[3])
+		var shared := PackedStringArray()
+		for a in [1, 2, 3]:
+			for b in [1, 2, 3]:
+				if a >= b:
+					continue
+				for ca: Vector2i in groups[a]["cells"]:
+					for cb: Vector2i in groups[b]["cells"]:
+						if absi(ca.x - cb.x) < ZoneRules.SCREEN_TILES.x and absi(ca.y - cb.y) < ZoneRules.SCREEN_TILES.y:
+							shared.append("%d y %d" % [a, b])
+		_check("nunca dos viñetas en la misma pantalla", shared.is_empty(),
+			", ".join(_unique(shared)))
+	# 4. Hito: en la fuente, asoma a media zona y se pierde antes de llegar.
+	var close := false
+	for c: Vector2i in landmark:
+		close = close or maxi(absi(c.x - source.x), absi(c.y - source.y)) <= LANDMARK_SOURCE_DISTANCE
+	_check("el hito está en la fuente (≤ %d tiles)" % LANDMARK_SOURCE_DISTANCE, close)
+	var first := -1
+	var hidden_after := false
+	for i in route.size():
+		var seen := _landmark_visible(route[i], landmark, size)
+		if seen and first < 0:
+			first = i
+		elif not seen and first >= 0:
+			hidden_after = true
+	var fraction := float(first) / route.size()
+	_check("el hito asoma por primera vez a media zona (al %d %% del camino)" % roundi(fraction * 100),
+		first >= 0 and fraction >= LANDMARK_FIRST_VIEW_MIN
+		and fraction <= LANDMARK_FIRST_VIEW_MAX,
+		"entre el %d y el %d %%" % [roundi(LANDMARK_FIRST_VIEW_MIN * 100),
+			roundi(LANDMARK_FIRST_VIEW_MAX * 100)])
+	_check("y el follaje lo tapa al menos una vez antes de la fuente", hidden_after)
+	# 5. Gradiente: más daño cerca de la fuente.
+	var bands := [[0, 0], [0, 0], [0, 0]]
+	for y in size.y:
+		for x in size.x:
+			var c := Vector2i(x, y)
+			if lines[y][x] not in [".", "="]:
+				continue
+			var d := Vector2(x - source.x, (y - source.y) * 1.6).length()
+			var band := 0 if d < 16.0 else 1 if d < 34.0 else 2
+			bands[band][1] += 1
+			if cells.has(c) and (legend[cells[c]]["kind"] == "vignette"
+					or legend[cells[c]]["id"] in DAMAGE_DECOR):
+				bands[band][0] += 1
+	var dens := []
+	for b in bands:
+		dens.append(float(b[0]) / maxi(1, b[1]))
+	_check("gradiente: el daño se densifica hacia la fuente (%.2f > %.2f > %.2f por tile)" % dens,
+		dens[0] > dens[1] and dens[1] > dens[2])
+
+
+## El camino principal de `from` a la fuente: el recorrido más corto sobre
+## tiles de camino, hasta el tile de camino que toca la fuente.
+func _route(from: Vector2i, source: Vector2i, lines: PackedStringArray) -> Array:
+	var size := Vector2i(lines[0].length(), lines.size())
+	var parent := {from: from}
+	var queue: Array[Vector2i] = [from]
+	var goal := Vector2i(-1, -1)
+	while not queue.is_empty():
+		var c: Vector2i = queue.pop_front()
+		if maxi(absi(c.x - source.x), absi(c.y - source.y)) <= 2:
+			goal = c
+			break
+		for step in STEPS:
+			var n: Vector2i = c + step
+			if parent.has(n) or not Rect2i(Vector2i.ZERO, size).has_point(n) or lines[n.y][n.x] != "=":
+				continue
+			parent[n] = c
+			queue.append(n)
+	if goal.x < 0:
+		return []
+	var out := [goal]
+	while out[0] != from:
+		out.push_front(parent[out[0]])
+	return out
+
+
+## ¿Se ve el hito con la cámara en `cell`? La pantalla de 30 x 17 tiles,
+## centrada y encerrada en la zona como la cámara.
+func _landmark_visible(cell: Vector2i, landmark: Array, size: Vector2i) -> bool:
+	var s := ZoneRules.SCREEN_TILES
+	var origin := Vector2i(clampi(cell.x - s.x / 2, 0, maxi(0, size.x - s.x)),
+		clampi(cell.y - s.y / 2, 0, maxi(0, size.y - s.y)))
+	var view := Rect2i(origin, s)
+	for c: Vector2i in landmark:
+		if view.has_point(c):
+			return true
+	return false
+
+
+func _unique(items: PackedStringArray) -> PackedStringArray:
+	var out := PackedStringArray()
+	for i in items:
+		if not out.has(i):
+			out.append(i)
+	return out
 
 
 ## Casillas alcanzables desde `from` andando: suelo y camino sin decorado

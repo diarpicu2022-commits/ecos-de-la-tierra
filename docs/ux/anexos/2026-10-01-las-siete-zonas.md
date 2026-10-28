@@ -759,3 +759,142 @@ completa: camino a la fuente, 3 viñetas, hito y paso cerrado. `verify_zone`
 tiene que ganar las comprobaciones regionales (hoy declaradas pendientes).
 Antes de dibujar, pregunta pendiente para Diego: **cómo se llega a las otras
 cuatro regiones** (en cadena desde el Bosque o volviendo a Valdehoja).
+
+## Fase 5 · Bosque de las Cenizas — abierta el 2026-10-28
+
+Diego pidió seguir en la misma sesión tras fusionar el PR #13 (antes había
+elegido «sesión nueva»; se anota el cambio).
+
+### La pregunta del Bosque, respondida por Diego el 2026-10-28
+
+**El mundo va en cadena:** Valdehoja → Bosque → Cuenca → Costa → Llanura →
+Cumbre → Ciudad Dorada. El paso cerrado de detrás de cada fuente abre la
+región siguiente; «purificar abre paso» se vuelve literal. La salida del
+Bosque hacia la Cuenca está al sur, detrás del Robledal Quemado.
+
+### Pasos 1 a 3 — mapa, arte y motor · HECHOS, esperan visto bueno
+
+Se hicieron seguidos, como pidió Diego para Valdehoja: el paso 1 solo, sin
+decorado, no se puede juzgar.
+
+**Composición** (`data/world/zones/ashen_forest.txt` y `.deco.txt`, 100 × 34
+tiles). Es un **rodeo**: negación y recompensa (Tancoque, fuente 5).
+
+1. **Entrada** desde Valdehoja por el oeste, en un claro de tala. **Viñeta 1:**
+   tocones de corte limpio y el tronco talado.
+2. **Ida por el norte:** el camino pasa por encima del Robledal, y el roble
+   quemado mayor (el hito) **asoma por primera vez al 26 % del camino**, entre
+   los árboles.
+3. **El claro de los troncos apilados**, al noreste. **Viñeta 2:** la madera que
+   se llevan y el claro pelado que dejan. Aquí el hito se pierde de vista.
+4. **Bajada por el este y vuelta por el sur.** **Viñeta 3:** el primer árbol
+   quemado y la ceniza en diagonal hacia la fuente. El hito reaparece.
+5. **El Robledal Quemado**, la fuente: la Llama de la Deforestación al pie del
+   roble, con la brasa todavía viva en la grieta (la causa sigue activa).
+6. **Paso cerrado al sur:** troncos en brasas en un corredor de follaje. Al
+   purificar desaparecen y se abre la salida a la Cuenca.
+
+**El gradiente** va por densidad de ceniza y tocones (0,20, 0,11 y 0,08 por
+tile, de la franja cercana a la lejana) y por los árboles. Lejos de la fuente,
+enfermos y en pie; cerca, quemados. Ramal norte: un semillero y espacio
+negativo.
+
+**Arte nuevo** (`tools/gen_world_decor.py`, 52 piezas en total), cada pieza con
+su versión purificada:
+
+| Pieza | Enfermo | Purificado |
+|---|---|---|
+| árbol quemado | carbón y ramas rotas | rebrota la copa |
+| roble quemado mayor, 48 × 64 (hito) | brasa en la grieta | copa redonda sobre el carbón |
+| tronco talado | con el corte en anillos | musgo y una flor |
+| pila de troncos | — | brotes |
+| ceniza | — | brote |
+| paso cerrado | troncos en brasas, sin contorno | desaparece |
+| la Llama en el mapa, 16 × 24 | brasa con borde `EMBER_300`, como pide `verify_tileset` | desaparece |
+
+**Motor:**
+
+- `WorldDecor` busca primero el sprite propio de la región
+  (`monster_ashen_forest`) y dibuja las viñetas con el de su elemento.
+- Al purificar, retira el paso cerrado y el monstruo con su cuerpo.
+- Los árboles se dibujan desplazados hasta 3 px por pieza, para que el bosque
+  no sea una plantación; la colisión no cambia. También vale para Valdehoja.
+- `tools/zone_capture.tscn -- <zona>`: las capturas del motor de cualquier
+  zona regional.
+
+**`verify_zone` gana la composición regional del contrato** (antes,
+pendiente):
+
+- la salida de ida es inalcanzable en enfermo y alcanzable al purificar;
+- el camino lleva a la fuente sin paso cerrado delante;
+- hay 3 viñetas de dos elementos, a ≤ 2 tiles del camino, en orden hacia la
+  fuente y nunca dos en la misma pantalla;
+- el hito está a ≤ 3 tiles de la fuente, asoma entre el 25 % y el 65 % del
+  camino y el follaje lo tapa después;
+- hay gradiente de daño;
+- en el motor, la Llama y el paso cerrado desaparecen al purificar, con su
+  cuerpo.
+
+Las cifras viven en `verify_zone.gd`, no en `DesignTokens`, como dice el
+contrato.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- ashen_forest`: **45 de 45**, 1 pendiente (la Cuenca, sin
+  dibujar). `verify_zone -- valdehoja`: **49 de 49** y 0 pendientes, porque
+  su salida ya lleva a una zona que existe.
+- `verify_movement` **99/99**, `verify_usability` **16/16**, `verify_camera`
+  **37/37**, `verify_tileset` en verde y tokens sin deriva.
+- `verify_palette --world`: pasan las 8 capturas del motor del Bosque. Con
+  `--strict`, pasan los 52 sprites.
+- **La primera pasada de la composición falló en cinco puntos de autoría
+  reales, y se corrigieron:**
+  - el hito apoyaba en follaje;
+  - el camino no tocaba la fuente;
+  - elementos de las tres viñetas quedaban a 3 tiles del camino;
+  - el gradiente no bajaba entre la franja media y la lejana;
+  - el segundo paso cerrado quedaba escondido detrás del primero.
+
+  Antes, la primera geometría (camino recto de oeste a este) metía las
+  viñetas 1 y 2 en la misma pantalla y enseñaba el hito al 83 % del camino:
+  de ahí sale el rodeo.
+- **Capturas del motor:** `docs/ux/capturas/2026-10-28-bosque-motor-*.png`
+  (entrada, tala, asomo, troncos, quemado, fuente, fuente purificada y paso
+  abierto) y `-movimiento.gif`. **Vista de la zona entera:**
+  `2026-10-28-bosque-enfermo.png` y `-purificado.png`.
+
+#### FALLA en el espíritu, y se dice: la prueba de entrecerrar en lo enfermo
+
+`verify_squint.py ashen_forest` pasa tal como está definida: el decorado no
+domina lo luminoso (30 % enfermo, 2 % purificado). Pero ahora la prueba dice
+también **qué material** es lo luminoso:
+
+- en el Bosque enfermo, el **99 % del 1 % más luminoso es follaje, no camino**;
+- purificado, es suelo (el prado de los claros);
+- en Valdehoja, el jardín al empezar y las partes devueltas después.
+
+Rogers pide que lo luminoso marque el camino, y en el Bosque enfermo no lo
+marca. Viene del tileset aprobado en la parte 1: el camino enfermo
+(`SOIL_500` con grietas) es más oscuro que la luz del follaje (`FLORA_300`).
+
+Hay dos salidas, las dos para Diego:
+
+- (a) Aclarar el camino enfermo un escalón. Es la parte 1, y hay que volver a
+  medir el dE suelo/camino, hoy de 9,1.
+- (b) Aceptar que en lo enfermo el camino se lee por silueta (el borde de
+  sierra) y por textura, no por luz, como ya se aceptó el valor de 1,48 del
+  camino el 2026-09-29.
+
+**Se recomienda la (b)**, que no reabre la parte 1.
+`verify_squint.py` sigue pasando porque mide lo que dice el contrato (que no
+mande el decorado), y ahora informa además del material.
+
+#### Pendiente, y se dice
+
+- La Cuenca, sin dibujar: la salida del Bosque lleva allí.
+- La ola de purificación, la patrulla de Rasgo con los soldados heridos
+  (IA-6, partes 5 y 6) y el puzzle de la maleza seca (parte 7) **no están en
+  el mapa**. Cada uno entra en su parte; el mapa deja sitio en los claros.
+
+**Siguiente:** el visto bueno de Diego al Bosque y su elección sobre la
+prueba de entrecerrar. Después, la **Cuenca de Alquitrán**.
