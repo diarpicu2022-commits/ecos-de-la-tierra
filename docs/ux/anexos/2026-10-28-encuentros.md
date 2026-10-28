@@ -273,8 +273,9 @@ funciona, se para y se pregunta.
   `AStarGrid2D` tiene sólido todo lo de fuera, así que no puede salir.
 - **Velocidad:** la persecución va a `WALK_SPEED` y correr va a `RUN_SPEED`.
   Corriendo en línea recta, el monstruo nunca alcanza a Ilan.
-- **Sombra de alerta:** sprite propio del monstruo, en `ASH_950`, el color que
-  ya tienen las sombras. **No hay color nuevo ni signo sobre la cabeza.**
+- **Señal de alerta:** banda `EMBER_400` con filo `ASH_950` (**enmienda 1**,
+  abajo; la sombra `ASH_950` original no llegaba a 3:1). **No hay color nuevo
+  ni signo sobre la cabeza.**
 
 ### 2. El contacto y la ventaja
 
@@ -362,6 +363,68 @@ funciona, se para y se pregunta.
 Tokens nuevos en `src/ui/design_tokens.gd`, sección «Encuentros». Ningún color
 nuevo: la sombra y la persiana usan `ASH_950`. Las velocidades son las de
 siempre (la regla de múltiplos de 60 px/s).
+
+#### Paso 2 — Componente clave: el monstruo y la señal de alerta · 2026-10-28
+
+**Cláusulas:** contrato §1 (cuatro estados que se leen sin color) y el riesgo
+de la recomendación («que la alerta no se lea a 480 × 270: se mide»).
+
+- **Posturas.** `posed()` en `tools/gen_world_decor.py` saca dos posturas del
+  dibujo de reposo de cada monstruo: **alerta**, erguido 1 px, y
+  **persecución**, adelantado 3 px en lo alto de su silueta y agachado 1 px.
+  «Se rinde» vuelve al reposo. Lienzo de 20 × 24 y el mismo pie.
+- **Medido** (`tools/verify_monster_poses.py`, solo la máscara, sin color):
+  - persecución frente a reposo, solape entre 0,70 y 0,78 (tope 0,80) en los
+    seis;
+  - la alerta, más alta en los seis;
+  - las tres posturas pisan la misma fila.
+- **Primer fallo, y se dice:** con la inclinación medida sobre el lienzo, el
+  Devorador de Petróleo, bajo y ancho, daba un solape de 0,83. Pasó a medirse
+  sobre el alto real de cada silueta.
+- **La señal de alerta, medida sobre el render** (`tools/monster_sheet.gd`:
+  contraste de luminancia de la señal frente al mismo sitio en reposo):
+  - **con la sombra `ASH_950` del contrato no llegaba al piso de 3:1 en
+    ninguna región** (1,39-2,32:1), porque el suelo enfermo es oscuro;
+  - se probó la brasa: `EMBER_400` pasa en cinco regiones (3,73-4,62:1) y no
+    en la Cripta (2,61:1);
+  - se paró y se preguntó.
+- **Otro fallo de la propia hoja, y se dice:** la primera pasada daba 1,00:1
+  en todo, porque la sombra se dibujaba debajo del suelo (`z_index -1`). Y la
+  primera prueba con brasa daba cifras idénticas, porque Godot seguía usando la
+  textura importada antes. Las dos se repitieron.
+
+### Enmienda 1 — la señal de alerta, autorizada por Diego el 2026-10-28
+
+- La sombra de alerta pasa a ser una **banda de 3 px en `EMBER_400`** (el
+  aviso del repertorio §3.1) **con 1 px de filo `ASH_950`** debajo. En
+  vertical, el filo va a la derecha. Sigue sin haber color nuevo. Avanza hacia
+  Ilan, así que no se lee solo por el color.
+- **Excepción de la Cripta**, autorizada el mismo día: sobre su losa de valor
+  medio, ninguna tinta autorizada llega a 3:1. Lleva **filo de 2 px**. Se mide
+  y se imprime como «EXCEPCIÓN», no como OK.
+
+**Medido con la enmienda** (brasa · filo):
+
+| Región | Brasa | Filo |
+|---|---|---|
+| Bosque | 4,54:1 | 1,57:1 |
+| Cuenca | 3,49:1 | 1,73:1 |
+| Costa | 3,78:1 | 1,56:1 |
+| Llanura | 3,77:1 | 1,47:1 |
+| Cumbre | 3,88:1 | 1,57:1 |
+| Cripta | 2,51:1 | 2,18:1 — **excepción, bajo el piso** |
+
+- En la Cripta, el filo de 2 px **midió menos que el de 1 px** (2,18 frente a
+  2,63:1). La fila de más cae sobre juntas más claras. No mejora el contraste,
+  solo el peso de la señal. Se deja dicho.
+- `verify_palette --world` sobre los 16 sprites nuevos: todo píxel es un token.
+
+**Capturas:** `docs/ux/capturas/2026-10-28-<región>-monstruo-reposo.png`,
+`-alerta.png` y `-persecucion.png`, de las seis regiones.
+
+**Siguiente:** paso 3, el esqueleto. IA-1 en el mapa (patrulla, alerta,
+persecución y rendición con A* encerrado en la zona), el contacto y la
+ventaja, con `tools/verify_encounters.gd`.
 
 ---
 
