@@ -111,7 +111,7 @@ def main() -> int:
     by_rgb = {v: k for k, v in tokens.items()}
     # Solo las tintas que el atlas usa de verdad; las celdas vacías de la fila
     # del suelo son transparentes y no cuentan.
-    used = sorted({by_rgb[p] for row in range(7) for col in range(16)
+    used = sorted({by_rgb[p] for row in range(img.height // T) for col in range(16)
                    for p in tile_pixels(img, col, row) if p in by_rgb})
     terrain = [n for n in used if not n.startswith(("vital_", "ember_"))]
     sick_terrain = terrain

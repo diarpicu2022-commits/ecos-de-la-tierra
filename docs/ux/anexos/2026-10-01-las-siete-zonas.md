@@ -14,10 +14,12 @@ allí **no se vuelve a decidir aquí**:
 
 Este anexo decide **cómo se compone cada zona**.
 
-**Estado:** fases 1 a 4 escritas. **Las dos pruebas con personas quedan
+**Estado:** fases 1 a 4 cerradas. **Las dos pruebas con personas quedan
 aplazadas por decisión de Diego** (2026-10-01; ver «Pruebas aplazadas»), y la
-fase 4 se plantea con la hipótesis prudente. **Falta que Diego elija la
-dirección y el formato de mapa.**
+fase 4 se planteó con la hipótesis prudente. **Diego eligió el 2026-10-28:
+dirección A «Rastro», mapas en texto, hipótesis prudente confirmada.** Contrato
+«Rastro» escrito y **valores aprobados por Diego el 2026-10-28**. Fase 5:
+**Valdehoja cerrada el 2026-10-28** (pasos 1 a 4); la siguiente es el Bosque.
 
 **Subdivisión (guía §5): una zona por sesión,** en este orden: Valdehoja →
 Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura
@@ -154,7 +156,7 @@ con sus consecuencias:
 - **Materiales:** sin resultado. La separación dE 9,2 sigue sin comprobar con
   personas, así que **la parte 1 sigue abierta** solo por esto. Las zonas se
   dibujan sobre el tileset aprobado y, si la prueba falla más adelante, la
-  enmienda 6 cambia tintas y no mapas: los mapas son de material, no de color.
+  enmienda 9 (antes reservada como 6) cambia tintas y no mapas: los mapas son de material, no de color.
 - **Las dos siguen como deuda** en la guía §4 y en el plan, con la hoja lista
   en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
 
@@ -279,9 +281,113 @@ leyenda, para que el mapa de materiales siga siendo legible.
 3. **¿Confirmas la hipótesis prudente** de que, sin la prueba, las zonas
    enseñan la causa antes del combate?
 
-**Respuesta:** pendiente.
+**Respuesta de Diego, 2026-10-28** (en la sesión, al retomar el proyecto; el
+PR #11 se fusionó sin comentario y por eso se le preguntó):
 
-## Tensiones que recogió la fase 3 (resueltas en la fase 4)
+1. **Dirección A, «Rastro».**
+2. **Mapas en texto.**
+3. **Sí, confirma la hipótesis prudente:** las zonas enseñan la causa antes
+   del combate.
+
+## Contrato «Rastro» — bloqueado el 2026-10-28
+
+**Elegido por Diego el 2026-10-28: dirección A, mapas en texto.** Hereda
+«Vereda» (con las enmiendas 1 a 5) y «Umbral» sin tocarlos. Desde aquí se
+cumple: nada de forma, densidad ni movimiento fuera de este contrato. **No
+abre ningún color, tipografía ni duración nueva.**
+
+**Los valores de la tabla los propone esta sesión** a partir de la dirección A
+y de las fuentes de la fase 3; el visto bueno de Diego a esos valores es el
+punto de control antes de Valdehoja. Si alguno no le sirve, se cambia antes de
+dibujar, no después.
+
+**Visto bueno de Diego a los valores: 2026-10-28**, sin cambios.
+
+### Composición de una zona regional (Bosque, Cuenca, Costa, Llanura, Cumbre)
+
+| Cláusula | Valor | Respaldo |
+|---|---|---|
+| Camino principal | Un camino pisado continuo de la entrada a la **fuente del daño**. Es el único camino que llega a la fuente | Dirección A; Lynch (fuente 1) |
+| Viñetas de causa y efecto | **Exactamente 3**, todas **junto al camino principal** (a ≤ 2 tiles de él), en orden de daño creciente hacia la fuente. Cada una son **dos elementos que el jugador une** (causa y consecuencia), nunca uno que lo diga todo | Carson (2), Smith y Worch (3) |
+| Viñetas fuera del camino | **Ninguna.** Los caminos secundarios llevan personas, semilleros o espacio negativo | Dirección A |
+| Separación entre viñetas | Dos viñetas nunca caben en la misma pantalla de 480 × 270: se leen una a una | Smith y Worch (3): el cierre ocurre entre viñetas |
+| Fuente del daño | Al final del camino principal. La ocupa el **monstruo de historia** de la región, que no se esquiva («Vereda») | Dirección A |
+| Paso cerrado | Uno o más `blocker` **al otro lado de la fuente**, nunca antes de ella. La ola de purificación (enmienda 3) los retira | Catálogo 2a; «Vereda» |
+| Salida tras purificar | Solo es alcanzable después de purificar. Sin purificar, la única salida alcanzable es la de entrada | Guía §5, parte 3 |
+| Encuentros comunes | Fuera del camino principal y rodeables. El mapa no se estrecha para forzarlos (parte 4, IA-1) | «Vereda» |
+| Hito | **Uno por zona**, en la fuente. Silueta de **entre 2 × 3 y 4 × 4 tiles** (32 × 48 a 64 × 64 px), en la capa de entidades ordenada por altura, **sin contorno**, no se pisa ni responde. Forma de la familia del daño de la región (diagonal y rota) | Lynch (1); catálogo 2a, regla 2 |
+| Primera vista del hito | Entra en pantalla por primera vez **a media zona**, por delante en la dirección del camino; follaje lo tapa al menos una vez antes de la fuente | Tancoque (5); *Level Design Book* (6) |
+| Gradiente de daño | **Por densidad de decorado del daño**, en tres franjas: cerca de la fuente, media y lejana. La franja lejana es la que más espacio negativo tiene. Ningún tile nuevo: decorado del catálogo 2a, tabla «decorado permitido» | SLYNYRD (7) |
+| Pista por columna | Cada franja vertical de 480 px tiene al menos un tile de pista (camino, viñeta o hito) | Guía §5, parte 3 |
+| Prueba de entrecerrar | Con la captura de la zona desenfocada, lo más luminoso es el camino o lo purificado; **nunca un decorado** | Rogers (4) |
+| Movimiento ambiental | ~~Solo la fauna, y solo tras purificar~~. **Enmienda 8 (2026-10-28):** se mueve solo lo purificado: agua, flores, hierba, fauna y animales. Lo enfermo (humo, ceniza, agua muerta) es estático | Kowalski (fase 3, B); Diego |
+| Animales domésticos | **Enmienda 7 (2026-10-28):** en Valdehoja desde el principio, sin responder. La fauna silvestre, solo dentro de una parte purificada | Diego |
+| Paleta | **Enmienda 6 (2026-10-28):** madera y tejado bajo el techo de 0,22; agua viva, flores y prado por encima, solo en lo purificado | Diego; guía §3.2 bis |
+| Verde en zona enferma | Ninguno, ni de adorno. Lo purificado lleva siempre valor, silueta o fauna además del verde | Guía §2.3 |
+| Texto | Ningún cartel, flecha ni texto que explique la causa | Fase 2 |
+
+### Las dos zonas que no son regionales
+
+No tienen una forma propia en la fase 4. Se fija aquí lo que hereda cada una, y
+lo que falta se pregunta a Diego **al abrir su apartado de la fase 5**, no
+antes:
+
+- **Valdehoja** (guía §5): empieza gris salvo **el jardín de Yara**, el único
+  verde del mundo al empezar, con el primer `seedbed`. No tiene monstruo ni
+  viñetas de causa. El camino principal lleva al jardín, y el jardín es su
+  hito. Es el **marcador de progreso**: cada región purificada devuelve verde
+  y fauna a una parte del pueblo. *Se pregunta al abrirla:* cuántas partes
+  tiene el pueblo y qué parte devuelve cada región.
+- **Cripta de la Avaricia:** las cinco clases regionales juntas (catálogo 2a).
+  *Se pregunta al abrirla:* si sus viñetas son las cinco causas o una sola.
+
+### Formato de los mapas
+
+| Cláusula | Valor |
+|---|---|
+| Materiales | `data/world/zones/<zona>.txt`, un carácter por tile con la leyenda de `WorldTiles.LEGEND` (`.` suelo, `=` camino, `~` agua, `#` follaje). Sin cambios |
+| Decorado, hito y entidades | Segunda capa por zona, `data/world/zones/<zona>.deco.txt`, **del mismo tamaño** que la de materiales, con su leyenda en cabecera (`; X = tipo, id, sólido|pisable[, AxB]`). Un espacio = nada |
+| Partes (solo Valdehoja) | Tercera capa, `<zona>.parts.txt`, un carácter por parte. Añadida el 2026-10-28: con rectángulos, lo purificado acababa en cantos rectos |
+| Validación | `ZoneRules.check()` sobre la capa de materiales, como hoy; `tools/verify_zone.gd <zona>` sobre las dos capas |
+| Nombres | Identificador en inglés y `snake_case` (`ashen_forest`, como en `interactables.json`); el nombre del jugador, en `zones.json` |
+
+### Verificación de cada zona (`tools/verify_zone.gd`, por escribir en Valdehoja)
+
+1. Búsqueda en anchura desde la entrada: la salida es **inalcanzable** en
+   enfermo y **alcanzable** tras retirar los `blocker`.
+2. La fuente es alcanzable solo por el camino principal.
+3. Hay **3 viñetas**, todas a ≤ 2 tiles del camino principal, ninguna en la
+   misma pantalla que otra.
+4. Hay **un hito**, del tamaño del contrato, y ningún `blocker` entre la
+   entrada y la fuente.
+5. Cada franja de 480 px tiene al menos una pista.
+6. Ningún decorado pertenece a una clase de `interactables.json`.
+7. `verify_palette.py image --world` sobre la captura completa, y la prueba de
+   entrecerrar sobre la misma captura.
+
+Valdehoja y la Cripta adaptan los puntos 2 a 4 a lo que se decida al abrirlas;
+el resto se cumple igual.
+
+**Tokens nuevos que abre el contrato:** ninguno. Los de la enmienda 6 se
+abren con ella: `WOOD_*`, `ROOF_*`, `AQUA_*`, `BLOOM_*`, `VITAL_300`,
+`VITAL_400` y `VITAL_600`. Las cifras de composición
+(3 viñetas, tamaño del hito, 2 tiles de distancia) son reglas de autoría y
+viven en `verify_zone.gd`, no en `DesignTokens`, porque no se dibujan.
+
+### Fase 5 — orden de trabajo
+
+Una zona por sesión, en el orden de la guía. Cada zona sigue el paso a paso del
+protocolo, con su propio apartado aquí:
+
+1. **Mapa en texto** (materiales y decorado) y `verify_zone.gd` en verde.
+2. **Decorado del daño** de la región con `tools/gen_*.py`, y su hito.
+3. **Zona montada** en el motor, con captura a 480 × 270.
+4. **Estados:** enferma, purificada y la ola entre las dos.
+
+Al final de cada paso: captura, cláusula que lo respalda, siguiente paso y
+visto bueno de Diego.
+
+## Tensiones que recogió la fase 3 (resueltas en la fase 4 y el contrato)
 
 Se enumeran **sin recomendar ninguna**: las direcciones se plantean cuando
 estén los resultados.
@@ -294,7 +400,7 @@ estén los resultados.
      y 3), y quizá un nodo con una persona que la nombre (parte 5). Es una
      dirección distinta, más densa.
 2. **Los materiales (prueba B):** si la separación dE 9,2 no basta, hace falta
-   la enmienda 6 antes de dibujar siete zonas sobre el tileset.
+   la enmienda 9 (antes reservada como 6) antes de dibujar siete zonas sobre el tileset.
 3. **Formato de mapa: texto o editor.** Lo decide Diego en la primera zona
    (guía §5). Las zonas de prueba de la parte 2 ya son texto, y `ZoneRules`
    las valida: es lo que existe hoy.
@@ -317,3 +423,339 @@ pruebas:
   purificar (búsqueda en anchura, guía §5);
 - ningún decorado de una clase que responde;
 - el verde solo en lo purificado.
+
+## Fase 5 · Valdehoja — abierta el 2026-10-28
+
+### Las dos preguntas de Valdehoja, respondidas por Diego el 2026-10-28
+
+1. **Cinco partes, una por región**, además del jardín de Yara, que es verde
+   desde el principio. La Cripta no devuelve ninguna: su final cambia el mundo
+   entero.
+2. **Cada parte está ligada al daño de su región**, para que el pueblo repita
+   la causa que el jugador ya aprendió:
+
+| Región purificada | Parte de Valdehoja que vuelve | Id en `zones.json` |
+|---|---|---|
+| Bosque de las Cenizas | La arboleda del pueblo (sureste) | `ashen_forest` |
+| Cuenca de Alquitrán | El río (este) | `tar_basin` |
+| Costa Quebrada | La era y sus caminos, sin basura (centro) | `broken_coast` |
+| Llanura Marchita | Las terrazas de cultivo (noroeste) | `withered_plain` |
+| Cumbre Menguante | La acequia que baja del deshielo y riega las terrazas | `waning_peak` |
+| — (desde el principio) | El jardín de Yara, con el primer semillero y el hito | `yara_garden` |
+
+### Paso 1 — Mapa en texto y `verify_zone.gd` · ENTREGADO el 2026-10-28
+
+Primera entrega: el mapa de materiales, sin decorado. **Diego la juzgó
+«horrible, desabrida»:** faltaban árboles, animales y detalle, y pidió el nivel
+de los juegos 2D de GBA (Zelda, Pokémon) y de Final Fantasy. De esa revisión
+salieron las enmiendas 6, 7 y 8 (guía §3.2 bis) y el paso 2 se hizo a
+continuación, en la misma sesión.
+
+**Referentes.** Los tutoriales que se buscaron (itch.io, slynyrd.com) no se
+pudieron abrir: están fuera de la red permitida en la sesión en la nube. **No
+cuentan como fuentes.** Lo que se tomó de los juegos que nombra Diego es
+observación propia, y se declara así:
+
+- copas de árbol sueltas y solapadas en el borde del bosque, nunca una masa
+  plana;
+- el tejado domina la casa y es lo que se lee de lejos;
+- el suelo lleva cobertura menuda (matas, piedras, flores) con espacio
+  negativo;
+- el agua y la hierba se mueven;
+- cuatro o cinco tonos por material.
+
+### Paso 2 — Decorado, casas, hito y animales · ENTREGADO, espera visto bueno
+
+**Cláusulas:** contrato «Rastro» (hito, gradiente por densidad, formato de
+mapas); catálogo 2a (gramática de forma, hueco métrico, regla de negación);
+enmiendas 6, 7 y 8.
+
+**Entregado:**
+
+- `tools/gen_world_decor.py` → `assets/sprites/world/decor/`: 34 piezas, cada
+  una con su variante enferma y purificada cuando la tiene:
+  - el árbol, con dos copas (enfermo: ralo, roto y con ramas desnudas;
+    purificado: redondo);
+  - el arbusto, la hierba alta, el matojo, las flores (mustias en lo enfermo),
+    la hilera de cultivo (enferma: monocultivo seco; purificada: cereal y
+    legumbre alternos), el tocón (purificado: con brote) y la basura suelta
+    (desaparece al purificar);
+  - lo que no cambia al purificar: la casa de madera y la de piedra (tejado a
+    cuatro aguas, 3×3 tiles), el pozo, la roca y las piedrecitas;
+  - el hito: el árbol de Yara, de 48×64 y en flor;
+  - lo que responde, con contorno `ASH_050`: el semillero y Yara;
+  - los animales domésticos (gallina de 8×8, perro y cabra de 16×16) y la
+    fauna silvestre (pájaro y mariposa de 8×8, con dos cuadros cada uno).
+- `tools/gen_tiles.py`, enmienda 6:
+  - el agua purificada pasa a `AQUA_700` con rizos `AQUA_900`;
+  - la tierra purificada pasa a prado (`VITAL_600`, con briznas `VITAL_700` y
+    `VITAL_400`);
+  - la **fila 7** nueva del atlas es el borde del prado: festón redondo
+    contra la tierra enferma.
+- `src/world/world_tiles.gd`: `purified_mask()` y el uso de la fila 7 en
+  `paint()`.
+- `data/world/zones/valdehoja.deco.txt`:
+  - seis casas, cada una con su camino delante de la puerta, y el pozo en la
+    era;
+  - árboles en todo el borde del bosque y una arboleda de árboles sueltos;
+  - cobertura de suelo con espacio negativo y las terrazas de monocultivo;
+  - el jardín de Yara, con flores, mariposas y pájaros;
+  - gallinas junto a la casa de Ilan, el perro en la era y cabras en los
+    prados.
+- `data/world/zones/valdehoja.parts.txt`: las seis partes como capa de texto
+  con formas que siguen orillas, setos y caminos. Sustituye a los rectángulos
+  de `zones.json`; así se resuelve lo que se planteó en el paso 1 sobre los
+  cantos rectos (opción a).
+- `ZoneRules.load_deco()` lee el tamaño de cada pieza, y
+  `ZoneRules.load_parts()` lee la capa de partes.
+- `tools/verify_zone.gd` comprueba además:
+  - que las piezas estén enteras;
+  - que los árboles puedan ir sobre el follaje y la fauna sobre el agua;
+  - que cada casa tenga camino delante de la puerta;
+  - que la fauna silvestre esté dentro de una parte.
+- `tools/zone_preview.py`: pinta el decorado ordenado por altura, cada pieza en
+  el estado de la parte en la que apoya, y la pantalla de 480 × 270 con Ilan.
+
+**Capturas** (`zone_preview.py`, a 1×):
+
+- `docs/ux/capturas/2026-10-28-valdehoja-inicio.png`: la zona entera al
+  empezar la partida.
+- `docs/ux/capturas/2026-10-28-valdehoja-cinco-regiones.png`: con las cinco
+  partes devueltas.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-casa.png`: 480 × 270 en la
+  aparición, con Ilan.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-jardin.png`: el jardín de
+  Yara, el primer verde del juego.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-era-purificada.png`: la era
+  y la arboleda ya devueltas.
+
+#### Verificado
+
+- `python tools/verify_palette.py tokens`: **47 tokens, sin deriva**.
+- `python tools/verify_tileset.py`: **dentro del contrato**.
+  - Prado frente a tierra enferma: valor 4,37 en visión normal (piso 1,5).
+  - Prado frente a follaje: dE 17,3. Agua purificada frente a follaje: dE 58,7.
+  - Contorno `ASH_050` sobre el agua viva: 4,19:1.
+- `verify_palette.py image --world` sobre las cinco capturas: **todo píxel es
+  un token** en cuatro de ellas. En la quinta falla, y se dice abajo.
+- Comprobaciones de `verify_zone.gd` pasadas en el espejo en Python: **28 de
+  28**, más las seis puertas de las casas.
+
+#### FALLA medido, y se dice
+
+- **El sprite de Ilan no pasa `--world`:** su contorno `ash_950` (72 px) y sus
+  ojos `ash_900` (2 px) superan el techo de 0,22. Es el sprite aprobado en la
+  parte 2, paso 5, y el contorno oscuro es una decisión de ese paso. **No se ha
+  tocado.** Se decide si `ash_950` y `ash_900` cuentan como tinta de
+  personaje, igual que las de la interfaz, o si se cambian.
+- **Tres intentos fallidos en esta sesión, corregidos antes de entregar:**
+  - el agua purificada clara (`AQUA_500`) dejaba el contorno `ASH_050` a
+    1,10:1;
+  - oscurecer el follaje purificado para separarlo del prado bajaba su valor a
+    1,34 (piso 1,5);
+  - un prado de base `VITAL_700` quedaba a dE 1,2 del follaje.
+
+  Los tres se midieron, se revirtieron y la solución final es la de arriba.
+- **`ash_900` en ventanas y ojos del decorado** superaba el techo: se cambió
+  por `water_700`.
+
+#### Pendiente, y se dice
+
+- **Nada de esto se ha ejecutado en Godot.** En la nube no hubo permiso para
+  lanzar el binario. Faltan `verify_zone`, `verify_movement` y
+  `verify_usability`. La fila 7 del atlas obliga a que Godot reimporte
+  `world.png`.
+- **La colisión del decorado sólido** (casas, árboles, pozo) no existe todavía
+  en el motor: `verify_zone` la usa para el recorrido, pero `WorldRoot` aún no
+  monta la capa de decorado. Es el paso 3.
+- **Enmienda 8, el movimiento:** los sprites de fauna y gallina tienen dos
+  cuadros, pero el brillo del agua y el vaivén de la hierba no tienen cuadros
+  todavía. Es el paso 4 (estados).
+- **Prueba de entrecerrar:** con la captura del motor, en el paso 3.
+- **La salida al Bosque** lleva a una zona aún sin dibujar.
+
+**Visto bueno de Diego al paso 2: 2026-10-28** («sí, dale»).
+
+### Paso 3 — Valdehoja en el motor · HECHO, espera visto bueno
+
+**Cláusulas:** «Umbral» (colisión del tile entero, capa de entidades ordenada
+por altura); contrato «Rastro» (formato de los mapas); enmiendas 6 y 7.
+
+**Entregado:**
+
+- `src/world/world_decor.gd` (`WorldDecor`) recorre la capa de decorado:
+  - cada pieza es un `Sprite2D` en `WorldRoot.entities`, con la posición en
+    su pie, así que el orden por altura la pone delante o detrás de Ilan;
+  - cada pieza sólida lleva un `StaticBody2D` del tamaño entero de la pieza,
+    en tiles, igual que el terreno y que el recorrido de `verify_zone`;
+  - el estado de cada pieza sale de la casilla de su pie, y la fauna
+    silvestre solo se monta en lo purificado.
+- `WorldDecor.purified_lookup()` da el estado por casilla:
+  - en una zona sin partes, la bandera `purified_<zona>` como antes;
+  - en Valdehoja, cada parte sigue a la bandera de su región, el jardín está
+    purificado siempre y el resto sigue a la bandera de Valdehoja (el final).
+- `WorldRoot.enter_zone()` pinta con ese estado por casilla, monta el decorado
+  y retira el de la zona anterior. Las zonas de prueba, sin capa de decorado,
+  se pintan igual que antes.
+- `tools/verify_zone.gd` gana una sección «En el motor»:
+  - un sprite por pieza y un cuerpo por pieza sólida;
+  - andando hacia la puerta de una casa, Ilan se para fuera;
+  - el jardín está purificado al empezar y la arboleda no;
+  - con `purified_ashen_forest`, vuelven la arboleda y sus pájaros.
+- `tools/valdehoja_capture.tscn`: las capturas del motor a 480 × 270 (casa,
+  jardín, era con la Costa purificada y con todo purificado).
+- `tools/valdehoja_play.tscn`: para pasear por Valdehoja con el teclado.
+
+#### Verificado en Godot 4.7.2 (2026-10-28, con permiso de Diego en la sesión)
+
+- `--import`: limpio; `project.godot` no se reescribió.
+- `verify_zone.tscn -- valdehoja`: **41 de 41**, más 2 pendientes declarados
+  (la salida al Bosque sin dibujar y la prueba de entrecerrar). En el motor:
+  - 377 sprites ordenados por altura y 146 cuerpos sólidos;
+  - andando hacia la puerta de una casa, Ilan se para fuera;
+  - el jardín está purificado al empezar y la arboleda no;
+  - con el Bosque purificado, vuelven la arboleda y su fauna.
+- `verify_movement`: **99 de 99**. `verify_usability`: **16 de 16**.
+  `verify_camera`: **37 de 37**. Las zonas de prueba no cambian.
+- **Dos fallos que la prueba cazó en la primera pasada, y se corrigieron:**
+  - Al volver a entrar en la zona, el decorado viejo seguía en el árbol hasta
+    el final del cuadro y Godot renombraba el nuevo. Ahora `WorldRoot` lo
+    saca del árbol antes de liberarlo.
+  - **La arboleda no tenía fauna:** el pájaro previsto caía bajo un árbol y
+    el generador lo descartó. Se añadió una en (36, 23). Era un defecto de
+    contenido, no de la prueba.
+- **Capturas del motor**, a 480 × 270: `docs/ux/capturas/2026-10-28-valdehoja-motor-casa.png`,
+  `-jardin.png`, `-era.png` (con la Costa purificada) y `-todo.png`. Salen
+  iguales a las de `zone_preview.py`.
+- `verify_palette.py image --world` sobre las cuatro: **FALLA solo por el
+  sprite de Ilan** (`ash_950`, 72 px; `ash_900`, 2 px), el hallazgo ya anotado
+  en el paso 2. Todo el decorado y el terreno son tokens dentro del contrato.
+
+#### Pendiente, y se dice
+
+- **Prueba de entrecerrar**: no tiene todavía una medida automática; se
+  propone escribirla en el paso 4.
+- **El juego principal (`scenes/main.tscn`) todavía no lleva al mundo**: sigue
+  abriendo la demo de batalla. El paso del mundo al combate es la parte 4.
+- **Enmienda 8 (movimiento):** paso 4, estados.
+- **El sprite de Ilan frente a `--world`:** lo decide Diego.
+
+**Visto bueno de Diego al paso 3: 2026-10-28** («sigue»).
+
+### Paso 4 — Estados y movimiento (enmienda 8) · HECHO, espera visto bueno
+
+**Cláusulas:** enmienda 8 (solo se mueve lo purificado); «Vereda» (velocidades
+múltiplo de 60 px/s, movimiento reducido); contrato «Rastro» (prueba de
+entrecerrar, Rogers).
+
+**La ola de purificación no se adelanta.** La enmienda 3 tiene sus tokens,
+pero ningún código, y la dispara el combate (`GameState`: «la escribe la ola
+de purificación, parte 4»). Se hace en la parte 4, con el paso del mundo al
+combate. Aquí, cada parte se ve ya devuelta al entrar en Valdehoja.
+
+**Entregado:**
+
+- `src/ui/design_tokens.gd`: los tokens de la enmienda 8.
+  - Duraciones: `DUR_AMBIENT_WATER` 0,50 s, `DUR_AMBIENT_SWAY` 0,70 s y
+    `DUR_FAUNA_FLAP` 0,15 s.
+  - Animales: `ANIMAL_HOP_MAX` 12 px, `ANIMAL_RANGE` 24 px y pausas de 1,2 a
+    3,0 s.
+  - `FAUNA_BOB` 1 px.
+  - Los animales andan a `WALK_SPEED`: 1 px por cuadro, la regla de
+    velocidades.
+- `tools/gen_tiles.py`: **fila 8** del atlas, segundo cuadro del agua viva
+  (los rizos corridos 2 px). Es sólida como el agua.
+- `tools/gen_world_decor.py`: segundo cuadro de la hierba, las flores, los
+  matojos y los cultivos purificados. La copa se corre 1 px y el pie no se
+  mueve.
+- `src/world/world_ambient.gd` (`WorldAmbient`), en `WorldRoot`:
+  - alterna el agua viva y mece las plantas, cada pieza con su fase;
+  - hace aletear y mecerse a la fauna;
+  - hace andar a saltos a los animales que están en lo purificado, sin salir
+    de lo sano ni entrar en lo sólido;
+  - todo en cuadros de física, con azar determinista por pieza;
+  - con movimiento reducido, nada.
+- `WorldDecor` marca en cada sprite sus cuadros y su fase, y devuelve las
+  casillas que ocupa lo sólido.
+- `tools/valdehoja_capture.tscn`: un estado por región, cada una devolviendo
+  solo su parte, y 60 cuadros del movimiento.
+- `tools/verify_squint.py`: la **prueba de entrecerrar**, medida sobre el
+  render de la zona entera.
+
+**Capturas:**
+
+- `docs/ux/capturas/2026-10-28-valdehoja-motor-bosque.png`, `-cuenca.png`,
+  `-costa.png`, `-llanura.png` y `-cumbre.png`: cada región devuelve su parte,
+  sola.
+- `docs/ux/capturas/2026-10-28-valdehoja-motor-movimiento.gif`: la era con todo
+  purificado, 60 cuadros a 50 ms, velocidad real. Se ven el brillo del agua, el
+  vaivén y el perro andando.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- valdehoja`: **49 de 49**. Las 8 nuevas, medidas en 600
+  cuadros:
+  - el agua viva cambia cada 30 cuadros (20 cambios) y la enferma no;
+  - la hierba purificada cambia cada 42 (14 cambios) y la enferma no;
+  - el perro de la era anda, en píxeles enteros, cerca de su sitio y en suelo
+    sano;
+  - las gallinas, en lo enfermo, no se mueven;
+  - con movimiento reducido no cambia nada en 300 cuadros.
+- `verify_movement` **99/99**, `verify_usability` **16/16**, `verify_camera`
+  **37/37**.
+- `python tools/verify_squint.py valdehoja`:
+  - al empezar, el decorado ocupa el 9 % del 1 % más luminoso, y lo más
+    luminoso es el jardín de Yara, tile (26, 7);
+  - con todo purificado, el 17 %; lo más luminoso son las terrazas.
+  - **La prueba sabe fallar:** con un decorado blanco inyectado da FALLA
+    (90 %).
+- `python tools/verify_tileset.py`: dentro del contrato con la fila 8.
+  `verify_palette.py tokens`: 47 tokens, sin deriva.
+- `verify_palette.py image --world` sobre las nueve capturas del motor: falla
+  **solo** por el sprite de Ilan, como en el paso 3.
+
+#### Se dice, para decidir en la revisión
+
+- **Las gallinas del pueblo no se mueven nunca hasta el final**, porque están
+  en lo que no es de ninguna parte. Es lo que dice la enmienda 8 («los
+  animales andan donde ya está sano»), pero en la captura de inicio se leen
+  como figuras quietas. Hay dos salidas:
+  - (a) moverlas a una parte, por ejemplo a la orilla de la era, para que
+    anden en cuanto vuelva la Costa;
+  - (b) dejar que los animales domésticos piquen en el sitio (un cambio de
+    cuadro sin desplazarse), también en lo enfermo.
+
+  La (b) contradice la letra de la enmienda 8, así que **se recomienda la
+  (a)**.
+- **El sprite de Ilan frente a `--world`**, pendiente desde el paso 2.
+
+#### Decidido por Diego, 2026-10-28
+
+- **Visto bueno al paso 4** («sigue»).
+- **Gallinas: opción (a).** Pasan a la orilla de la era: (26, 17), (22, 18) y
+  (27, 18). Andan en cuanto vuelve la Costa; `verify_zone` lo mide con
+  `chicken_26_17` y sigue en 49 de 49.
+- **Ilan: excepción de personaje.** `ash_950` y `ash_900` cuentan como tinta de
+  personaje en `verify_palette.py image --world`. Con `--strict` no valen, y
+  así se mide el decorado y el terreno.
+  - Las nueve capturas del motor pasan `--world`.
+  - Los 38 sprites del decorado y el atlas pasan `--strict`.
+  - El sprite de Ilan no pasa `--strict`, como se espera: la excepción no
+    abre nada más.
+
+### Cierre de Valdehoja · 2026-10-28
+
+**Valdehoja queda cerrada**, salvo dos cosas que dependen de otras partes y se
+dicen:
+
+1. **La ola de purificación por partes** (enmienda 3) va con el combate, en la
+   parte 4.
+2. **La salida al Bosque** lleva a una zona aún sin dibujar. La casilla de
+   llegada, hoy (1, 17), se fija al dibujar el Bosque.
+
+**Siguiente zona: Bosque de las Cenizas**, en una sesión nueva (una zona por
+sesión, confirmado por Diego). Es la primera con la composición regional
+completa: camino a la fuente, 3 viñetas, hito y paso cerrado. `verify_zone`
+tiene que ganar las comprobaciones regionales (hoy declaradas pendientes).
+Antes de dibujar, pregunta pendiente para Diego: **cómo se llega a las otras
+cuatro regiones** (en cadena desde el Bosque o volviendo a Valdehoja).

@@ -1,0 +1,66 @@
+; Valdehoja — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md) y enmiendas 6 a 8. Mismo
+; tamaño que valdehoja.txt: una fila por fila y una columna por columna. Un
+; espacio, o el final de una fila más corta, es «nada».
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; Una pieza de varios tiles se escribe entera con su carácter; el sprite se
+; apoya en la fila de abajo. El estado (enfermo o purificado) lo da la parte.
+; H = decor, house, sólido, 3x3          casa de madera
+; h = decor, house_stone, sólido, 3x3    casa de piedra (la de Ilan, al suroeste)
+; W = decor, well, sólido, 2x2           pozo de la era
+; T = decor, tree, sólido, 2x2           árbol; en el borde, sobre el follaje
+; U = decor, tree_b, sólido, 2x2         árbol, segunda copa
+; Y = landmark, yara_tree, sólido, 3x4   hito: el árbol del jardín de Yara
+; u = decor, bush, sólido                arbusto
+; R = decor, rock, sólido                roca partida
+; t = decor, stump, sólido               tocón (daño del Bosque)
+; g = decor, grass, pisable              hierba alta
+; w = decor, weed, pisable               matojo bajo
+; e = decor, pebbles, pisable            piedrecitas
+; f = decor, flower, pisable             flores (mustias en lo enfermo)
+; b = decor, litter, pisable             basura suelta (daño de la Costa)
+; r = decor, crop_row, pisable           hilera de un solo cultivo (daño de la Llanura)
+; S = entity, seedbed, sólido            semillero del jardín de Yara
+; p = entity, person, sólido             Yara
+; k = animal, chicken, pisable           gallina (enmienda 7)
+; d = animal, dog, pisable               perro
+; G = animal, goat, pisable              cabra
+; v = fauna, bird, pisable               pájaro: solo en lo purificado
+; m = fauna, butterfly, pisable          mariposa: solo en lo purificado
+; @ = spawn, start, pisable              aparición al empezar la partida
+---
+UUTTTTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
+UUTTTTUUTTTTUUTTTTUU  TTUUTTTTUUTTTT    TTUUTT    TTTTUUTT
+TT   w     e   e   w              UUTTTTUU   w          TT
+TT   rrrrrrrrrrrrrr  e     mv  YYYUUTTTTUU egw   g      TT
+TT   rrrrrrrrrrrrrr       f fm YYY                 TT   UU
+TT                         f   YYY                 TT  gUU
+UU         g   u    veg   f u  YYYv  w  TT w           eTT
+UU   rrrrrrrrrrrrrr   g   f     p       TTe           g TT
+TT   rrrrrrrrrrrrrr       uS    mf      w gg   v e  g   TT
+TT                         f    ff   TTg  w        e  w TT
+TT      m   g                        TT   w  e      w  eUU
+TT         wrrrrrrr    eu  g e   ge     w         TT    UU
+UU   rrrrr rrrrrrrr       e      HHH              TT    TT
+UU                           w  wHHH  g   g           w TT
+TT g        G            w TT    HHH  HHH hhhg    u g   TTUU
+TT           w   G        gTT         HHH hhh    g   g  TTUU
+TT                   g    g  w      w HHHehhh       e
+TT e         HHH  w  e w  ke
+UU          gHHH      k fw k m       w           e      TTTT
+UU   g w     HHH hhh e bgWWg    be f     e              TTTT
+TT   hhhR   R    hhh   u WWeb  f       g               gTT
+TT   hhh   w w   hhh  b w   d   g   b w  w   e    w TT  TT
+TT  whhh                          bRu  e  g  v      TT  UU
+TT                         b        v    w       e      UU
+UU         w         e      e  TTw   TTR t TT       wR  TT
+UU     e @ uw  TT TTg    e     TT TT TT w  TT           TT
+TT  UU      TT TTRTT TT TT TT   w TT  R UU          UU  TT
+TT  UU wee  TT       TT TT TTTT  g etgt UU  t      gUU  TT
+TTUUTTTTUUTT   w   wUUg ww e TTTT  TT   g UU            UU
+TTUUTTTTUUTT  TT    UUUU UUg g TTwwTT  UU UU            UU
+          TT  TT      UU UUe         ReUU  u      g    RTT
+          TT                                            TT
+          UUTTTTUUTTTTUUTTTTUUTTTTUUTTTTUUTTTT    TTUUTTTT
+          UUTTTTUUTTTTUUTTTTUUTTTTUUTTTTUUTTTT    TTUUTTTT

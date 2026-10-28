@@ -63,6 +63,7 @@ static func build_tileset() -> TileSet:
 	for material in SOLID:
 		solid_rows.append(OVERLAY_ROW[material])
 		solid_rows.append(OVERLAY_ROW[material] + 1)
+	solid_rows.append(WATER_ALT_ROW)
 	# El tile sólido bloquea entero, en enteros: su silueta enferma o purificada
 	# se retira de 1 a 3 px del borde, pero la colisión no la sigue. Seguir la
 	# sierra haría que el cuerpo se enganchara en cada diente (dirección B,
@@ -116,6 +117,14 @@ static func parse(lines: PackedStringArray) -> Array:
 	return grid
 
 
+## Fila del borde del prado: suelo purificado junto a suelo enfermo
+## (enmienda 6, 2026-10-28). La columna es la máscara de vecinos purificados.
+const MEADOW_EDGE_ROW := 7
+## Segundo cuadro del agua purificada (enmienda 8, 2026-10-28). Misma máscara
+## que la fila 4; `WorldAmbient` alterna las dos.
+const WATER_ALT_ROW := 8
+
+
 ## Pinta la rejilla en una capa. `purified_at` decide, por celda, el estado.
 static func paint(layer: TileMapLayer, grid: Array, purified_at: Callable) -> void:
 	for y in grid.size():
@@ -123,7 +132,25 @@ static func paint(layer: TileMapLayer, grid: Array, purified_at: Callable) -> vo
 			var cell := Vector2i(x, y)
 			var material: Terrain = grid[y][x]
 			var mask := neighbor_mask(grid, cell)
-			layer.set_cell(cell, 0, atlas_coords(material, purified_at.call(cell), mask, cell))
+			var purified: bool = purified_at.call(cell)
+			var coords := atlas_coords(material, purified, mask, cell)
+			if material == Terrain.SOIL and purified:
+				var around := purified_mask(grid, cell, purified_at)
+				if around != INTERIOR:
+					coords = Vector2i(around, MEADOW_EDGE_ROW)
+			layer.set_cell(cell, 0, coords)
+
+
+## Qué vecinos están purificados. Fuera del mapa cuenta como purificado, para
+## que el borde de la zona no dibuje un canto falso.
+static func purified_mask(grid: Array, cell: Vector2i, purified_at: Callable) -> int:
+	var mask := 0
+	var steps := [[Vector2i.UP, NORTH], [Vector2i.RIGHT, EAST], [Vector2i.DOWN, SOUTH], [Vector2i.LEFT, WEST]]
+	for step in steps:
+		var n: Vector2i = cell + step[0]
+		if n.y < 0 or n.y >= grid.size() or n.x < 0 or n.x >= grid[n.y].size() or purified_at.call(n):
+			mask |= step[1]
+	return mask
 
 
 ## Variante de suelo estable por celda: el mismo mapa sale siempre igual.
