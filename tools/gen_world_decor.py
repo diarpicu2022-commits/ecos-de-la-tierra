@@ -774,6 +774,181 @@ def scrap_blocker(pure: bool) -> Canvas:
     return c
 
 
+# --- Llanura Marchita: el monocultivo y su vuelta ----------------------------------------
+# Las hileras van sin cerca: la parcela cercada es la clase que responde de la
+# Llanura (catálogo 2a).
+
+
+def sack(pure: bool) -> Canvas:
+    """Saco de abono químico, abierto y tumbado en diagonal, 16x16, vertiendo
+    polvo claro. No es un fardo atado (catálogo 2a). Purificado, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 13, 6, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "................",
+        "................",
+        "......aa........",
+        ".....abbb.......",
+        "....abbbbc......",
+        "...abbbbbcc.....",
+        "...bbbbbbccd....",
+        "...bbbbbccdd....",
+        "....bbbccdd.ee..",
+        ".....bccdd.eeee.",
+        "......ddd...ee..",
+    ]
+    grid(c, rows, {"a": "ash_050", "b": "ash_200", "c": "ash_400", "d": "ash_600", "e": "ash_050"})
+    return c
+
+
+def salt(pure: bool, seed: int) -> Canvas:
+    """Costra de sal en el suelo, en placas rotas: la tierra quemada por el
+    abono (la aldea se llama Grano de Sal). Purificada, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    for _ in range(4):
+        x, y = rng.randint(1, 10), rng.randint(3, 12)
+        w = rng.randint(3, 5)
+        for i in range(w):
+            c.set(x + i, y + i // 2, color("ash_200"))
+            c.set(x + i, y + i // 2 + 1, color("ash_400"))
+    return c
+
+
+def sprayer(pure: bool) -> Canvas:
+    """La pulverizadora de agroquímicos, tumbada, 32x16: depósito y barra
+    rota en diagonal. Purificada, la hierba la cubre: se queda, ya sin uso."""
+    c = Canvas(32, 16)
+    ground_shadow(c, 14, 13, 13, "vital_900" if pure else "soil_700")
+    blob(c, 10, 8, 7, 4, "roof_700")
+    blob(c, 9.5, 7.5, 6, 3.2, "roof_500")
+    line(c, 5, 6, 13, 6, "roof_300")
+    for k in range(2):
+        line(c, 16, 9 + k, 30, 3 + k, "ash_600")
+    for x in (19, 23, 27):
+        c.set(x, 8 - (x - 19) // 3, color("ash_400"))
+    blob(c, 6, 12, 2, 2, "water_700")
+    blob(c, 14, 12, 2, 2, "water_700")
+    if pure:
+        for x in range(3, 30, 3):
+            line(c, x, 14, x, 11, "vital_600")
+            c.set(x, 10, color("vital_400"))
+    return c
+
+
+def wilted_row(pure: bool, seed: int) -> Canvas:
+    """Hilera marchita: el cultivo muerto, doblado y gris. Purificada, cereal
+    y legumbre alternos, como la hilera curada."""
+    if pure:
+        return crop_row(True, seed)
+    c = Canvas(16, 16)
+    rng = random.Random(seed)
+    for x in range(1, 16, 3):
+        h = rng.randint(4, 6)
+        line(c, x, 15, x + 1, 15 - h, "ash_600")
+        line(c, x + 1, 15 - h, x + 3, 13 - h + 2, "ash_400")
+    line(c, 0, 15, 15, 15, "soil_700")
+    return c
+
+
+def silo(pure: bool) -> Canvas:
+    """El hito de la Llanura: el silo de la aldea Grano de Sal, 48x64. Cilindro
+    alto con cúpula y la tubería de vertido. Enfermo, oxidado y con la mancha
+    clara del abono bajando. Purificado, la enredadera sube y anidan pájaros."""
+    c = Canvas(48, 64)
+    rng = random.Random(61)
+    ground_shadow(c, 24, 60, 18, "vital_900" if pure else "soil_700")
+    # Cuerpo: cilindro con sombreado por columnas.
+    for x in range(10, 38):
+        t = (x - 10) / 27
+        ink = "ash_400" if t < 0.2 else "ash_600" if t < 0.75 else "ash_700"
+        for y in range(16, 60):
+            c.set(x, y, color(ink))
+    for y in range(20, 60, 6):
+        line(c, 10, y, 37, y, "ash_700")
+    # Cúpula.
+    blob(c, 24, 16, 14, 7, "roof_500")
+    blob(c, 22, 14, 10, 4.5, "roof_300")
+    blob(c, 24, 9, 3, 2.5, "roof_700")
+    # Tubería de vertido hacia el suelo, en diagonal.
+    for k in range(3):
+        line(c, 37, 24 + k, 46, 40 + k, "ash_600" if k < 2 else "ash_700")
+    if pure:
+        for y in range(24, 60, 2):
+            c.set(12 + (y % 4 == 0), y, color("vital_700"))
+            c.set(34 + (y % 6 == 0), y, color("vital_700"))
+        for x, y in ((12, 30), (13, 42), (34, 36), (35, 50), (20, 56)):
+            blob(c, x, y, 2.2, 1.6, "vital_500")
+            c.set(x - 1, y - 1, color("vital_300"))
+        for x, y in ((18, 11), (30, 12)):
+            c.set(x, y, color("aqua_300"))
+            c.set(x + 1, y - 1, color("aqua_300"))
+    else:
+        # Óxido y el reguero claro del abono bajando por el costado.
+        for _ in range(30):
+            x, y = rng.randint(11, 36), rng.randint(18, 58)
+            c.set(x, y, color("roof_700"))
+        for y in range(26, 58):
+            c.set(16 + (y // 7) % 2, y, color("ash_200"))
+        line(c, 44, 41, 46, 46, "ash_200")
+    return c
+
+
+def specter_monster(pure: bool) -> Canvas:
+    """El Espectro del Monocultivo en el mapa, 16x24: una figura pálida hecha de
+    espigas iguales, con borde EMBER_300 y ojos de brasa. Purificado, ya no
+    está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 6, "soil_700")
+    rows = [
+        "......a..a......",
+        ".....aba.aba....",
+        ".....abaaaba....",
+        "....abbbbbbba...",
+        "....abebbbeba...",
+        "....abbbbbbba...",
+        "...abbcbcbcbba..",
+        "...abcbcbcbcba..",
+        "..abbcbcbcbcbba.",
+        "..abcbcbcbcbcba.",
+        "..abbcbcbcbcbba.",
+        "...abcbcbcbcba..",
+        "...abbbbbbbbba..",
+        "....abbbbbbba...",
+        ".....abbbbba....",
+        "......abbba.....",
+        ".......aba......",
+        "........a.......",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "ash_200", "c": "ash_400", "e": "ember_400"}, 0, 4)
+    return c
+
+
+def wire_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Llanura, 16x16: alambre de espino tendido en diagonal
+    entre dos postes rotos, sin contorno. Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    line(c, 2, 15, 3, 4, "wood_700")
+    line(c, 13, 15, 12, 5, "wood_700")
+    for y0 in (6, 9, 12):
+        line(c, 2, y0, 13, y0 + 2, "ash_400")
+        for x in range(3, 13, 3):
+            c.set(x, y0 + (x - 2) * 2 // 11 - 1, color("ash_200"))
+            c.set(x, y0 + (x - 2) * 2 // 11 + 1, color("ash_200"))
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -1231,6 +1406,14 @@ def pieces() -> dict[str, Canvas]:
         out[f"trash_mountain_{state}"] = trash_mountain(pure)
         out[f"monster_broken_coast_{state}"] = plastic_monster(pure)
         out[f"blocker_broken_coast_{state}"] = scrap_blocker(pure)
+        # Llanura Marchita.
+        out[f"sack_{state}"] = sack(pure)
+        out[f"salt_{state}"] = salt(pure, 11)
+        out[f"sprayer_{state}"] = sprayer(pure)
+        out[f"wilted_row_{state}"] = wilted_row(pure, 9)
+        out[f"silo_{state}"] = silo(pure)
+        out[f"monster_withered_plain_{state}"] = specter_monster(pure)
+        out[f"blocker_withered_plain_{state}"] = wire_blocker(pure)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)
     out["well_sick"] = well()

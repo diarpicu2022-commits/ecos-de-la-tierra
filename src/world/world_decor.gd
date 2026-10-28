@@ -39,7 +39,7 @@ const JITTER_PX := 3
 ## Purificado no queda ni el sprite ni el cuerpo: un barril invisible y sólido
 ## sería un muro fantasma.
 const VANISH_WHEN_PURE := ["blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
-	"v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag"]
+	"v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag", "v2_sack", "v2_salt", "salt"]
 
 
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos

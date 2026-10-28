@@ -8,6 +8,7 @@
     "valdehoja": {"name": "Valdehoja"},
     "ashen_forest": {"name": "Bosque de las Cenizas"},
     "tar_basin": {"name": "Cuenca de Alquitrán"},
-    "broken_coast": {"name": "Costa Quebrada"}
+    "broken_coast": {"name": "Costa Quebrada"},
+    "withered_plain": {"name": "Llanura Marchita"}
   }
 }

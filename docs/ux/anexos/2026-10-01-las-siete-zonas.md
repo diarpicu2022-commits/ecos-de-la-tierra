@@ -1078,5 +1078,69 @@ rehicieron con ese cambio.
 - El puzzle de los fardos y los contenedores (parte 7) y la ola (parte 4) no
   están en el mapa.
 
-**Siguiente:** el visto bueno de Diego a la Costa; después, la **Llanura
-Marchita**.
+**Visto bueno de Diego a la Costa: 2026-10-28** («sigue»).
+
+## Fase 5 · Llanura Marchita — 2026-10-28
+
+**La fuente** es la aldea Grano de Sal: el silo (el hito) y el Espectro del
+Monocultivo al pie. El paso cerrado, alambre de espino en diagonal, está al
+sur de la aldea y abre la Cumbre. **Las hileras de monocultivo van sin
+cerca**, porque la parcela cercada es la clase que responde de la Llanura
+(catálogo 2a).
+
+**Composición** (`withered_plain.txt` y `.deco.txt`, 90 × 40): campos abiertos
+partidos por setos. Es el rodeo del Bosque, con campos en vez de bosque.
+
+1. **Llegada desde la Costa** por el oeste, al gran campo del norte. **Viñeta
+   1:** los tocones del seto arrancado y las hileras de un solo cultivo que
+   ocupan su sitio.
+2. **Ida por el norte:** **el silo asoma al 27 % del camino**, por encima del
+   seto que cierra la aldea.
+3. **La era de los sacos**, al noreste. **Viñeta 2:** sacos de abono químico
+   abiertos y la costra de sal que dejan en el suelo.
+4. **Bajada por el este y vuelta por el campo del sur.** **Viñeta 3:** la
+   pulverizadora tumbada y la hilera marchita.
+
+**El gradiente:** monocultivo y sal se densifican hacia la aldea (0,47, 0,30 y
+0,17 por tile). Lejos de ella hay barbecho y hierba silvestre.
+
+**Al purificar:**
+
+- desaparecen los sacos y la sal;
+- la hilera marchita y el monocultivo pasan a cereal y legumbre alternos;
+- la hierba cubre la pulverizadora;
+- trepa la enredadera por el silo y anidan pájaros.
+
+**Arte nuevo** (103 piezas en total): saco, costra de sal, pulverizadora,
+hilera marchita, silo, Espectro y alambre de espino.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- withered_plain`: **44 de 44**, 1 pendiente (la Cumbre, sin
+  dibujar). La primera pasada falló en cuatro puntos, todos corregidos:
+  - la última franja de 2 columnas no tenía pista (la zona pasó de 92 a 90 de
+    ancho);
+  - el camino no tocaba la fuente (ahora acaba al pie del silo);
+  - un elemento de las viñetas 1 y 2 quedaba a 3 tiles del camino;
+  - el silo solo se veía al 89 % del camino. La ida bajó de la fila 9 a la 11
+    y el silo se corrió al este: asoma al 27 %.
+- **La Costa pasa a 0 pendientes.** El resto, en verde:
+  - Valdehoja **49/49**, Bosque **45/45**, Cuenca **44/44**;
+  - `verify_movement` 99/99, `verify_usability` 16/16 y `verify_camera` 37/37;
+  - `verify_tileset` en verde y tokens sin deriva.
+- `verify_palette --world`: pasan las 56 capturas del 2026-10-28. Con
+  `--strict`, pasan los 103 sprites. `verify_squint.py withered_plain`: OK.
+- **Capturas del motor:** `docs/ux/capturas/2026-10-28-llanura-motor-*.png`
+  (entrada, setos, asomo, sacos, pulverizadora, fuente, fuente purificada,
+  campo purificado y paso abierto) y `-movimiento.gif`. **Vista de la zona
+  entera:** `2026-10-28-llanura-enferma.png` y `-purificada.png`.
+
+#### Pendiente, y se dice
+
+- La Cumbre, sin dibujar: la salida de la Llanura lleva allí, por el sur, en
+  (52, 39).
+- Las parcelas de la rotación de cultivos (parte 7), la revelación de Rasgo
+  (IA-6) y la ola no están en el mapa.
+
+**Siguiente:** el visto bueno de Diego a la Llanura; después, la **Cumbre
+Menguante**, la última zona regional.
