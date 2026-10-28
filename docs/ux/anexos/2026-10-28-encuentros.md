@@ -1,0 +1,377 @@
+# Anexo de diseño — Parte 4: encuentros y paso mundo ↔ combate
+
+Abierto el 2026-10-28. Sigue el protocolo de la guía §1.1: usuarios,
+comunicación, investigación y direcciones. **Ninguna dirección está elegida:
+se pregunta a Diego y se espera.** Hasta entonces no se escribe código de esta
+parte.
+
+Alcance (guía §5, parte 4): el monstruo en el mapa (IA-1), el contacto, la
+entrada al combate, el fondo de batalla por región, el estado del grupo que
+entra y sale, la huida con gracia y la vuelta al mapa con la ola de
+purificación. IA-4 (bot de equilibrado) e IA-5 (sintonía del grupo) se diseñan
+**después**, en este mismo anexo, porque dependen de cómo se entre al combate.
+
+---
+
+## Fase 1 — Usuarios
+
+- **Primario:** quien juega un RPG 2D, de 14 a 30 años, hispanohablante, en PC
+  con teclado, sin conocimiento previo del dominio ambiental. Ya sabe por
+  convención que tocar a un enemigo visible abre un combate. **No** sabe que
+  aquí el monstruo *es* la causa del daño de su zona, ni que hay un lado bueno
+  y uno malo para acercarse.
+- **Secundario:** el docente de Diseño de Interfaces, que evalúa si la
+  transición y la lectura del monstruo están razonadas, no solo si funcionan.
+- **Qué trae ya del juego:** sabe andar y correr (parte 2), que el verde es
+  «purificado», que la brasa marca la causa activa y que el fundido a negro es
+  cambiar de zona (repertorio §3.1).
+- **Situación:** la pantalla mide 480 × 270 y el monstruo es una figura de
+  16-32 px entre decorado vivo. La lectura es **periférica**: el jugador mira a
+  Ilan y al camino, no al monstruo.
+
+## Fase 2 — Comunicación
+
+**Decisión dominante:** *¿me acerco ahora, y por dónde?* Cada región tiene un
+solo monstruo de historia, la fuente del daño, y hay que vencerlo para abrir el
+paso. La decisión no es si pelear, sino **cuándo y en qué condiciones**: con el
+grupo curado o no, y por delante o por la espalda.
+
+Información que la sostiene, en este orden:
+
+1. **Dónde está el monstruo y hasta dónde llega:** su zona de daño, que el
+   mapa ya dibuja con el gradiente (contrato «Rastro»).
+2. **Si me ha visto:** su estado (patrulla, alerta, persecución, se rinde).
+3. **Qué pasa si toco:** quién empieza el combate.
+4. **Que el combate continúa el mundo:** la misma región, el mismo grupo con
+   sus PV, la misma bolsa.
+
+**Qué no va:**
+
+- Signos de fábrica sobre la cabeza («!», «?») sin referente (guía §3.3, IA-1).
+- Medidores de detección permanentes en el HUD: el HUD de exploración no
+  existe, y no se abre por esto.
+- Encuentros aleatorios invisibles: el alcance cerrado es un monstruo por
+  región, visible.
+- Color solo para el estado o para la ventaja (§2.3): cada señal va también
+  en silueta, postura o movimiento.
+- Una transición que repita el fundido (cambio de zona) o el tramado
+  (purificación): cada una tiene su único trabajo.
+
+---
+
+## Fase 3 — Investigación
+
+Consultas hechas el 2026-10-28. Formato:
+`observación → decisión aplicable → límite que no copiaré`.
+
+1. **Shadow Tactics, «Dynamic detection»** (Game Developer):
+   https://www.gamedeveloper.com/design/game-design-deep-dive-dynamic-detection-in-i-shadow-tactics-i-
+   → La detección no se anuncia cambiando de color: un relleno **avanza desde
+   los ojos del guardia hacia el personaje**, y el jugador ve cuánto le queda.
+   Bordes duros, sin degradados, y un solo cono visible a la vez. →
+   **La alerta se lee como algo que avanza hacia Ilan, no como un icono que
+   aparece.** Encaja con el pixel art sin subpíxel. → No copio el cono de
+   visión permanente ni la cámara lenta: el juego no es de sigilo y la cámara
+   lenta pide una regla de tiempo que no está en ningún contrato.
+2. **Notas de diseño de batallas de *Ink*** (Pebble Version):
+   https://www.pebbleversion.com/html/Ink/InkBattles.html
+   → Con enemigos visibles, la emboscada vale en los dos sentidos: tocar por la
+   espalda o fuera de su visión da ventaja a quien toca, y el autor lo exige
+   por justicia. La cortinilla «no es necesaria; es una decisión de estilo». →
+   **Ventaja simétrica:** Ilan por la espalda abre el combate; el monstruo por
+   la espalda de Ilan, también. → No copio la batalla sobre el mismo mapa como
+   regla: la pantalla «Ceniza y Brasa» ya está contratada con su composición.
+3. **Guía de combate y enemigos de EarthBound** (CyricZ, GameFAQs, espejo):
+   https://gopherproxy.meulie.net/tilde.pink/0/~bencollver/gamefaqs/text/gba/mother-12/Battle_Enemy-Guide-by--CyricZ.txt
+   → Quien toca por la espalda gana un turno libre, y **la propia transición
+   anuncia quién lleva ventaja** antes de que aparezca el menú. → **La
+   transición lleva el dato de ventaja**: el jugador sabe quién empieza antes
+   del primer turno. → No copio que lo diga solo el color del remolino
+   (gris, verde, rojo): aquí sería verde para un trabajo que no es purificar.
+   La ventaja va en la **dirección** de la transición.
+4. **Game Accessibility Guidelines**, lista completa:
+   https://gameaccessibilityguidelines.com/full-list/
+   → «Ninguna información esencial solo por color», «evitar movimiento o
+   sucesos repentinos e inesperados», «que la precisión de tiempo no sea
+   esencial» y «opción para ocultar el movimiento de fondo». → **El contacto
+   nunca es repentino:** hay alerta antes de la persecución, y la persecución
+   va a velocidad de andar (IA-1), así que escapar no exige reflejos. Con
+   movimiento reducido, la transición salta a su estado final y el parallax
+   del fondo se queda quieto. → No añado una opción de velocidad del juego:
+   no está en el alcance de esta parte. Se anota para la parte 10.
+5. **Emil Kowalski, «Great animations»**:
+   https://emilkowal.ski/ui/great-animations
+   → Por debajo de 300 ms, `ease-out`, y lo que se repite muchas veces no se
+   alarga. → **La entrada al combate ≤ 300 ms con `ease-out`**, el mismo techo
+   del contrato de batalla. El jugador la verá en cada combate. → No copio sus
+   curvas de web: aquí el movimiento va en franjas de píxel entero, sin
+   interpolación subpíxel.
+6. **Godot 4, `AStarGrid2D`**:
+   https://docs.godotengine.org/en/stable/classes/class_astargrid2d.html
+   → `region` y `fill_solid_region()` permiten encerrar la búsqueda de caminos
+   en un rectángulo y marcar sólido todo lo que quede fuera, sin `update()`.
+   `DIAGONAL_MODE_NEVER` da solo pasos ortogonales. → **El monstruo no puede
+   salir de su zona de daño por construcción**: la rejilla solo tiene libres
+   las casillas de esa zona. Pasos ortogonales, como Ilan. → No uso
+   `allow_partial_path` contra objetivos sólidos: la documentación avisa de
+   que es lento.
+7. ***Tales of Zestiria*, transiciones** (RPG Site):
+   https://www.rpgsite.net/news/3761-tales-of-zestiria-gameplay-footage-shows-new-battle-transitions-events
+   → Se quita el salto a una arena: el combate empieza sobre el terreno donde
+   se tocó. → Es la base de la **dirección B**. → No copio el combate en 3D
+   en tiempo real: aquí es por turnos y con una composición contratada.
+
+**Fuentes de pantalla de Diego, registradas:** `styles.refero.design`,
+`motionsites.ai`, `mobbin.com`, Pinterest, `ui.aceternity.com` y
+`tasteskill.dev` **no se consultaron para esta parte** el 2026-10-28. Son
+catálogos de web y apps, y esta parte no tiene pantalla de interfaz nueva: es
+un sistema de juego y una transición. No cuentan para las seis. Aceternity ya
+dio, en el anexo de batalla, el fondo en tres capas que esta parte termina.
+
+**Fuentes que no se pudieron abrir el 2026-10-28** (aparecieron en la
+búsqueda, pero no se leyeron, así que no se usan):
+
+- «A random battle draws near! Command?», Matchstick Eyes,
+  https://www.matchstickeyes.com/2014/08/03/a-random-battle-draws-near-command/
+  — error de certificado del sitio.
+- «Fight Woosh», Tropedia, https://tropedia.fandom.com/wiki/Fight_Woosh
+  — HTTP 402.
+- Ensayo sobre la intro de combate de RPG Maker MZ,
+  https://ava.ead.domalberto.edu.br/rpg-maker-mz-battle-intro — conexión
+  rechazada.
+
+### Design Read
+
+```
+Registro y audiencia: juego. El mapa y el contacto, como producto (lectura
+  periférica, respuesta); la entrada al combate, como marca (un momento).
+Escena de uso: PC, teclado, partida de sesiones medias; el jugador mira a Ilan.
+Tesis: el monstruo es la causa que se ve; acercarse es elegir cómo enfrentarla.
+Jerarquía: dónde está y si me ha visto → quién empieza → el combate.
+Materiales: sprites del mundo, paleta ceniza y brasa; nada de color nuevo.
+Repertorio: postura del monstruo = su estado; transición propia = entrada al
+  combate y quién lleva ventaja; fondo regional = continuidad del lugar.
+Puntos de entrada: durante la partida, la tarea. La transición es el único
+  momento de marca.
+Riesgo que se evita: el «!» flotante, el remolino de fábrica y el color como
+  única señal.
+```
+
+---
+
+## Fase 4 — Direcciones (pendiente de elección de Diego)
+
+Las tres comparten lo que ya está aprobado y no se discute:
+
+- el monstruo **nunca sale de su zona de daño**;
+- persigue a **velocidad de andar** (60 px/s), así que corriendo siempre se escapa;
+- el grupo entra y sale con su estado: PV, energía, bolsa y estados alterados;
+- huir devuelve al mapa con **1 s de gracia**;
+- al ganar, la **ola de purificación** sale del punto del combate.
+
+Lo que cambia entre ellas es **cómo se juega el acercamiento y dónde ocurre el
+combate**.
+
+### A · «Persiana» — recomendada
+
+- **En el mapa:** el monstruo patrulla una ruta corta dentro de su zona.
+  - **Alerta:** se para y se gira hacia Ilan; su sombra se estira hacia él un
+    tile por cada 120 ms. La señal es el avance, como en Shadow Tactics.
+  - **Persecución:** anda hacia Ilan.
+  - **Se rinde:** vuelve a su ruta.
+  - Cada estado es una postura distinta, así que se lee sin color.
+- **Contacto:** la pantalla se cierra en franjas horizontales de 8 px desde la
+  fila del monstruo, en ≤ 300 ms (`ease-out`).
+  - **El lado del que se cierra dice quién empieza.** Por la espalda del
+    monstruo, las franjas avanzan desde el lado de Ilan y él actúa primero.
+    Por la espalda de Ilan, avanzan desde el del monstruo. De frente, se
+    cierran desde los dos lados a la vez.
+  - Es la familia de transición que la guía §3.1 ya reservaba para esto.
+- **Combate:** la pantalla «Ceniza y Brasa», sin cambios en su composición, con
+  el **fondo de la región en tres capas** sacado de las rampas de su tileset.
+- **Lo que gana:** la decisión «¿por dónde me acerco?» tiene consecuencia y se
+  ve antes del primer turno. La pantalla de batalla ya está verificada (16/16).
+- **Lo que cuesta:** IA-1 completa (cuatro estados y A* encerrado en la zona),
+  las posturas de cada monstruo y los seis fondos.
+
+### B · «En el sitio»
+
+- **En el mapa:** igual que A.
+- **Contacto:** no hay transición de pantalla.
+  - La cámara se centra entre Ilan y el monstruo.
+  - El resto del mundo baja a ceniza, solo en valor y sin tramado.
+  - Los paneles de batalla entran por los bordes, sobre el terreno real.
+- **Combate:** sobre el propio mapa, como en *Tales of Zestiria*. El fondo
+  regional sobra: el fondo es el sitio.
+- **Lo que gana:** la continuidad más fuerte posible, porque se lucha donde está
+  el daño. La ola de purificación sale de debajo del monstruo vencido, sin
+  cortes.
+- **Lo que cuesta:**
+  - **Enmienda el contrato de batalla.** Su composición (monstruo arriba y grupo
+    abajo, con el HUD bajo cada personaje) no cabe sobre un terreno de forma
+    libre. Habría que rehacer los pasos 3 a 6 de aquel anexo.
+  - Cada fuente necesita un claro de 30 × 17 tiles libre de decorado, así que
+    hay que retocar las seis zonas aprobadas.
+  - La ventaja se queda sin transición que la anuncie: la diría el registro.
+
+### C · «Umbral de la causa»
+
+- **En el mapa:** el monstruo no patrulla, se queda en su fuente.
+  - Su zona de daño tiene un **umbral visible**: el borde donde el gradiente se
+    vuelve denso.
+  - Cruzarlo no inicia el combate. Ilan se detiene y el jugador **confirma**
+    para entrar.
+  - Antes de confirmar, un panel `ASH_800` muestra el nombre del monstruo y el
+    estado del grupo, y se puede volver atrás para prepararse.
+- **Contacto:** solo por decisión explícita. La entrada es la persiana de A,
+  siempre desde los dos lados: no hay ventaja por la espalda.
+- **Combate:** como A, con fondo regional.
+- **Lo que gana:** cero sorpresas y cero reflejos. Es la más accesible y la más
+  barata (IA-1 se reduce a una sola reacción del monstruo).
+- **Lo que cuesta:**
+  - El mapa pierde tensión: el monstruo es una estatua.
+  - **Contradice IA-1, aprobada por Diego el 2026-09-30** (patrulla, alerta,
+    persecución): elegir C es retirar esa aprobación.
+  - El panel de confirmación es una pantalla de interfaz nueva con su propio
+    contrato.
+
+### Recomendación: A
+
+1. **Es la única en la que la decisión dominante tiene dos ejes.** «Cuándo»
+   y «por dónde»: el grupo curado o no, y por la espalda o de frente. B la
+   tiene igual, pero rompe un contrato verificado y seis zonas aprobadas. C
+   deja solo «cuándo».
+2. **Cumple lo ya aprobado:** IA-1 tal como está, la persiana de §3.1 y el
+   fondo de tres capas pendiente del anexo de batalla. No hace falta enmendar
+   nada.
+3. **La ventaja se lee sin color**, por la dirección de la persiana, y antes
+   del primer turno, que es lo que hace bien el referente de EarthBound.
+4. **Riesgo que se asume:** que la alerta por la sombra estirada no se lea a
+   480 × 270. Se mide en el paso del componente clave. Si no se lee, se para y
+   se pregunta; no se cambia por cuenta propia.
+
+---
+
+## Contrato «Persiana» — BLOQUEADO 2026-10-28
+
+Diego eligió la **dirección A** el 2026-10-28. Desde aquí se cumple. Nada de
+color, duración, velocidad ni efecto fuera de lo que sigue; si algo no
+funciona, se para y se pregunta.
+
+### 1. El monstruo en el mapa (IA-1)
+
+| Estado | Qué hace | Cómo se lee sin color |
+|---|---|---|
+| Patrulla | Anda una ruta corta de su zona a `WALK_SPEED`, con pausas de `MONSTER_PATROL_PAUSE` en cada extremo | Postura de reposo, mirando hacia donde anda |
+| Alerta | Se para, se gira hacia Ilan y su sombra se estira hacia él, 1 tile cada `DUR_MONSTER_ALERT_STEP`, hasta `MONSTER_ALERT_STEPS` tiles | La sombra que avanza hacia Ilan |
+| Persecución | Anda hacia Ilan a `WALK_SPEED` por A*, sin diagonales | Postura de ataque, adelantada |
+| Se rinde | Sin ver a Ilan durante `DUR_MONSTER_GIVE_UP`, vuelve a su ruta | Vuelve la postura de reposo; la sombra se recoge |
+
+- **Ve a Ilan** si está a ≤ `MONSTER_SIGHT_TILES` tiles, en el semiplano hacia
+  el que mira y sin muro entre los dos (línea de Bresenham sobre la rejilla).
+- **La zona** es el conjunto de casillas pisables de la zona de daño. La rejilla
+  `AStarGrid2D` tiene sólido todo lo de fuera, así que no puede salir.
+- **Velocidad:** la persecución va a `WALK_SPEED` y correr va a `RUN_SPEED`.
+  Corriendo en línea recta, el monstruo nunca alcanza a Ilan.
+- **Sombra de alerta:** sprite propio del monstruo, en `ASH_950`, el color que
+  ya tienen las sombras. **No hay color nuevo ni signo sobre la cabeza.**
+
+### 2. El contacto y la ventaja
+
+- El contacto es el solape de las cajas de colisión.
+- **Quién empieza** se decide por la dirección:
+  - Ilan toca la espalda del monstruo: **ventaja de Ilan**, y el grupo actúa
+    en la primera ronda antes que el monstruo.
+  - El monstruo toca la espalda de Ilan: **ventaja del monstruo**, y actúa
+    primero.
+  - De frente o de lado: **sin ventaja**, y el orden lo da la velocidad, como
+    hoy.
+- En la ventaja, la espalda es el semiplano opuesto a donde se mira.
+
+### 3. La persiana (entrada al combate)
+
+- Franjas horizontales de `BLIND_STRIP` px (8) en `ASH_950` cubren la pantalla
+  de 480 × 270 en `DUR_BATTLE_BLINDS` (300 ms) con `ease-out`. Cada franja
+  avanza en píxeles enteros.
+- La primera franja que se cierra es **la de la fila del monstruo**. Las demás
+  la siguen hacia arriba y hacia abajo. Entre la primera y la más lejana hay
+  `BLIND_SPREAD` (100 ms), repartido por igual. Cada franja se cierra en los
+  200 ms restantes, así que la última termina a los 300 ms, esté el monstruo
+  donde esté.
+- **El lado del que avanzan las franjas dice quién empieza:**
+  - ventaja de Ilan: desde el borde del lado de Ilan;
+  - ventaja del monstruo: desde el del monstruo;
+  - sin ventaja: desde los dos bordes, que se juntan en el centro.
+- Con la pantalla cubierta se carga el combate y la persiana **se abre** en el
+  mismo tiempo y en el mismo sentido.
+- **Movimiento reducido:** sin animación; corte directo con la pantalla
+  cubierta durante `DUR_BATTLE_BLINDS`.
+- **Exclusiva:** la persiana solo se usa para entrar al combate y salir de él
+  (repertorio §3.1). El fundido sigue siendo solo para cambiar de zona.
+
+### 4. El combate
+
+- La pantalla «Ceniza y Brasa», sin cambios de composición.
+- **El fondo de la región en tres capas** (la deuda pendiente del anexo de
+  batalla), sacado de las rampas del tileset de esa región. El contraste baja
+  bajo los paneles, como dice aquel contrato. El parallax es de
+  `BATTLE_PARALLAX` px por capa, solo en la entrada. Con movimiento reducido,
+  quieto.
+
+### 5. La salida
+
+- **Estado del grupo:** `GameState` guarda PV, energía, bolsa y estados
+  alterados al entrar, y los actualiza al salir con el resultado exacto del
+  combate.
+- **Victoria:** persiana que se abre. Desde la casilla del combate sale la ola
+  de purificación (`DUR_ZONE_PURIFY`, enmienda 3) y el paso cerrado se va.
+- **Huida:** persiana que se abre. El monstruo sigue ahí y Ilan tiene
+  `DUR_FLEE_GRACE` (1 s) sin contacto posible. El monstruo pasa a «se rinde».
+- **Derrota:** fuera de alcance de esta parte. Hoy vuelve a la última llegada
+  a la zona con el grupo a 1 PV; el guardado (parte 9) lo cambiará. Se anota.
+
+### 6. Verificación que se escribe
+
+- `tools/verify_encounters.gd`:
+  - la ruta y la persecución nunca pisan fuera de la zona;
+  - corriendo en línea recta, el monstruo no alcanza a Ilan;
+  - cada transición de estado se fuerza y se comprueba;
+  - la ventaja sale bien en los tres casos;
+  - el estado del grupo antes y después coincide con el resultado;
+  - la gracia de la huida dura 1 s.
+- Hoja de la persiana cuadro a cuadro (patrón de `transition_sheet.gd`):
+  duración medida, franjas en píxel entero, y el lado correcto en los tres
+  casos.
+- `verify_palette` sobre cada sprite nuevo: posturas, sombras y fondos.
+
+### Orden de implementación
+
+1. **Tokens.**
+2. **Componente clave:** el monstruo con sus cuatro posturas y la sombra de
+   alerta, medidos a 480 × 270.
+3. **Esqueleto:** IA-1 en el mapa, contacto y ventaja.
+4. **Resto:** la persiana, el paso de `GameState` y la vuelta con huida y
+   ola.
+5. **Pantalla completa:** fondos regionales en el combate.
+6. **Estados:** huida, victoria, derrota y movimiento reducido.
+
+### Registro
+
+#### Paso 1 — Tokens · 2026-10-28
+
+Tokens nuevos en `src/ui/design_tokens.gd`, sección «Encuentros». Ningún color
+nuevo: la sombra y la persiana usan `ASH_950`. Las velocidades son las de
+siempre (la regla de múltiplos de 60 px/s).
+
+---
+
+## Lo que queda abierto en esta parte (se decide después de la dirección)
+
+- **IA-5, primera mitad:** enmienda del contrato de batalla para que el
+  jugador maneje solo a Ilan, comparada con la «orden de líder» por ronda
+  (guía §3.3). Va en su propia pregunta, con su fase de comunicación.
+- **IA-4:** bot de equilibrado en `tools/balance_bot.gd`. Es una herramienta
+  sin interfaz: no necesita dirección, solo criterio medido.
+- **Tokens nuevos** que pedirá cualquier dirección: velocidad y radios de
+  IA-1, duración de la persiana y de la gracia. Van a `DesignTokens` con la
+  dirección elegida.

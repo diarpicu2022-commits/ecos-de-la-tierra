@@ -351,3 +351,40 @@ const BAYER_4X4 := [
 ## normalizar: normalizar daría 0,707 px por cuadro, fracciones de píxel que la
 ## cámara a entero convierte en tirones.
 const DIAGONAL_NORMALIZED := false
+
+
+# --- Encuentros ------------------------------------------------------------
+# Contrato «Persiana», bloqueado el 2026-10-28
+# (docs/ux/anexos/2026-10-28-encuentros.md). Ningún color nuevo: la sombra de
+# alerta y la persiana son ASH_950. El monstruo anda y persigue a WALK_SPEED,
+# la regla de velocidades: quien corre (RUN_SPEED) siempre escapa.
+
+## IA-1. A cuántos tiles ve el monstruo a Ilan, en el semiplano al que mira.
+const MONSTER_SIGHT_TILES := 6
+## Pausa en cada extremo de la ruta de patrulla.
+const MONSTER_PATROL_PAUSE := 1.2
+## La alerta: la sombra se estira hacia Ilan un tile por paso, hasta
+## MONSTER_ALERT_STEPS. Cuando llega al último, empieza la persecución. Es la
+## señal de que lo ha visto, y avanza en vez de aparecer (Shadow Tactics).
+const DUR_MONSTER_ALERT_STEP := 0.12
+const MONSTER_ALERT_STEPS := 4
+## Sin ver a Ilan durante este tiempo, el monstruo se rinde y vuelve a su ruta.
+const DUR_MONSTER_GIVE_UP := 2.0
+
+## La persiana: franjas horizontales que cubren la pantalla al entrar en
+## combate y la descubren al salir. Exclusiva de ese paso (repertorio §3.1).
+## Usa el techo de 300 ms del contrato de batalla.
+const DUR_BATTLE_BLINDS := 0.30
+const BLIND_STRIP := 8           ## Alto de cada franja, en píxeles.
+## Margen entre la primera franja (la de la fila del monstruo) y la más lejana.
+## Se reparte por igual entre las franjas que haya, estén donde estén, y cada
+## una se cierra en DUR_BATTLE_BLINDS - BLIND_SPREAD: la última termina justo a
+## los 300 ms, con el monstruo en el centro o en el borde.
+const BLIND_SPREAD := 0.10
+
+## Fondo de batalla en tres capas: cuánto se desplaza cada capa, en píxeles,
+## mientras se abre la persiana. Quieto con movimiento reducido.
+const BATTLE_PARALLAX := 2
+
+## Tras huir, tiempo sin contacto posible con el monstruo.
+const DUR_FLEE_GRACE := 1.0
