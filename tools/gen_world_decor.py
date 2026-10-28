@@ -1186,6 +1186,192 @@ def ice_blocker(pure: bool) -> Canvas:
     return c
 
 
+# --- Cripta de la Avaricia (enmienda 10) ---------------------------------------------
+#
+# El oro es la causa activa: sale de la rampa EMBER, como las llamas y los
+# bordes de los monstruos. Purificado, el oro ya no está y la piedra queda
+# gris, con musgo verde.
+
+
+def gold(pure: bool) -> Canvas:
+    """Oro amontonado de cualquier manera, 16x16: un montón de monedas con
+    lingotes clavados en diagonal, sin contorno. Es la mitad «avaricia» de cada
+    bóveda. Purificado, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    noise = ValueNoise(91)
+    blob(c, 8, 12, 6.5, 3.6, "ember_700", noise, 0.5)
+    blob(c, 7.4, 11.4, 5.2, 2.8, "ember_400", noise, 0.5)
+    for x, y in ((5, 10), (8, 9), (10, 11), (6, 12)):
+        c.set(x, y, color("ember_300"))
+    for x0, y0, x1, y1 in ((3, 9, 6, 5), (10, 9, 13, 6)):
+        line(c, x0, y0, x1, y1, "ember_700")
+        line(c, x0 + 1, y0, x1 + 1, y1, "ember_300")
+    return c
+
+
+def coins(pure: bool, seed: int) -> Canvas:
+    """Monedas sueltas por el suelo, 16x16: el oro que se derrama hacia la
+    fuente (el gradiente de la Cripta). Purificado, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    for _ in range(3):
+        x, y = rng.randint(2, 12), rng.randint(5, 12)
+        c.set(x, y, color("ember_400"))
+        c.set(x + 1, y, color("ember_400"))
+        c.set(x, y + 1, color("ember_700"))
+        c.set(x + 1, y + 1, color("ember_700"))
+    return c
+
+
+def pillar(pure: bool) -> Canvas:
+    """Columna de la Cripta, 16x32, de piedra partida en diagonal. Purificada,
+    entera y con la hiedra que vuelve."""
+    c = Canvas(16, 32)
+    ground_shadow(c, 8, 30, 6, "vital_900" if pure else "soil_700")
+    for y in range(2, 30):
+        for x in range(4, 12):
+            c.set(x, y, color("ash_400" if x < 6 else "ash_700" if x > 9 else "ash_600"))
+    for x in range(3, 13):
+        c.set(x, 2, color("ash_400"))
+        c.set(x, 3, color("ash_600"))
+        c.set(x, 28, color("ash_600"))
+        c.set(x, 29, color("ash_700"))
+    if pure:
+        for y in range(8, 29):
+            if (y * 5) % 7 < 3:
+                c.set(4 + (y % 3), y, color("vital_600"))
+            if y % 4 == 0:
+                c.set(5 + (y % 3), y, color("vital_400"))
+    else:
+        line(c, 5, 9, 10, 18, "water_700")
+        line(c, 10, 18, 8, 22, "water_700")
+    return c
+
+
+def root(pure: bool) -> Canvas:
+    """Raíces que bajan por el muro, 16x16. Enfermas, secas y quebradas.
+    Purificadas, con hojas: lo que vive arriba vuelve a entrar en la Cripta."""
+    c = Canvas(16, 16)
+    ink, lit = ("wood_500", "wood_300") if pure else ("wood_700", "wood_500")
+    for x0, x1 in ((4, 2), (8, 9), (11, 13)):
+        line(c, x0, 0, x1, 13, ink)
+        line(c, x0 + 1, 0, x1 + 1, 12, lit)
+    line(c, 8, 6, 6, 10, ink)
+    if pure:
+        for x, y in ((2, 12), (9, 13), (13, 12), (6, 10), (4, 5)):
+            blob(c, x, y, 1.6, 1.4, "vital_600")
+            c.set(x, y - 1, color("vital_400"))
+    return c
+
+
+def baron_statue(pure: bool) -> Canvas:
+    """El hito de la Cripta: la estatua del Barón Cendral, 32x56, sobre su base
+    de 2x3. Chistera, levita y la mano alzada con una moneda: la silueta se lee
+    sin color. Enferma, de oro. Purificada, el oro ya no está: queda la piedra
+    gris, con musgo en el pedestal."""
+    c = Canvas(32, 56)
+    ground_shadow(c, 16, 53, 15, "vital_900" if pure else "soil_700")
+    # Pedestal de piedra, el mismo enfermo y purificado.
+    for y in range(42, 54):
+        for x in range(3, 29):
+            c.set(x, y, color("ash_400" if y < 44 else "ash_700" if x > 24 else "ash_600"))
+    for x in range(3, 29):
+        c.set(x, 48, color("ash_700"))
+    dark, base, lit = ("ash_600", "ash_400", "ash_200") if pure else ("ember_700", "ember_400", "ember_300")
+
+    def span(y: int, x0: int, x1: int) -> None:
+        for x in range(x0, x1):
+            c.set(x, y, color(lit if x < x0 + 2 else dark if x >= x1 - 2 else base))
+
+    for y in range(4, 10):
+        span(y, 11, 20)            # chistera
+    span(10, 8, 23)                # ala
+    for y in range(11, 16):
+        span(y, 12, 19)            # cabeza
+    for y in range(16, 42):
+        half = 6 + (y - 16) * 5 // 26
+        span(y, 15 - half, 16 + half)  # levita, más ancha abajo
+    # Solapas y botones.
+    line(c, 15, 17, 13, 25, dark)
+    line(c, 16, 17, 18, 25, dark)
+    for y in (28, 32, 36):
+        c.set(16, y, color(lit))
+    # El brazo alzado y la moneda.
+    line(c, 21, 18, 26, 6, dark)
+    line(c, 22, 18, 27, 6, base)
+    line(c, 23, 18, 28, 7, dark)
+    blob(c, 27.5, 3.5, 2.8, 2.8, dark)
+    blob(c, 27, 3, 1.8, 1.8, lit)
+    # El otro brazo, pegado, y el bastón.
+    line(c, 9, 19, 7, 34, dark)
+    line(c, 6, 30, 5, 42, dark)
+    if pure:
+        for x in range(4, 28):
+            if (x * 3) % 5 < 2:
+                c.set(x, 42, color("vital_600"))
+                c.set(x, 43, color("vital_400" if x % 2 else "vital_600"))
+        for y in range(45, 53, 3):
+            c.set(4 + (y % 2), y, color("vital_600"))
+        for x, y in ((12, 20), (19, 33), (10, 38)):
+            c.set(x, y, color("vital_600"))
+    return c
+
+
+def greed_monster(pure: bool) -> Canvas:
+    """La Sombra de la Avaricia en el mapa, 16x24: una capucha alta que se
+    deshace en jirones por abajo, con borde EMBER_300 (el oro que la alimenta)
+    y dos ojos de moneda. Purificada, ya no está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 7, "soil_700")
+    rows = [
+        "......aa........",
+        ".....abba.......",
+        "....abbbba......",
+        "...abbbbbba.....",
+        "...abbbbbbba....",
+        "..abbbbbbbbba...",
+        "..abeebbbeeba...",
+        "..abeebbbeeba...",
+        "..abbbbbbbbba...",
+        ".abbbbcbcbbbba..",
+        ".abbbbbcbbbbba..",
+        "abbbbbbbbbbbbba.",
+        "abbbbbbbbbbbbba.",
+        "abbbbbbbbbbbbba.",
+        ".abbbabbbabbba..",
+        ".abba.abba.aba..",
+        "..ab...ab...a...",
+        "..a.....a.......",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "water_700", "c": "ash_700", "e": "ember_400"}, 0, 4)
+    return c
+
+
+def banner(pure: bool) -> Canvas:
+    """Estandarte de la Compañía colgado del muro, 16x32, rasgado en diagonal,
+    con la moneda bordada. Purificado, ya no está: lo que queda es el muro."""
+    c = Canvas(16, 32)
+    if pure:
+        return c
+    for x in range(3, 13):
+        c.set(x, 2, color("wood_700"))
+    for y in range(3, 26):
+        cut = 26 - (y - 3) // 2 if y > 18 else 26
+        for x in range(4, 12):
+            if y + (x - 4) < cut + 2:
+                c.set(x, y, color("roof_300" if x < 6 else "roof_700" if x > 9 else "roof_500"))
+    blob(c, 8, 10, 2.4, 2.4, "ember_700")
+    blob(c, 7.6, 9.6, 1.4, 1.4, "ember_400")
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -1663,6 +1849,14 @@ def pieces() -> dict[str, Canvas]:
         out[f"glacier_{state}"] = glacier(pure)
         out[f"monster_waning_peak_{state}"] = thaw_monster(pure)
         out[f"blocker_waning_peak_{state}"] = ice_blocker(pure)
+        # Cripta de la Avaricia.
+        out[f"gold_{state}"] = gold(pure)
+        out[f"coins_{state}"] = coins(pure, 81)
+        out[f"pillar_{state}"] = pillar(pure)
+        out[f"root_{state}"] = root(pure)
+        out[f"baron_statue_{state}"] = baron_statue(pure)
+        out[f"monster_greed_crypt_{state}"] = greed_monster(pure)
+        out[f"banner_{state}"] = banner(pure)
     out["boulder_sick"] = boulder(77)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)

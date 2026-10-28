@@ -42,7 +42,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ATLAS = ROOT / "assets" / "tilesets" / "world.png"
 T = 16
 INTERIOR = 15
-ROWS = {"camino": 1, "agua": 3, "follaje": 5, "arena": 9}
+ROWS = {"camino": 1, "agua": 3, "follaje": 5, "arena": 9, "muro": 11, "losa": 13}
 
 VALUE_FLOOR = 1.5
 # Excepción decidida el 2026-09-29 (opción a del paso 2b): el camino se acepta
@@ -56,6 +56,12 @@ VALUE_FLOOR_BY_MATERIAL = {"camino": 1.47}
 # liso y la silueta del borde. Medido ese día: 6,9 (WOOD_500 con ondas). Por
 # debajo de 6, FALLA.
 DE_FLOOR_BY_PAIR = {("purificado", "camino", "arena"): 6.0}
+# Materiales que nunca comparten zona (enmienda 10, 2026-10-28): la piedra de la
+# Cripta (muro y losa) no convive con la tierra, el agua, el follaje ni la
+# arena, y no se pueden confundir en pantalla. Su dE se informa, pero no se
+# exige; verify_zone.gd comprueba que una zona con piedra no tiene esos
+# materiales.
+APART = {frozenset(p) for p in [(s, o) for s in ("muro", "losa") for o in ("suelo", "agua", "follaje", "arena")]}
 DE_FLOOR = 9.0
 GRAPHIC_FLOOR = 3.0
 
@@ -110,6 +116,9 @@ def main() -> int:
             for b in names[i + 1:]:
                 d = delta_e(means[a], means[b])
                 floor = DE_FLOOR_BY_PAIR.get((state, a, b), DE_FLOOR)
+                if frozenset((a, b)) in APART:
+                    print(f"  ----  {state:10} {a:8} / {b:8} dE {d:5.1f}  (no conviven en ninguna zona)")
+                    continue
                 mark = "OK   " if d >= floor else "FALLA"
                 ok &= d >= floor
                 note = f"  (piso aceptado {floor:.1f}, decisión 2026-10-28)" if floor != DE_FLOOR else ""

@@ -12,7 +12,7 @@ daltonismo (medido el 2026-09-23), así que cada estado cambia también de valor
 de forma. Ningún tile lleva contorno `ASH_050`: el contorno es de lo que
 responde, y el terreno no responde.
 
-Atlas: 16 columnas por 11 filas de 16 px.
+Atlas: 16 columnas por 15 filas de 16 px.
 
     fila 0   suelo: 4 variantes enfermas y 4 purificadas (columnas 0-7)
     fila 1   camino enfermo      fila 2   camino purificado
@@ -22,6 +22,8 @@ Atlas: 16 columnas por 11 filas de 16 px.
              (enmienda 6). La máscara dice qué vecinos están purificados.
     fila 8   agua purificada, segundo cuadro (enmienda 8): el brillo del agua.
     fila 9   arena enferma       fila 10  arena purificada (enmienda 9, la Costa)
+    fila 11  muro enfermo        fila 12  muro purificado (enmienda 10, la Cripta)
+    fila 13  losa enferma        fila 14  losa purificada (enmienda 10)
 
 En las filas 1-6, la columna es la máscara de vecinos del mismo material:
 N = 1, E = 2, S = 4, O = 8. La columna 15 es el interior.
@@ -48,6 +50,8 @@ OVERLAYS = ["path", "water", "flora"]  # filas 1-2, 3-4, 5-6
 MEADOW_EDGE_ROW = 7
 WATER_ALT_ROW = 8
 SAND_ROW = 9  # 9 enferma, 10 purificada
+WALL_ROW = 11  # 11 enfermo, 12 purificado
+FLOOR_ROW = 13  # 13 enferma, 14 purificada
 
 
 # --- Texturas: base plana y pocas formas contadas --------------------------------
@@ -213,6 +217,77 @@ def sand_tile(purified: bool) -> list[list[str]]:
     return g
 
 
+def floor_tile(purified: bool) -> list[list[str]]:
+    """Losa de la Cripta (enmienda 10, 2026-10-28). Enferma: losas frías
+    (WATER_300) con juntas WATER_500; las grietas van en el decorado, para que
+    no se repitan tile a tile. Purificada: la
+    losa se calienta (SOIL_300) y el musgo vuelve entre las juntas. Más clara que el muro, para que el suelo se lea como suelo."""
+    if not purified:
+        g = flat("water_300")
+        for y in range(8):
+            stamp(g, 0, y, "water_500")
+        for y in range(8, T):
+            stamp(g, 8, y, "water_500")
+        for x in range(T):
+            stamp(g, x, 7, "water_500")
+            stamp(g, x, 15, "water_500")
+        return g
+    g = flat("soil_300")
+    for x in range(T):
+        stamp(g, x, 7, "wood_500")
+        stamp(g, x, 15, "wood_500")
+    for y in range(8):
+        stamp(g, 0, y, "wood_500")
+    for y in range(8, T):
+        stamp(g, 8, y, "wood_500")
+    # El musgo crece en las juntas, en tramos cortos: con matas redondas en
+    # cada tile, la Cripta purificada se leía como un prado de lunares.
+    # Una mata grande sobre la junta y musgo que sigue la junta: con cuatro
+    # matas iguales por tile, la Cripta purificada se leía como lunares.
+    clump(g, 4, 7, 3, "vital_700", "vital_500", "vital_900")
+    for x in range(8, 15):
+        stamp(g, x, 15, "vital_700")
+        stamp(g, x, 14, "vital_700" if x % 3 == 0 else "vital_500")
+    for y in range(9, 14):
+        stamp(g, 8, y, "vital_700")
+    stamp(g, 9, 10, "vital_500")
+    stamp(g, 9, 12, "vital_500")
+    stamp(g, 7, 11, "vital_500")
+    clump(g, 13, 3, 2, "vital_700", "vital_500", "vital_900")
+    return g
+
+
+def wall_tile(purified: bool) -> list[list[str]]:
+    """Muro de la Cripta (enmienda 10). Enfermo: sillares oscuros (WATER_700)
+    con la arista clara ASH_700 y una fisura en diagonal. Purificado: sillares
+    ASH_700 y una hiedra que baja por las juntas (VITAL)."""
+    if not purified:
+        g = flat("water_700")
+        for row in range(0, T, 4):
+            off = 0 if (row // 4) % 2 == 0 else 4
+            for x in range(T):
+                stamp(g, x, row, "ash_700")
+            for x in range(off, T, 8):
+                for dy in range(4):
+                    stamp(g, x, row + dy, "ash_700")
+        diagonal(g, 3, 6, 6, "water_700")
+        return g
+    g = flat("ash_700")
+    for row in range(0, T, 4):
+        off = 0 if (row // 4) % 2 == 0 else 4
+        for x in range(T):
+            stamp(g, x, row, "ash_600")
+        for x in range(off, T, 8):
+            for dy in range(4):
+                stamp(g, x, row + dy, "ash_600")
+    # La hiedra baja por una junta vertical; no cubre el sillar entero.
+    for y in range(1, 12):
+        stamp(g, 4, y, "vital_700")
+    for x, y in ((3, 2), (5, 4), (3, 6), (5, 8), (3, 10)):
+        stamp(g, x, y, "vital_500")
+    return g
+
+
 def flora_tile(purified: bool) -> list[list[str]]:
     if not purified:
         # Follaje enfermo: masa oliva con hojas partidas en diagonal y huecos.
@@ -241,7 +316,8 @@ def fill_token(material: str, x: int, y: int, purified: bool) -> str:
     key = (material, purified)
     if key not in _CACHE:
         _CACHE[key] = {"path": path_tile, "water": water_tile, "water_alt": water_alt_tile,
-                       "flora": flora_tile, "sand": sand_tile}[material](purified)
+                       "flora": flora_tile, "sand": sand_tile, "wall": wall_tile,
+                       "floor": floor_tile}[material](purified)
     return _CACHE[key][y][x]
 
 
@@ -296,6 +372,8 @@ EDGE_TOKEN = {
     ("water_alt", True): "soil_300",
     ("sand", False): "soil_700",
     ("sand", True): "wood_700",
+    ("wall", False): "water_700",
+    ("wall", True): "vital_900",
     ("flora", False): "flora_700",
     ("flora", True): "vital_900",
 }
@@ -332,6 +410,28 @@ def draw_overlay(canvas: Canvas, ox: int, oy: int, material: str,
                 canvas.set(ox + x, oy + y, color(shadow))
 
 
+def draw_stone(canvas: Canvas, ox: int, oy: int, material: str, purified: bool, mask: int) -> None:
+    """La piedra de la Cripta (enmienda 10). La losa ocupa el tile entero: en
+    una cripta no hay tierra debajo. El muro se dibuja sobre la losa, con el
+    borde en sierra (enfermo) o en festón (purificado) como el follaje."""
+    for y in range(T):
+        for x in range(T):
+            canvas.set(ox + x, oy + y, color(fill_token("floor", x, y, purified)))
+    if material == "floor":
+        return
+    for y in range(T):
+        for x in range(T):
+            if covered(x, y, mask, purified):
+                canvas.set(ox + x, oy + y, color(fill_token("wall", x, y, purified)))
+    for y in range(T):
+        for x in range(T):
+            if covered(x, y, mask, purified):
+                continue
+            if any(0 <= x + dx < T and 0 <= y + dy < T and covered(x + dx, y + dy, mask, purified)
+                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                canvas.set(ox + x, oy + y, color(EDGE_TOKEN[("wall", purified)]))
+
+
 def draw_meadow_edge(canvas: Canvas, ox: int, oy: int, mask: int) -> None:
     """El prado entra en la tierra enferma con el festón redondo de lo
     purificado, y una línea VITAL_900 le da el canto. Sin esta fila, una parte
@@ -359,7 +459,7 @@ def draw_soil(canvas: Canvas, ox: int, oy: int, purified: bool, variant: int) ->
 
 
 def main() -> None:
-    canvas = Canvas(16 * T, 11 * T)
+    canvas = Canvas(16 * T, 15 * T)
     for variant in range(4):
         draw_soil(canvas, variant * T, SOIL_ROW, False, variant)
         draw_soil(canvas, (4 + variant) * T, SOIL_ROW, True, variant)
@@ -373,6 +473,9 @@ def main() -> None:
         draw_overlay(canvas, mask * T, WATER_ALT_ROW * T, "water_alt", True, mask)
         draw_overlay(canvas, mask * T, SAND_ROW * T, "sand", False, mask)
         draw_overlay(canvas, mask * T, (SAND_ROW + 1) * T, "sand", True, mask)
+        for i, purified in enumerate((False, True)):
+            draw_stone(canvas, mask * T, (WALL_ROW + i) * T, "wall", purified, mask)
+            draw_stone(canvas, mask * T, (FLOOR_ROW + i) * T, "floor", purified, mask)
     canvas.save(OUT)
     print(f"  tileset: {OUT.relative_to(OUT.parent.parent.parent)} ({canvas.width}x{canvas.height})")
 
