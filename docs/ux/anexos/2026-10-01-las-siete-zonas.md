@@ -574,6 +574,61 @@ enmiendas 6, 7 y 8.
 - **Prueba de entrecerrar:** con la captura del motor, en el paso 3.
 - **La salida al Bosque** lleva a una zona aún sin dibujar.
 
-**Siguiente:** paso 3, montar la capa de decorado y de partes en `WorldRoot`,
-con colisión y orden por altura, y la captura del motor. Antes, el visto bueno
-de Diego a este paso.
+**Visto bueno de Diego al paso 2: 2026-10-28** («sí, dale»).
+
+### Paso 3 — Valdehoja en el motor · ESCRITO, sin ejecutar
+
+**Cláusulas:** «Umbral» (colisión del tile entero, capa de entidades ordenada
+por altura); contrato «Rastro» (formato de los mapas); enmiendas 6 y 7.
+
+**Entregado:**
+
+- `src/world/world_decor.gd` (`WorldDecor`) recorre la capa de decorado:
+  - cada pieza es un `Sprite2D` en `WorldRoot.entities`, con la posición en
+    su pie, así que el orden por altura la pone delante o detrás de Ilan;
+  - cada pieza sólida lleva un `StaticBody2D` del tamaño entero de la pieza,
+    en tiles, igual que el terreno y que el recorrido de `verify_zone`;
+  - el estado de cada pieza sale de la casilla de su pie, y la fauna
+    silvestre solo se monta en lo purificado.
+- `WorldDecor.purified_lookup()` da el estado por casilla:
+  - en una zona sin partes, la bandera `purified_<zona>` como antes;
+  - en Valdehoja, cada parte sigue a la bandera de su región, el jardín está
+    purificado siempre y el resto sigue a la bandera de Valdehoja (el final).
+- `WorldRoot.enter_zone()` pinta con ese estado por casilla, monta el decorado
+  y retira el de la zona anterior. Las zonas de prueba, sin capa de decorado,
+  se pintan igual que antes.
+- `tools/verify_zone.gd` gana una sección «En el motor»:
+  - un sprite por pieza y un cuerpo por pieza sólida;
+  - andando hacia la puerta de una casa, Ilan se para fuera;
+  - el jardín está purificado al empezar y la arboleda no;
+  - con `purified_ashen_forest`, vuelven la arboleda y sus pájaros.
+- `tools/valdehoja_capture.tscn`: las capturas del motor a 480 × 270 (casa,
+  jardín, era con la Costa purificada y con todo purificado).
+- `tools/valdehoja_play.tscn`: para pasear por Valdehoja con el teclado.
+
+#### Pendiente, y se dice
+
+- **Nada de este paso se ha ejecutado.** En la nube no hubo permiso para
+  lanzar Godot. El código está revisado línea a línea, pero no se da por
+  bueno hasta que pasen:
+
+  ```
+  godot --headless --path . --import
+  godot --headless --path . res://tools/verify_zone.tscn -- valdehoja
+  godot --headless --path . res://tools/verify_movement.tscn   # 99/99
+  godot --headless --path . res://tools/verify_usability.tscn  # 16/16
+  xvfb-run -a godot --path . res://tools/valdehoja_capture.tscn
+  ```
+
+  El `--import` es obligatorio: los 34 sprites y la fila 7 del atlas son
+  nuevos y no tienen `.import`.
+- **Las capturas del motor** (`2026-10-28-valdehoja-motor-*.png`) no existen
+  todavía. Cuando existan, pasan por `verify_palette.py image --world` y por la
+  prueba de entrecerrar.
+- **El juego principal (`scenes/main.tscn`) todavía no lleva al mundo**: sigue
+  abriendo la demo de batalla. El paso del mundo al combate es la parte 4.
+- **Enmienda 8 (movimiento):** paso 4, estados.
+
+**Siguiente:** ejecutar lo de arriba en Godot y, con las capturas del motor,
+el paso 4 (estados: la ola por partes, el agua y la hierba que se mueven, los
+animales que andan).

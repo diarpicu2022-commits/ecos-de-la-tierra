@@ -27,8 +27,15 @@ extends Node
 ##     silvestre solo está dentro de una parte;
 ##   - cada casa tiene un camino delante de la puerta.
 ##
-## Se declara pendiente, porque necesita la captura del motor (paso 3):
-## `verify_palette.py image --world` y la prueba de entrecerrar.
+## En el motor (paso 3), con `WorldRoot`:
+##   - un sprite por pieza en la capa de entidades, ordenada por altura, y un
+##     cuerpo sólido por pieza sólida;
+##   - andando hacia la puerta de una casa, Ilan se para fuera;
+##   - en Valdehoja, el jardín está purificado al empezar, la arboleda no, y al
+##     purificar el Bosque vuelven la arboleda y su fauna.
+##
+## Se declara pendiente: `verify_palette.py image --world` sobre la captura del
+## motor y la prueba de entrecerrar.
 
 const SCREEN_COLUMNS := 30  ## 480 px de ancho en tiles de 16.
 const LANDMARK_MIN_SIDE := 2
@@ -51,8 +58,111 @@ func _ready() -> void:
 	var zone_id: String = args[0] if not args.is_empty() else HOME_ID
 	print("verify_zone: %s" % zone_id)
 	_measure(zone_id)
+	if not ZoneRules.load_deco(zone_id).is_empty():
+		await _measure_engine(zone_id)
 	print("\n%d de %d OK, %d pendientes" % [_pass, _pass + _fail, _pending])
 	get_tree().quit(0 if _fail == 0 else 1)
+
+
+## Paso 3: la zona montada en el motor con `WorldRoot` y `WorldDecor`.
+func _measure_engine(zone_id: String) -> void:
+	print("\nEn el motor")
+	var state := get_node_or_null("/root/GameState")
+	if state != null:
+		state.flags.clear()
+	var deco := ZoneRules.load_deco(zone_id)
+	var legend: Dictionary = deco["legend"]
+	var pieces := WorldDecor.pieces(deco["rows"], legend)
+	var spawn := Vector2i(-1, -1)
+	var solid := 0
+	for piece in pieces:
+		var entry: Dictionary = legend[piece["ch"]]
+		if entry["kind"] == "spawn":
+			spawn = piece["at"]
+		elif entry["solid"]:
+			solid += 1
+	var world := WorldRoot.new()
+	world.start_zone = zone_id
+	world.start_cell = spawn
+	add_child(world)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var lookup := WorldDecor.purified_lookup(zone_id, state)
+	var expected := 0
+	for piece in pieces:
+		var entry: Dictionary = legend[piece["ch"]]
+		var size: Vector2i = entry["size"]
+		var foot: Vector2i = piece["at"] + Vector2i(size.x / 2, size.y - 1)
+		if entry["kind"] == "spawn" or (entry["kind"] == "fauna" and not lookup.call(foot)):
+			continue
+		expected += 1
+	var sprites := world.entities.get_children().filter(func(n): return n != world.body)
+	_check("%d sprites de decorado en la capa de entidades, ordenada por altura" % expected,
+		sprites.size() == expected and world.entities.y_sort_enabled, "hay %d" % sprites.size())
+	_check("%d cuerpos sólidos, uno por pieza sólida" % solid,
+		world.solids.get_child_count() == solid, "hay %d" % world.solids.get_child_count())
+
+	# Andar hacia la puerta de una casa: el cuerpo se para en el camino.
+	for piece in pieces:
+		var entry: Dictionary = legend[piece["ch"]]
+		if not String(entry["id"]).begins_with("house"):
+			continue
+		var at: Vector2i = piece["at"]
+		var size: Vector2i = entry["size"]
+		var door := at + Vector2i(size.x / 2, size.y)
+		world.enter_zone(zone_id, door)
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		for _i in 40:
+			world.body.step(Vector2i.UP, false)
+		var feet_y := int(world.body.global_position.y)
+		_check("andando hacia la puerta de la casa en %s, Ilan se para fuera" % at,
+			feet_y >= (at.y + size.y) * DesignTokens.TILE_SIZE + DesignTokens.PLAYER_HITBOX.y,
+			"pies en y = %d" % feet_y)
+		break
+
+	if zone_id != HOME_ID or state == null:
+		world.queue_free()
+		return
+	# Valdehoja: cada parte sigue a su región.
+	var parts := ZoneRules.load_parts(zone_id)
+	var garden: Vector2i = parts["yara_garden"][0]
+	var grove: Array = parts["ashen_forest"]
+	var grove_soil := Vector2i(-1, -1)
+	var lines := ZoneRules.load_zone(zone_id)
+	for c: Vector2i in grove:
+		if lines[c.y][c.x] == "." and grove.has(c + Vector2i.UP) and grove.has(c + Vector2i.DOWN) \
+				and grove.has(c + Vector2i.LEFT) and grove.has(c + Vector2i.RIGHT):
+			grove_soil = c
+			break
+	world.enter_zone(zone_id, spawn)
+	await get_tree().physics_frame
+	_check("al empezar, el jardín de Yara está purificado", _cell_pure(world, garden, lines))
+	_check("al empezar, la arboleda está enferma", not _cell_pure(world, grove_soil, lines))
+	var birds_before := _count_fauna(world)
+	state.set_zone_purified("ashen_forest")
+	world.enter_zone(zone_id, spawn)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	_check("purificado el Bosque, la arboleda vuelve", _cell_pure(world, grove_soil, lines))
+	_check("y vuelve su fauna silvestre (%d -> %d)" % [birds_before, _count_fauna(world)],
+		_count_fauna(world) > birds_before)
+	state.flags.clear()
+	world.queue_free()
+
+
+## ¿La casilla está pintada en su estado purificado? El suelo purificado está
+## en las columnas 4 a 7 de la fila 0 o en la fila del borde del prado.
+func _cell_pure(world: WorldRoot, cell: Vector2i, lines: PackedStringArray) -> bool:
+	var coords := world._layer.get_cell_atlas_coords(cell)
+	if lines[cell.y][cell.x] == ".":
+		return (coords.y == 0 and coords.x >= WorldTiles.SOIL_VARIANTS) or coords.y == WorldTiles.MEADOW_EDGE_ROW
+	return coords.y % 2 == 0
+
+
+func _count_fauna(world: WorldRoot) -> int:
+	return world.entities.get_children().filter(
+		func(n): return String(n.name).begins_with("bird") or String(n.name).begins_with("butterfly")).size()
 
 
 func _measure(zone_id: String) -> void:
