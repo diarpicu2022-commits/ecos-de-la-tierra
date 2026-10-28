@@ -10,14 +10,14 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el Bosque de las Cenizas
+## 1. Lo primero: el visto bueno a la Cuenca, y la Costa
 
-**Valdehoja quedó cerrada el 2026-10-28** (sesión 7, en la nube): contrato
-«Rastro», enmiendas 6, 7 y 8, decorado, motor y movimiento, todo con visto
-bueno de Diego. La siguiente sesión abre el **Bosque de las Cenizas**, la
-primera zona regional completa. Lo primero es preguntar a Diego cómo se llega
-a las otras cuatro regiones; el orden de trabajo está en
-`docs/plan-de-trabajo.md`.
+El 2026-10-28 se cerraron **Valdehoja y el Bosque**, y la **Cuenca de
+Alquitrán** quedó hecha, a la espera del visto bueno de Diego. El mundo va en
+cadena. La siguiente zona es la **Costa Quebrada**: su entrada está al este, y
+llega desde la salida oeste de la Cuenca, en (0, 34). Cada zona sigue la misma
+secuencia (anexo de la parte 3): composición medida con `verify_zone`, arte
+con `gen_world_decor.py` y capturas con `zone_capture.tscn`.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -32,7 +32,7 @@ a las otras cuatro regiones; el orden de trabajo está en
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: Valdehoja cerrada (2026-10-28); siguiente, el Bosque |
+| 3 | Las siete zonas | **En curso**: Valdehoja y Bosque cerrados, Cuenca hecha (2026-10-28); siguiente, la Costa |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -133,6 +133,9 @@ $GODOT --headless --path . res://tools/verify_zone.tscn -- valdehoja
 xvfb-run -a $GODOT --path . res://tools/valdehoja_capture.tscn   # capturas del motor
 $GODOT --path . res://tools/valdehoja_play.tscn                   # pasear por Valdehoja
 python tools/verify_squint.py valdehoja                          # prueba de entrecerrar
+$GODOT --headless --path . res://tools/verify_zone.tscn -- ashen_forest
+xvfb-run -a $GODOT --path . res://tools/zone_capture.tscn -- ashen_forest
+$GODOT --headless --path . res://tools/verify_zone.tscn -- tar_basin
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

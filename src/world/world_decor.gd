@@ -27,7 +27,18 @@ const SPRITE := {"person": "yara", "chicken": "chicken_0", "bird": "bird_0",
 
 ## Lo que se mece al purificar (enmienda 8): tiene un segundo cuadro
 ## `<id>_pure_1.png`.
-const SWAYS := ["grass", "flower", "weed", "crop_row"]
+const SWAYS := ["grass", "flower", "weed", "crop_row", "reeds"]
+
+## Árboles: se dibujan desplazados hasta JITTER_PX px por pieza para que un
+## bosque no se lea como plantación (Bosque, 2026-10-28).
+const JITTER := ["tree", "tree_b", "burnt_tree"]
+const JITTER_PX := 3
+
+## Lo que desaparece con la ola de purificación: el paso cerrado y el
+## monstruo (catálogo 2a) y el daño que se limpia (crudo, barriles, basura).
+## Purificado no queda ni el sprite ni el cuerpo: un barril invisible y sólido
+## sería un muro fantasma.
+const VANISH_WHEN_PURE := ["blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter"]
 
 
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos
@@ -54,7 +65,11 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		var pure: bool = purified_at.call(at + Vector2i(size.x / 2, size.y - 1))
 		if entry["kind"] == "fauna" and not pure:
 			continue
-		var texture := _texture(entry["id"], pure)
+		# El paso cerrado y el monstruo desaparecen con la ola (catálogo 2a):
+		# purificado, ni sprite ni cuerpo.
+		if pure and entry["id"] in VANISH_WHEN_PURE:
+			continue
+		var texture := _texture(entry["id"], pure, zone_id)
 		if texture == null:
 			push_error("%s: no hay sprite para «%s»" % [zone_id, entry["id"]])
 			continue
@@ -67,6 +82,11 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		if texture.get_width() < t:
 			# Lo pequeño (animales, fauna) se apoya en el centro de su tile.
 			lift = (t - texture.get_height()) / 2
+		if entry["id"] in JITTER:
+			# Rompe la cuadrícula: unos píxeles por árbol, fijos por posición.
+			# Solo el dibujo; la colisión sigue en tiles enteros.
+			var h := absi(hash(at))
+			feet += Vector2((h % (2 * JITTER_PX + 1)) - JITTER_PX, ((h / 7) % 3) - 1)
 		sprite.position = feet
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
@@ -151,10 +171,16 @@ static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure
 	sprite.set_meta("base_y", sprite.position.y)
 
 
-static func _texture(id: String, pure: bool) -> Texture2D:
+## El sprite de una pieza: primero el propio de la región
+## (`monster_ashen_forest_sick.png`), después el común. Las viñetas se dibujan
+## con el sprite de su elemento: `v1_stump` usa `stump`.
+static func _texture(id: String, pure: bool, zone_id: String) -> Texture2D:
 	var name: String = SPRITE.get(id, id)
+	if name.length() > 3 and name[0] == "v" and name[1].is_valid_int() and name[2] == "_":
+		name = name.substr(3)
 	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
-		var path := "%s%s_%s.png" % [DECOR_DIR, name, state]
-		if ResourceLoader.exists(path):
-			return load(path)
+		for base in ["%s_%s" % [name, zone_id], name]:
+			var path := "%s%s_%s.png" % [DECOR_DIR, base, state]
+			if ResourceLoader.exists(path):
+				return load(path)
 	return null
