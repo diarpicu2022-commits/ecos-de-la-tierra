@@ -1142,5 +1142,77 @@ hilera marchita, silo, Espectro y alambre de espino.
 - Las parcelas de la rotación de cultivos (parte 7), la revelación de Rasgo
   (IA-6) y la ola no están en el mapa.
 
-**Siguiente:** el visto bueno de Diego a la Llanura; después, la **Cumbre
-Menguante**, la última zona regional.
+**Visto bueno de Diego a la Llanura: 2026-10-28** (PR #15 fusionado).
+
+## Fase 5 · Cumbre Menguante — 2026-10-28
+
+**La fuente** es el Refugio de Altahielo, bajo el glaciar partido (el hito,
+64 × 80 sobre su base de 4 × 4), con el Coloso del Deshielo. El paso cerrado,
+esquirlas de hielo sucio y piedra, está al oeste del refugio y lleva a la
+Ciudad Dorada y la Cripta.
+
+**Dos reglas que se cumplen aquí:**
+
+- nada del decorado se parece a una lona doblada, porque el manto reflectante
+  es la clase que responde de la Cumbre (catálogo 2a);
+- el azul (`AQUA`) solo existe en lo purificado: el hielo enfermo es gris.
+
+**Composición** (`waning_peak.txt` y `.deco.txt`, 72 × 52). Es el rodeo vertical
+de la Cuenca, con laderas de pinos y peñascos.
+
+1. **Llegada desde la Llanura** por el norte. **Viñeta 1:** la roca oscura que
+   asoma donde había nieve y el deshielo que corre por ella. Es la causa del
+   Escudo de Albedo: la roca oscura se calienta y derrite el resto.
+2. **Bajada por la ladera oeste.** **Viñeta 2:** la estaca de medición que
+   marcaba hasta dónde llegaba el hielo y, muy abajo, la morrena que dejó al
+   retirarse.
+3. **Asomo:** el camino pasa por encima del refugio y **el glaciar asoma al
+   44 % del camino**.
+4. **Bajada por el este y vuelta por el sur.** **Viñeta 3:** bloques de hielo
+   caídos y la charca de deshielo. Se cruza la charca por un puente.
+
+**Al purificar:**
+
+- la nieve cubre la roca oscura;
+- regueros, grietas, charca y bloques caídos desaparecen;
+- la estaca vuelve a tener hielo al pie;
+- el glaciar vuelve entero, blanco y azul;
+- los pinos verdean.
+
+**Arte nuevo** (126 piezas en total): roca oscura, reguero, grieta, pino,
+peñasco, estaca, morrena, bloque de hielo, charca, glaciar, Coloso y
+esquirlas. Pinos y peñascos se desplazan como los árboles.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- waning_peak`: **44 de 44**, 1 pendiente (la Cripta, sin
+  dibujar). La primera pasada falló en dos puntos:
+  - la viñeta 1 y la 2 quedaban a 29 columnas (el contrato pide 30); se
+    quitaron las dos piezas más al oeste de la viñeta 1;
+  - al purificar no se llegaba a la salida. Dos rocas oscuras sólidas,
+    repartidas al azar, cerraban el paso entre la fuente y el corredor. La
+    roca oscura pasó a ser una placa pisable, y junto al camino solo se
+    reparte decorado pisable.
+- **La Llanura pasa a 0 pendientes.** Valdehoja 49/49, Bosque 45/45, Cuenca
+  44/44, Costa 45/45 y Llanura 44/44.
+- `verify_movement` 99/99, `verify_usability` 16/16 y `verify_camera` 37/37.
+- `verify_tileset` en verde y tokens sin deriva (47).
+- `verify_palette --world`: pasan las 67 capturas del 2026-10-28. Con
+  `--strict`, pasan los 126 sprites.
+- `verify_squint.py waning_peak`: OK. Lo más luminoso es el pie del glaciar,
+  el hito.
+- **Capturas del motor:** `docs/ux/capturas/2026-10-28-cumbre-motor-*.png`
+  (entrada, roca, estaca, asomo, hielo, fuente, fuente purificada, ladera
+  purificada y paso abierto) y `-movimiento.gif`. **Vista de la zona entera:**
+  `2026-10-28-cumbre-enferma.png` y `-purificada.png`.
+
+#### Pendiente, y se dice
+
+- La Cripta de la Avaricia, sin dibujar: la salida de la Cumbre lleva allí,
+  por el oeste, en (0, 36). Su id provisional es `greed_crypt`.
+- El rescate de Rasgo atrapado en el glaciar (IA-6, parte 5), el manto
+  reflectante (parte 7) y la ola no están en el mapa.
+
+**Siguiente:** el visto bueno de Diego a la Cumbre. Después, la **Cripta de la
+Avaricia**, la última zona. Antes hay que preguntarle lo que el contrato dejó
+abierto: si sus viñetas son las cinco causas o una sola.

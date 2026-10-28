@@ -57,11 +57,23 @@ const SHOTS := {
 		["campo-purificado", Vector2i(30, 8), true],
 		["paso-abierto", Vector2i(52, 30), true],
 	],
+	"waning_peak": [
+		["entrada", Vector2i(52, 1), false],
+		["roca", Vector2i(48, 9), false],
+		["estaca", Vector2i(12, 25), false],
+		["asomo", Vector2i(34, 28), false],
+		["hielo", Vector2i(57, 46), false],
+		["fuente", Vector2i(40, 37), false],
+		["fuente-purificada", Vector2i(40, 37), true],
+		["ladera-purificada", Vector2i(13, 14), true],
+		["paso-abierto", Vector2i(20, 36), true],
+	],
 }
 const MOTION := {"ashen_forest": Vector2i(52, 11), "tar_basin": Vector2i(40, 38),
-	"broken_coast": Vector2i(28, 29), "withered_plain": Vector2i(30, 8)}
+	"broken_coast": Vector2i(28, 29), "withered_plain": Vector2i(30, 8),
+	"waning_peak": Vector2i(44, 41)}
 const SLUG := {"ashen_forest": "bosque", "tar_basin": "cuenca", "broken_coast": "costa",
-	"withered_plain": "llanura"}
+	"withered_plain": "llanura", "waning_peak": "cumbre"}
 
 var _world := WorldRoot.new()
 var _state: Node = null
