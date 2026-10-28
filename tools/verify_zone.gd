@@ -59,8 +59,10 @@ const LANDMARK_FIRST_VIEW_MIN := 0.25
 const LANDMARK_FIRST_VIEW_MAX := 0.65
 const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
+## La parte `greed_crypt` es solo la bocamina: el paso cerrado de Valdehoja
+## que se abre al purificar la Cripta (enmienda 12).
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
-	"withered_plain", "waning_peak"]
+	"withered_plain", "waning_peak", "greed_crypt"]
 const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
 ## Lo que puede apoyarse en el muro de la Cripta (enmienda 10).
 const ON_WALL := ["pillar", "root", "banner"]
@@ -302,10 +304,7 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 	await get_tree().physics_frame
 	var sick_solids := world.solids.get_child_count()
 	var sick_marks: int = gone.call()
-	# La Cripta no tiene paso cerrado: solo la Sombra.
-	var marks := 1 if zone_id == CRYPT_ID else 2
-	_check("enferma: %s (%d)" % ["la Sombra está" if marks == 1 else "el monstruo y el paso cerrado están",
-		sick_marks], sick_marks >= marks)
+	_check("enferma: el monstruo y el paso cerrado están (%d)" % sick_marks, sick_marks >= 2)
 	state.set_zone_purified(zone_id)
 	world.enter_zone(zone_id, spawn)
 	await get_tree().physics_frame
@@ -465,9 +464,21 @@ func _measure(zone_id: String) -> void:
 		# se mide en la composición regional. Aquí, solo la de vuelta.
 		if zone_id != HOME_ID and _is_forward(cell, spawn[0]):
 			continue
+		# La bocamina de Valdehoja tiene su paso cerrado: se mide en Valdehoja.
+		if zone_id == HOME_ID and e["to"] == CRYPT_ID:
+			continue
 		_check("la salida %s se alcanza desde la aparición" % cell, reach.has(cell))
-	for c in _of_kind(cells, legend, "entity"):
-		_check("%s en %s se alcanza" % [legend[cells[c]]["id"], c], _touches([c], reach))
+	# Por pieza: una entidad de varios tiles (la bocamina, 2x2) se alcanza si
+	# se llega al lado de cualquiera de sus casillas.
+	for piece in pieces:
+		var entry: Dictionary = legend[piece["ch"]]
+		if entry["kind"] != "entity":
+			continue
+		var covered := []
+		for j in entry["size"].y:
+			for i in entry["size"].x:
+				covered.append(piece["at"] + Vector2i(i, j))
+		_check("%s en %s se alcanza" % [entry["id"], piece["at"]], _touches(covered, reach))
 	for x0 in range(0, size.x, SCREEN_COLUMNS):
 		var x1 := mini(x0 + SCREEN_COLUMNS, size.x)
 		var clue := false
@@ -478,7 +489,7 @@ func _measure(zone_id: String) -> void:
 		_check("pista en la franja de x %d a %d" % [x0, x1 - 1], clue)
 
 	if zone_id == HOME_ID:
-		_measure_home(zone_id, lines, cells, legend, spawn[0], reach, landmark)
+		_measure_home(zone_id, lines, cells, legend, spawn[0], reach, landmark, exits)
 	else:
 		_measure_region(zone_id, lines, cells, legend, spawn[0], landmark, exits)
 	print("  (la paleta y la prueba de entrecerrar se miden aparte: tools/verify_palette.py image --world"
@@ -486,14 +497,14 @@ func _measure(zone_id: String) -> void:
 
 
 func _measure_home(zone_id: String, lines: PackedStringArray, cells: Dictionary,
-		legend: Dictionary, spawn: Vector2i, reach: Dictionary, landmark: Array) -> void:
+		legend: Dictionary, spawn: Vector2i, reach: Dictionary, landmark: Array, exits: Array) -> void:
 	print("\nValdehoja")
 	var forbidden := PackedStringArray()
 	for ch in legend:
 		var entry: Dictionary = legend[ch]
-		if entry["id"] in ["monster", "blocker"] or entry["kind"] == "vignette":
+		if entry["id"] == "monster" or entry["kind"] == "vignette":
 			forbidden.append(entry["id"])
-	_check("sin monstruos, pasos cerrados ni viñetas", forbidden.is_empty(), ", ".join(forbidden))
+	_check("sin monstruos ni viñetas", forbidden.is_empty(), ", ".join(forbidden))
 	var on_path := _flood(spawn, lines, cells, legend, true)
 	_check("el camino principal lleva de la aparición al hito", _touches(landmark, on_path))
 
@@ -502,11 +513,29 @@ func _measure_home(zone_id: String, lines: PackedStringArray, cells: Dictionary,
 	names.sort()
 	var expected := HOME_PARTS.duplicate()
 	expected.sort()
-	_check("seis partes: el jardín de Yara y una por región", names == expected, str(names))
+	_check("siete partes: el jardín de Yara, una por región y la bocamina", names == expected, str(names))
 	var owner := {}
 	for id in parts:
 		for c: Vector2i in parts[id]:
 			owner[c] = id
+
+	# Enmienda 12: un solo paso cerrado, la bocamina. Se abre al purificar la
+	# Cripta y no antes: la salida a la Cripta no se alcanza al empezar.
+	var blockers := cells.keys().filter(func(c): return legend[cells[c]]["id"] == "blocker")
+	var pieces := WorldDecor.pieces(ZoneRules.load_deco(zone_id)["rows"], legend).filter(
+		func(p): return legend[p["ch"]]["id"] == "blocker")
+	_check("un solo paso cerrado, en la bocamina", pieces.size() == 1
+		and blockers.all(func(c): return owner.get(c, "") == CRYPT_ID), "%d pasos" % pieces.size())
+	var open_cells := cells.duplicate()
+	for c in blockers:
+		open_cells.erase(c)
+	var open_reach := _flood(spawn, lines, open_cells, legend, false)
+	for e in ZoneRules.exits_from(zone_id, exits):
+		if e["to"] != CRYPT_ID:
+			continue
+		var cell := ZoneRules.cell_of(e, "cell")
+		_check("la salida a la Cripta %s no se alcanza al empezar" % cell, not reach.has(cell))
+		_check("y se alcanza al abrir la bocamina", open_reach.has(cell))
 	for id in parts:
 		_check("la parte %s existe y se alcanza (%d tiles)" % [id, parts[id].size()],
 			not parts[id].is_empty() and _touches(parts[id], reach))
@@ -553,13 +582,8 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 		forward += 1
 		_check("la salida de ida %s es inalcanzable sin purificar" % cell, not sick.has(cell))
 		_check("y se alcanza al purificar (sin los pasos cerrados)", pure.has(cell))
-	if zone_id == CRYPT_ID:
-		# La Cripta es el final: detrás de la Sombra no hay región que abrir.
-		var blockers := cells.keys().filter(func(c): return legend[cells[c]]["id"] == "blocker")
-		_check("la Cripta es el final: sin salida de ida ni paso cerrado",
-			forward == 0 and blockers.is_empty(), "%d salidas, %d pasos" % [forward, blockers.size()])
-	else:
-		_check("hay salida de ida", forward >= 1)
+	# En la Cripta, la de ida sube a Valdehoja por detrás de la Sombra (enmienda 12).
+	_check("hay salida de ida", forward >= 1)
 	# 2. La fuente, por el camino y sin paso cerrado delante.
 	var on_path := _flood(spawn, lines, cells, legend, true)
 	_check("el camino principal lleva de la llegada a la fuente", _touches([source], on_path))

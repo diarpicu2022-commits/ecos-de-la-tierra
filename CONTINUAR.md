@@ -10,14 +10,12 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el visto bueno a la Cumbre y a la Cripta
+## 1. Lo primero: abrir la parte 4
 
-El 2026-10-28 se cerraron **Valdehoja y cuatro regiones** (PR #13, #14 y
-#15). La **Cumbre Menguante** (PR #16, fusionado) y la **Cripta de la Avaricia**
-quedaron hechas, a la espera del visto bueno de Diego. La Cripta tiene cinco bóvedas, una por región, y la enmienda 10 (la piedra). Queda una
-pregunta suya: si la Cripta, que hoy no tiene paso cerrado ni salida de ida
-por ser el final, lleva una salida a la superficie detrás de la Sombra. Con
-esa respuesta, la parte 3 se cierra.
+La **parte 3 se cerró el 2026-10-28**: las siete zonas aprobadas por Diego.
+La Cripta lleva la enmienda 12: detrás de la Sombra, un túnel y un pozo suben
+a una bocamina de Valdehoja que se abre al purificarla. Lo siguiente es la
+**parte 4**, encuentros y paso mundo ↔ combate, empezando por su anexo.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -32,7 +30,7 @@ esa respuesta, la parte 3 se cierra.
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: Valdehoja y cuatro regiones cerradas; Cumbre y Cripta hechas (2026-10-28), esperan visto bueno |
+| 3 | Las siete zonas | **Cerrada** 2026-10-28 (enmiendas 6-10 y 12) |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |

@@ -35,6 +35,8 @@ const PARTS := {
 	"costa": ["broken_coast", Vector2i(30, 21)],
 	"llanura": ["withered_plain", Vector2i(11, 8)],
 	"cumbre": ["waning_peak", Vector2i(14, 14)],
+	# Enmienda 12: la bocamina, abierta al purificar la Cripta.
+	"bocamina-abierta": ["greed_crypt", Vector2i(3, 5)],
 }
 
 
@@ -49,6 +51,7 @@ func _ready() -> void:
 	_world.body.input_enabled = false
 	await _capture("casa", Vector2i(9, 25))
 	await _capture("jardin", Vector2i(29, 12))
+	await _capture("bocamina", Vector2i(3, 5))
 	for tag in PARTS:
 		_state.flags.clear()
 		_state.set_zone_purified(PARTS[tag][0])

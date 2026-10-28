@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-28 (sesión 7, en la nube; cierre)
+Última actualización: 2026-10-28 (sesión 8; cierre de la parte 3)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,7 +42,10 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 3 — Las siete zonas. EN CURSO. Valdehoja CERRADA el 2026-10-28.**
+> **Parte 3 — Las siete zonas. CERRADA el 2026-10-28.** Lo siguiente es
+> abrir la **parte 4** (encuentros y paso mundo ↔ combate) con su anexo.
+>
+> **Parte 3, historial:**
 > Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
 >
 > **Bosque de las Cenizas: aprobado por Diego** (2026-10-28). Prueba de
@@ -55,21 +58,18 @@ válidos:
 >
 > **Llanura Marchita: aprobada** (2026-10-28, PR #15).
 >
-> **Cumbre Menguante: HECHA el 2026-10-28**, espera visto bueno (PR #16,
-> fusionado).
+> **Cumbre Menguante: aprobada** (2026-10-28, PR #16).
 >
-> **Cripta de la Avaricia: HECHA el 2026-10-28, espera visto bueno.**
+> **Cripta de la Avaricia: aprobada** (2026-10-28), con la enmienda 12.
 > - Cinco bóvedas, una por región (Diego): lo que la Compañía se llevó de
 >   cada región junto a su oro.
 > - Enmienda 10, la piedra: muro `%` y losa `,`, sin color nuevo.
 > - Hito: la estatua de oro del Barón Cendral; fuente: la Sombra de la
 >   Avaricia. Al purificar, el oro desaparece.
-> - `verify_zone` **44/44**; las siete zonas en verde.
->
-> **Lo siguiente:** el visto bueno a la Cripta y una pregunta abierta: la
-> sesión decidió que la Cripta, por ser el final, no tiene paso cerrado ni
-> salida de ida; Diego dice si quiere una salida a la superficie detrás de la
-> Sombra. Con eso, **la parte 3 queda cerrada** y se abre la parte 4.
+> - **Enmienda 12** (Diego): detrás de la Sombra, un túnel y un pozo con
+>   reja de oro suben a Valdehoja; allí llegan a una bocamina tapiada de 2×2
+>   que se abre al purificar la Cripta.
+> - `verify_zone`: Cripta **48/48** y Valdehoja **55/55**; las siete zonas en verde.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -144,7 +144,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-10. Valdehoja y cuatro regiones cerradas; **Cumbre** (PR #16) y **Cripta** hechas (2026-10-28), esperan visto bueno |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **Cerrada** 2026-10-28 — contrato «Rastro»; enmiendas 6-10 y 12. Las siete zonas aprobadas, `verify_zone` en verde |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -226,6 +226,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   (2026-10-28, Diego): 5 viñetas solo en la Cripta; muro `%` y losa `,` sin
   color nuevo, que no conviven con los otros materiales. La reserva para el
   dE entre materiales pasa a la enmienda 11.
+- **Enmienda 12, la salida de la Cripta** (2026-10-28, Diego): detrás de la
+  Sombra, un túnel y un pozo, cerrados con reja de oro, suben a Valdehoja. Allí
+  llegan a una bocamina tapiada (2×2, parte `greed_crypt` del pueblo) que se
+  abre al purificar la Cripta. Valdehoja admite ese único paso cerrado.
 - **Entrecerrar en lo enfermo** (2026-10-28, Diego, opción b): el camino
   enfermo se lee por silueta y textura, no por luz; `verify_squint` mide que no
   mande el decorado.
