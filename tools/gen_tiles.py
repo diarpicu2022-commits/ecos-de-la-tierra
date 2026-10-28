@@ -12,12 +12,14 @@ daltonismo (medido el 2026-09-23), así que cada estado cambia también de valor
 de forma. Ningún tile lleva contorno `ASH_050`: el contorno es de lo que
 responde, y el terreno no responde.
 
-Atlas: 16 columnas por 7 filas de 16 px.
+Atlas: 16 columnas por 8 filas de 16 px.
 
     fila 0   suelo: 4 variantes enfermas y 4 purificadas (columnas 0-7)
     fila 1   camino enfermo      fila 2   camino purificado
     fila 3   agua enferma        fila 4   agua purificada
     fila 5   follaje enfermo     fila 6   follaje purificado
+    fila 7   borde del prado: suelo purificado que linda con suelo enfermo
+             (enmienda 6). La máscara dice qué vecinos están purificados.
 
 En las filas 1-6, la columna es la máscara de vecinos del mismo material:
 N = 1, E = 2, S = 4, O = 8. La columna 15 es el interior.
@@ -41,6 +43,7 @@ N, E, S, W = 1, 2, 4, 8
 
 SOIL_ROW = 0
 OVERLAYS = ["path", "water", "flora"]  # filas 1-2, 3-4, 5-6
+MEADOW_EDGE_ROW = 7
 
 
 # --- Texturas: base plana y pocas formas contadas --------------------------------
@@ -110,26 +113,20 @@ def soil_tile(purified: bool, variant: int) -> list[list[str]]:
         if variant in (1, 3):
             diagonal(g, rng.randrange(T), rng.randrange(T), 3, "soil_500")
         return g
-    # Tierra curada: un escalón más de valor y guijarros redondos.
-    # Medido el 2026-09-23: con base plana SOIL_500 el cociente de valor frente
-    # al suelo enfermo era 1,43, bajo el piso de 1,5. Aclararlo con SOIL_300 lo
-    # acercaba al camino (dE 7,9). Lo que lo levanta es la hierba que vuelve:
-    # dos matas redondas por tile. Sube el valor y separa el matiz del camino,
-    # que sigue siendo tierra.
+    # Enmienda 6 (2026-10-28): la tierra curada vuelve como prado, el suelo de
+    # hierba de los pueblos de GBA. Base VITAL_600, verde de hierba más
+    # amarillo que el acento (con VITAL_500 de base, un prado entero era
+    # neón), y briznas de 2 px: pie VITAL_700, punta VITAL_400. Cada variante
+    # cambia la colocación para que el prado no se lea como rejilla.
     #
-    # La misma cantidad de verde, agrupada: dos matas por tile se leían como
-    # confeti. Un parche de hierba en una variante, una mata en otra y tierra
-    # limpia en las dos restantes. Grupos mayores y espacio negativo (SLYNYRD).
-    g = flat("soil_500")
-    if variant in (0, 1):
-        pebble(g, rng.randrange(T), rng.randrange(T), "soil_300")
-    # Los parches no cruzan el borde: el tile vecino es de otra variante y el
-    # parche quedaría partido en astillas.
-    if variant == 2:
-        clump(g, rng.randint(5, 10), rng.randint(5, 10), 4, "vital_700", "vital_500", "vital_900")
-    if variant == 3:
-        tuft(g, rng.randint(2, 13), rng.randint(2, 13))
-        clump(g, rng.randint(3, 12), rng.randint(3, 12), 2, "vital_700", "vital_500", "vital_900")
+    # Historia: hasta el 2026-10-28 era tierra SOIL_500 con matas redondas;
+    # al juntarse en una zona entera se leía como lunares sobre barro.
+    g = flat("vital_600")
+    blades = 7 + variant
+    for _ in range(blades):
+        x, y = rng.randrange(1, T - 1), rng.randrange(2, T)
+        stamp(g, x, y, "vital_700")
+        stamp(g, x, y - 1, "vital_400")
     return g
 
 
@@ -158,11 +155,16 @@ def water_tile(purified: bool) -> list[list[str]]:
         return g
     # Agua viva: base clara y rizos horizontales escalonados; un destello de
     # vida lejos de ellos. (Dos arcos y un punto juntos se leían como una cara.)
-    g = flat("water_300")
+    # Enmienda 6 (2026-10-28): el agua purificada recupera el azul (AQUA), por
+    # encima del techo de saturación, como el verde. El destello deja de ser
+    # verde: el azul ya dice por sí solo que el agua está viva.
+    # Medido el mismo día: con base AQUA_500 y rizos AQUA_300, el contorno
+    # ASH_050 de lo que responde bajaba a 1,10:1 (piso 3:1). Base AQUA_700 y
+    # rizos AQUA_900: el azul sigue y el contorno se lee.
+    g = flat("aqua_700")
     for x, y, n in ((2, 5, 4), (9, 12, 3), (11, 2, 2)):
         for dx in range(n):
-            stamp(g, x + dx, y, "water_500")
-    stamp(g, 5, 13, "vital_500")
+            stamp(g, x + dx, y, "aqua_900")
     return g
 
 
@@ -281,6 +283,26 @@ def draw_overlay(canvas: Canvas, ox: int, oy: int, material: str,
                 canvas.set(ox + x, oy + y, color(shadow))
 
 
+def draw_meadow_edge(canvas: Canvas, ox: int, oy: int, mask: int) -> None:
+    """El prado entra en la tierra enferma con el festón redondo de lo
+    purificado, y una línea VITAL_900 le da el canto. Sin esta fila, una parte
+    purificada de Valdehoja acababa en escalones de tile entero."""
+    for y in range(T):
+        for x in range(T):
+            canvas.set(ox + x, oy + y, color(soil_px(x, y, False, 0)))
+    for y in range(T):
+        for x in range(T):
+            if covered(x, y, mask, True):
+                canvas.set(ox + x, oy + y, color(soil_px(x, y, True, 2)))
+    for y in range(T):
+        for x in range(T):
+            if covered(x, y, mask, True):
+                continue
+            if any(0 <= x + dx < T and 0 <= y + dy < T and covered(x + dx, y + dy, mask, True)
+                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                canvas.set(ox + x, oy + y, color("vital_900"))
+
+
 def draw_soil(canvas: Canvas, ox: int, oy: int, purified: bool, variant: int) -> None:
     for y in range(T):
         for x in range(T):
@@ -288,7 +310,7 @@ def draw_soil(canvas: Canvas, ox: int, oy: int, purified: bool, variant: int) ->
 
 
 def main() -> None:
-    canvas = Canvas(16 * T, 7 * T)
+    canvas = Canvas(16 * T, 8 * T)
     for variant in range(4):
         draw_soil(canvas, variant * T, SOIL_ROW, False, variant)
         draw_soil(canvas, (4 + variant) * T, SOIL_ROW, True, variant)
@@ -297,6 +319,8 @@ def main() -> None:
             row = 1 + i * 2 + (1 if purified else 0)
             for mask in range(16):
                 draw_overlay(canvas, mask * T, row * T, material, purified, mask)
+    for mask in range(16):
+        draw_meadow_edge(canvas, mask * T, MEADOW_EDGE_ROW * T, mask)
     canvas.save(OUT)
     print(f"  tileset: {OUT.relative_to(OUT.parent.parent.parent)} ({canvas.width}x{canvas.height})")
 

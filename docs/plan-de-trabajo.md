@@ -53,15 +53,22 @@ válidos:
 > Valdehoja: cinco partes, una por región y ligada a su daño (arboleda, río,
 > era, terrazas, acequia), además del jardín de Yara.
 >
-> **Valdehoja, paso 1 (mapa en texto y `verify_zone.gd`): ENTREGADO, espera
-> visto bueno.** Capturas `docs/ux/capturas/2026-10-28-valdehoja-mapa-*`
-> (hechas con `tools/zone_preview.py`, solo materiales). El espejo en Python
-> da 19 de 19; **`verify_zone.tscn` todavía no se ha ejecutado en Godot**:
-> en la nube no hubo permiso para lanzar el binario. **Lo primero de la
-> próxima sesión:** pasar `verify_zone`, `verify_movement` y
-> `verify_usability` en Godot, y que Diego elija qué se hace con los cantos
-> rectos de las partes (anexo, «Se dice, para decidir en la revisión»).
-> Después, el paso 2: decorado, casas y el árbol de Yara.
+> **Valdehoja, pasos 1 y 2 ENTREGADOS (2026-10-28), esperan visto bueno.**
+> Diego juzgó «desabrida» la primera entrega, que solo tenía materiales, y
+> autorizó las enmiendas 6, 7 y 8. Con ellas, el paso 2 llevó:
+> - 34 piezas de decorado (`tools/gen_world_decor.py`) y el prado purificado
+>   con su borde en el tileset;
+> - el agua viva;
+> - las partes del pueblo como capa de texto (`valdehoja.parts.txt`).
+>
+> Capturas en `docs/ux/capturas/2026-10-28-valdehoja-*`. El espejo de
+> `verify_zone` da 28 de 28 y `verify_tileset` está en verde. **Falla
+> `--world` con el sprite de Ilan** (`ash_950`, de la parte 2): está anotado y
+> no se ha tocado.
+>
+> **Lo primero de la próxima sesión:** pasar en Godot `verify_zone`,
+> `verify_movement` y `verify_usability`; después, el paso 3, montar decorado
+> y partes en `WorldRoot` con colisión y la captura del motor.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -119,7 +126,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado (2026-10-28). Valdehoja: paso 1 entregado. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado; enmiendas 6-8 (2026-10-28). Valdehoja: pasos 1 y 2 entregados. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -189,6 +196,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 - **Cámara** (2026-09-30, enmienda 5): la anticipación abre a 60 px/s y vuelve
   a 30 px/s, por eje. Zona muerta 12 px bajo el centro de la pantalla. Con
   movimiento reducido, sin anticipación.
+- **Enmiendas 6, 7 y 8** (2026-10-28, Diego, al ver Valdehoja «desabrida»):
+  paleta rica con color al purificar (madera, tejado, agua viva, flores,
+  prado); animales domésticos siempre y fauna silvestre al purificar;
+  movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
 - **Zonas: «Rastro»** (2026-10-28, elegido por Diego): un camino principal
   lleva a la fuente del daño pasando por 3 viñetas de causa y efecto; hito en
   la fuente; paso cerrado detrás del monstruo de historia. **Mapas en texto**
@@ -217,7 +228,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |

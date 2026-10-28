@@ -10,7 +10,9 @@ extends Node
 ##     siete zonas que todavía no está dibujada se da como PENDIENTE, no como
 ##     OK: existe en el mapa y no se puede cruzar hasta que se dibuje su zona;
 ##   - la capa de decorado mide lo mismo que la de materiales, cada carácter
-##     está en su leyenda y se apoya en suelo o camino;
+##     está en su leyenda, se apoya en suelo o camino (un árbol, también en el
+##     follaje; la fauna, también en el agua) y cada pieza de varios tiles
+##     está entera;
 ##   - ningún decorado es de una clase del catálogo de lo que responde, y cada
 ##     entidad es una clase del catálogo de su región o global (`interactables.json`);
 ##   - un hito, de entre 2 × 3 y 4 × 4 tiles, que se alcanza;
@@ -20,8 +22,10 @@ extends Node
 ## Valdehoja (adapta los puntos 2 a 4 del contrato):
 ##   - sin monstruos, sin pasos cerrados y sin viñetas;
 ##   - el camino principal lleva de la aparición al hito sin salir del camino;
-##   - seis partes que no se solapan: el jardín de Yara y una por región;
-##     cada una se alcanza, y el hito está en el jardín.
+##   - seis partes (`valdehoja.parts.txt`): el jardín de Yara y una por
+##     región; cada una se alcanza, el hito está en el jardín y la fauna
+##     silvestre solo está dentro de una parte;
+##   - cada casa tiene un camino delante de la puerta.
 ##
 ## Se declara pendiente, porque necesita la captura del motor (paso 3):
 ## `verify_palette.py image --world` y la prueba de entrecerrar.
@@ -34,6 +38,7 @@ const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 	"withered_plain", "waning_peak"]
+const TREES_ON_FLORA := ["tree", "tree_b"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0
@@ -98,12 +103,24 @@ func _measure(zone_id: String) -> void:
 			cells[Vector2i(x, y)] = ch
 			if not legend.has(ch):
 				unknown.append("'%s' en %s" % [ch, Vector2i(x, y)])
-			elif lines[y][x] not in [".", "="]:
+			elif not _ground_ok(legend[ch], lines[y][x]):
 				off_ground.append("%s en %s" % [legend[ch]["id"], Vector2i(x, y)])
 	_check("cada carácter está en la leyenda", unknown.is_empty(), ", ".join(unknown))
-	_check("todo se apoya en suelo o camino", off_ground.is_empty(), ", ".join(off_ground))
+	_check("todo se apoya en suelo o camino (los árboles, también en el follaje)",
+		off_ground.is_empty(), ", ".join(off_ground.slice(0, 5)))
 	if not unknown.is_empty():
 		return
+	var broken := PackedStringArray()
+	var pieces := _pieces(rows, legend, broken)
+	_check("%d piezas, todas completas a su tamaño" % pieces.size(), broken.is_empty(),
+		", ".join(broken.slice(0, 5)))
+	for piece in pieces:
+		var entry: Dictionary = legend[piece["ch"]]
+		if String(entry["id"]).begins_with("house"):
+			var at: Vector2i = piece["at"]
+			var door := at + Vector2i(entry["size"].x / 2, entry["size"].y)
+			_check("la puerta de la casa en %s da a un camino" % at,
+				Rect2i(Vector2i.ZERO, size).has_point(door) and lines[door.y][door.x] == "=")
 
 	print("\nCatálogo de lo que responde")
 	var region := _region_of(zone_id)
@@ -178,25 +195,20 @@ func _measure_home(zone_id: String, lines: PackedStringArray, cells: Dictionary,
 	expected.sort()
 	_check("seis partes: el jardín de Yara y una por región", names == expected, str(names))
 	var owner := {}
-	var overlaps := PackedStringArray()
-	var size := Vector2i(lines[0].length(), lines.size())
 	for id in parts:
-		for rect: Rect2i in parts[id]:
-			if not Rect2i(Vector2i.ZERO, size).encloses(rect):
-				overlaps.append("%s sale del mapa" % id)
-			for y in range(rect.position.y, rect.end.y):
-				for x in range(rect.position.x, rect.end.x):
-					var c := Vector2i(x, y)
-					if owner.has(c) and owner[c] != id:
-						overlaps.append("%s y %s en %s" % [owner[c], id, c])
-					owner[c] = id
-	_check("las partes no se solapan ni salen del mapa", overlaps.is_empty(),
-		", ".join(overlaps.slice(0, 3)))
+		for c: Vector2i in parts[id]:
+			owner[c] = id
 	for id in parts:
-		var mine: Array = owner.keys().filter(func(c): return owner[c] == id)
-		_check("la parte %s se alcanza" % id, _touches(mine, reach))
+		_check("la parte %s existe y se alcanza (%d tiles)" % [id, parts[id].size()],
+			not parts[id].is_empty() and _touches(parts[id], reach))
 	_check("el hito está en el jardín de Yara",
 		landmark.all(func(c): return owner.get(c, "") == "yara_garden"))
+	var stray := PackedStringArray()
+	for c in cells:
+		if legend[cells[c]]["kind"] == "fauna" and not owner.has(c):
+			stray.append(str(c))
+	_check("la fauna silvestre está dentro de una parte (solo vuelve al purificar)",
+		stray.is_empty(), ", ".join(stray))
 
 
 ## Casillas alcanzables desde `from` andando: suelo y camino sin decorado
@@ -232,6 +244,41 @@ func _touches(targets: Array, reach: Dictionary) -> bool:
 			if reach.has(c + step):
 				return true
 	return false
+
+
+## Lo que cada pieza puede pisar: suelo o camino; un árbol, también el
+## follaje (su copa cubre el borde del bosque); la fauna, también el agua.
+func _ground_ok(entry: Dictionary, ground: String) -> bool:
+	if ground in [".", "="]:
+		return true
+	if ground == "#":
+		return entry["id"] in TREES_ON_FLORA
+	return ground == "~" and entry["kind"] == "fauna"
+
+
+## Las piezas de la capa por su esquina superior izquierda. Una pieza de
+## varios tiles tiene que estar entera; si no, se anota en `broken`.
+func _pieces(rows: PackedStringArray, legend: Dictionary, broken: PackedStringArray) -> Array:
+	var claimed := {}
+	var out := []
+	for y in rows.size():
+		for x in rows[y].length():
+			var ch := rows[y][x]
+			if ch == " " or claimed.has(Vector2i(x, y)):
+				continue
+			var size: Vector2i = legend[ch]["size"]
+			var whole := true
+			for j in size.y:
+				for i in size.x:
+					var c := Vector2i(x + i, y + j)
+					if c.y >= rows.size() or c.x >= rows[c.y].length() or rows[c.y][c.x] != ch or claimed.has(c):
+						whole = false
+					claimed[c] = true
+			if whole:
+				out.append({"ch": ch, "at": Vector2i(x, y)})
+			else:
+				broken.append("%s en %s" % [legend[ch]["id"], Vector2i(x, y)])
+	return out
 
 
 func _of_kind(cells: Dictionary, legend: Dictionary, kind: String) -> Array:

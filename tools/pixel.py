@@ -47,6 +47,35 @@ PALETTE: dict[str, tuple[int, int, int, int]] = {
     "flora_700": (0x43, 0x45, 0x36, 255),
     "flora_500": (0x57, 0x59, 0x46, 255),
     "flora_300": (0x6A, 0x6E, 0x56, 255),
+    # Enmienda 6 (2026-10-28): rampas de lo construido, cinco tonos, bajo el
+    # techo de 0,22. La piedra sale de la ceniza: no lleva rampa propia.
+    "wood_900": (0x2B, 0x26, 0x22, 255),
+    "wood_700": (0x45, 0x3D, 0x36, 255),
+    "wood_500": (0x61, 0x56, 0x4D, 255),
+    "wood_300": (0x82, 0x73, 0x67, 255),
+    "wood_100": (0xA6, 0x93, 0x83, 255),
+    "roof_900": (0x33, 0x2A, 0x28, 255),
+    "roof_700": (0x4C, 0x40, 0x3C, 255),
+    "roof_500": (0x6B, 0x59, 0x55, 255),
+    "roof_300": (0x8C, 0x75, 0x6F, 255),
+    "roof_100": (0xAD, 0x90, 0x89, 255),
+    # Enmienda 6: color de lo purificado, por encima del techo. Solo en
+    # celdas purificadas: el agua viva, las flores y el verde claro de la hoja.
+    "aqua_900": (0x12, 0x48, 0x5C, 255),
+    "aqua_700": (0x2B, 0x74, 0x8F, 255),
+    "aqua_500": (0x51, 0xA8, 0xC2, 255),
+    "aqua_300": (0x85, 0xD5, 0xE6, 255),
+    "aqua_100": (0xD2, 0xF7, 0xFA, 255),
+    "bloom_900": (0x7A, 0x31, 0x5C, 255),
+    "bloom_700": (0xBD, 0x5B, 0x88, 255),
+    "bloom_500": (0xF2, 0x85, 0xA6, 255),
+    "bloom_300": (0xC6, 0x8E, 0xE6, 255),
+    "bloom_100": (0xAA, 0xCF, 0xFA, 255),
+    "vital_300": (0x91, 0xF2, 0xB2, 255),
+    # Hierba del prado purificado: más amarilla que el acento, para que un
+    # prado entero no sea un campo de VITAL_500.
+    "vital_600": (0x54, 0xB2, 0x50, 255),
+    "vital_400": (0x86, 0xD6, 0x6B, 255),
     "transparent": (0, 0, 0, 0),
 }
 

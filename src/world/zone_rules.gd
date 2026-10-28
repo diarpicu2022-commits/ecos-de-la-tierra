@@ -36,11 +36,12 @@ static func load_zone(zone_id: String) -> PackedStringArray:
 
 ## Capa de decorado, hito y entidades de una zona (contrato «Rastro»):
 ## `data/world/zones/<zona>.deco.txt`. La cabecera declara la leyenda, una
-## línea por carácter con la forma `; X = tipo, id, sólido|pisable`, y
-## termina en `---`. Debajo va una fila por fila del mapa; un espacio, o el
-## final de una fila más corta, es «nada». Devuelve
-## `{"legend": {X: {kind, id, solid}}, "rows": PackedStringArray}`, o un
-## diccionario vacío si la zona no tiene capa.
+## línea por carácter con la forma `; X = tipo, id, sólido|pisable[, AxB]`
+## (AxB: tamaño de la pieza en tiles, 1x1 si falta), y termina en `---`.
+## Debajo va una fila por fila del mapa; un espacio, o el final de una fila
+## más corta, es «nada». Devuelve
+## `{"legend": {X: {kind, id, solid, size}}, "rows": PackedStringArray}`, o
+## un diccionario vacío si la zona no tiene capa.
 static func load_deco(zone_id: String) -> Dictionary:
 	var path := ZONES_DIR + zone_id + ".deco.txt"
 	if not FileAccess.file_exists(path):
@@ -49,7 +50,7 @@ static func load_deco(zone_id: String) -> Dictionary:
 	var split := lines.find("---")
 	if split < 0:
 		return {}
-	var entry := RegEx.create_from_string("^; (\\S) = (\\w+), (\\w+), (sólido|pisable)")
+	var entry := RegEx.create_from_string("^; (\\S) = (\\w+), (\\w+), (sólido|pisable)(?:, (\\d+)x(\\d+))?")
 	var legend := {}
 	for i in split:
 		var found := entry.search(lines[i])
@@ -58,6 +59,8 @@ static func load_deco(zone_id: String) -> Dictionary:
 				"kind": found.get_string(2),
 				"id": found.get_string(3),
 				"solid": found.get_string(4) == "sólido",
+				"size": Vector2i(int(found.get_string(5)), int(found.get_string(6)))
+					if not found.get_string(5).is_empty() else Vector2i.ONE,
 			}
 	var rows := lines.slice(split + 1)
 	if not rows.is_empty() and rows[rows.size() - 1].is_empty():
@@ -65,18 +68,31 @@ static func load_deco(zone_id: String) -> Dictionary:
 	return {"legend": legend, "rows": rows}
 
 
-## Partes de una zona por id, con sus rectángulos en tiles (`zones.json`).
-## Solo Valdehoja las tiene: es el marcador de progreso.
+## Partes de una zona: `data/world/zones/<zona>.parts.txt`, una capa del
+## tamaño del mapa con un carácter por parte y «.» para lo que no es de
+## ninguna. La cabecera declara `; X = id` y termina en `---`. Solo Valdehoja
+## la tiene: es el marcador de progreso. Devuelve `{id: [Vector2i, ...]}`.
 static func load_parts(zone_id: String) -> Dictionary:
-	var data = JSON.parse_string(FileAccess.get_file_as_string(NAMES_PATH))
+	var path := ZONES_DIR + zone_id + ".parts.txt"
+	if not FileAccess.file_exists(path):
+		return {}
+	var lines := FileAccess.get_file_as_string(path).replace("\r", "").split("\n")
+	var split := lines.find("---")
+	if split < 0:
+		return {}
+	var entry := RegEx.create_from_string("^; (\\S) = (\\w+)")
+	var ids := {}
 	var parts := {}
-	if data is Dictionary and data["zones"].has(zone_id):
-		var raw: Dictionary = data["zones"][zone_id].get("parts", {})
-		for id in raw:
-			var rects: Array[Rect2i] = []
-			for r in raw[id]:
-				rects.append(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])))
-			parts[id] = rects
+	for i in split:
+		var found := entry.search(lines[i])
+		if found:
+			ids[found.get_string(1)] = found.get_string(2)
+			parts[found.get_string(2)] = []
+	for y in range(split + 1, lines.size()):
+		var row := lines[y]
+		for x in row.length():
+			if ids.has(row[x]):
+				parts[ids[row[x]]].append(Vector2i(x, y - split - 1))
 	return parts
 
 

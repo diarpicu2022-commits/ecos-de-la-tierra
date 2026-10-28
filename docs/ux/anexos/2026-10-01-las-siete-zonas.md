@@ -156,7 +156,7 @@ con sus consecuencias:
 - **Materiales:** sin resultado. La separación dE 9,2 sigue sin comprobar con
   personas, así que **la parte 1 sigue abierta** solo por esto. Las zonas se
   dibujan sobre el tileset aprobado y, si la prueba falla más adelante, la
-  enmienda 6 cambia tintas y no mapas: los mapas son de material, no de color.
+  enmienda 9 (antes reservada como 6) cambia tintas y no mapas: los mapas son de material, no de color.
 - **Las dos siguen como deuda** en la guía §4 y en el plan, con la hoja lista
   en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
 
@@ -320,7 +320,9 @@ dibujar, no después.
 | Gradiente de daño | **Por densidad de decorado del daño**, en tres franjas: cerca de la fuente, media y lejana. La franja lejana es la que más espacio negativo tiene. Ningún tile nuevo: decorado del catálogo 2a, tabla «decorado permitido» | SLYNYRD (7) |
 | Pista por columna | Cada franja vertical de 480 px tiene al menos un tile de pista (camino, viñeta o hito) | Guía §5, parte 3 |
 | Prueba de entrecerrar | Con la captura de la zona desenfocada, lo más luminoso es el camino o lo purificado; **nunca un decorado** | Rogers (4) |
-| Movimiento ambiental | **Solo la fauna, y solo tras purificar** (IA-2). Humo, agua, hojas y ceniza son estáticos | Kowalski (fase 3, B) |
+| Movimiento ambiental | ~~Solo la fauna, y solo tras purificar~~. **Enmienda 8 (2026-10-28):** se mueve solo lo purificado: agua, flores, hierba, fauna y animales. Lo enfermo (humo, ceniza, agua muerta) es estático | Kowalski (fase 3, B); Diego |
+| Animales domésticos | **Enmienda 7 (2026-10-28):** en Valdehoja desde el principio, sin responder. La fauna silvestre, solo dentro de una parte purificada | Diego |
+| Paleta | **Enmienda 6 (2026-10-28):** madera y tejado bajo el techo de 0,22; agua viva, flores y prado por encima, solo en lo purificado | Diego; guía §3.2 bis |
 | Verde en zona enferma | Ninguno, ni de adorno. Lo purificado lleva siempre valor, silueta o fauna además del verde | Guía §2.3 |
 | Texto | Ningún cartel, flecha ni texto que explique la causa | Fase 2 |
 
@@ -344,7 +346,8 @@ antes:
 | Cláusula | Valor |
 |---|---|
 | Materiales | `data/world/zones/<zona>.txt`, un carácter por tile con la leyenda de `WorldTiles.LEGEND` (`.` suelo, `=` camino, `~` agua, `#` follaje). Sin cambios |
-| Decorado, hito y entidades | Segunda capa por zona, `data/world/zones/<zona>.deco.txt`, **del mismo tamaño** que la de materiales, con su leyenda en cabecera. Un espacio = nada |
+| Decorado, hito y entidades | Segunda capa por zona, `data/world/zones/<zona>.deco.txt`, **del mismo tamaño** que la de materiales, con su leyenda en cabecera (`; X = tipo, id, sólido|pisable[, AxB]`). Un espacio = nada |
+| Partes (solo Valdehoja) | Tercera capa, `<zona>.parts.txt`, un carácter por parte. Añadida el 2026-10-28: con rectángulos, lo purificado acababa en cantos rectos |
 | Validación | `ZoneRules.check()` sobre la capa de materiales, como hoy; `tools/verify_zone.gd <zona>` sobre las dos capas |
 | Nombres | Identificador en inglés y `snake_case` (`ashen_forest`, como en `interactables.json`); el nombre del jugador, en `zones.json` |
 
@@ -365,7 +368,9 @@ antes:
 Valdehoja y la Cripta adaptan los puntos 2 a 4 a lo que se decida al abrirlas;
 el resto se cumple igual.
 
-**Tokens nuevos que abre el contrato:** ninguno. Las cifras de composición
+**Tokens nuevos que abre el contrato:** ninguno. Los de la enmienda 6 se
+abren con ella: `WOOD_*`, `ROOF_*`, `AQUA_*`, `BLOOM_*`, `VITAL_300`,
+`VITAL_400` y `VITAL_600`. Las cifras de composición
 (3 viñetas, tamaño del hito, 2 tiles de distancia) son reglas de autoría y
 viven en `verify_zone.gd`, no en `DesignTokens`, porque no se dibujan.
 
@@ -395,7 +400,7 @@ estén los resultados.
      y 3), y quizá un nodo con una persona que la nombre (parte 5). Es una
      dirección distinta, más densa.
 2. **Los materiales (prueba B):** si la separación dE 9,2 no basta, hace falta
-   la enmienda 6 antes de dibujar siete zonas sobre el tileset.
+   la enmienda 9 (antes reservada como 6) antes de dibujar siete zonas sobre el tileset.
 3. **Formato de mapa: texto o editor.** Lo decide Diego en la primera zona
    (guía §5). Las zonas de prueba de la parte 2 ya son texto, y `ZoneRules`
    las valida: es lo que existe hoy.
@@ -438,91 +443,137 @@ pruebas:
 | Cumbre Menguante | La acequia que baja del deshielo y riega las terrazas | `waning_peak` |
 | — (desde el principio) | El jardín de Yara, con el primer semillero y el hito | `yara_garden` |
 
-### Paso 1 — Mapa en texto y `verify_zone.gd` · ENTREGADO, espera visto bueno
+### Paso 1 — Mapa en texto y `verify_zone.gd` · ENTREGADO el 2026-10-28
 
-**Cláusulas:** contrato «Rastro», «Formato de los mapas», «Las dos zonas que
-no son regionales» (Valdehoja) y «Verificación de cada zona»; «Umbral» para
-las salidas y el borde.
+Primera entrega: el mapa de materiales, sin decorado. **Diego la juzgó
+«horrible, desabrida»:** faltaban árboles, animales y detalle, y pidió el nivel
+de los juegos 2D de GBA (Zelda, Pokémon) y de Final Fantasy. De esa revisión
+salieron las enmiendas 6, 7 y 8 (guía §3.2 bis) y el paso 2 se hizo a
+continuación, en la misma sesión.
 
-**Entregado (rama `chore/continuar-nube`):**
+**Referentes.** Los tutoriales que se buscaron (itch.io, slynyrd.com) no se
+pudieron abrir: están fuera de la red permitida en la sesión en la nube. **No
+cuentan como fuentes.** Lo que se tomó de los juegos que nombra Diego es
+observación propia, y se declara así:
 
-- `data/world/zones/valdehoja.txt`: 60 × 34 tiles, 2 × 2 pantallas. Es un
-  valle cerrado por follaje, con el río al este y la acequia bajando del norte
-  hasta las terrazas. El **camino principal** va de la casa de Ilan (suroeste)
-  a la era y de la era al jardín de Yara (norte). Un ramal sale de la era
-  hacia el este, cruza el río por un vado y llega a la **única salida**, la del
-  Bosque (59, 17). Otro ramal cruza la acequia y sube a las terrazas.
-- `data/world/zones/valdehoja.deco.txt`: la segunda capa, con su leyenda en
-  cabecera. Lleva cuatro casas, el hito (el árbol de Yara, 3 × 4 tiles, en el
-  jardín), el semillero, a Yara, la aparición y el decorado del daño de cada
-  parte: tocones en la arboleda, basura suelta en la era e hileras de un solo
-  cultivo en las terrazas.
-- `data/world/zones.json`: el nombre y las **seis partes** como rectángulos en
-  tiles. `WorldTiles.paint` ya pinta el estado por celda, así que las partes
-  entran sin tocar el pintado.
-- `data/world/exits.json`: la salida (59, 17) hacia `ashen_forest`. La casilla
-  de llegada (1, 17) es **provisional**: se fija al dibujar el Bosque.
-- `src/world/zone_rules.gd`: `load_deco()` y `load_parts()`.
-- `tools/verify_zone.gd` y `.tscn`: la prueba del contrato. Las comprobaciones
-  regionales (camino a la fuente, 3 viñetas, paso cerrado) quedan declaradas
-  pendientes: se escriben con el Bosque, que es la primera zona que las tiene.
-- `tools/zone_preview.py`: compone el mapa de texto con el atlas real
-  (`assets/tilesets/world.png`) con la misma regla que `WorldTiles`, para
-  revisar el paso 1 sin el motor. Solo pinta materiales.
+- copas de árbol sueltas y solapadas en el borde del bosque, nunca una masa
+  plana;
+- el tejado domina la casa y es lo que se lee de lejos;
+- el suelo lleva cobertura menuda (matas, piedras, flores) con espacio
+  negativo;
+- el agua y la hierba se mueven;
+- cuatro o cinco tonos por material.
 
-**Capturas** (`zone_preview.py`, 1×; solo materiales, sin decorado hasta el
-paso 2):
+### Paso 2 — Decorado, casas, hito y animales · ENTREGADO, espera visto bueno
 
-- `docs/ux/capturas/2026-10-28-valdehoja-mapa-inicio.png`: la zona entera al
-  empezar la partida. El único verde es el jardín de Yara.
-- `docs/ux/capturas/2026-10-28-valdehoja-mapa-cinco-regiones.png`: con las
-  cinco partes devueltas.
-- `docs/ux/capturas/2026-10-28-valdehoja-mapa-aparicion.png`: la pantalla de
-  480 × 270 en la aparición, con la cámara encerrada en la zona. El jardín no
-  se ve todavía: el hito asoma a media zona, al subir por el camino.
+**Cláusulas:** contrato «Rastro» (hito, gradiente por densidad, formato de
+mapas); catálogo 2a (gramática de forma, hueco métrico, regla de negación);
+enmiendas 6, 7 y 8.
+
+**Entregado:**
+
+- `tools/gen_world_decor.py` → `assets/sprites/world/decor/`: 34 piezas, cada
+  una con su variante enferma y purificada cuando la tiene:
+  - el árbol, con dos copas (enfermo: ralo, roto y con ramas desnudas;
+    purificado: redondo);
+  - el arbusto, la hierba alta, el matojo, las flores (mustias en lo enfermo),
+    la hilera de cultivo (enferma: monocultivo seco; purificada: cereal y
+    legumbre alternos), el tocón (purificado: con brote) y la basura suelta
+    (desaparece al purificar);
+  - lo que no cambia al purificar: la casa de madera y la de piedra (tejado a
+    cuatro aguas, 3×3 tiles), el pozo, la roca y las piedrecitas;
+  - el hito: el árbol de Yara, de 48×64 y en flor;
+  - lo que responde, con contorno `ASH_050`: el semillero y Yara;
+  - los animales domésticos (gallina de 8×8, perro y cabra de 16×16) y la
+    fauna silvestre (pájaro y mariposa de 8×8, con dos cuadros cada uno).
+- `tools/gen_tiles.py`, enmienda 6:
+  - el agua purificada pasa a `AQUA_700` con rizos `AQUA_900`;
+  - la tierra purificada pasa a prado (`VITAL_600`, con briznas `VITAL_700` y
+    `VITAL_400`);
+  - la **fila 7** nueva del atlas es el borde del prado: festón redondo
+    contra la tierra enferma.
+- `src/world/world_tiles.gd`: `purified_mask()` y el uso de la fila 7 en
+  `paint()`.
+- `data/world/zones/valdehoja.deco.txt`:
+  - seis casas, cada una con su camino delante de la puerta, y el pozo en la
+    era;
+  - árboles en todo el borde del bosque y una arboleda de árboles sueltos;
+  - cobertura de suelo con espacio negativo y las terrazas de monocultivo;
+  - el jardín de Yara, con flores, mariposas y pájaros;
+  - gallinas junto a la casa de Ilan, el perro en la era y cabras en los
+    prados.
+- `data/world/zones/valdehoja.parts.txt`: las seis partes como capa de texto
+  con formas que siguen orillas, setos y caminos. Sustituye a los rectángulos
+  de `zones.json`; así se resuelve lo que se planteó en el paso 1 sobre los
+  cantos rectos (opción a).
+- `ZoneRules.load_deco()` lee el tamaño de cada pieza, y
+  `ZoneRules.load_parts()` lee la capa de partes.
+- `tools/verify_zone.gd` comprueba además:
+  - que las piezas estén enteras;
+  - que los árboles puedan ir sobre el follaje y la fauna sobre el agua;
+  - que cada casa tenga camino delante de la puerta;
+  - que la fauna silvestre esté dentro de una parte.
+- `tools/zone_preview.py`: pinta el decorado ordenado por altura, cada pieza en
+  el estado de la parte en la que apoya, y la pantalla de 480 × 270 con Ilan.
+
+**Capturas** (`zone_preview.py`, a 1×):
+
+- `docs/ux/capturas/2026-10-28-valdehoja-inicio.png`: la zona entera al
+  empezar la partida.
+- `docs/ux/capturas/2026-10-28-valdehoja-cinco-regiones.png`: con las cinco
+  partes devueltas.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-casa.png`: 480 × 270 en la
+  aparición, con Ilan.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-jardin.png`: el jardín de
+  Yara, el primer verde del juego.
+- `docs/ux/capturas/2026-10-28-valdehoja-pantalla-era-purificada.png`: la era
+  y la arboleda ya devueltas.
 
 #### Verificado
 
-- `python tools/verify_palette.py image <captura> --world` sobre las dos
-  capturas de la zona entera: **todo píxel es un token**.
-- `python tools/verify_palette.py tokens`: 24 tokens, sin deriva.
-- Las comprobaciones de `verify_zone.gd`, ejecutadas con un espejo en Python
-  de la misma lógica (en la carpeta temporal de la sesión, sin commit): **19
-  de 19**. El espejo cazó un fallo real en el primer borrador: la arboleda y
-  el río se solapaban en una columna. Se corrigió en `zones.json`.
+- `python tools/verify_palette.py tokens`: **47 tokens, sin deriva**.
+- `python tools/verify_tileset.py`: **dentro del contrato**.
+  - Prado frente a tierra enferma: valor 4,37 en visión normal (piso 1,5).
+  - Prado frente a follaje: dE 17,3. Agua purificada frente a follaje: dE 58,7.
+  - Contorno `ASH_050` sobre el agua viva: 4,19:1.
+- `verify_palette.py image --world` sobre las cinco capturas: **todo píxel es
+  un token** en cuatro de ellas. En la quinta falla, y se dice abajo.
+- Comprobaciones de `verify_zone.gd` pasadas en el espejo en Python: **28 de
+  28**, más las seis puertas de las casas.
 
-#### FALLA o pendiente, y se dice
+#### FALLA medido, y se dice
 
-- **`verify_zone.tscn` no se ha ejecutado en Godot.** En la sesión en la nube
-  no se dio permiso para ejecutar el binario de Godot descargado. Está escrito
-  y revisado, pero **sin ejecutar no se da por bueno**. Lo mismo vale para
-  `verify_movement` (99/99) y `verify_usability` (16/16): no se han vuelto a
-  pasar en esta sesión, aunque del código que ya existía solo cambia
-  `ZoneRules`, con dos funciones nuevas que nadie más llama todavía.
-- **La salida al Bosque aparece como PENDIENTE**: lleva a una zona que aún no
-  existe. Cruzarla hoy fallaría. Se cierra con el Bosque.
-- **Prueba de entrecerrar:** pendiente hasta la captura del motor con
-  decorado (paso 3).
+- **El sprite de Ilan no pasa `--world`:** su contorno `ash_950` (72 px) y sus
+  ojos `ash_900` (2 px) superan el techo de 0,22. Es el sprite aprobado en la
+  parte 2, paso 5, y el contorno oscuro es una decisión de ese paso. **No se ha
+  tocado.** Se decide si `ash_950` y `ash_900` cuentan como tinta de
+  personaje, igual que las de la interfaz, o si se cambian.
+- **Tres intentos fallidos en esta sesión, corregidos antes de entregar:**
+  - el agua purificada clara (`AQUA_500`) dejaba el contorno `ASH_050` a
+    1,10:1;
+  - oscurecer el follaje purificado para separarlo del prado bajaba su valor a
+    1,34 (piso 1,5);
+  - un prado de base `VITAL_700` quedaba a dE 1,2 del follaje.
 
-#### Se dice, para decidir en la revisión
+  Los tres se midieron, se revirtieron y la solución final es la de arriba.
+- **`ash_900` en ventanas y ojos del decorado** superaba el techo: se cambió
+  por `water_700`.
 
-- **Las partes se purifican por rectángulos**, y en la captura de las cinco
-  regiones se nota: el suelo purificado acaba en un canto recto en mitad del
-  suelo enfermo, sobre todo en la era. Lo enfermo es diagonal y lo purificado,
-  redondo; un canto recto de 200 px no es ninguna de las dos cosas. En el
-  jardín se resolvió redondeando el seto y recortando las esquinas de su
-  parte. Para el resto hay dos salidas sin color nuevo: (a) que cada parte
-  acabe siempre en un borde de material (follaje, agua o camino), y no en
-  mitad del suelo; (b) dejarlo así, porque en el juego la parte se ve de una
-  en una y con la ola. **Se recomienda (a)**, y es un cambio de mapa, no de
-  contrato.
-- **Valdehoja tiene una sola salida, al Bosque.** Cómo se llega a las otras
-  cuatro regiones (en cadena desde el Bosque, o volviendo al pueblo) no está
-  decidido en ningún sitio. Se pregunta al abrir el Bosque.
-- **Mucho suelo vacío** en la captura: es espacio negativo a propósito (fuente
-  7), pero sin las casas ni el decorado del paso 2 parece más vacío de lo que
-  será. Se juzga en el paso 3.
+#### Pendiente, y se dice
 
-**Siguiente:** paso 2, decorado del daño de Valdehoja, casas y el árbol de
-Yara con `tools/gen_world_sprites.py`. Antes, el visto bueno de Diego al
-paso 1 y su elección sobre los cantos rectos.
+- **Nada de esto se ha ejecutado en Godot.** En la nube no hubo permiso para
+  lanzar el binario. Faltan `verify_zone`, `verify_movement` y
+  `verify_usability`. La fila 7 del atlas obliga a que Godot reimporte
+  `world.png`.
+- **La colisión del decorado sólido** (casas, árboles, pozo) no existe todavía
+  en el motor: `verify_zone` la usa para el recorrido, pero `WorldRoot` aún no
+  monta la capa de decorado. Es el paso 3.
+- **Enmienda 8, el movimiento:** los sprites de fauna y gallina tienen dos
+  cuadros, pero el brillo del agua y el vaivén de la hierba no tienen cuadros
+  todavía. Es el paso 4 (estados).
+- **Prueba de entrecerrar:** con la captura del motor, en el paso 3.
+- **La salida al Bosque** lleva a una zona aún sin dibujar.
+
+**Siguiente:** paso 3, montar la capa de decorado y de partes en `WorldRoot`,
+con colisión y orden por altura, y la captura del motor. Antes, el visto bueno
+de Diego a este paso.
