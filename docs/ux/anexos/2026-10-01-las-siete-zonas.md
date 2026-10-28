@@ -896,5 +896,82 @@ mande el decorado), y ahora informa además del material.
   (IA-6, partes 5 y 6) y el puzzle de la maleza seca (parte 7) **no están en
   el mapa**. Cada uno entra en su parte; el mapa deja sitio en los claros.
 
-**Siguiente:** el visto bueno de Diego al Bosque y su elección sobre la
-prueba de entrecerrar. Después, la **Cuenca de Alquitrán**.
+#### Decidido por Diego, 2026-10-28
+
+«Haz lo que me recomiendes»:
+
+- **Visto bueno al Bosque.**
+- **Prueba de entrecerrar, opción (b):** en lo enfermo, el camino se lee por
+  silueta (borde de sierra) y textura, no por luz. `verify_squint.py` sigue
+  midiendo que no mande el decorado e informa del material.
+
+## Fase 5 · Cuenca de Alquitrán — 2026-10-28
+
+Con las recomendaciones aceptadas por Diego.
+
+**La fuente** es Puerto Brea: la refinería (el hito) y el Devorador de
+Petróleo junto a la balsa negra. El paso cerrado está al oeste del puerto y
+abre la Costa. Al purificar, **la refinería se apaga** (guía §3.3: «purificar
+cierra la refinería»): la antorcha se extingue y trepa la enredadera.
+
+**Composición** (`tar_basin.txt` y `.deco.txt`, 80 × 52 tiles). Otro rodeo,
+en vertical:
+
+1. **Llegada desde el Bosque** por el norte. **Viñeta 1:** barriles volcados
+   y la mancha de crudo que sueltan.
+2. **Bajada por la ribera oeste.** **Viñeta 2:** la tubería partida y el agua
+   negra que mana hacia el río.
+3. **Asomo:** el camino pasa por encima del puerto y **la torre asoma al 38 %
+   del camino**.
+4. **Bajada por el este**, donde la torre se pierde. **Viñeta 3:** barcas de
+   pesca varadas en el crudo y la red rota: el puerto de Coral.
+5. **Vuelta por el sur**, cruzando la balsa por el puente, hasta la fuente.
+
+**Vegetación de marisma**, distinta de la del Bosque: árboles sueltos,
+arbustos sobre el follaje y juncos en la orilla, que se mecen al purificar.
+
+**Arte nuevo** (71 piezas en total):
+
+- la mancha de crudo y el barril (desaparecen al purificar);
+- la tubería partida (purificada, sellada con un tapón);
+- la barca (purificada, limpia) y la red (purificada, remendada);
+- los juncos;
+- la refinería, 48 × 64: depósito, torre con plataformas, chimenea, antorcha
+  de gas y humo quieto (enmienda 8);
+- el Devorador (crudo con borde `EMBER_300`) y el paso cerrado (tuberías
+  retorcidas en el crudo).
+
+**En el motor, lo que se limpia al purificar desaparece entero**, sprite y
+cuerpo: crudo, barriles, basura, paso cerrado y monstruo
+(`WorldDecor.VANISH_WHEN_PURE`). La primera pasada lo dejaba invisible pero
+sólido: un muro fantasma. `verify_zone` lo mide.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- tar_basin`: **44 de 44**, 1 pendiente (la Costa, sin
+  dibujar).
+  - La primera pasada falló porque la viñeta 2 quedaba lejos del camino y la
+    torre se veía desde la bajada del este (la zona medía 64 de ancho). Se
+    arrimaron el río y la tubería, y la zona pasó a 80 de ancho.
+- `verify_zone -- ashen_forest`: **45 de 45, 0 pendientes**: su salida ya
+  lleva a la Cuenca. Valdehoja: **49 de 49**.
+- `verify_movement` 99/99, `verify_usability` 16/16, `verify_camera` 37/37,
+  `verify_tileset` en verde y tokens sin deriva.
+- `verify_palette --world`: pasan las 20 capturas del Bosque y la Cuenca. Con
+  `--strict`, pasan los 71 sprites.
+- `verify_squint.py tar_basin`: OK. Enfermo, lo luminoso es el follaje
+  (aceptado, opción b); purificado, el prado.
+- **Capturas:**
+  - del motor: `docs/ux/capturas/2026-10-28-cuenca-motor-*.png` (entrada,
+    barriles, tubería, asomo, barcas, fuente, fuente purificada y paso
+    abierto) y `-movimiento.gif`;
+  - de la zona entera: `2026-10-28-cuenca-enferma.png` y `-purificada.png`.
+
+#### Pendiente, y se dice
+
+- La Costa, sin dibujar: la salida de la Cuenca lleva allí, por el oeste.
+- El capataz y los obreros (IA-6), la barrera absorbente (parte 7) y la ola
+  (parte 4) no están en el mapa; cada uno entra en su parte.
+
+**Siguiente:** el visto bueno de Diego a la Cuenca; después, la **Costa
+Quebrada**, que entra por el este.

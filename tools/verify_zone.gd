@@ -61,10 +61,10 @@ const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 	"withered_plain", "waning_peak"]
-const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree"]
+const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush"]
 ## Decorado del daño (catálogo 2a, «decorado permitido»): lo que cuenta para el
 ## gradiente.
-const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row"]
+const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0
@@ -305,9 +305,17 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 	world.enter_zone(zone_id, spawn)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
+	# Lo sólido que desaparece al purificar: el paso cerrado, el monstruo y el
+	# daño que se limpia (WorldDecor.VANISH_WHEN_PURE).
+	var deco := ZoneRules.load_deco(zone_id)
+	var vanish_solid := 0
+	for piece in WorldDecor.pieces(deco["rows"], deco["legend"]):
+		var entry: Dictionary = deco["legend"][piece["ch"]]
+		if entry["solid"] and entry["id"] in WorldDecor.VANISH_WHEN_PURE:
+			vanish_solid += 1
 	_check("purificada: desaparecen, con su cuerpo (%d -> %d sólidos)" % [
 		sick_solids, world.solids.get_child_count()],
-		gone.call() == 0 and world.solids.get_child_count() == sick_solids - sick_marks)
+		gone.call() == 0 and world.solids.get_child_count() == sick_solids - vanish_solid)
 	var soil := Vector2i(-1, -1)
 	for c in world._layer.get_used_cells():
 		if lines[c.y][c.x] == "." and soil.x < 0:

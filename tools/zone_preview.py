@@ -183,7 +183,7 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
         pure = purified(x + w // 2, y + h - 1)
         if entry["kind"] == "fauna" and not pure:
             continue
-        if pure and entry["id"] in ("blocker", "monster"):
+        if pure and entry["id"] in ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter"):
             continue
         name = SPRITE.get(entry["id"], entry["id"])
         name = re.sub(r"^v\d_", "", name)

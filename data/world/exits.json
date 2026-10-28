@@ -10,6 +10,8 @@
     {"from": "prueba_c", "cell": [10, 9], "to": "prueba_a", "to_cell": [25, 1]},
     {"from": "valdehoja", "cell": [59, 17], "to": "ashen_forest", "to_cell": [1, 12]},
     {"from": "ashen_forest", "cell": [0, 12], "to": "valdehoja", "to_cell": [58, 17]},
-    {"from": "ashen_forest", "cell": [56, 33], "to": "tar_basin", "to_cell": [56, 1]}
+    {"from": "ashen_forest", "cell": [56, 33], "to": "tar_basin", "to_cell": [56, 1]},
+    {"from": "tar_basin", "cell": [56, 0], "to": "ashen_forest", "to_cell": [56, 32]},
+    {"from": "tar_basin", "cell": [0, 34], "to": "broken_coast", "to_cell": [58, 34]}
   ]
 }
