@@ -640,5 +640,96 @@ por altura); contrato «Rastro» (formato de los mapas); enmiendas 6 y 7.
 - **Enmienda 8 (movimiento):** paso 4, estados.
 - **El sprite de Ilan frente a `--world`:** lo decide Diego.
 
-**Siguiente:** paso 4, estados: la ola por partes, el agua y la hierba que se
-mueven y los animales que andan (enmienda 8), y la prueba de entrecerrar.
+**Visto bueno de Diego al paso 3: 2026-10-28** («sigue»).
+
+### Paso 4 — Estados y movimiento (enmienda 8) · HECHO, espera visto bueno
+
+**Cláusulas:** enmienda 8 (solo se mueve lo purificado); «Vereda» (velocidades
+múltiplo de 60 px/s, movimiento reducido); contrato «Rastro» (prueba de
+entrecerrar, Rogers).
+
+**La ola de purificación no se adelanta.** La enmienda 3 tiene sus tokens,
+pero ningún código, y la dispara el combate (`GameState`: «la escribe la ola
+de purificación, parte 4»). Se hace en la parte 4, con el paso del mundo al
+combate. Aquí, cada parte se ve ya devuelta al entrar en Valdehoja.
+
+**Entregado:**
+
+- `src/ui/design_tokens.gd`: los tokens de la enmienda 8.
+  - Duraciones: `DUR_AMBIENT_WATER` 0,50 s, `DUR_AMBIENT_SWAY` 0,70 s y
+    `DUR_FAUNA_FLAP` 0,15 s.
+  - Animales: `ANIMAL_HOP_MAX` 12 px, `ANIMAL_RANGE` 24 px y pausas de 1,2 a
+    3,0 s.
+  - `FAUNA_BOB` 1 px.
+  - Los animales andan a `WALK_SPEED`: 1 px por cuadro, la regla de
+    velocidades.
+- `tools/gen_tiles.py`: **fila 8** del atlas, segundo cuadro del agua viva
+  (los rizos corridos 2 px). Es sólida como el agua.
+- `tools/gen_world_decor.py`: segundo cuadro de la hierba, las flores, los
+  matojos y los cultivos purificados. La copa se corre 1 px y el pie no se
+  mueve.
+- `src/world/world_ambient.gd` (`WorldAmbient`), en `WorldRoot`:
+  - alterna el agua viva y mece las plantas, cada pieza con su fase;
+  - hace aletear y mecerse a la fauna;
+  - hace andar a saltos a los animales que están en lo purificado, sin salir
+    de lo sano ni entrar en lo sólido;
+  - todo en cuadros de física, con azar determinista por pieza;
+  - con movimiento reducido, nada.
+- `WorldDecor` marca en cada sprite sus cuadros y su fase, y devuelve las
+  casillas que ocupa lo sólido.
+- `tools/valdehoja_capture.tscn`: un estado por región, cada una devolviendo
+  solo su parte, y 60 cuadros del movimiento.
+- `tools/verify_squint.py`: la **prueba de entrecerrar**, medida sobre el
+  render de la zona entera.
+
+**Capturas:**
+
+- `docs/ux/capturas/2026-10-28-valdehoja-motor-bosque.png`, `-cuenca.png`,
+  `-costa.png`, `-llanura.png` y `-cumbre.png`: cada región devuelve su parte,
+  sola.
+- `docs/ux/capturas/2026-10-28-valdehoja-motor-movimiento.gif`: la era con todo
+  purificado, 60 cuadros a 50 ms, velocidad real. Se ven el brillo del agua, el
+  vaivén y el perro andando.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- valdehoja`: **49 de 49**. Las 8 nuevas, medidas en 600
+  cuadros:
+  - el agua viva cambia cada 30 cuadros (20 cambios) y la enferma no;
+  - la hierba purificada cambia cada 42 (14 cambios) y la enferma no;
+  - el perro de la era anda, en píxeles enteros, cerca de su sitio y en suelo
+    sano;
+  - las gallinas, en lo enfermo, no se mueven;
+  - con movimiento reducido no cambia nada en 300 cuadros.
+- `verify_movement` **99/99**, `verify_usability` **16/16**, `verify_camera`
+  **37/37**.
+- `python tools/verify_squint.py valdehoja`:
+  - al empezar, el decorado ocupa el 9 % del 1 % más luminoso, y lo más
+    luminoso es el jardín de Yara, tile (26, 7);
+  - con todo purificado, el 17 %; lo más luminoso son las terrazas.
+  - **La prueba sabe fallar:** con un decorado blanco inyectado da FALLA
+    (90 %).
+- `python tools/verify_tileset.py`: dentro del contrato con la fila 8.
+  `verify_palette.py tokens`: 47 tokens, sin deriva.
+- `verify_palette.py image --world` sobre las nueve capturas del motor: falla
+  **solo** por el sprite de Ilan, como en el paso 3.
+
+#### Se dice, para decidir en la revisión
+
+- **Las gallinas del pueblo no se mueven nunca hasta el final**, porque están
+  en lo que no es de ninguna parte. Es lo que dice la enmienda 8 («los
+  animales andan donde ya está sano»), pero en la captura de inicio se leen
+  como figuras quietas. Hay dos salidas:
+  - (a) moverlas a una parte, por ejemplo a la orilla de la era, para que
+    anden en cuanto vuelva la Costa;
+  - (b) dejar que los animales domésticos piquen en el sitio (un cambio de
+    cuadro sin desplazarse), también en lo enfermo.
+
+  La (b) contradice la letra de la enmienda 8, así que **se recomienda la
+  (a)**.
+- **El sprite de Ilan frente a `--world`**, pendiente desde el paso 2.
+
+**Siguiente:** con el visto bueno, Valdehoja queda cerrada salvo la ola (parte
+4) y la salida al Bosque. La siguiente sesión abre el **Bosque de las
+Cenizas**, la primera zona con la composición regional completa: camino a la
+fuente, 3 viñetas y paso cerrado.

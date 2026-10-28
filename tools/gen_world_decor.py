@@ -560,6 +560,19 @@ def butterfly(frame: int) -> Canvas:
 # --- Salida --------------------------------------------------------------------------------
 
 
+def swayed(c: Canvas, below: int) -> Canvas:
+    """Segundo cuadro del vaivén (enmienda 8): lo que está por encima de la
+    fila `below` se corre 1 px a la derecha; el pie no se mueve."""
+    out = Canvas(c.width, c.height)
+    for y in range(c.height):
+        for x in range(c.width):
+            px = c.get(x, y)
+            if px[3] == 0:
+                continue
+            out.set(x + (1 if y < below else 0), y, px)
+    return out
+
+
 def pieces() -> dict[str, Canvas]:
     out: dict[str, Canvas] = {}
     for state, pure in (("sick", False), ("pure", True)):
@@ -572,6 +585,9 @@ def pieces() -> dict[str, Canvas]:
         out[f"stump_{state}"] = stump(pure)
         out[f"litter_{state}"] = litter(pure, 4)
         out[f"weed_{state}"] = weed(pure, 6)
+    # Enmienda 8: segundo cuadro de lo que se mece, solo purificado.
+    for name, below in (("grass", 12), ("flower", 11), ("weed", 11), ("crop_row", 11)):
+        out[f"{name}_pure_1"] = swayed(out[f"{name}_pure"], below)
     out["yara_tree_pure"] = yara_tree()
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)

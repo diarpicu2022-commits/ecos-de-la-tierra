@@ -63,6 +63,7 @@ static func build_tileset() -> TileSet:
 	for material in SOLID:
 		solid_rows.append(OVERLAY_ROW[material])
 		solid_rows.append(OVERLAY_ROW[material] + 1)
+	solid_rows.append(WATER_ALT_ROW)
 	# El tile sólido bloquea entero, en enteros: su silueta enferma o purificada
 	# se retira de 1 a 3 px del borde, pero la colisión no la sigue. Seguir la
 	# sierra haría que el cuerpo se enganchara en cada diente (dirección B,
@@ -119,6 +120,9 @@ static func parse(lines: PackedStringArray) -> Array:
 ## Fila del borde del prado: suelo purificado junto a suelo enfermo
 ## (enmienda 6, 2026-10-28). La columna es la máscara de vecinos purificados.
 const MEADOW_EDGE_ROW := 7
+## Segundo cuadro del agua purificada (enmienda 8, 2026-10-28). Misma máscara
+## que la fila 4; `WorldAmbient` alterna las dos.
+const WATER_ALT_ROW := 8
 
 
 ## Pinta la rejilla en una capa. `purified_at` decide, por celda, el estado.

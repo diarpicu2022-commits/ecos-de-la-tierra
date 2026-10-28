@@ -317,6 +317,26 @@ const PLACE_LABEL_HOLD := 2.0
 const DUR_ZONE_PURIFY := 0.90
 const PURIFY_DITHER_STEPS := 8
 
+## Movimiento ambiental. Enmienda 8, autorizada el 2026-10-28: solo se mueve
+## lo purificado (agua, plantas, fauna y animales), porque en este mundo estar
+## vivo se lee como moverse. Lo enfermo queda quieto. Son ciclos lentos de dos
+## cuadros, nunca tweens: el pixel art cambia de dibujo, no se interpola. Cada
+## pieza arranca con una fase propia, para que un prado no se mezca a la vez
+## (Kowalski: lo que se repite en todas partes pierde su efecto). Con
+## movimiento reducido, todo queda en su primer cuadro y los animales quietos.
+const DUR_AMBIENT_WATER := 0.50  ## Cada cuadro del brillo del agua viva.
+const DUR_AMBIENT_SWAY := 0.70   ## Cada cuadro del vaivén de hierba y flores.
+const DUR_FAUNA_FLAP := 0.15     ## Aleteo de pájaros y mariposas.
+## Los animales andan a WALK_SPEED (1 px por cuadro, la regla de velocidades) a
+## saltos cortos dentro de un radio de su sitio, con pausas largas entre uno y
+## otro: picotean y miran más de lo que andan.
+const ANIMAL_HOP_MAX := 12       ## Píxeles de un salto, como mucho.
+const ANIMAL_RANGE := 24         ## Distancia máxima a su sitio, en píxeles.
+const ANIMAL_PAUSE_MIN := 1.2
+const ANIMAL_PAUSE_MAX := 3.0
+## La fauna silvestre se mece en el sitio: sube y baja 1 px con el aleteo.
+const FAUNA_BOB := 1
+
 ## Matriz de Bayer 4x4. Un píxel pasa a purificado en el paso
 ## floor(umbral / 2) de los ocho, contado desde que el frente de la ola lo toca.
 const BAYER_4X4 := [

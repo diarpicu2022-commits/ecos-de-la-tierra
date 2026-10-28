@@ -12,7 +12,7 @@ daltonismo (medido el 2026-09-23), así que cada estado cambia también de valor
 de forma. Ningún tile lleva contorno `ASH_050`: el contorno es de lo que
 responde, y el terreno no responde.
 
-Atlas: 16 columnas por 8 filas de 16 px.
+Atlas: 16 columnas por 9 filas de 16 px.
 
     fila 0   suelo: 4 variantes enfermas y 4 purificadas (columnas 0-7)
     fila 1   camino enfermo      fila 2   camino purificado
@@ -20,6 +20,7 @@ Atlas: 16 columnas por 8 filas de 16 px.
     fila 5   follaje enfermo     fila 6   follaje purificado
     fila 7   borde del prado: suelo purificado que linda con suelo enfermo
              (enmienda 6). La máscara dice qué vecinos están purificados.
+    fila 8   agua purificada, segundo cuadro (enmienda 8): el brillo del agua.
 
 En las filas 1-6, la columna es la máscara de vecinos del mismo material:
 N = 1, E = 2, S = 4, O = 8. La columna 15 es el interior.
@@ -44,6 +45,7 @@ N, E, S, W = 1, 2, 4, 8
 SOIL_ROW = 0
 OVERLAYS = ["path", "water", "flora"]  # filas 1-2, 3-4, 5-6
 MEADOW_EDGE_ROW = 7
+WATER_ALT_ROW = 8
 
 
 # --- Texturas: base plana y pocas formas contadas --------------------------------
@@ -168,6 +170,17 @@ def water_tile(purified: bool) -> list[list[str]]:
     return g
 
 
+def water_alt_tile(purified: bool) -> list[list[str]]:
+    """Segundo cuadro del agua viva (enmienda 8, 2026-10-28): los mismos rizos
+    corridos 2 px a la derecha, dando la vuelta al tile para que casen los
+    vecinos. Solo existe purificado: el agua muerta no se mueve."""
+    g = flat("aqua_700")
+    for x, y, n in ((2, 5, 4), (9, 12, 3), (11, 2, 2)):
+        for dx in range(n):
+            stamp(g, (x + dx + 2) % T, y, "aqua_900")
+    return g
+
+
 def flora_tile(purified: bool) -> list[list[str]]:
     if not purified:
         # Follaje enfermo: masa oliva con hojas partidas en diagonal y huecos.
@@ -195,7 +208,8 @@ _CACHE: dict = {}
 def fill_token(material: str, x: int, y: int, purified: bool) -> str:
     key = (material, purified)
     if key not in _CACHE:
-        _CACHE[key] = {"path": path_tile, "water": water_tile, "flora": flora_tile}[material](purified)
+        _CACHE[key] = {"path": path_tile, "water": water_tile, "water_alt": water_alt_tile,
+                       "flora": flora_tile}[material](purified)
     return _CACHE[key][y][x]
 
 
@@ -247,6 +261,7 @@ EDGE_TOKEN = {
     # dejaba el río casi invisible, y el río es una barrera que hay que leer.
     ("water", False): "soil_500",
     ("water", True): "soil_300",
+    ("water_alt", True): "soil_300",
     ("flora", False): "flora_700",
     ("flora", True): "vital_900",
 }
@@ -310,7 +325,7 @@ def draw_soil(canvas: Canvas, ox: int, oy: int, purified: bool, variant: int) ->
 
 
 def main() -> None:
-    canvas = Canvas(16 * T, 8 * T)
+    canvas = Canvas(16 * T, 9 * T)
     for variant in range(4):
         draw_soil(canvas, variant * T, SOIL_ROW, False, variant)
         draw_soil(canvas, (4 + variant) * T, SOIL_ROW, True, variant)
@@ -321,6 +336,7 @@ def main() -> None:
                 draw_overlay(canvas, mask * T, row * T, material, purified, mask)
     for mask in range(16):
         draw_meadow_edge(canvas, mask * T, MEADOW_EDGE_ROW * T, mask)
+        draw_overlay(canvas, mask * T, WATER_ALT_ROW * T, "water_alt", True, mask)
     canvas.save(OUT)
     print(f"  tileset: {OUT.relative_to(OUT.parent.parent.parent)} ({canvas.width}x{canvas.height})")
 
