@@ -193,6 +193,39 @@ const FLORA_300 := Color("#6a6e56")  ## Hoja iluminada.
 const WORLD_SATURATION_CEILING := 0.22
 
 
+# --- Enmienda 6 (2026-10-28): lo construido y el color que vuelve -----------
+## Autorizada por Diego al revisar Valdehoja: «Rica + color al purificar».
+## Madera y tejado: cinco tonos, bajo WORLD_SATURATION_CEILING. La piedra usa
+## la rampa ASH. Agua viva (AQUA), flores (BLOOM) y VITAL_300 superan el techo
+## a propósito y solo existen en celdas purificadas: el color de GBA vuelve con
+## la purificación, igual que el verde.
+const WOOD_900 := Color("#2b2622")  ## Madera en sombra.
+const WOOD_700 := Color("#453d36")  ## Madera, sombra media.
+const WOOD_500 := Color("#61564d")  ## Madera, tono base.
+const WOOD_300 := Color("#827367")  ## Madera iluminada.
+const WOOD_100 := Color("#a69383")  ## Veta clara y canto.
+const ROOF_900 := Color("#332a28")  ## Tejado en sombra.
+const ROOF_700 := Color("#4c403c")  ## Tejado, sombra media.
+const ROOF_500 := Color("#6b5955")  ## Tejado, tono base.
+const ROOF_300 := Color("#8c756f")  ## Teja iluminada.
+const ROOF_100 := Color("#ad9089")  ## Brillo del tejado.
+const AQUA_900 := Color("#12485c")  ## Agua viva profunda.
+const AQUA_700 := Color("#2b748f")  ## Agua viva, sombra.
+const AQUA_500 := Color("#51a8c2")  ## Agua viva, tono base.
+const AQUA_300 := Color("#85d5e6")  ## Agua viva, reflejo.
+const AQUA_100 := Color("#d2f7fa")  ## Destello del agua.
+const BLOOM_900 := Color("#7a315c")  ## Flor, sombra.
+const BLOOM_700 := Color("#bd5b88")  ## Flor, pétalo oscuro.
+const BLOOM_500 := Color("#f285a6")  ## Flor rosa.
+const BLOOM_300 := Color("#c68ee6")  ## Flor lila.
+const BLOOM_100 := Color("#aacffa")  ## Flor celeste.
+const VITAL_300 := Color("#91f2b2")  ## Hoja al sol. Solo purificado.
+## Hierba del prado purificado, más amarilla que el acento: un prado entero de
+## VITAL_500 se leía como neón. Solo purificado.
+const VITAL_600 := Color("#54b250")  ## Prado, tono base.
+const VITAL_400 := Color("#86d66b")  ## Prado, brizna al sol.
+
+
 # --- Lenguaje del entorno --------------------------------------------------
 # Se declara una vez y no se contradice. Lo que responde lleva contorno sólido
 # y es más claro que su fondo; el decorado no lleva contorno y es más oscuro.
@@ -283,6 +316,26 @@ const PLACE_LABEL_HOLD := 2.0
 ## El tramado es exclusivo de este momento; no se usa en ninguna otra parte.
 const DUR_ZONE_PURIFY := 0.90
 const PURIFY_DITHER_STEPS := 8
+
+## Movimiento ambiental. Enmienda 8, autorizada el 2026-10-28: solo se mueve
+## lo purificado (agua, plantas, fauna y animales), porque en este mundo estar
+## vivo se lee como moverse. Lo enfermo queda quieto. Son ciclos lentos de dos
+## cuadros, nunca tweens: el pixel art cambia de dibujo, no se interpola. Cada
+## pieza arranca con una fase propia, para que un prado no se mezca a la vez
+## (Kowalski: lo que se repite en todas partes pierde su efecto). Con
+## movimiento reducido, todo queda en su primer cuadro y los animales quietos.
+const DUR_AMBIENT_WATER := 0.50  ## Cada cuadro del brillo del agua viva.
+const DUR_AMBIENT_SWAY := 0.70   ## Cada cuadro del vaivén de hierba y flores.
+const DUR_FAUNA_FLAP := 0.15     ## Aleteo de pájaros y mariposas.
+## Los animales andan a WALK_SPEED (1 px por cuadro, la regla de velocidades) a
+## saltos cortos dentro de un radio de su sitio, con pausas largas entre uno y
+## otro: picotean y miran más de lo que andan.
+const ANIMAL_HOP_MAX := 12       ## Píxeles de un salto, como mucho.
+const ANIMAL_RANGE := 24         ## Distancia máxima a su sitio, en píxeles.
+const ANIMAL_PAUSE_MIN := 1.2
+const ANIMAL_PAUSE_MAX := 3.0
+## La fauna silvestre se mece en el sitio: sube y baja 1 px con el aleteo.
+const FAUNA_BOB := 1
 
 ## Matriz de Bayer 4x4. Un píxel pasa a purificado en el paso
 ## floor(umbral / 2) de los ocho, contado desde que el frente de la ola lo toca.

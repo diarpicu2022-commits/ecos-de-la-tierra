@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-01 (sesión 6)
+Última actualización: 2026-10-28 (sesión 7, en la nube; cierre)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,15 +42,36 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 3 — Las siete zonas. EN CURSO.** Anexo
-> `docs/ux/anexos/2026-10-01-las-siete-zonas.md`: fases 1 a 4 escritas.
-> **Diego aplazó las dos pruebas con personas** (2026-10-01, comunicado a Juan
-> José Rueda en persona). La fase 4 se plantea con la hipótesis prudente: que
-> «¿Por qué pierdo?» no llega y la zona tiene que enseñar la causa antes del
-> combate. **Lo siguiente es que Diego elija la dirección** (A «Rastro»,
-> recomendada; B «Claro»; C «Antes y después») **y el formato de mapa**
-> (texto, recomendado, o editor), y confirme la hipótesis. Con eso se bloquea
-> el contrato y empieza Valdehoja, una zona por sesión.
+> **Parte 3 — Las siete zonas. EN CURSO. Valdehoja CERRADA el 2026-10-28.**
+> Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
+>
+> **Lo siguiente, en una sesión nueva: el Bosque de las Cenizas.** Es la
+> primera zona con la composición regional completa del contrato «Rastro»:
+> camino a la fuente, 3 viñetas, hito y paso cerrado. Orden:
+> 1. preguntar a Diego cómo se llega a las otras cuatro regiones (en cadena
+>    desde el Bosque o volviendo a Valdehoja);
+> 2. paso 1: el mapa en texto y las comprobaciones regionales de
+>    `verify_zone`;
+> 3. paso 2: el decorado del daño (tocones, troncos, árboles calcinados,
+>    ceniza), el hito (el árbol quemado mayor) y el `blocker`;
+> 4. paso 3, el motor; paso 4, los estados.
+>
+> **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
+> Diego):
+> - el contrato «Rastro»;
+> - las enmiendas 6, 7 y 8 (paleta rica con color al purificar, animales,
+>   movimiento en lo purificado);
+> - 38 piezas de decorado y el atlas con el prado, su borde y el agua viva;
+> - `WorldDecor` y `WorldAmbient` en el motor, `verify_zone` 49/49 y
+>   `verify_squint` en verde.
+>
+> Quedan dos cosas que dependen de otras partes: **la ola de purificación por
+> partes** (con el combate, parte 4) y **la llegada al Bosque** (se fija al
+> dibujarlo).
+>
+> **Godot en la nube:** se descarga como dice `CONTINUAR.md` §4 en
+> `/home/user/godot/` y hace falta que Diego permita ejecutar el binario. Con
+> eso se pasan todas las pruebas y las capturas con `xvfb-run`.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -108,7 +129,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — anexo, fases 1-4; Diego elige dirección y formato de mapa. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. **Valdehoja cerrada** (2026-10-28). Siguiente: Bosque. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -178,6 +199,21 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 - **Cámara** (2026-09-30, enmienda 5): la anticipación abre a 60 px/s y vuelve
   a 30 px/s, por eje. Zona muerta 12 px bajo el centro de la pantalla. Con
   movimiento reducido, sin anticipación.
+- **Enmiendas 6, 7 y 8** (2026-10-28, Diego, al ver Valdehoja «desabrida»):
+  paleta rica con color al purificar (madera, tejado, agua viva, flores,
+  prado); animales domésticos siempre y fauna silvestre al purificar;
+  movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
+- **Tinta de personaje** (2026-10-28, Diego): `ash_950` y `ash_900` se aceptan
+  en `verify_palette --world` solo como contorno y ojos de personaje; el
+  decorado y el terreno se miden con `--strict`.
+- **Partes de Valdehoja como capa de texto** (`valdehoja.parts.txt`), no como
+  rectángulos (2026-10-28).
+- **Zonas: «Rastro»** (2026-10-28, elegido por Diego): un camino principal
+  lleva a la fuente del daño pasando por 3 viñetas de causa y efecto; hito en
+  la fuente; paso cerrado detrás del monstruo de historia. **Mapas en texto**
+  (`data/world/zones/<zona>.txt` + `<zona>.deco.txt`). Hipótesis prudente
+  confirmada: la zona enseña la causa antes del combate. Contrato en el anexo
+  de la parte 3.
 - **Movimiento y zonas: «Umbral»** (2026-09-30): caja de colisión de 12×8 px en
   los pies, deslizamiento en esquina de 4 px, salidas solo donde el camino
   cruza el borde (máximo 2 por pantalla), con la tecla pulsada se sigue
@@ -200,10 +236,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
-| Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
+| Cómo se llega a las cuatro regiones tras el Bosque (cadena o vuelta a Valdehoja) | Diego, al abrir el Bosque |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 

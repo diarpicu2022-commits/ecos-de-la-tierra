@@ -10,39 +10,17 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el bloqueo
+## 1. Lo primero: el Bosque de las Cenizas
 
-**El PR #11 está abierto y espera la respuesta de Diego.** Sin ella no se puede
-avanzar en nada de la parte 3.
+**Valdehoja quedó cerrada el 2026-10-28** (sesión 7, en la nube): contrato
+«Rastro», enmiendas 6, 7 y 8, decorado, motor y movimiento, todo con visto
+bueno de Diego. La siguiente sesión abre el **Bosque de las Cenizas**, la
+primera zona regional completa. Lo primero es preguntar a Diego cómo se llega
+a las otras cuatro regiones; el orden de trabajo está en
+`docs/plan-de-trabajo.md`.
 
-- PR: https://github.com/diarpicu2022-commits/ecos-de-la-tierra/pull/11
-- Rama: `parte-3/direcciones` (autor: Juan José Rueda Viveros)
-- Solo documentación: anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`,
-  fase 4.
-
-Las tres preguntas, que se contestan **con un comentario en el PR**:
-
-1. **Dirección de las zonas**
-   - **A · «Rastro» (recomendada).** Un camino principal lleva a la fuente del
-     daño pasando por tres viñetas de causa y efecto, cada una más dañada. El
-     hito está en la fuente y el paso cerrado detrás del monstruo. Es la única
-     que garantiza que el jugador ve la causa antes de pelear, sin texto.
-   - **B · «Claro».** Claro central con ramales. Depende de un texto (parte 5) y
-     se puede ir derecho al monstruo sin ver la causa.
-   - **C · «Antes y después».** Zona enferma y purificada como mapas distintos.
-     Dobla la autoría y choca con «el mapa no se estrecha» (pediría enmienda).
-2. **Formato de mapa:** texto ASCII en `data/maps/<zona>.txt` (recomendado: ya
-   lo usan las zonas de prueba, `ZoneRules` las valida y se revisa en el diff)
-   o pintado en el editor de Godot.
-3. **¿Se confirma la hipótesis prudente?** Como Diego aplazó las pruebas con
-   personas, las zonas se diseñan suponiendo que el jugador **no** deduce solo
-   «¿por qué pierdo?» y tienen que enseñar la causa antes del combate.
-
-Con las respuestas: se fusiona el #11, se escribe el **contrato de diseño de la
-parte 3** en el anexo y empieza **Valdehoja**.
-
-> Regla del proyecto: la sesión en la nube **no elige por Diego**. Si no hay
-> comentario en el #11, se le pregunta y se espera.
+> Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
+> una respuesta suya, se le pregunta y se espera.
 
 ---
 
@@ -54,7 +32,7 @@ parte 3** en el anexo y empieza **Valdehoja**.
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: anexo fases 1–4 escritas; **bloqueada por el PR #11** |
+| 3 | Las siete zonas | **En curso**: Valdehoja cerrada (2026-10-28); siguiente, el Bosque |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -73,7 +51,7 @@ versión de muestra. Faltan nueve partes y media; las caras por contenido son la
 
 ## 3. Lo que falta, en orden
 
-### Parte 3 — una zona por sesión (tras el #11)
+### Parte 3 — una zona por sesión (tras el visto bueno al contrato)
 
 Valdehoja → Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada →
 Llanura Marchita → Cumbre Menguante → Cripta de la Avaricia.
@@ -105,7 +83,7 @@ dentro de ellas:
   por Diego el 2026-10-01. Hoja lista en
   `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. Cierran la parte 1. **No se
   pueden hacer en la nube**: necesitan tres personas reales.
-- **Enmienda 6** si dE 9,2 entre materiales no basta (se decide con esa prueba).
+- **Enmienda 9** si dE 9,2 entre materiales no basta (se decide con esa prueba).
 - **Fondo de batalla por región + parallax de 3 capas**, con las rampas del
   tileset de la región. Parte 4.
 - **Mobbin y Pinterest** sin consultar en el anexo de exploración: abrir con
@@ -133,6 +111,9 @@ wget https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v
 unzip Godot_v4.7.2-stable_linux.x86_64.zip && chmod +x Godot_v4.7.2-stable_linux.x86_64
 export GODOT=$PWD/Godot_v4.7.2-stable_linux.x86_64
 
+# Godot no arranca en la nube sin permiso: Diego tiene que permitir que la
+# sesión ejecute el binario descargado.
+
 # Python para las herramientas de paleta y tileset
 pip install pillow
 
@@ -148,6 +129,10 @@ python tools/verify_tileset.py
 $GODOT --headless --path . res://tools/verify_usability.tscn   # 16/16
 $GODOT --headless --path . res://tools/verify_movement.tscn    # 99/99
 $GODOT --headless --path . res://tools/verify_camera.tscn      # 37/37
+$GODOT --headless --path . res://tools/verify_zone.tscn -- valdehoja
+xvfb-run -a $GODOT --path . res://tools/valdehoja_capture.tscn   # capturas del motor
+$GODOT --path . res://tools/valdehoja_play.tscn                   # pasear por Valdehoja
+python tools/verify_squint.py valdehoja                          # prueba de entrecerrar
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

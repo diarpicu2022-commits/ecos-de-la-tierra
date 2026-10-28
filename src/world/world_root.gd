@@ -29,10 +29,15 @@ var zone_size := Vector2i.ZERO
 var body := PlayerBody.new()
 var camera := WorldCamera.new()
 ## Capa de lo que se mueve o se alza sobre el suelo, ordenada por altura: lo
-## que está más al sur se dibuja encima. Hoy solo tiene al cuerpo; las
-## personas, los monstruos y los objetos del catálogo entran aquí en las
-## partes 3 y 4.
+## que está más al sur se dibuja encima. Tiene al cuerpo y, desde la parte 3,
+## el decorado, el hito, las personas y los animales de la zona
+## (`WorldDecor`). Los monstruos entran aquí en la parte 4.
 var entities := Node2D.new()
+## Cuerpos sólidos del decorado de la zona: casas, árboles, pozo, rocas.
+var solids := Node2D.new()
+## Lo que se mueve solo en lo purificado: agua, plantas, fauna y animales
+## (enmienda 8).
+var ambient := WorldAmbient.new()
 var label := PlaceLabel.new()
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
@@ -72,6 +77,8 @@ func _ready() -> void:
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
 	entities.y_sort_enabled = true
+	add_child(ambient)
+	add_child(solids)
 	add_child(entities)
 	entities.add_child(body)
 	camera.target = body
@@ -94,8 +101,21 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	add_child(_layer)
 	move_child(_layer, 0)
 	var state := get_node_or_null("/root/GameState")
-	var purified: bool = state != null and state.is_zone_purified(id)
-	WorldTiles.paint(_layer, WorldTiles.parse(lines), func(_c: Vector2i) -> bool: return purified)
+	# Estado por casilla: en Valdehoja, cada parte sigue a su región.
+	var purified_at := WorldDecor.purified_lookup(id, state)
+	WorldTiles.paint(_layer, WorldTiles.parse(lines), purified_at)
+	# Fuera del árbol antes de liberarlos: así el decorado de la zona anterior
+	# no choca de nombre con el nuevo ni cuenta para la física de este cuadro.
+	for child in entities.get_children() + solids.get_children():
+		if child != body:
+			child.get_parent().remove_child(child)
+			child.queue_free()
+	var blocked := {}
+	WorldDecor.build(id, purified_at, entities, solids, blocked)
+	var size := Vector2i(lines[0].length(), lines.size())
+	ambient.setup(_layer, entities, func(c: Vector2i) -> bool:
+		return Rect2i(Vector2i.ZERO, size).has_point(c) and not blocked.has(c) \
+			and ZoneRules.walkable(lines[c.y][c.x]) and purified_at.call(c))
 	zone_id = id
 	zone_size = Vector2i(lines[0].length(), lines.size())
 	_zone_exits = ZoneRules.exits_from(id, _exits)
