@@ -494,7 +494,7 @@ Se atienden cuando su parte lo permita; no se olvidan.
 
 | Deuda | Qué hacer | Cuándo |
 |---|---|---|
-| **Prueba con personas** de «¿Por qué pierdo?» (anexo de batalla, fila **No verificado**) | Sentar a 3 personas que no conozcan el juego delante del combate del Bosque. No explicar nada. Anotar si deducen que hay que atajar la causa, en cuántos turnos, qué dicen en voz alta. Registrar en el anexo de batalla, con fecha. | **Antes de la parte 3.** Si falla, cambia cómo se diseñan las siete zonas. |
+| **Prueba con personas** de «¿Por qué pierdo?» (anexo de batalla, fila **No verificado**). **Aplazada por Diego el 2026-10-01**: la parte 3 se diseña suponiendo que no llega | Sentar a 3 personas que no conozcan el juego delante del combate del Bosque. No explicar nada. Anotar si deducen que hay que atajar la causa, en cuántos turnos, qué dicen en voz alta. Registrar en el anexo de batalla, con fecha. | **Antes de la parte 3.** Si falla, cambia cómo se diseñan las siete zonas. |
 | Fondo de batalla por región + parallax de 3 capas | Pendiente desde el paso 5 del anexo de batalla. Hoy son dos bandas planas. Reutilizar las **mismas rampas** del tileset de la región (coherencia mundo↔combate) y bajar su contraste bajo los paneles. | Parte 4, al conectar mundo y combate. |
 | Mobbin y Pinterest sin consultar en el anexo de exploración | Consultar con navegador; si no aportan a un juego, registrarlas como «no aplicable» con motivo. | Primera sesión con navegador. |
 | F5 abre el selector de región de pruebas | Mantener `region_select.gd` como herramienta de depuración, no como escena principal. | Parte 10. |
