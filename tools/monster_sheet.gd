@@ -75,28 +75,24 @@ func _sheet(zone: String) -> void:
 		print("  FALLA no hay línea libre de %d tiles desde el monstruo" % DesignTokens.MONSTER_SIGHT_TILES)
 		return
 	var ilan: Vector2i = monster_at + dir * DesignTokens.MONSTER_SIGHT_TILES
+	var ilan: Vector2i = monster_at + dir * DesignTokens.MONSTER_SIGHT_TILES
 	_world.enter_zone(zone, ilan)
 	_world.label.visible = false
-	var sprite: Sprite2D = null
-	for n in _world.entities.get_children():
-		if String(n.name).begins_with("monster"):
-			sprite = n
-	var rest_tex := sprite.texture
-	var shadows: Array[Sprite2D] = []
+	# El componente real, quieto: la hoja fuerza cada estado (paso 3).
+	var mon := _world.monster
+	mon.target = null
+	mon.active = false
+	mon.facing = dir
+	mon.force(MapMonster.State.PATROL)
 	var rest := await _shot(zone, "reposo")
-	# Alerta: erguido, mirando a Ilan, y la sombra estirada hacia él.
-	_pose(sprite, rest_tex, zone, "alert", dir)
+	# Alerta: erguido, mirando a Ilan, y la señal estirada hacia él.
+	mon.force(MapMonster.State.ALERT, ilan)
+	mon.alert_steps = DesignTokens.MONSTER_ALERT_STEPS
+	mon._sync()
 	var t := DesignTokens.TILE_SIZE
 	var band := {}
-	for k in range(1, DesignTokens.MONSTER_ALERT_STEPS + 1):
-		var cell: Vector2i = monster_at + dir * k
-		var s := Sprite2D.new()
-		var own := "_greed_crypt" if zone == "greed_crypt" else ""
-		s.texture = load(DECOR + ("alert_shadow%s%s_sick.png" % ["_v" if dir.x == 0 else "", own]))
-		s.centered = false
-		s.position = Vector2(cell * t)
-		_world.entities.add_child(s)
-		shadows.append(s)
+	for s in mon._bands:
+		var at := Vector2i(s.global_position)
 		var img := s.texture.get_image()
 		for y in img.get_height():
 			for x in img.get_width():
@@ -105,23 +101,11 @@ func _sheet(zone: String) -> void:
 					var ink := "brasa" if px.r > 0.5 else "filo"
 					if not band.has(ink):
 						band[ink] = []
-					band[ink].append(cell * t + Vector2i(x, y))
+					band[ink].append(at + Vector2i(x, y))
 	var alert := await _shot(zone, "alerta")
-	for s in shadows:
-		s.queue_free()
-	_pose(sprite, rest_tex, zone, "chase", dir)
+	mon.force(MapMonster.State.CHASE, ilan)
 	await _shot(zone, "persecucion")
-	sprite.texture = rest_tex
-	sprite.flip_h = false
 	_measure(zone, rest, alert, band)
-
-
-func _pose(sprite: Sprite2D, rest_tex: Texture2D, zone: String, pose: String, dir: Vector2i) -> void:
-	var tex: Texture2D = load(DECOR + "monster_%s_%s_sick.png" % [zone, pose])
-	# El sprite de pose mide 4 px más: se recentra sobre el mismo pie.
-	sprite.texture = tex
-	sprite.offset.x = -tex.get_width() / 2
-	sprite.flip_h = dir.x < 0
 
 
 ## Contraste de cada tinta de la señal contra el mismo sitio en reposo. Las

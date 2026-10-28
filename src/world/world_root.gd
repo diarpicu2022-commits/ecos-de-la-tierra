@@ -17,6 +17,9 @@ extends Node2D
 ## que la prueba lo mida cuadro a cuadro.
 
 signal zone_changed(zone_id: String)
+## Ilan ha tocado al monstruo de la zona (contrato «Persiana» §2). El cuerpo
+## ya está parado; la persiana y el combate van en el paso 4.
+signal encounter(advantage: MapMonster.Advantage)
 
 enum Fade { NONE, OUT, IN }
 
@@ -39,6 +42,8 @@ var solids := Node2D.new()
 ## (enmienda 8).
 var ambient := WorldAmbient.new()
 var label := PlaceLabel.new()
+## El monstruo de historia de la zona mientras está enferma (IA-1), o null.
+var monster: MapMonster = null
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
 var fade := Fade.NONE
@@ -112,6 +117,7 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 			child.queue_free()
 	var blocked := {}
 	WorldDecor.build(id, purified_at, entities, solids, blocked)
+	_spawn_monster(id, lines, blocked)
 	var size := Vector2i(lines[0].length(), lines.size())
 	ambient.setup(_layer, entities, func(c: Vector2i) -> bool:
 		return Rect2i(Vector2i.ZERO, size).has_point(c) and not blocked.has(c) \
@@ -127,6 +133,36 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 		state.facing = body.facing
 		state.set_zone(id)
 	zone_changed.emit(id)
+
+
+## El monstruo de la capa de decorado, si sigue enfermo, pasa a ser un
+## `MapMonster` que patrulla: se quitan su sprite fijo, su cuerpo y su casilla
+## de lo bloqueado, y entra él con su propio cuerpo entre los sólidos.
+func _spawn_monster(id: String, lines: PackedStringArray, blocked: Dictionary) -> void:
+	monster = null
+	for child in entities.get_children():
+		var nm := String(child.name)
+		if not nm.begins_with("monster_") or child is MapMonster:
+			continue
+		var parts := nm.split("_")
+		var post := Vector2i(int(parts[-2]), int(parts[-1]))
+		var body_node := solids.get_node_or_null("solid_" + nm)
+		for n in [child, body_node]:
+			if n != null:
+				n.get_parent().remove_child(n)
+				n.queue_free()
+		blocked.erase(post)
+		monster = MapMonster.new()
+		monster.setup(id, post, lines, blocked, solids)
+		monster.target = body
+		monster.contact.connect(_on_contact)
+		entities.add_child(monster)
+		return
+
+
+func _on_contact(advantage: MapMonster.Advantage) -> void:
+	body.input_enabled = false
+	encounter.emit(advantage)
 
 
 ## Pies del cuerpo de pie en `cell`: centro de la base de la casilla.
