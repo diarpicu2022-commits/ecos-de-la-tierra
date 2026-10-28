@@ -27,15 +27,18 @@ const SPRITE := {"person": "yara", "chicken": "chicken_0", "bird": "bird_0",
 
 ## Lo que se mece al purificar (enmienda 8): tiene un segundo cuadro
 ## `<id>_pure_1.png`.
-const SWAYS := ["grass", "flower", "weed", "crop_row"]
+const SWAYS := ["grass", "flower", "weed", "crop_row", "reeds"]
 
 ## Árboles: se dibujan desplazados hasta JITTER_PX px por pieza para que un
 ## bosque no se lea como plantación (Bosque, 2026-10-28).
 const JITTER := ["tree", "tree_b", "burnt_tree"]
 const JITTER_PX := 3
 
-## Lo que desaparece con la ola de purificación (catálogo 2a).
-const VANISH_WHEN_PURE := ["blocker", "monster"]
+## Lo que desaparece con la ola de purificación: el paso cerrado y el
+## monstruo (catálogo 2a) y el daño que se limpia (crudo, barriles, basura).
+## Purificado no queda ni el sprite ni el cuerpo: un barril invisible y sólido
+## sería un muro fantasma.
+const VANISH_WHEN_PURE := ["blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter"]
 
 
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos

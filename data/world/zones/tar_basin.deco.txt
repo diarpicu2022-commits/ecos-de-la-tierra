@@ -1,0 +1,79 @@
+; Cuenca de Alquitrán — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md), zona regional. Mismo tamaño
+; que tar_basin.txt. El estado lo da la bandera purified_tar_basin.
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; Viñetas: dos elementos que el jugador une, de la más lejana a la fuente (1)
+; a la más cercana (3).
+; 1 = vignette, v1_barrel, sólido             barril volcado
+; a = vignette, v1_oil, pisable               la mancha de crudo que suelta
+; b = vignette, v2_broken_pipe, sólido, 2x1   la tubería partida
+; 2 = vignette, v2_oil, pisable               el agua negra que sale de ella
+; c = vignette, v3_boat, sólido, 2x1          barca de pesca varada en el crudo
+; 3 = vignette, v3_torn_net, pisable          la red rota de los pescadores
+; Y = landmark, refinery_tower, sólido, 3x4   hito: la torre de la refinería, en Puerto Brea
+; M = entity, monster, sólido                 el Devorador de Petróleo (combate de historia)
+; X = entity, blocker, sólido                 paso cerrado: tuberías retorcidas en el crudo
+; S = entity, seedbed, sólido                 semillero de la ribera oeste
+; T = decor, tree, sólido, 2x2                árbol enfermo
+; U = decor, tree_b, sólido, 2x2              árbol enfermo, segunda copa
+; o = decor, oil, pisable                     mancha de crudo
+; k = decor, barrel, sólido                   barril volcado
+; r = decor, reeds, pisable                   juncos de la orilla
+; g = decor, grass, pisable                   hierba alta
+; R = decor, rock, sólido                     roca partida
+; u = decor, bush, sólido                     arbusto de la marisma, también sobre el follaje
+; @ = spawn, start, pisable                   llegada desde el Bosque
+---
+u TTu  u uUUTTUU uu u  uu  u uu UUu  u uTTUUu u UUTTu UU    TTu UUTTUUTTTTu  uUU
+ uTT uu u UUTTUUu  u uu  uu u  uUU uu u TTUU u uUUTT uUU@   TT uUUTTUUTTTT uu UU
+u  uu u  u uTT u uu u u u UU uTTTT uTTu UUu TTTTu  u           uu TTu u UUTTu u
+ uu  u uu u TTu u  u u u uUUu TTTTu TT uUU uTTTT uu       g   u  uTT u uUUTT u u
+u TTTTTTu UU uu  u u uUUTTu u  uUUTTTT uTT uu  u u R  g         u u TT uu u TTu
+ uTTTTTT uUUu  uu u u UUTT u uu UUTTTTu TTu  uu u                u uTTu  u uTT u
+TT uTTTTu  u uTT u uUUu UUu u TTTTTTu  uUU           g          UUu u UU uUUu u
+TTu TTTT uu u TTu u UU uUU u uTTTTTT uu UU    1     1     R g   UU u uUUu UU u u
+TTu u u u u                                    a 1 a          TT uTTTTu u u u  u
+TT u u u u u                                                  TTu TTTT u u u uu
+TTTT u u              u  uu u TT uu u u u    a  a a         u TTTTu UUu u u u TT
+TTTTu u                uu  u uTTu  u u u u  o                uTTTT uUU u u u uTT
+TTu TT      S          u uUUTT uTTu TTu u TT          u TTu UUUUUUu u u u  uu UU
+TT uTT                u u UUTTu TT uTT u uTT           uTT uUUUUUU u u u uu  uUU
+TTu u             g   TT uTTTTTTu  u uu TTu TTTTTTTT u uu  uTTu TTTTu  uUUTT uTT
+TT u u               RTTu TTTTTT uu u  uTT uTTTTTTTTu u  uu TT uTTTT uu UUTTu TT
+u u  u            g   u TTUUu  u u u u uu UU uTTTT u uTTTT uTTUUu u  uTT u u uTT
+ u uu                  uTTUU uu u u u u  uUUu TTTTu u TTTTu TTUU u uu TTu u u TT
+TTu UUu  u          u u  uTTu UU u uTTu u TTTT uUUu  u uu UU uu TTTTu  uu u u u
+TT uUU uu            u uu TT uUUu u TT u uTTTTu UU uu u  uUUu  uTTTT uu  u u u u
+UUu UUTT u  u    uu UU u uTTTTUUTTTTu  u uu TTUUTTTTTTu u  u u uTT uu u u TTTTu
+UU uUUTTu    u  u  uUUu u TTTTUUTTTT uu u  uTTUUTTTTTT u uu u u TTu  u u uTTTT u
+u u u  uUU            UUUUu UUUUTTu TT u uu  uTTUUUUTTu TTUU uu  u uUU u u uUUTT
+ u u uu UU       o    UUUU uUUUUTT uTTu u  uu TTUUUUTT uTTUUu  uu u UUu u u UUTT
+TTTTu u         o g      u        UU u uu u UU uTTu u u TTu UU uUUu u UUTTTTUUTT
+TTTT u u    bb      o   u  o      UUu u  u uUUu TT u u uTT uUUu UU u uUUTTTTUUTT
+ u u uUU    2            o   o  g       TTTTUUu u TTu TTTTu  uu  uTTu TT u uTTu
+u u u UU     2 2   o          o  o    o TTTTUU u uTT uTTTT uu  uu TT uTTu u TT u
+TT uUUTT    2                                                                  u
+TTu UUTT    r        o  oooo    o    oo                                       u
+u UU uu UU   uR   UUUU o oo    oo o     TTTTu u UUUUu TTTTTTu UUTTu           UU
+ uUUu  uUU  u     UUUU                  TTTT u uUUUU uTTTTTT uUUTT u          UU
+UUu UU uTT  UUTTu u u TTTTu TTo  YYY   oo o o u TTu UUu  u uu  uTTu  g        u
+UU uUUu TT  UUTT u u uTTTT uTT   YYY o   o     uTT uUU uu u  uu TT u g         u
+                            X    YYY    o     u  uUUTT uUUTTTTUUu UU
+                                 YYYoM       o uu UUTTu UUTTTTUU uUU
+UUu  uTTUU  u  uTTTT uu TTu  o     ro          uTT uTTu  uTTu  uUUu
+UU uu TTUU   uu TTTTu  uTT u o           ooo  u TTu TT uu TT uu UU u
+ uUUTTTTu    uu TTTT                            TTTT u u uu TT u u u           u
+u UUTTTT u  u  uTTTT                            TTTTu u u  uTTu u u          gu
+                                                u  uu u UUUUTTu TT ug        R
+                                                 uu  u uUUUUTT uTTu      o
+ uTT          u  uUUu u u  u u                u u TTu UU                       u
+u TT           uu UU u u uu u                  u uTT uUUR                     u
+TTu  u uu u TTTT uu UUTTUU u u uTT u uTT uTT  TTUU   o  kocc   cc   g og      UU
+TT uu u  u uTTTTu  uUUTTUUu u u TTu u TTu TT  TTUU o      oo 3o   3o          UU
+u UUu u TTu TTu  uu  uUUTT uUUu UUu TTTTUUTT                                UUu
+ uUU u uTT uTT uu  uu UUTTu UU uUU uTTTTUUTT                                UU u
+u u u TT uUUTT uu TT uTT u uu TT u uTTu u UUu TTTTTT u            g     u TTTTUU
+ u u uTTu UUTTu  uTTu TTu u  uTTu u TT u uUU uTTTTTTu                    uTTTTUU
+TT u u uu u u  u u uu u TT u u u uu TTUUUUUU u uu UUu u TT uu u TTu u UUu u u  u
+TTu u u  u u uu u u  u uTTu u u u  uTTUUUUUUu u  uUU u uTTu  u uTT u uUU u u uu

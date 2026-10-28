@@ -337,6 +337,234 @@ def flame_monster(pure: bool) -> Canvas:
     return c
 
 
+# --- Cuenca de Alquitrán: el crudo y su vuelta ------------------------------------------
+
+
+def oil(pure: bool, seed: int) -> Canvas:
+    """Mancha de crudo en el suelo: charco oscuro con brillo sucio y bordes en
+    diagonal. Purificada, desaparece: queda el suelo."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    noise = ValueNoise(seed)
+    blob(c, 8, 10, 6, 3.5, "water_700", noise, 0.8)
+    blob(c, 7, 9.5, 3, 1.5, "ash_700", noise, 0.6)
+    x = rng.randint(4, 9)
+    line(c, x, 9, x + 2, 9, "water_500")
+    return c
+
+
+def barrel(pure: bool) -> Canvas:
+    """Barril volcado, 16x16, tumbado en diagonal y abollado. Purificado, se lo
+    han llevado."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 13, 6, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "................",
+        "................",
+        ".......aab......",
+        "......abbbc.....",
+        ".....abccbcc....",
+        "....abccbbccd...",
+        "...abccbbccdd...",
+        "...bccbbccdd....",
+        "...ecbbccdd.....",
+        "...eebccdd......",
+        "....eedd........",
+    ]
+    grid(c, rows, {"a": "roof_300", "b": "roof_500", "c": "roof_700", "d": "roof_900", "e": "water_700"})
+    return c
+
+
+def broken_pipe(pure: bool) -> Canvas:
+    """Tubería partida, 32x16: el tubo de la refinería roto, con el extremo en
+    diagonal. Purificada, la tapan: un tapón redondo y sin goteo."""
+    c = Canvas(32, 16)
+    ground_shadow(c, 14, 13, 13, "soil_700")
+    c.rect(2, 6, 22, 5, color("ash_600"))
+    line(c, 2, 6, 23, 6, "ash_400")
+    line(c, 2, 10, 23, 10, "ash_700")
+    for x in (7, 15):
+        c.rect(x, 5, 2, 7, color("ash_700"))
+        c.set(x, 5, color("ash_400"))
+    if pure:
+        blob(c, 24.5, 8.5, 3, 3, "ash_400")
+        blob(c, 24.5, 8.5, 1.8, 1.8, "ash_600")
+        return c
+    # El extremo partido, en diagonal, y el crudo que sale.
+    for y in range(6, 11):
+        for x in range(24, 24 + (11 - y)):
+            c.set(x, y, color("ash_600" if y > 6 else "ash_400"))
+    line(c, 26, 10, 30, 14, "water_700")
+    line(c, 27, 10, 31, 14, "water_700")
+    c.set(28, 12, color("water_500"))
+    return c
+
+
+def boat(pure: bool) -> Canvas:
+    """Barca de pesca varada, 32x16, escorada. Enferma, con el casco negro de
+    crudo. Purificada, limpia: la madera vuelve."""
+    c = Canvas(32, 16)
+    ground_shadow(c, 16, 13, 14, "vital_900" if pure else "soil_700")
+    hull = "wood_500" if pure else "water_700"
+    hull_dark = "wood_700" if pure else "ash_700"
+    for y in range(6, 12):
+        inset = abs(y - 8)
+        x0, x1 = 3 + inset * 2, 29 - inset
+        line(c, x0, y, x1, y, hull if y < 10 else hull_dark)
+    line(c, 5, 6, 28, 5, "wood_300")
+    line(c, 12, 6, 12, 10, "wood_700")
+    line(c, 20, 6, 20, 10, "wood_700")
+    if not pure:
+        for x, y in ((7, 11), (15, 11), (24, 10)):
+            c.set(x, y, color("water_500"))
+    return c
+
+
+def torn_net(pure: bool) -> Canvas:
+    """Red de pesca, 16x16. Enferma: rota, con el hueco en diagonal y manchada.
+    Purificada: remendada, la cuadrícula entera."""
+    c = Canvas(16, 16)
+    ink = "ash_200" if pure else "ash_600"
+    for x in range(2, 15, 3):
+        line(c, x, 4, x, 13, ink)
+    for y in range(4, 14, 3):
+        line(c, 2, y, 14, y, ink)
+    if not pure:
+        for x, y in ((6, 6), (7, 7), (8, 8), (9, 9), (8, 7), (9, 8)):
+            c.px[x, y] = (0, 0, 0, 0)
+        c.set(11, 11, color("water_700"))
+        c.set(12, 11, color("water_700"))
+    return c
+
+
+def reeds(pure: bool, seed: int) -> Canvas:
+    """Juncos de la orilla. Enfermos: rotos y doblados en diagonal. Purificados:
+    rectos, con la espiga."""
+    c = Canvas(16, 16)
+    rng = random.Random(seed)
+    for i in range(5):
+        x = 3 + i * 2 + rng.randint(0, 1)
+        h = rng.randint(7, 11)
+        if pure:
+            line(c, x, 15, x, 15 - h, ("vital_700", "vital_600", "vital_500")[i % 3])
+            c.set(x, 14 - h, color("wood_300"))
+            c.set(x, 15 - h, color("wood_300"))
+        else:
+            line(c, x, 15, x, 15 - h // 2, "flora_500")
+            line(c, x, 15 - h // 2, x + 3, 15 - h // 2 + 2, "flora_300")
+    return c
+
+
+def refinery_tower(pure: bool) -> Canvas:
+    """El hito de la Cuenca: la refinería de Puerto Brea, 48x64. Un depósito
+    redondo grande, la torre maciza con plataformas y la chimenea. Enferma, la
+    antorcha de gas arde arriba (la causa sigue activa) y el humo queda
+    quieto. Purificada, la antorcha se apaga y trepa la enredadera."""
+    c = Canvas(48, 64)
+    ground_shadow(c, 24, 60, 20, "vital_900" if pure else "soil_700")
+    # Depósito: cilindro ancho a la izquierda.
+    c.rect(2, 40, 20, 19, color("ash_600"))
+    line(c, 2, 40, 2, 58, "ash_400")
+    line(c, 21, 40, 21, 58, "ash_700")
+    blob(c, 12, 40, 10, 3, "ash_400")
+    blob(c, 12, 40, 8, 2, "ash_600")
+    for y in (46, 52):
+        line(c, 2, y, 21, y, "ash_700")
+    line(c, 4, 58, 20, 58, "water_700")
+    # Torre: cuerpo macizo que se estrecha, con plataformas.
+    for y in range(12, 60):
+        half = 4 + (y - 12) // 10
+        for x in range(26 - half, 26 + half + 1):
+            ink = "ash_400" if x <= 26 - half + 1 else "ash_700" if x >= 26 + half - 1 else "ash_600"
+            c.set(x, y, color(ink))
+        if (y - 12) % 9 == 0:
+            line(c, 26 - half - 2, y, 26 + half + 2, y, "ash_200")
+            line(c, 26 - half - 2, y + 1, 26 + half + 2, y + 1, "ash_700")
+    for y in range(16, 58, 9):
+        for x in range(23, 30, 3):
+            c.set(x, y, color("water_700"))
+    # Chimenea a la derecha, con anillos.
+    c.rect(37, 18, 7, 42, color("ash_600"))
+    line(c, 37, 18, 37, 59, "ash_400")
+    line(c, 43, 18, 43, 59, "ash_700")
+    for y in (26, 36, 46):
+        line(c, 37, y, 43, y, "roof_500")
+        line(c, 37, y + 1, 43, y + 1, "roof_700")
+    if pure:
+        for y in range(24, 60, 2):
+            c.set(24 + (y % 4 == 0), y, color("vital_700"))
+            c.set(38 + (y % 6 == 0), y, color("vital_700"))
+            c.set(5 + (y % 4 == 0), max(y, 41), color("vital_700"))
+        for x, y in ((23, 30), (25, 40), (39, 34), (38, 44), (6, 44), (14, 50)):
+            blob(c, x, y, 2, 1.5, "vital_500")
+            c.set(x - 1, y - 1, color("vital_300"))
+    else:
+        # La antorcha de gas, encima de la torre.
+        flame = [("ember_700", 0, 0), ("ember_700", -1, -1), ("ember_500", 0, -1), ("ember_700", 1, -1),
+                 ("ember_500", -1, -2), ("ember_400", 0, -2), ("ember_500", 1, -2),
+                 ("ember_400", -1, -3), ("ember_300", 0, -3), ("ember_400", 1, -3),
+                 ("ember_300", 0, -4), ("ember_400", -1, -4), ("ember_300", 0, -5), ("ember_300", 1, -6)]
+        for ink, dx, dy in flame:
+            c.set(26 + dx, 11 + dy, color(ink))
+        # Humo quieto de la chimenea (enmienda 8: lo enfermo no se mueve).
+        for x, y, r in ((40, 15, 3), (42, 11, 3.5), (39, 8, 3), (43, 5, 3.5), (40, 2, 2.5)):
+            blob(c, x, y, r, r * 0.75, "ash_700")
+            c.set(int(x) - 1, int(y) - 1, color("ash_600"))
+    return c
+
+
+def oil_monster(pure: bool) -> Canvas:
+    """El Devorador de Petróleo en el mapa, 16x24: una masa de crudo con borde
+    EMBER_300 (verify_tileset, parte 4) y dos ojos de brasa. Purificado, ya no
+    está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 7, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "......aaaa......",
+        ".....abbbba.....",
+        "....abbbbbba....",
+        "...abbcbbcbba...",
+        "...abbcbbcbba...",
+        "..abbbbbbbbbba..",
+        "..abbbbddbbbba..",
+        ".abbbbddddbbbba.",
+        ".abbbbbddbbbbba.",
+        ".abbbbbbbbbbbba.",
+        "abbbbbbbbbbbbbba",
+        "abbebbbbbbbbebba",
+        "abbbbbbbbbbbbbba",
+        ".abbbbbbbbbbbba.",
+        ".aabbbbbbbbbbaa.",
+        "..aaaa.aa.aaaa..",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "water_700", "c": "ember_400", "d": "ash_700", "e": "water_500"}, 0, 4)
+    return c
+
+
+def pipe_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Cuenca, 16x16: tuberías retorcidas clavadas en el
+    crudo, en diagonal y puntiagudas, sin contorno. Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    blob(c, 8, 13, 7, 2.5, "water_700")
+    for x0, y0, x1, y1 in ((2, 14, 7, 1), (8, 14, 14, 3), (5, 13, 11, 5)):
+        line(c, x0, y0, x1, y1, "ash_600")
+        line(c, x0 + 1, y0, x1 + 1, y1, "ash_700")
+        c.set(x1, y1, color("ash_400"))
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -764,9 +992,6 @@ def pieces() -> dict[str, Canvas]:
         out[f"stump_{state}"] = stump(pure)
         out[f"litter_{state}"] = litter(pure, 4)
         out[f"weed_{state}"] = weed(pure, 6)
-    # Enmienda 8: segundo cuadro de lo que se mece, solo purificado.
-    for name, below in (("grass", 12), ("flower", 11), ("weed", 11), ("crop_row", 11)):
-        out[f"{name}_pure_1"] = swayed(out[f"{name}_pure"], below)
     out["yara_tree_pure"] = yara_tree()
     # Bosque de las Cenizas.
     for state, pure in (("sick", False), ("pure", True)):
@@ -777,6 +1002,16 @@ def pieces() -> dict[str, Canvas]:
         out[f"ash_{state}"] = ash(pure, 12)
         out[f"blocker_ashen_forest_{state}"] = blocker(pure)
         out[f"monster_ashen_forest_{state}"] = flame_monster(pure)
+        # Cuenca de Alquitrán.
+        out[f"oil_{state}"] = oil(pure, 5)
+        out[f"barrel_{state}"] = barrel(pure)
+        out[f"broken_pipe_{state}"] = broken_pipe(pure)
+        out[f"boat_{state}"] = boat(pure)
+        out[f"torn_net_{state}"] = torn_net(pure)
+        out[f"reeds_{state}"] = reeds(pure, 13)
+        out[f"refinery_tower_{state}"] = refinery_tower(pure)
+        out[f"monster_tar_basin_{state}"] = oil_monster(pure)
+        out[f"blocker_tar_basin_{state}"] = pipe_blocker(pure)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)
     out["well_sick"] = well()
@@ -790,6 +1025,9 @@ def pieces() -> dict[str, Canvas]:
         out[f"chicken_{f}_sick"] = chicken(f)
         out[f"bird_{f}_pure"] = bird(f)
         out[f"butterfly_{f}_pure"] = butterfly(f)
+    # Enmienda 8: segundo cuadro de lo que se mece, solo purificado.
+    for name, below in (("grass", 12), ("flower", 11), ("weed", 11), ("crop_row", 11), ("reeds", 11)):
+        out[f"{name}_pure_1"] = swayed(out[f"{name}_pure"], below)
     return out
 
 

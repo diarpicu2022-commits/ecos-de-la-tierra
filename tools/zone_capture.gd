@@ -25,9 +25,19 @@ const SHOTS := {
 		["fuente-purificada", Vector2i(60, 23), true],
 		["paso-abierto", Vector2i(56, 29), true],
 	],
+	"tar_basin": [
+		["entrada", Vector2i(56, 1), false],
+		["barriles", Vector2i(49, 9), false],
+		["tuberia", Vector2i(14, 26), false],
+		["asomo", Vector2i(30, 28), false],
+		["barcas", Vector2i(62, 46), false],
+		["fuente", Vector2i(39, 35), false],
+		["fuente-purificada", Vector2i(39, 35), true],
+		["paso-abierto", Vector2i(20, 34), true],
+	],
 }
-const MOTION := {"ashen_forest": Vector2i(52, 11)}
-const SLUG := {"ashen_forest": "bosque"}
+const MOTION := {"ashen_forest": Vector2i(52, 11), "tar_basin": Vector2i(40, 38)}
+const SLUG := {"ashen_forest": "bosque", "tar_basin": "cuenca"}
 
 var _world := WorldRoot.new()
 var _state: Node = null
