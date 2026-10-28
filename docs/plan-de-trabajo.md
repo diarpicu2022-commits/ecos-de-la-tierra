@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-01 (sesión 6)
+Última actualización: 2026-10-28 (sesión 7, en la nube)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -43,14 +43,21 @@ válidos:
 ## Punto de retome
 
 > **Parte 3 — Las siete zonas. EN CURSO.** Anexo
-> `docs/ux/anexos/2026-10-01-las-siete-zonas.md`: fases 1 a 4 escritas.
-> **Diego aplazó las dos pruebas con personas** (2026-10-01, comunicado a Juan
-> José Rueda en persona). La fase 4 se plantea con la hipótesis prudente: que
-> «¿Por qué pierdo?» no llega y la zona tiene que enseñar la causa antes del
-> combate. **Lo siguiente es que Diego elija la dirección** (A «Rastro»,
-> recomendada; B «Claro»; C «Antes y después») **y el formato de mapa**
-> (texto, recomendado, o editor), y confirme la hipótesis. Con eso se bloquea
-> el contrato y empieza Valdehoja, una zona por sesión.
+> `docs/ux/anexos/2026-10-01-las-siete-zonas.md`: fases 1 a 4 cerradas.
+> **Diego eligió el 2026-10-28:** dirección A **«Rastro»**, mapas en
+> **texto** y la hipótesis prudente confirmada (la zona enseña la causa antes
+> del combate). El PR #11 se fusionó sin comentario; las respuestas se le
+> pidieron en la sesión 7 y están en el anexo.
+>
+> **Contrato «Rastro» escrito** en el anexo (sesión 7): composición de las
+> zonas regionales, lo que heredan Valdehoja y la Cripta, el formato de los
+> mapas (`<zona>.txt` + `<zona>.deco.txt`) y la verificación de
+> `verify_zone.gd`. Ningún color ni token nuevo. **Lo siguiente es el visto
+> bueno de Diego a los valores del contrato** (3 viñetas, hito de 2×3 a 4×4
+> tiles, viñetas a ≤ 2 tiles del camino y una por pantalla). Con él, se abre
+> **Valdehoja**: primero las dos preguntas de su apartado (cuántas partes
+> tiene el pueblo y cuál devuelve cada región), después el paso 1, mapa en
+> texto y `verify_zone.gd` en verde. Una zona por sesión.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -108,7 +115,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — anexo, fases 1-4; Diego elige dirección y formato de mapa. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» escrito (2026-10-28), espera visto bueno a sus valores. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -178,6 +185,12 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 - **Cámara** (2026-09-30, enmienda 5): la anticipación abre a 60 px/s y vuelve
   a 30 px/s, por eje. Zona muerta 12 px bajo el centro de la pantalla. Con
   movimiento reducido, sin anticipación.
+- **Zonas: «Rastro»** (2026-10-28, elegido por Diego): un camino principal
+  lleva a la fuente del daño pasando por 3 viñetas de causa y efecto; hito en
+  la fuente; paso cerrado detrás del monstruo de historia. **Mapas en texto**
+  (`data/world/zones/<zona>.txt` + `<zona>.deco.txt`). Hipótesis prudente
+  confirmada: la zona enseña la causa antes del combate. Contrato en el anexo
+  de la parte 3.
 - **Movimiento y zonas: «Umbral»** (2026-09-30): caja de colisión de 12×8 px en
   los pies, deslizamiento en esquina de 4 px, salidas solo donde el camino
   cruza el borde (máximo 2 por pantalla), con la tecla pulsada se sigue
@@ -201,7 +214,6 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Qué | Dónde se resuelve |
 |---|---|
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 6** (la 5 se usó para la cámara) | Paso 2b, sobre la captura del tileset |
-| Mapas como texto ASCII o pintados en el editor | Diego, en la primera zona (parte 3) |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |

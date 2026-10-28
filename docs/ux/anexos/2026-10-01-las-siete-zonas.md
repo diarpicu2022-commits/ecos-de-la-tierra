@@ -14,10 +14,12 @@ allí **no se vuelve a decidir aquí**:
 
 Este anexo decide **cómo se compone cada zona**.
 
-**Estado:** fases 1 a 4 escritas. **Las dos pruebas con personas quedan
+**Estado:** fases 1 a 4 cerradas. **Las dos pruebas con personas quedan
 aplazadas por decisión de Diego** (2026-10-01; ver «Pruebas aplazadas»), y la
-fase 4 se plantea con la hipótesis prudente. **Falta que Diego elija la
-dirección y el formato de mapa.**
+fase 4 se planteó con la hipótesis prudente. **Diego eligió el 2026-10-28:
+dirección A «Rastro», mapas en texto, hipótesis prudente confirmada.** Contrato
+«Rastro» escrito; **espera el visto bueno de Diego a sus valores** antes de
+abrir Valdehoja.
 
 **Subdivisión (guía §5): una zona por sesión,** en este orden: Valdehoja →
 Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura
@@ -279,9 +281,106 @@ leyenda, para que el mapa de materiales siga siendo legible.
 3. **¿Confirmas la hipótesis prudente** de que, sin la prueba, las zonas
    enseñan la causa antes del combate?
 
-**Respuesta:** pendiente.
+**Respuesta de Diego, 2026-10-28** (en la sesión, al retomar el proyecto; el
+PR #11 se fusionó sin comentario y por eso se le preguntó):
 
-## Tensiones que recogió la fase 3 (resueltas en la fase 4)
+1. **Dirección A, «Rastro».**
+2. **Mapas en texto.**
+3. **Sí, confirma la hipótesis prudente:** las zonas enseñan la causa antes
+   del combate.
+
+## Contrato «Rastro» — bloqueado el 2026-10-28
+
+**Elegido por Diego el 2026-10-28: dirección A, mapas en texto.** Hereda
+«Vereda» (con las enmiendas 1 a 5) y «Umbral» sin tocarlos. Desde aquí se
+cumple: nada de forma, densidad ni movimiento fuera de este contrato. **No
+abre ningún color, tipografía ni duración nueva.**
+
+**Los valores de la tabla los propone esta sesión** a partir de la dirección A
+y de las fuentes de la fase 3; el visto bueno de Diego a esos valores es el
+punto de control antes de Valdehoja. Si alguno no le sirve, se cambia antes de
+dibujar, no después.
+
+### Composición de una zona regional (Bosque, Cuenca, Costa, Llanura, Cumbre)
+
+| Cláusula | Valor | Respaldo |
+|---|---|---|
+| Camino principal | Un camino pisado continuo de la entrada a la **fuente del daño**. Es el único camino que llega a la fuente | Dirección A; Lynch (fuente 1) |
+| Viñetas de causa y efecto | **Exactamente 3**, todas **junto al camino principal** (a ≤ 2 tiles de él), en orden de daño creciente hacia la fuente. Cada una son **dos elementos que el jugador une** (causa y consecuencia), nunca uno que lo diga todo | Carson (2), Smith y Worch (3) |
+| Viñetas fuera del camino | **Ninguna.** Los caminos secundarios llevan personas, semilleros o espacio negativo | Dirección A |
+| Separación entre viñetas | Dos viñetas nunca caben en la misma pantalla de 480 × 270: se leen una a una | Smith y Worch (3): el cierre ocurre entre viñetas |
+| Fuente del daño | Al final del camino principal. La ocupa el **monstruo de historia** de la región, que no se esquiva («Vereda») | Dirección A |
+| Paso cerrado | Uno o más `blocker` **al otro lado de la fuente**, nunca antes de ella. La ola de purificación (enmienda 3) los retira | Catálogo 2a; «Vereda» |
+| Salida tras purificar | Solo es alcanzable después de purificar. Sin purificar, la única salida alcanzable es la de entrada | Guía §5, parte 3 |
+| Encuentros comunes | Fuera del camino principal y rodeables. El mapa no se estrecha para forzarlos (parte 4, IA-1) | «Vereda» |
+| Hito | **Uno por zona**, en la fuente. Silueta de **entre 2 × 3 y 4 × 4 tiles** (32 × 48 a 64 × 64 px), en la capa de entidades ordenada por altura, **sin contorno**, no se pisa ni responde. Forma de la familia del daño de la región (diagonal y rota) | Lynch (1); catálogo 2a, regla 2 |
+| Primera vista del hito | Entra en pantalla por primera vez **a media zona**, por delante en la dirección del camino; follaje lo tapa al menos una vez antes de la fuente | Tancoque (5); *Level Design Book* (6) |
+| Gradiente de daño | **Por densidad de decorado del daño**, en tres franjas: cerca de la fuente, media y lejana. La franja lejana es la que más espacio negativo tiene. Ningún tile nuevo: decorado del catálogo 2a, tabla «decorado permitido» | SLYNYRD (7) |
+| Pista por columna | Cada franja vertical de 480 px tiene al menos un tile de pista (camino, viñeta o hito) | Guía §5, parte 3 |
+| Prueba de entrecerrar | Con la captura de la zona desenfocada, lo más luminoso es el camino o lo purificado; **nunca un decorado** | Rogers (4) |
+| Movimiento ambiental | **Solo la fauna, y solo tras purificar** (IA-2). Humo, agua, hojas y ceniza son estáticos | Kowalski (fase 3, B) |
+| Verde en zona enferma | Ninguno, ni de adorno. Lo purificado lleva siempre valor, silueta o fauna además del verde | Guía §2.3 |
+| Texto | Ningún cartel, flecha ni texto que explique la causa | Fase 2 |
+
+### Las dos zonas que no son regionales
+
+No tienen una forma propia en la fase 4. Se fija aquí lo que hereda cada una, y
+lo que falta se pregunta a Diego **al abrir su apartado de la fase 5**, no
+antes:
+
+- **Valdehoja** (guía §5): empieza gris salvo **el jardín de Yara**, el único
+  verde del mundo al empezar, con el primer `seedbed`. No tiene monstruo ni
+  viñetas de causa. El camino principal lleva al jardín, y el jardín es su
+  hito. Es el **marcador de progreso**: cada región purificada devuelve verde
+  y fauna a una parte del pueblo. *Se pregunta al abrirla:* cuántas partes
+  tiene el pueblo y qué parte devuelve cada región.
+- **Cripta de la Avaricia:** las cinco clases regionales juntas (catálogo 2a).
+  *Se pregunta al abrirla:* si sus viñetas son las cinco causas o una sola.
+
+### Formato de los mapas
+
+| Cláusula | Valor |
+|---|---|
+| Materiales | `data/world/zones/<zona>.txt`, un carácter por tile con la leyenda de `WorldTiles.LEGEND` (`.` suelo, `=` camino, `~` agua, `#` follaje). Sin cambios |
+| Decorado, hito y entidades | Segunda capa por zona, `data/world/zones/<zona>.deco.txt`, **del mismo tamaño** que la de materiales, con su leyenda en cabecera. Un espacio = nada |
+| Validación | `ZoneRules.check()` sobre la capa de materiales, como hoy; `tools/verify_zone.gd <zona>` sobre las dos capas |
+| Nombres | Identificador en inglés y `snake_case` (`ashen_forest`, como en `interactables.json`); el nombre del jugador, en `zones.json` |
+
+### Verificación de cada zona (`tools/verify_zone.gd`, por escribir en Valdehoja)
+
+1. Búsqueda en anchura desde la entrada: la salida es **inalcanzable** en
+   enfermo y **alcanzable** tras retirar los `blocker`.
+2. La fuente es alcanzable solo por el camino principal.
+3. Hay **3 viñetas**, todas a ≤ 2 tiles del camino principal, ninguna en la
+   misma pantalla que otra.
+4. Hay **un hito**, del tamaño del contrato, y ningún `blocker` entre la
+   entrada y la fuente.
+5. Cada franja de 480 px tiene al menos una pista.
+6. Ningún decorado pertenece a una clase de `interactables.json`.
+7. `verify_palette.py image --world` sobre la captura completa, y la prueba de
+   entrecerrar sobre la misma captura.
+
+Valdehoja y la Cripta adaptan los puntos 2 a 4 a lo que se decida al abrirlas;
+el resto se cumple igual.
+
+**Tokens nuevos que abre el contrato:** ninguno. Las cifras de composición
+(3 viñetas, tamaño del hito, 2 tiles de distancia) son reglas de autoría y
+viven en `verify_zone.gd`, no en `DesignTokens`, porque no se dibujan.
+
+### Fase 5 — orden de trabajo
+
+Una zona por sesión, en el orden de la guía. Cada zona sigue el paso a paso del
+protocolo, con su propio apartado aquí:
+
+1. **Mapa en texto** (materiales y decorado) y `verify_zone.gd` en verde.
+2. **Decorado del daño** de la región con `tools/gen_*.py`, y su hito.
+3. **Zona montada** en el motor, con captura a 480 × 270.
+4. **Estados:** enferma, purificada y la ola entre las dos.
+
+Al final de cada paso: captura, cláusula que lo respalda, siguiente paso y
+visto bueno de Diego.
+
+## Tensiones que recogió la fase 3 (resueltas en la fase 4 y el contrato)
 
 Se enumeran **sin recomendar ninguna**: las direcciones se plantean cuando
 estén los resultados.

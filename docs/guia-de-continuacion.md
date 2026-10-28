@@ -611,19 +611,18 @@ en el mismo cuadro de la pulsación), duración del fundido medida.
 **Para qué:** que el paisaje cuente el problema ambiental antes que cualquier
 texto, y que el jugador sepa siempre hacia dónde seguir.
 
-**Anexo:** `docs/ux/anexos/2026-10-01-las-siete-zonas.md`. Fases 1 a 3 hechas
-el 2026-10-01; la fase 4 espera las dos pruebas con personas
-(`docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`). **Empieza por ese anexo.**
+**Anexo:** `docs/ux/anexos/2026-10-01-las-siete-zonas.md`. Fases 1 a 4
+cerradas; **contrato «Rastro»** escrito el 2026-10-28 (dirección A elegida por
+Diego, con la hipótesis prudente). **Empieza por el contrato de ese anexo**:
+manda sobre lo que queda escrito debajo.
 
 **Subdividir: una zona por sesión**, en este orden: Valdehoja → Bosque de las
 Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura Marchita → Cumbre
 Menguante → Cripta de la Avaricia. Anotar la subdivisión en el plan.
 
-**Mapas como texto.** Se recomienda escribir cada zona como mapa ASCII en
-`data/maps/<zona>.txt` (un carácter por tile, leyenda en cabecera) que un
-script convierte en `TileMapLayer`. Así se puede leer, auditar y comparar en un
-diff. La alternativa es pintar en el editor de Godot; decidirlo con Diego en la
-primera zona.
+**Mapas como texto** (decidido por Diego el 2026-10-28): materiales en
+`data/world/zones/<zona>.txt` con la leyenda de `WorldTiles.LEGEND`, y decorado,
+hito y entidades en `<zona>.deco.txt` del mismo tamaño. Detalle en el contrato.
 
 **Dirección recomendada para las zonas:**
 
