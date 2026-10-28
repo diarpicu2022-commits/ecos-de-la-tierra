@@ -75,7 +75,6 @@ func _sheet(zone: String) -> void:
 		print("  FALLA no hay línea libre de %d tiles desde el monstruo" % DesignTokens.MONSTER_SIGHT_TILES)
 		return
 	var ilan: Vector2i = monster_at + dir * DesignTokens.MONSTER_SIGHT_TILES
-	var ilan: Vector2i = monster_at + dir * DesignTokens.MONSTER_SIGHT_TILES
 	_world.enter_zone(zone, ilan)
 	_world.label.visible = false
 	# El componente real, quieto: la hoja fuerza cada estado (paso 3).
