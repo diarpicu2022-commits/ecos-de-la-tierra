@@ -123,7 +123,9 @@ def py_tokens() -> dict[str, tuple[int, int, int]]:
 
 
 def is_accent(name: str) -> bool:
-    return name.startswith(("ember_", "vital_"))
+    # Enmienda 6 (2026-10-28): el agua viva y las flores van por encima del
+    # techo de saturación, como el verde, porque solo existen en lo purificado.
+    return name.startswith(("ember_", "vital_", "aqua_", "bloom_"))
 
 
 # --- Órdenes -----------------------------------------------------------------------

@@ -10,18 +10,19 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: Valdehoja, paso 1
+## 1. Lo primero: Valdehoja, pasos 1 y 2
 
-El 2026-10-28 Diego eligió «Rastro», mapas en texto y la hipótesis prudente,
-aprobó los valores del contrato y respondió las dos preguntas de Valdehoja.
-El **paso 1 de Valdehoja** (mapa en texto y `tools/verify_zone.gd`) está
-entregado y espera visto bueno. Antes de seguir:
+El 2026-10-28 Diego eligió «Rastro», mapas en texto y la hipótesis prudente.
+Al ver Valdehoja sin decorado la juzgó «desabrida» y autorizó las **enmiendas
+6, 7 y 8** (guía §3.2 bis): paleta rica con color al purificar, animales
+domésticos y movimiento en lo purificado. Los pasos 1 y 2 de Valdehoja están
+entregados y esperan visto bueno. Antes de seguir:
 
 1. Ejecutar en Godot `verify_zone.tscn` (no se pudo en la nube), y también
    `verify_movement` y `verify_usability`.
-2. Que Diego decida qué se hace con los cantos rectos de las partes del
-   pueblo (anexo de la parte 3, Valdehoja, «Se dice, para decidir»).
-3. Paso 2: decorado, casas y el árbol de Yara.
+2. Decidir qué se hace con el sprite de Ilan frente a `--world` (anexo de la
+   parte 3, Valdehoja, «FALLA medido»).
+3. Paso 3: montar el decorado y las partes en `WorldRoot`, con colisión.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -36,7 +37,7 @@ entregado y espera visto bueno. Antes de seguir:
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: contrato «Rastro» bloqueado; Valdehoja, paso 1 entregado (2026-10-28) |
+| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1 y 2 entregados (2026-10-28) |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -87,7 +88,7 @@ dentro de ellas:
   por Diego el 2026-10-01. Hoja lista en
   `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. Cierran la parte 1. **No se
   pueden hacer en la nube**: necesitan tres personas reales.
-- **Enmienda 6** si dE 9,2 entre materiales no basta (se decide con esa prueba).
+- **Enmienda 9** si dE 9,2 entre materiales no basta (se decide con esa prueba).
 - **Fondo de batalla por región + parallax de 3 capas**, con las rampas del
   tileset de la región. Parte 4.
 - **Mobbin y Pinterest** sin consultar en el anexo de exploración: abrir con

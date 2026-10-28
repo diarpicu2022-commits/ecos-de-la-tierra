@@ -1,21 +1,10 @@
 {
-  "_doc": "Nombre visible de cada zona, el que enseña el rótulo de lugar al entrar (contrato «Umbral»), y las partes de Valdehoja (contrato «Rastro»). Clave = id del mapa en data/world/zones/. Las zonas «prueba_*» son de la parte 2 y no forman parte del mundo.",
+  "_doc": "Nombre visible de cada zona, el que enseña el rótulo de lugar al entrar (contrato «Umbral»). Las partes de Valdehoja están en data/world/zones/valdehoja.parts.txt (contrato «Rastro»). Clave = id del mapa en data/world/zones/. Las zonas «prueba_*» son de la parte 2 y no forman parte del mundo.",
   "version": 1,
   "zones": {
     "prueba_a": {"name": "Claro de prueba"},
     "prueba_b": {"name": "Ribera de prueba"},
     "prueba_c": {"name": "Hondonada de prueba"},
-    "valdehoja": {
-      "name": "Valdehoja",
-      "_parts": "Marcador de progreso (contrato «Rastro»): cada región purificada devuelve verde y fauna a su parte del pueblo, ligada a su daño. yara_garden empieza purificado. Rectángulos en tiles: [x, y, ancho, alto].",
-      "parts": {
-        "yara_garden": [[25, 2, 10, 1], [24, 3, 12, 7], [25, 10, 10, 1]],
-        "ashen_forest": [[33, 24, 12, 7]],
-        "tar_basin": [[45, 0, 5, 34]],
-        "broken_coast": [[21, 18, 18, 6]],
-        "withered_plain": [[3, 2, 17, 11]],
-        "waning_peak": [[20, 0, 1, 14], [4, 13, 16, 1]]
-      }
-    }
+    "valdehoja": {"name": "Valdehoja"}
   }
 }

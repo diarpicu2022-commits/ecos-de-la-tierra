@@ -308,6 +308,18 @@ y 4 del anexo de exploración, con sus tokens en `design_tokens.gd`
 La purificación del **monstruo** en batalla no cambia: sigue en 300 ms. Con
 movimiento reducido, la ola salta directamente al estado final.
 
+### 3.2 bis Enmiendas 6, 7 y 8 — autorizadas por Diego el 2026-10-28
+
+Al ver Valdehoja con solo materiales, Diego la juzgó «desabrida» y pidió el
+nivel de los juegos 2D de GBA (Zelda, Pokémon) y de Final Fantasy. Eligió las
+tres opciones recomendadas:
+
+| # | Qué cambia | Regla que queda |
+|---|---|---|
+| **6 · Paleta rica, color al purificar** | Rampas de cinco tonos `WOOD_*` y `ROOF_*` bajo el techo de 0,22; la piedra usa `ASH_*`. Por encima del techo, y **solo en celdas purificadas**: `AQUA_*` (agua viva), `BLOOM_*` (flores) y los verdes `VITAL_300`, `VITAL_400` y `VITAL_600` (prado). La tierra purificada pasa a ser prado y tiene fila propia de borde en el atlas. | Lo enfermo sigue apagado pero con detalle; lo purificado recupera el color. `verify_palette.py --world` acepta `aqua_` y `bloom_` como acentos. El verde sigue sin ir nunca solo: el valor (≥ 1,5) y la silueta (festón) lo acompañan. |
+| **7 · Animales domésticos siempre** | Gallinas, perro y cabras viven en Valdehoja desde el principio, sin responder. La fauna silvestre (pájaros, mariposas) solo está dentro de una parte purificada. | `verify_zone` comprueba que la fauna silvestre está dentro de una parte. |
+| **8 · Movimiento solo en lo purificado** | El agua brilla, las flores y la hierba se mecen y los animales andan donde ya está sano. Lo enfermo queda quieto. | Sustituye a «nada se mueve solo salvo la fauna» del contrato «Rastro». En el motor se implementa en el paso de estados de cada zona. |
+
 ### 3.3 Módulo de IA ampliado — aprobado por Diego el 2026-09-30
 
 Hasta aquí la IA vivía solo en el combate: pesos para los monstruos comunes y
@@ -567,7 +579,7 @@ python tools/verify_palette.py value <tile_enfermo.png> <tile_purificado.png>   
 Y una escena `tools/tileset_sheet.tscn` que pinte un mapa de prueba de
 30×17 tiles con los tres materiales en los dos estados y capture a 480×270.
 Sobre esa captura se decide la decisión abierta: **si dE 9,2 entre materiales
-basta o hace falta la enmienda 6** (la 5 se usó para la cámara el 2026-09-30). Criterio medido: tres personas nombran el
+basta o hace falta la enmienda 9** (la 5 se usó para la cámara el 2026-09-30, y la 6 a la 8 para Valdehoja el 2026-10-28). Criterio medido: tres personas nombran el
 material de 10 recortes de 64×64 sin error, o no basta.
 **Punto de control con Diego.**
 
