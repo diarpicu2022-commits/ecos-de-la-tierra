@@ -105,6 +105,13 @@ def pieces(legend: dict, rows: list[str]) -> list[tuple[str, int, int]]:
     return out
 
 
+def gd_hash_v2i(x: int, y: int) -> int:
+    """Sustituto estable de `absi(hash(Vector2i))` de Godot para la vista
+    previa. No da el mismo número que Godot: la vista previa desplaza los
+    árboles igual de poco, pero no al mismo píxel que el motor."""
+    return abs((x * 73856093) ^ (y * 19349663) ^ 0x5bd1e995)
+
+
 def soil_variant(x: int, y: int) -> int:
     h = (x * 73856093) ^ (y * 19349663)
     return abs(h) % SOIL_VARIANTS
@@ -142,10 +149,13 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
            player_at: tuple[int, int] | None = None) -> Image.Image:
     lines = load_zone(zone_id)
     grid = [[LEGEND.get(ch, "soil") for ch in line] for line in lines]
-    cells = set().union(*[c for part, c in load_parts(zone_id).items() if part in purified_parts])
+    parts = load_parts(zone_id)
+    cells = set().union(*[c for part, c in parts.items() if part in purified_parts])
+    # Una zona sin partes se purifica entera: «all» la pinta purificada.
+    whole = not parts and "all" in purified_parts
 
     def purified(x: int, y: int) -> bool:
-        return (x, y) in cells
+        return whole or (x, y) in cells
 
     atlas = Image.open(ATLAS).convert("RGBA")
     out = Image.new("RGBA", (len(grid[0]) * TILE, len(grid) * TILE))
@@ -173,16 +183,26 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
         pure = purified(x + w // 2, y + h - 1)
         if entry["kind"] == "fauna" and not pure:
             continue
+        if pure and entry["id"] in ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter"):
+            continue
         name = SPRITE.get(entry["id"], entry["id"])
-        path = DECOR / f"{name}_{'pure' if pure else 'sick'}.png"
-        if not path.exists():
-            path = DECOR / f"{name}_{'sick' if pure else 'pure'}.png"
+        name = re.sub(r"^v\d_", "", name)
+        path = None
+        for state in (("pure", "sick") if pure else ("sick", "pure")):
+            for base in (f"{name}_{zone_id}", name):
+                if path is None and (DECOR / f"{base}_{state}.png").exists():
+                    path = DECOR / f"{base}_{state}.png"
         img = Image.open(path).convert("RGBA")
         bottom = (y + h) * TILE
         if img.width < TILE:
             # Lo pequeño (animales, fauna) se apoya en el centro de su tile.
             bottom -= (TILE - img.height) // 2
         left = x * TILE + (w * TILE - img.width) // 2
+        if entry["id"] in ("tree", "tree_b", "burnt_tree"):
+            # Como WorldDecor: unos píxeles por árbol, para romper la cuadrícula.
+            hsh = gd_hash_v2i(x, y)
+            left += (hsh % 7) - 3
+            bottom += ((hsh // 7) % 3) - 1
         sprites.append((bottom, left, bottom, img))
     for _, left, bottom, img in sorted(sprites, key=lambda s: s[0]):
         out.alpha_composite(img, (left, bottom - img.height))
@@ -206,7 +226,7 @@ def main() -> int:
     chosen = {"yara_garden"} & parts
     if "--purified" in sys.argv:
         value = sys.argv[sys.argv.index("--purified") + 1]
-        chosen = parts if value == "all" else set() if value == "none" else set(value.split(","))
+        chosen = (parts or {"all"}) if value == "all" else set() if value == "none" else set(value.split(","))
     crop = None
     if "--crop" in sys.argv:
         crop = tuple(int(v) for v in sys.argv[sys.argv.index("--crop") + 1].split(","))

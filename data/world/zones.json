@@ -5,6 +5,8 @@
     "prueba_a": {"name": "Claro de prueba"},
     "prueba_b": {"name": "Ribera de prueba"},
     "prueba_c": {"name": "Hondonada de prueba"},
-    "valdehoja": {"name": "Valdehoja"}
+    "valdehoja": {"name": "Valdehoja"},
+    "ashen_forest": {"name": "Bosque de las Cenizas"},
+    "tar_basin": {"name": "Cuenca de Alquitrán"}
   }
 }

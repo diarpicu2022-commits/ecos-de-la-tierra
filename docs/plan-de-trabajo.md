@@ -45,16 +45,21 @@ válidos:
 > **Parte 3 — Las siete zonas. EN CURSO. Valdehoja CERRADA el 2026-10-28.**
 > Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
 >
-> **Lo siguiente, en una sesión nueva: el Bosque de las Cenizas.** Es la
-> primera zona con la composición regional completa del contrato «Rastro»:
-> camino a la fuente, 3 viñetas, hito y paso cerrado. Orden:
-> 1. preguntar a Diego cómo se llega a las otras cuatro regiones (en cadena
->    desde el Bosque o volviendo a Valdehoja);
-> 2. paso 1: el mapa en texto y las comprobaciones regionales de
->    `verify_zone`;
-> 3. paso 2: el decorado del daño (tocones, troncos, árboles calcinados,
->    ceniza), el hito (el árbol quemado mayor) y el `blocker`;
-> 4. paso 3, el motor; paso 4, los estados.
+> **Bosque de las Cenizas: aprobado por Diego** (2026-10-28). Prueba de
+> entrecerrar en lo enfermo: opción (b), el camino se lee por silueta y no por
+> luz.
+>
+> **Cuenca de Alquitrán: HECHA el 2026-10-28, espera visto bueno.**
+> - Rodeo vertical de 80 × 52: barriles, tubería partida y barcas varadas, y
+>   la refinería de Puerto Brea como hito, que se apaga al purificar.
+> - Vegetación de marisma.
+> - `verify_zone` **44/44**.
+>
+> El mundo va en cadena; la salida de la Cuenca está al oeste.
+>
+> **Lo siguiente:** el visto bueno a la Cuenca; después, la **Costa
+> Quebrada**, que entra por el este, con la misma secuencia y
+> `tools/zone_capture.tscn`.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -129,7 +134,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. **Valdehoja cerrada** (2026-10-28). Siguiente: Bosque. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja y Bosque cerrados; **Cuenca** hecha (2026-10-28). Siguiente: Costa |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -203,6 +208,12 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   paleta rica con color al purificar (madera, tejado, agua viva, flores,
   prado); animales domésticos siempre y fauna silvestre al purificar;
   movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
+- **Entrecerrar en lo enfermo** (2026-10-28, Diego, opción b): el camino
+  enfermo se lee por silueta y textura, no por luz; `verify_squint` mide que no
+  mande el decorado.
+- **El mundo va en cadena** (2026-10-28, Diego): Valdehoja → Bosque → Cuenca →
+  Costa → Llanura → Cumbre → Ciudad Dorada; el paso cerrado de cada fuente
+  abre la región siguiente.
 - **Tinta de personaje** (2026-10-28, Diego): `ash_950` y `ash_900` se aceptan
   en `verify_palette --world` solo como contorno y ojos de personaje; el
   decorado y el terreno se miden con `--strict`.
@@ -239,7 +250,6 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
-| Cómo se llega a las cuatro regiones tras el Bosque (cadena o vuelta a Valdehoja) | Diego, al abrir el Bosque |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 
