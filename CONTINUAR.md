@@ -10,14 +10,14 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el visto bueno a la Cuenca, y la Costa
+## 1. Lo primero: el visto bueno a la Llanura, y la Cumbre
 
-El 2026-10-28 se cerraron **Valdehoja y el Bosque**, y la **Cuenca de
-Alquitrán** quedó hecha, a la espera del visto bueno de Diego. El mundo va en
-cadena. La siguiente zona es la **Costa Quebrada**: su entrada está al este, y
-llega desde la salida oeste de la Cuenca, en (0, 34). Cada zona sigue la misma
-secuencia (anexo de la parte 3): composición medida con `verify_zone`, arte
-con `gen_world_decor.py` y capturas con `zone_capture.tscn`.
+El 2026-10-28 se cerraron **Valdehoja, el Bosque, la Cuenca y la Costa**, y la
+**Llanura Marchita** quedó hecha, a la espera del visto bueno de Diego. El
+mundo va en cadena. La siguiente es la **Cumbre Menguante**, la última zona
+regional, que entra por el norte desde la salida (52, 39) de la Llanura.
+Después viene la **Cripta de la Avaricia**. Cada zona sigue la misma secuencia
+(anexo de la parte 3).
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -32,7 +32,7 @@ con `gen_world_decor.py` y capturas con `zone_capture.tscn`.
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: Valdehoja y Bosque cerrados, Cuenca hecha (2026-10-28); siguiente, la Costa |
+| 3 | Las siete zonas | **En curso**: Valdehoja, Bosque, Cuenca y Costa cerrados; Llanura hecha (2026-10-28); siguiente, la Cumbre |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -83,7 +83,7 @@ dentro de ellas:
   por Diego el 2026-10-01. Hoja lista en
   `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. Cierran la parte 1. **No se
   pueden hacer en la nube**: necesitan tres personas reales.
-- **Enmienda 9** si dE 9,2 entre materiales no basta (se decide con esa prueba).
+- **Enmienda 10** si dE 9,2 entre materiales no basta (se decide con esa prueba).
 - **Fondo de batalla por región + parallax de 3 capas**, con las rampas del
   tileset de la región. Parte 4.
 - **Mobbin y Pinterest** sin consultar en el anexo de exploración: abrir con
@@ -136,6 +136,8 @@ python tools/verify_squint.py valdehoja                          # prueba de ent
 $GODOT --headless --path . res://tools/verify_zone.tscn -- ashen_forest
 xvfb-run -a $GODOT --path . res://tools/zone_capture.tscn -- ashen_forest
 $GODOT --headless --path . res://tools/verify_zone.tscn -- tar_basin
+$GODOT --headless --path . res://tools/verify_zone.tscn -- broken_coast
+$GODOT --headless --path . res://tools/verify_zone.tscn -- withered_plain
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

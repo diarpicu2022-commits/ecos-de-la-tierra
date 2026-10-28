@@ -37,14 +37,18 @@ ILAN = ROOT / "assets" / "sprites" / "world" / "ilan.png"
 SCREEN = (480, 270)
 
 # Sprite de cada id de la leyenda cuando no se llama igual.
+# Lo que desaparece al purificar: el mismo listado que WorldDecor.VANISH_WHEN_PURE.
+VANISH_WHEN_PURE = ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
+                    "v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag",
+                    "v2_sack", "v2_salt", "salt")
 SPRITE = {"person": "yara", "chicken": "chicken_0", "bird": "bird_0", "butterfly": "butterfly_0"}
 ENTRY = re.compile(r"^; (\S) = (\w+), (\w+), (sólido|pisable)(?:, (\d+)x(\d+))?")
 
 # Mismo orden y mismas filas que WorldTiles.
 NORTH, EAST, SOUTH, WEST = 1, 2, 4, 8
 SOIL_VARIANTS = 4
-LEGEND = {".": "soil", "=": "path", "~": "water", "#": "flora"}
-OVERLAY_ROW = {"path": 1, "water": 3, "flora": 5}
+LEGEND = {".": "soil", "=": "path", "~": "water", "#": "flora", ":": "sand"}
+OVERLAY_ROW = {"path": 1, "water": 3, "flora": 5, "sand": 9}
 MEADOW_EDGE_ROW = 7
 
 
@@ -183,7 +187,7 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
         pure = purified(x + w // 2, y + h - 1)
         if entry["kind"] == "fauna" and not pure:
             continue
-        if pure and entry["id"] in ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter"):
+        if pure and entry["id"] in VANISH_WHEN_PURE:
             continue
         name = SPRITE.get(entry["id"], entry["id"])
         name = re.sub(r"^v\d_", "", name)
@@ -198,7 +202,7 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
             # Lo pequeño (animales, fauna) se apoya en el centro de su tile.
             bottom -= (TILE - img.height) // 2
         left = x * TILE + (w * TILE - img.width) // 2
-        if entry["id"] in ("tree", "tree_b", "burnt_tree"):
+        if entry["id"] in ("tree", "tree_b", "burnt_tree", "bush"):
             # Como WorldDecor: unos píxeles por árbol, para romper la cuadrícula.
             hsh = gd_hash_v2i(x, y)
             left += (hsh % 7) - 3

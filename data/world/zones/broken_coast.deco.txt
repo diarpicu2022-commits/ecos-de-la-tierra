@@ -1,0 +1,70 @@
+; Costa Quebrada — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md), zona regional; enmienda 9
+; (la arena, «:»). Mismo tamaño que broken_coast.txt. El estado lo da la
+; bandera purified_broken_coast.
+;
+; La basura de decorado es SUELTA y DISPERSA, nunca atada ni en fardos ni en
+; contenedores: el fardo y el contenedor son las clases que responden de la
+; Costa (catálogo 2a).
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; 1 = vignette, v1_snagged_bag, sólido        arbusto con bolsas enganchadas: lo que trae el viento
+; a = vignette, v1_bottle, pisable            botella suelta en la duna
+; b = vignette, v2_ghost_net, sólido, 2x1     red fantasma enredada en las rocas
+; 2 = vignette, v2_buoy, sólido               su boya, varada
+; c = vignette, v3_torn_bag, pisable          bolsa rota
+; 3 = vignette, v3_trail, pisable             el reguero, en diagonal hacia la montaña
+; Y = landmark, trash_mountain, sólido, 4x4   hito: la montaña de basura del vertedero
+; M = entity, monster, sólido                 el Golem de Plástico (combate de historia)
+; X = entity, blocker, sólido                 paso cerrado: chatarra y plástico retorcidos
+; S = entity, seedbed, sólido                 semillero de la duna del noroeste
+; T = decor, tree, sólido, 2x2                árbol enfermo
+; U = decor, tree_b, sólido, 2x2              árbol enfermo, segunda copa
+; u = decor, bush, sólido                     arbusto de duna, también sobre el follaje
+; l = decor, litter, pisable                  basura suelta y dispersa
+; k = decor, bottle, pisable                  botella tumbada
+; n = decor, torn_bag, pisable                bolsa rota
+; g = decor, grass, pisable                   hierba de duna
+; R = decor, rock, sólido                     roca partida
+; @ = spawn, start, pisable                   llegada desde la Cuenca
+---
+    uuuuu uuu uuuuuuuu uuuuuuuuu uuu uuuuuuu uuuuuu uuu u uuuuuu uu uu u    uu uuuuuu  uu uuuuu
+    uuuuuuuuuuu  u  u  uuuuuuu u u   uuuuu uuu u  u   uuuuuuu u uuuuuuuuuuuu  uu   uuuuuu  u uu
+    uuuuu uuuuu          l  ll  l n   uuuuuuu uuu  uuuu  uu uuuuu u uu  uu uu uu u uuuuuuu  uuu
+     u  uuu u uu          R  R  l  Rn uu u uuuuuuuu u u  u uuuuuu uuuuuuuuuuuuuuuuu  uu  uuuuuu
+      uu          k     g   klk n    l  uuuuuuuuuuu uuuu uu uu uu uuuuuuuu uu  u uuuuuu uuuuu uu
+      uu     g            l     n   n   uu u uu uuuuuuuuu  u uu u uuu u u uuuuuuuuuuuuuu uu uu u
+                S        R    l  k  u uu uu uuuu          l           u u uuuuuuuu        uuuuu
+                 n  R  R  l         uuuuuuuu uuull       l  l         uuu  uuuuuuu        uuu u
+         n        Rl R    l     uuuuu uuuuuu       R n         l        uuuuuu   Rn         uuuu
+            k  n         l    l u u u  uu   uu     l    n k    l        u uuu        g       uu
+    uuuu    l    n   ll l                            l   ll   ll                 lR 1   Ra
+    u uu     k  R l                                                                   a
+     uu uuuu  R  n         uuuuuuuuuu  uuuuuu uuuuu  u          l uu uuuuuu        a          @
+    uu uu  u               uuu   u u u uuu  uu uuuuuuu            u uuu u u  R    1  a  1 l
+    uuuuuu            uuu uuuu u u uuuuuuuu uuu uuuu u u uuu uuu  uuuu  uuu
+    u uuuu            u uuu u u u u  u u uuuuuuuu u uuu u  uuu uuu  uuuuu uu   g  n R   l   R
+    uu uuu    u u uuuuu uuuu  uu u        u  uuu u uuuuuuuuuuuu uuuuu uuuuuuu uu            uuuu
+     u uu   uu uuuuuu uuuu uuuuuuu        u uuu uuuuu u u  uu  uuuu uuuu uuuu u             uuu
+        uu     uuuuuu uu  u u  l  YYYY   ln     uuuu  uuuuuu u uuu u uu   u uu uu uuuuu  uuuu uu
+        uu   kuuu uuu uuuuuu u   nYYYY ll  nl   u u uuuu uuuuu uu uuuuu uuuuuuuuuuuuu  u uu uuuu
+        bb      uuu   u uuuu Rn   YYYY    n  l
+   k    R       u u uu uuuuu   n kYYYY n  g                 X
+            lR    uuu uuu uuuuR   l l g M c3c3c u uuuuuuu  uuu uuuu  u u uuuu uuuuuuuu uu  uuuuu
+      k bb l   k  u uuuu uuuuu      l           uu u   u uuuuuuuuuuuuuuuuu  uuuu   uuuuu uuuuuuu
+      R    l  l   uu  u u uuuu  k   nlll      uu uuu uuuuuuu                        uu uuu u uuu
+        2       g uuuu uuuu uu         k l l   uuu uu u u uu    lk                  u uuu u  u
+             l   uuuuu uuuuuu  uuuuu k  uuuu  uuu uuuuuuu      l      g  k         g    u uuuuu
+     R   l   g  uuuu uu uuu u u uuuu     u u  u  uuuuuuuuu R            g    nR         u uuuuuu
+            l                                 uuuuuuuuuuuu  l          lk             u uuuuuu u
+                                              uuuuuuuu u                 k             u u  uuuu
+         u  uu             l                  uuu  u         l k kl                u uuu
+        uuuuu  k  l n  l  llnR         k    uu u uu  Rlg   k  llnl Rn    RR       uuuuuuuu  k
+                Rn       l     l       kg n    l        l   k    lkl RRn   l n      R      R  l
+       l   n  nlR Rll             l l     l     k R k lnnn              lRg    klk   n  k n kl
+       kk   l n                              k ngl ll                           l  l lk nk
+
+
+
+
+

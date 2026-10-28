@@ -42,7 +42,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ATLAS = ROOT / "assets" / "tilesets" / "world.png"
 T = 16
 INTERIOR = 15
-ROWS = {"camino": 1, "agua": 3, "follaje": 5}
+ROWS = {"camino": 1, "agua": 3, "follaje": 5, "arena": 9}
 
 VALUE_FLOOR = 1.5
 # Excepción decidida el 2026-09-29 (opción a del paso 2b): el camino se acepta
@@ -50,6 +50,12 @@ VALUE_FLOOR = 1.5
 # a festón) y la textura (grietas frente a liso). El piso baja solo lo aceptado:
 # cualquier retroceso por debajo de lo medido ese día sigue siendo FALLA.
 VALUE_FLOOR_BY_MATERIAL = {"camino": 1.47}
+# Excepción decidida por Diego el 2026-10-28 (enmienda 9, la arena): la arena
+# purificada no llega a dE 9 del camino purificado con ningún token que pase el
+# contorno y los acentos. Se acepta en 6 porque las separan las ondas frente al
+# liso y la silueta del borde. Medido ese día: 6,9 (WOOD_500 con ondas). Por
+# debajo de 6, FALLA.
+DE_FLOOR_BY_PAIR = {("purificado", "camino", "arena"): 6.0}
 DE_FLOOR = 9.0
 GRAPHIC_FLOOR = 3.0
 
@@ -103,9 +109,11 @@ def main() -> int:
         for i, a in enumerate(names):
             for b in names[i + 1:]:
                 d = delta_e(means[a], means[b])
-                mark = "OK   " if d >= DE_FLOOR else "FALLA"
-                ok &= d >= DE_FLOOR
-                print(f"  {mark} {state:10} {a:8} / {b:8} dE {d:5.1f}")
+                floor = DE_FLOOR_BY_PAIR.get((state, a, b), DE_FLOOR)
+                mark = "OK   " if d >= floor else "FALLA"
+                ok &= d >= floor
+                note = f"  (piso aceptado {floor:.1f}, decisión 2026-10-28)" if floor != DE_FLOOR else ""
+                print(f"  {mark} {state:10} {a:8} / {b:8} dE {d:5.1f}{note}")
 
     tokens = gd_tokens()
     by_rgb = {v: k for k, v in tokens.items()}

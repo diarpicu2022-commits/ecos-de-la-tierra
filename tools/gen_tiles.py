@@ -12,7 +12,7 @@ daltonismo (medido el 2026-09-23), así que cada estado cambia también de valor
 de forma. Ningún tile lleva contorno `ASH_050`: el contorno es de lo que
 responde, y el terreno no responde.
 
-Atlas: 16 columnas por 9 filas de 16 px.
+Atlas: 16 columnas por 11 filas de 16 px.
 
     fila 0   suelo: 4 variantes enfermas y 4 purificadas (columnas 0-7)
     fila 1   camino enfermo      fila 2   camino purificado
@@ -21,6 +21,7 @@ Atlas: 16 columnas por 9 filas de 16 px.
     fila 7   borde del prado: suelo purificado que linda con suelo enfermo
              (enmienda 6). La máscara dice qué vecinos están purificados.
     fila 8   agua purificada, segundo cuadro (enmienda 8): el brillo del agua.
+    fila 9   arena enferma       fila 10  arena purificada (enmienda 9, la Costa)
 
 En las filas 1-6, la columna es la máscara de vecinos del mismo material:
 N = 1, E = 2, S = 4, O = 8. La columna 15 es el interior.
@@ -46,6 +47,7 @@ SOIL_ROW = 0
 OVERLAYS = ["path", "water", "flora"]  # filas 1-2, 3-4, 5-6
 MEADOW_EDGE_ROW = 7
 WATER_ALT_ROW = 8
+SAND_ROW = 9  # 9 enferma, 10 purificada
 
 
 # --- Texturas: base plana y pocas formas contadas --------------------------------
@@ -181,6 +183,36 @@ def water_alt_tile(purified: bool) -> list[list[str]]:
     return g
 
 
+def sand_tile(purified: bool) -> list[list[str]]:
+    """Arena de la Costa (enmienda 9, 2026-10-28). Enferma: arena gris
+    (ASH_700) con ondas rotas en diagonal y puntos de microplástico. Purificada:
+    arena limpia, WOOD_500, con ondas redondas WOOD_700. Ningún color nuevo.
+
+    Medido el mismo día:
+    - con base SOIL_500, la arena enferma quedaba a dE 3,3 del camino, y los
+      puntos ASH_400 bajaban el contorno a 2,31:1;
+    - la purificada no llega a dE 9 del camino purificado con ningún token que
+      pase el contorno y los acentos. WOOD_300 se quedaba en 2,62:1 con el
+      verde y ROOF_300 en 2,46:1; WOOD_100 bajaba el contorno a 2,35:1.
+
+    Diego aceptó un piso propio de 6 para ese par, porque la diferencia la cargan
+    las ondas y el borde. WOOD_500 con ondas WOOD_700 da dE 6,9 y valor 1,56
+    (verify_tileset)."""
+    rng = random.Random(500 + (1 if purified else 0))
+    if not purified:
+        g = flat("ash_700")
+        for x, y in ((1, 3), (7, 9), (10, 1)):
+            diagonal(g, x, y, 4, "ash_600")
+        for _ in range(9):
+            stamp(g, rng.randrange(T), rng.randrange(T), "soil_300")
+        return g
+    g = flat("wood_500")
+    for x, y, n in ((2, 4, 5), (8, 10, 6), (4, 14, 4)):
+        for dx in range(n):
+            stamp(g, x + dx, y + (1 if dx in (0, n - 1) else 0), "wood_700")
+    return g
+
+
 def flora_tile(purified: bool) -> list[list[str]]:
     if not purified:
         # Follaje enfermo: masa oliva con hojas partidas en diagonal y huecos.
@@ -209,7 +241,7 @@ def fill_token(material: str, x: int, y: int, purified: bool) -> str:
     key = (material, purified)
     if key not in _CACHE:
         _CACHE[key] = {"path": path_tile, "water": water_tile, "water_alt": water_alt_tile,
-                       "flora": flora_tile}[material](purified)
+                       "flora": flora_tile, "sand": sand_tile}[material](purified)
     return _CACHE[key][y][x]
 
 
@@ -262,6 +294,8 @@ EDGE_TOKEN = {
     ("water", False): "soil_500",
     ("water", True): "soil_300",
     ("water_alt", True): "soil_300",
+    ("sand", False): "soil_700",
+    ("sand", True): "wood_700",
     ("flora", False): "flora_700",
     ("flora", True): "vital_900",
 }
@@ -325,7 +359,7 @@ def draw_soil(canvas: Canvas, ox: int, oy: int, purified: bool, variant: int) ->
 
 
 def main() -> None:
-    canvas = Canvas(16 * T, 9 * T)
+    canvas = Canvas(16 * T, 11 * T)
     for variant in range(4):
         draw_soil(canvas, variant * T, SOIL_ROW, False, variant)
         draw_soil(canvas, (4 + variant) * T, SOIL_ROW, True, variant)
@@ -337,6 +371,8 @@ def main() -> None:
     for mask in range(16):
         draw_meadow_edge(canvas, mask * T, MEADOW_EDGE_ROW * T, mask)
         draw_overlay(canvas, mask * T, WATER_ALT_ROW * T, "water_alt", True, mask)
+        draw_overlay(canvas, mask * T, SAND_ROW * T, "sand", False, mask)
+        draw_overlay(canvas, mask * T, (SAND_ROW + 1) * T, "sand", True, mask)
     canvas.save(OUT)
     print(f"  tileset: {OUT.relative_to(OUT.parent.parent.parent)} ({canvas.width}x{canvas.height})")
 

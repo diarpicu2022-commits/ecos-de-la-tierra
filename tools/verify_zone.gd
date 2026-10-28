@@ -64,7 +64,7 @@ const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush"]
 ## Decorado del daño (catálogo 2a, «decorado permitido»): lo que cuenta para el
 ## gradiente.
-const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel"]
+const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel", "bottle", "torn_bag", "salt"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0
@@ -316,9 +316,10 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 	_check("purificada: desaparecen, con su cuerpo (%d -> %d sólidos)" % [
 		sick_solids, world.solids.get_child_count()],
 		gone.call() == 0 and world.solids.get_child_count() == sick_solids - vanish_solid)
+	# El suelo que se pisa: tierra o, en la Costa, arena.
 	var soil := Vector2i(-1, -1)
 	for c in world._layer.get_used_cells():
-		if lines[c.y][c.x] == "." and soil.x < 0:
+		if lines[c.y][c.x] in [".", ":"] and soil.x < 0:
 			soil = c
 	_check("purificada: el suelo se pinta purificado", soil.x >= 0 and _cell_pure(world, soil, lines))
 	state.flags.clear()
@@ -616,7 +617,7 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 	for y in size.y:
 		for x in size.x:
 			var c := Vector2i(x, y)
-			if lines[y][x] not in [".", "="]:
+			if lines[y][x] not in [".", "=", ":"]:
 				continue
 			var d := Vector2(x - source.x, (y - source.y) * 1.6).length()
 			var band := 0 if d < 16.0 else 1 if d < 34.0 else 2
@@ -716,7 +717,7 @@ func _touches(targets: Array, reach: Dictionary) -> bool:
 ## Lo que cada pieza puede pisar: suelo o camino; un árbol, también el
 ## follaje (su copa cubre el borde del bosque); la fauna, también el agua.
 func _ground_ok(entry: Dictionary, ground: String) -> bool:
-	if ground in [".", "="]:
+	if ground in [".", "=", ":"]:
 		return true
 	if ground == "#":
 		return entry["id"] in TREES_ON_FLORA
