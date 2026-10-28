@@ -324,6 +324,13 @@ tres opciones recomendadas:
 color nuevo. Enferma, `ASH_700` con microplástico; purificada, `WOOD_500` con
 ondas. Piso propio de dE 6 frente al camino purificado (medido 6,9).
 
+**Enmienda 10 — la piedra** (2026-10-28): dos materiales nuevos para la Cripta,
+muro `%` (sólido) y losa `,`, sin color nuevo. Enfermos, `WATER_700` y
+`WATER_300`; purificados, `ASH_700` con hiedra y `SOIL_300` con musgo en las
+juntas. No conviven con suelo, agua, follaje ni arena (`verify_zone` lo
+comprueba). En la misma fecha, Diego fijó **cinco viñetas en la Cripta**, una
+bóveda por región. La reserva para el dE entre materiales pasa a la 11.
+
 ### 3.3 Módulo de IA ampliado — aprobado por Diego el 2026-09-30
 
 Hasta aquí la IA vivía solo en el combate: pesos para los monstruos comunes y
@@ -583,7 +590,7 @@ python tools/verify_palette.py value <tile_enfermo.png> <tile_purificado.png>   
 Y una escena `tools/tileset_sheet.tscn` que pinte un mapa de prueba de
 30×17 tiles con los tres materiales en los dos estados y capture a 480×270.
 Sobre esa captura se decide la decisión abierta: **si dE 9,2 entre materiales
-basta o hace falta la enmienda 10** (la 5 se usó para la cámara el 2026-09-30, la 6 a la 8 para Valdehoja y la 9 para la arena el 2026-10-28). Criterio medido: tres personas nombran el
+basta o hace falta la enmienda 11** (la 5 se usó para la cámara el 2026-09-30, la 6 a la 8 para Valdehoja, la 9 para la arena y la 10 para la piedra el 2026-10-28). Criterio medido: tres personas nombran el
 material de 10 recortes de 64×64 sin error, o no basta.
 **Punto de control con Diego.**
 

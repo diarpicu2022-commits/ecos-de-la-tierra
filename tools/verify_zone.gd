@@ -61,10 +61,12 @@ const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 	"withered_plain", "waning_peak"]
-const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush"]
+const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
+## Lo que puede apoyarse en el muro de la Cripta (enmienda 10).
+const ON_WALL := ["pillar", "root", "banner"]
 ## Decorado del daño (catálogo 2a, «decorado permitido»): lo que cuenta para el
 ## gradiente.
-const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel", "bottle", "torn_bag", "salt"]
+const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel", "bottle", "torn_bag", "salt", "dark_rock", "crack", "meltwater", "coins"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0
@@ -300,7 +302,10 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 	await get_tree().physics_frame
 	var sick_solids := world.solids.get_child_count()
 	var sick_marks: int = gone.call()
-	_check("enferma: la Llama y el paso cerrado están (%d)" % sick_marks, sick_marks >= 2)
+	# La Cripta no tiene paso cerrado: solo la Sombra.
+	var marks := 1 if zone_id == CRYPT_ID else 2
+	_check("enferma: %s (%d)" % ["la Sombra está" if marks == 1 else "el monstruo y el paso cerrado están",
+		sick_marks], sick_marks >= marks)
 	state.set_zone_purified(zone_id)
 	world.enter_zone(zone_id, spawn)
 	await get_tree().physics_frame
@@ -319,7 +324,7 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 	# El suelo que se pisa: tierra o, en la Costa, arena.
 	var soil := Vector2i(-1, -1)
 	for c in world._layer.get_used_cells():
-		if lines[c.y][c.x] in [".", ":"] and soil.x < 0:
+		if lines[c.y][c.x] in [".", ":", ","] and soil.x < 0:
 			soil = c
 	_check("purificada: el suelo se pinta purificado", soil.x >= 0 and _cell_pure(world, soil, lines))
 	state.flags.clear()
@@ -369,6 +374,21 @@ func _measure(zone_id: String) -> void:
 		else:
 			real.append(p)
 	_check("reglas de salida y borde", real.is_empty(), "; ".join(real))
+
+	# Enmienda 10: la piedra no convive con la tierra, el agua, el follaje ni la
+	# arena (verify_tileset no exige su dE porque nunca comparten zona).
+	var stone := false
+	var apart := PackedStringArray()
+	for row in lines:
+		stone = stone or row.contains("%") or row.contains(",")
+	if stone:
+		for ch in [".", "~", "#", ":"]:
+			for row in lines:
+				if row.contains(ch):
+					apart.append(ch)
+					break
+	_check("la piedra no comparte zona con tierra, agua, follaje ni arena",
+		not stone or apart.is_empty(), " ".join(apart))
 
 	print("\nCapa de decorado")
 	var legend: Dictionary = deco["legend"]
@@ -533,7 +553,13 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 		forward += 1
 		_check("la salida de ida %s es inalcanzable sin purificar" % cell, not sick.has(cell))
 		_check("y se alcanza al purificar (sin los pasos cerrados)", pure.has(cell))
-	_check("hay salida de ida", forward >= 1)
+	if zone_id == CRYPT_ID:
+		# La Cripta es el final: detrás de la Sombra no hay región que abrir.
+		var blockers := cells.keys().filter(func(c): return legend[cells[c]]["id"] == "blocker")
+		_check("la Cripta es el final: sin salida de ida ni paso cerrado",
+			forward == 0 and blockers.is_empty(), "%d salidas, %d pasos" % [forward, blockers.size()])
+	else:
+		_check("hay salida de ida", forward >= 1)
 	# 2. La fuente, por el camino y sin paso cerrado delante.
 	var on_path := _flood(spawn, lines, cells, legend, true)
 	_check("el camino principal lleva de la llegada a la fuente", _touches([source], on_path))
@@ -559,7 +585,11 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 		groups[n]["ids"][entry["id"]] = true
 	var numbers := groups.keys()
 	numbers.sort()
-	_check("exactamente 3 viñetas, numeradas 1, 2 y 3", numbers == [1, 2, 3], str(numbers))
+	# La Cripta lleva cinco: una bóveda por región (decisión de Diego, 2026-10-28).
+	var expected_n := 5 if zone_id == CRYPT_ID else 3
+	var expected := range(1, expected_n + 1)
+	_check("exactamente %d viñetas, numeradas de 1 a %d" % [expected_n, expected_n],
+		numbers == expected, str(numbers))
 	var at_route := {}
 	for n in groups:
 		_check("la viñeta %d une dos elementos (%s)" % [n, ", ".join(groups[n]["ids"].keys())],
@@ -577,13 +607,18 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 		_check("la viñeta %d está junto al camino principal (≤ %d tiles)" % [
 			n, VIGNETTE_PATH_DISTANCE], far == 0, "%d elementos lejos" % far)
 		at_route[n] = best
-	if numbers == [1, 2, 3]:
-		_check("las viñetas aparecen en orden hacia la fuente (tile %d, %d, %d de %d)" % [
-			at_route[1], at_route[2], at_route[3], route.size()],
-			at_route[1] < at_route[2] and at_route[2] < at_route[3])
+	if numbers == expected:
+		var steps := PackedStringArray()
+		var ordered := true
+		for n in expected:
+			steps.append(str(at_route[n]))
+			if n > 1 and at_route[n - 1] >= at_route[n]:
+				ordered = false
+		_check("las viñetas aparecen en orden hacia la fuente (tile %s de %d)" % [
+			", ".join(steps), route.size()], ordered)
 		var shared := PackedStringArray()
-		for a in [1, 2, 3]:
-			for b in [1, 2, 3]:
+		for a in expected:
+			for b in expected:
 				if a >= b:
 					continue
 				for ca: Vector2i in groups[a]["cells"]:
@@ -617,7 +652,7 @@ func _measure_region(zone_id: String, lines: PackedStringArray, cells: Dictionar
 	for y in size.y:
 		for x in size.x:
 			var c := Vector2i(x, y)
-			if lines[y][x] not in [".", "=", ":"]:
+			if lines[y][x] not in [".", "=", ":", ","]:
 				continue
 			var d := Vector2(x - source.x, (y - source.y) * 1.6).length()
 			var band := 0 if d < 16.0 else 1 if d < 34.0 else 2
@@ -717,10 +752,12 @@ func _touches(targets: Array, reach: Dictionary) -> bool:
 ## Lo que cada pieza puede pisar: suelo o camino; un árbol, también el
 ## follaje (su copa cubre el borde del bosque); la fauna, también el agua.
 func _ground_ok(entry: Dictionary, ground: String) -> bool:
-	if ground in [".", "=", ":"]:
+	if ground in [".", "=", ":", ","]:
 		return true
 	if ground == "#":
 		return entry["id"] in TREES_ON_FLORA
+	if ground == "%":
+		return entry["id"] in ON_WALL
 	return ground == "~" and entry["kind"] == "fauna"
 
 

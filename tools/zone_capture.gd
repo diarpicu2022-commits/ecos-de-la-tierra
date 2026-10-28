@@ -57,11 +57,37 @@ const SHOTS := {
 		["campo-purificado", Vector2i(30, 8), true],
 		["paso-abierto", Vector2i(52, 30), true],
 	],
+	"waning_peak": [
+		["entrada", Vector2i(52, 1), false],
+		["roca", Vector2i(48, 9), false],
+		["estaca", Vector2i(12, 25), false],
+		["asomo", Vector2i(34, 28), false],
+		["hielo", Vector2i(57, 46), false],
+		["fuente", Vector2i(40, 37), false],
+		["fuente-purificada", Vector2i(40, 37), true],
+		["ladera-purificada", Vector2i(13, 14), true],
+		["paso-abierto", Vector2i(20, 36), true],
+	],
+	"greed_crypt": [
+		["entrada", Vector2i(58, 36), false],
+		["boveda-1", Vector2i(52, 29), false],
+		["boveda-2", Vector2i(23, 7), false],
+		["boveda-3", Vector2i(8, 32), false],
+		["asomo", Vector2i(8, 38), false],
+		["boveda-4", Vector2i(8, 54), false],
+		["boveda-5", Vector2i(46, 55), false],
+		["fuente", Vector2i(30, 46), false],
+		["fuente-purificada", Vector2i(30, 46), true],
+		["galeria-purificada", Vector2i(23, 7), true],
+	],
 }
 const MOTION := {"ashen_forest": Vector2i(52, 11), "tar_basin": Vector2i(40, 38),
-	"broken_coast": Vector2i(28, 29), "withered_plain": Vector2i(30, 8)}
+	"broken_coast": Vector2i(28, 29), "withered_plain": Vector2i(30, 8),
+	"waning_peak": Vector2i(44, 41)}
+## En la Cripta purificada no hay nada que se mueva (ni agua ni plantas que se
+## mezan): no se graba movimiento.
 const SLUG := {"ashen_forest": "bosque", "tar_basin": "cuenca", "broken_coast": "costa",
-	"withered_plain": "llanura"}
+	"withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta"}
 
 var _world := WorldRoot.new()
 var _state: Node = null
@@ -85,7 +111,8 @@ func _ready() -> void:
 		await _capture(zone, shot[0], shot[1])
 	_state.flags.clear()
 	_state.set_zone_purified(zone)
-	await _record_motion(zone, MOTION[zone])
+	if MOTION.has(zone):
+		await _record_motion(zone, MOTION[zone])
 	_state.flags.clear()
 	get_tree().quit()
 

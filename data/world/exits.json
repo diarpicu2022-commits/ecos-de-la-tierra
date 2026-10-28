@@ -16,6 +16,9 @@
     {"from": "broken_coast", "cell": [95, 12], "to": "tar_basin", "to_cell": [1, 34]},
     {"from": "broken_coast", "cell": [95, 21], "to": "withered_plain", "to_cell": [1, 11]},
     {"from": "withered_plain", "cell": [0, 11], "to": "broken_coast", "to_cell": [94, 21]},
-    {"from": "withered_plain", "cell": [52, 39], "to": "waning_peak", "to_cell": [52, 1]}
+    {"from": "withered_plain", "cell": [52, 39], "to": "waning_peak", "to_cell": [52, 1]},
+    {"from": "waning_peak", "cell": [52, 0], "to": "withered_plain", "to_cell": [52, 38]},
+    {"from": "waning_peak", "cell": [0, 36], "to": "greed_crypt", "to_cell": [58, 36]},
+    {"from": "greed_crypt", "cell": [59, 36], "to": "waning_peak", "to_cell": [1, 36]}
   ]
 }

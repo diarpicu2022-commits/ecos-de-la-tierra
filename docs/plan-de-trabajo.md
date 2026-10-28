@@ -53,15 +53,23 @@ válidos:
 >
 > **Costa Quebrada: aprobada** (2026-10-28). Trae la enmienda 9, la arena.
 >
-> **Llanura Marchita: HECHA el 2026-10-28, espera visto bueno.**
-> - Campos de monocultivo sin cerca partidos por setos; el silo de Grano de
->   Sal como hito.
-> - Viñetas: setos arrancados, sacos de abono con sal, pulverizadora.
-> - `verify_zone` **44/44**.
+> **Llanura Marchita: aprobada** (2026-10-28, PR #15).
 >
-> **Lo siguiente:** el visto bueno a la Llanura; después, la **Cumbre
-> Menguante** (la última regional), que entra por el norte desde la salida
-> (52, 39) de la Llanura. Luego, la Cripta de la Avaricia.
+> **Cumbre Menguante: HECHA el 2026-10-28**, espera visto bueno en el PR #16
+> (abierto).
+>
+> **Cripta de la Avaricia: HECHA el 2026-10-28, espera visto bueno.**
+> - Cinco bóvedas, una por región (Diego): lo que la Compañía se llevó de
+>   cada región junto a su oro.
+> - Enmienda 10, la piedra: muro `%` y losa `,`, sin color nuevo.
+> - Hito: la estatua de oro del Barón Cendral; fuente: la Sombra de la
+>   Avaricia. Al purificar, el oro desaparece.
+> - `verify_zone` **44/44**; las siete zonas en verde.
+>
+> **Lo siguiente:** el visto bueno a la Cripta y una pregunta abierta: la
+> sesión decidió que la Cripta, por ser el final, no tiene paso cerrado ni
+> salida de ida; Diego dice si quiere una salida a la superficie detrás de la
+> Sombra. Con eso, **la parte 3 queda cerrada** y se abre la parte 4.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -136,7 +144,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja, Bosque, Cuenca y Costa cerrados; **Llanura** hecha (2026-10-28). Siguiente: Cumbre |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-10. Valdehoja y cuatro regiones cerradas; **Cumbre** (PR #16) y **Cripta** hechas (2026-10-28), esperan visto bueno |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -214,6 +222,10 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   Costa, sin color nuevo; piso propio de dE 6 entre arena y camino
   purificados (medido 6,9). La reserva para el dE entre materiales pasa a la
   siguiente enmienda libre.
+- **Cripta: cinco bóvedas, una por región, y enmienda 10, la piedra**
+  (2026-10-28, Diego): 5 viñetas solo en la Cripta; muro `%` y losa `,` sin
+  color nuevo, que no conviven con los otros materiales. La reserva para el
+  dE entre materiales pasa a la enmienda 11.
 - **Entrecerrar en lo enfermo** (2026-10-28, Diego, opción b): el camino
   enfermo se lee por silueta y textura, no por luz; `verify_squint` mide que no
   mande el decorado.
@@ -253,7 +265,8 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 
 | Qué | Dónde se resuelve |
 |---|---|
-| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 10** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja; la 9, para la arena) | Paso 2b, sobre la captura del tileset |
+| Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 11** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja; la 9, para la arena; la 10, para la piedra) | Paso 2b, sobre la captura del tileset |
+| Si la Cripta lleva una salida a la superficie detrás de la Sombra (hoy no tiene paso cerrado ni salida de ida, por ser el final) | Diego, al dar el visto bueno a la Cripta |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
