@@ -1,6 +1,6 @@
 # Guía de continuación — *Ecos de la Tierra*
 
-Redactada el 2026-09-23 para quien siga el proyecto, persona o Claude, **sin
+Redactada el 2026-09-23 para quien siga el proyecto, **sin
 acceso a la skill de dirección de diseño** con la que se hizo lo anterior. Todo
 lo necesario para trabajar con el mismo criterio está aquí dentro. Si algo de
 esta guía choca con un contrato bloqueado de `docs/ux/anexos/`, **manda el
@@ -53,7 +53,7 @@ del juego; una captura del editor no vale como prueba.
 ## 1. El protocolo, en versión portable
 
 El dueño del proyecto (Diego) trabaja con un protocolo que **no es opcional**.
-Tu Claude no lo trae cargado, así que aquí está completo.
+Quien llega nuevo no lo trae cargado, así que aquí está completo.
 
 ### 1.1 Las cuatro etapas, para cada pantalla o sistema nuevo
 
@@ -177,8 +177,8 @@ Lo que no se puede medir se declara **pendiente**, no se da por bueno.
   `DesignTokens`**. Si falta un valor, el contrato no lo contempla: se pregunta.
 - Assets de arte generados por script en `tools/gen_*.py` con semilla fija,
   usando la paleta de `tools/pixel.py`.
-- **Sin firma de herramientas en nada**: ni `Co-Authored-By: Claude`, ni
-  «Generated with Claude Code», ni enlaces a claude.ai, en commits, PR, código
+- **Sin firma de herramientas en nada**: ni líneas `Co-Authored-By`, ni
+  «Generated with …», ni enlaces a herramientas, en commits, PR, código
   ni documentación.
 - Cada sesión **se cierra actualizando `docs/plan-de-trabajo.md` y con un
   commit**.

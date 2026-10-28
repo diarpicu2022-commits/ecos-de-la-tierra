@@ -1,4 +1,4 @@
-# Ecos de la Tierra — instrucciones para Claude
+# Ecos de la Tierra — instrucciones para quien continúe el proyecto
 
 RPG 2D por turnos en Godot 4 + GDScript. Proyecto de Diseño de Interfaces de
 Software: **se evalúa el criterio de diseño, no solo que funcione.**
@@ -36,6 +36,6 @@ Software: **se evalúa el criterio de diseño, no solo que funcione.**
   que falla.
 - Código en inglés; textos de jugador y comentarios en español.
 - **Sin firma de herramientas** en commits, PR, código ni documentación: nada de
-  `Co-Authored-By: Claude` ni «Generated with Claude Code».
+  líneas `Co-Authored-By` ni «Generated with …» de ninguna herramienta.
 - **Al cerrar la sesión:** actualizar `docs/plan-de-trabajo.md` y hacer commit.
 - PR con la plantilla de la guía §1.6 y capturas reales.

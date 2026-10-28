@@ -106,7 +106,7 @@ Godot 4 permite exportar el mismo proyecto tanto a PC (Windows, Linux y macOS) c
 
 Ecos de la Tierra propone un videojuego RPG cuya jugabilidad no es solo un vehículo de entretenimiento, sino un refuerzo directo del mensaje de concienciación ambiental: el jugador solo avanza en la historia si comprende y aplica soluciones ecológicas reales frente a los daños que la humanidad ha causado al planeta. El uso de Godot 4 y GDScript permite desarrollar este proyecto con un lenguaje accesible, exportarlo tanto a PC como a Android, y mantener una arquitectura de código ordenada y orientada a objetos.
 
-## 6. Notas de diseño para desarrollo (para continuar en Claude Code)
+## 6. Notas de diseño para desarrollo
 
 - Los nombres de personajes y lugares están pensados para sonar naturales en español sin depender de licencias existentes.
 - La estructura de 5 jefes + jefe final es estándar para un RPG de alcance de proyecto de curso; si el tiempo apremia, la Llanura Marchita y la Cumbre Menguante son las más fáciles de recortar sin romper la coherencia narrativa (el juego seguiría siendo coherente con 3 regiones).
