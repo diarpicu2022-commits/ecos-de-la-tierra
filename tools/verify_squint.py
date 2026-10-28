@@ -52,13 +52,13 @@ def measure(zone_id: str, parts: set[str], label: str) -> bool:
     top = order[0]
     tile = ((top % w) // 16, (top // w) // 16)
     lines = load_zone(zone_id)
-    material = {".": "suelo", "=": "camino", "~": "agua", "#": "follaje", ":": "arena"}[lines[tile[1]][tile[0]]]
+    material = {".": "suelo", "=": "camino", "~": "agua", "#": "follaje", ":": "arena", "%": "muro", ",": "losa"}[lines[tile[1]][tile[0]]]
     # Qué material domina el 1 % más luminoso: lo dice, para leerlo con Rogers.
     counts: dict[str, int] = {}
     for i in order:
         ch = lines[(i // w) // 16][(i % w) // 16]
         counts[ch] = counts.get(ch, 0) + 1
-    names = {".": "suelo", "=": "camino", "~": "agua", "#": "follaje", ":": "arena"}
+    names = {".": "suelo", "=": "camino", "~": "agua", "#": "follaje", ":": "arena", "%": "muro", ",": "losa"}
     mix = ", ".join(f"{names[k]} {v * 100 // len(order)} %" for k, v in sorted(counts.items(), key=lambda kv: -kv[1]))
     print(f"  {'OK   ' if ok else 'FALLA'} {label}: en el 1 % más luminoso, el decorado ocupa "
           f"un {mean * 100:.0f} % (límite {DECOR_LIMIT * 100:.0f} %); "

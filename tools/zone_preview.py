@@ -41,15 +41,17 @@ SCREEN = (480, 270)
 VANISH_WHEN_PURE = ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
                     "v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag",
                     "v2_sack", "v2_salt", "salt",
-                    "meltwater", "crack", "v1_meltwater", "v3_ice_block", "v3_meltpool")
+                    "meltwater", "crack", "v1_meltwater", "v3_ice_block", "v3_meltpool",
+                    "gold", "coins", "v1_gold", "v2_gold", "v3_gold", "v4_gold", "v5_gold", "v2_barrel",
+                    "v3_bottle", "v5_ice_block", "banner")
 SPRITE = {"person": "yara", "chicken": "chicken_0", "bird": "bird_0", "butterfly": "butterfly_0"}
 ENTRY = re.compile(r"^; (\S) = (\w+), (\w+), (sólido|pisable)(?:, (\d+)x(\d+))?")
 
 # Mismo orden y mismas filas que WorldTiles.
 NORTH, EAST, SOUTH, WEST = 1, 2, 4, 8
 SOIL_VARIANTS = 4
-LEGEND = {".": "soil", "=": "path", "~": "water", "#": "flora", ":": "sand"}
-OVERLAY_ROW = {"path": 1, "water": 3, "flora": 5, "sand": 9}
+LEGEND = {".": "soil", "=": "path", "~": "water", "#": "flora", ":": "sand", "%": "wall", ",": "floor"}
+OVERLAY_ROW = {"path": 1, "water": 3, "flora": 5, "sand": 9, "wall": 11, "floor": 13}
 MEADOW_EDGE_ROW = 7
 
 

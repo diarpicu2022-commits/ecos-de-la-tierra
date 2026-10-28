@@ -11,7 +11,7 @@ extends RefCounted
 
 const ATLAS_PATH := "res://assets/tilesets/world.png"
 
-enum Terrain { SOIL, PATH, WATER, FLORA, SAND }
+enum Terrain { SOIL, PATH, WATER, FLORA, SAND, WALL, FLOOR }
 
 ## Máscara de vecinos del mismo material. Mismo orden que en gen_tiles.py.
 const NORTH := 1
@@ -29,6 +29,8 @@ const OVERLAY_ROW := {
 	Terrain.WATER: 3,
 	Terrain.FLORA: 5,
 	Terrain.SAND: 9,  ## Enmienda 9 (2026-10-28): la arena de la Costa.
+	Terrain.WALL: 11,  ## Enmienda 10 (2026-10-28): el muro de la Cripta.
+	Terrain.FLOOR: 13,  ## Enmienda 10: la losa de la Cripta.
 }
 
 ## Leyenda de los mapas de texto: un carácter por tile.
@@ -38,13 +40,15 @@ const LEGEND := {
 	"~": Terrain.WATER,
 	"#": Terrain.FLORA,
 	":": Terrain.SAND,
+	"%": Terrain.WALL,
+	",": Terrain.FLOOR,
 }
 
 
 ## Materiales que no se pisan. Contrato «Umbral», fase 2: suelo y camino se
 ## pisan; follaje y agua, no. Vale igual enfermos que purificados: purificar
 ## abre paso retirando un `blocker` del catálogo, no volviendo pisable el agua.
-const SOLID := [Terrain.WATER, Terrain.FLORA]
+const SOLID := [Terrain.WATER, Terrain.FLORA, Terrain.WALL]
 
 ## Capa de física del terreno sólido.
 const PHYSICS_LAYER := 0

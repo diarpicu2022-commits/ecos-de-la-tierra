@@ -1,0 +1,96 @@
+; Cripta de la Avaricia — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md), la última zona. Mismo tamaño
+; que greed_crypt.txt. El estado lo da la bandera purified_greed_crypt.
+;
+; Cinco bóvedas, una por región (Diego, 2026-10-28): en cada una, lo que la
+; Compañía se llevó de esa región junto al oro que sacó de ello. Piedra en
+; muro y losa (enmienda 10). Es el final: detrás de la Sombra no hay paso.
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; L = vignette, v1_log_pile, sólido, 2x2      bóveda 1: la madera del Bosque, apilada
+; 1 = vignette, v1_gold, sólido               y el oro que dio
+; b = vignette, v2_barrel, sólido             bóveda 2: el crudo de la Cuenca
+; 2 = vignette, v2_gold, sólido               y su oro
+; c = vignette, v3_bottle, pisable            bóveda 3: el plástico de la Costa
+; 3 = vignette, v3_gold, sólido               y su oro
+; d = vignette, v4_sack, sólido               bóveda 4: el grano de la Llanura
+; 4 = vignette, v4_gold, sólido               y su oro
+; e = vignette, v5_ice_block, sólido          bóveda 5: el hielo de la Cumbre
+; 5 = vignette, v5_gold, sólido               y su oro
+; Y = landmark, baron_statue, sólido, 2x3     hito: la estatua de oro del Barón Cendral
+; M = entity, monster, sólido                 la Sombra de la Avaricia (combate final)
+; C = decor, pillar, sólido                   columna, también sobre el muro
+; r = decor, root, sólido                     raíces que bajan por el muro
+; B = decor, banner, sólido                   estandarte rasgado de la Compañía, en el muro
+; G = decor, gold, sólido                     oro amontonado al fondo de la bóveda
+; o = decor, coins, pisable                   monedas derramadas hacia la fuente
+; k = decor, pebbles, pisable                 cascotes
+; q = decor, crack, pisable                   grieta en la losa
+; @ = spawn, start, pisable                   llegada desde la Cumbre
+---
+
+                 G  G  G  G
+
+                    G    G
+
+            C               q B     B     B
+        q o q        b 2 b              qk     o   q
+      k  q        qq     q         k       q          q
+
+          o       q             k  q  o
+      q               2                  q
+     B     BC     B     B     B     r     B      C     C
+
+                                                   q
+
+       k  o
+
+
+     B     C                                     C     C
+                                                      k
+                                                  q
+
+
+          q
+                                                          k
+     C   q C                                     r   q  q
+                                                  q     G
+          k                                           q
+  G oq                                               LL
+       o                                          o  LL
+ G        3                                       q    q
+ k    co                                              1
+          qC                                     C    o  q
+ o    3           C   C         C   C
+       c                      o     o                    oq
+  k             o o  o     o oq oo
+  o                     oo kq  qo   o                     @
+      q          k C    Co oo o oC oo
+       k  q     o  o    q   oq o  o o             o
+     B     C     ooo o oo oo   o oo o
+       q       Coqoqo    oo   oo  oo C
+                oo   o o k YY    o oo
+                  oCo o oooYY o  q
+      o  k      ooo     qo YYoo    oq
+                  oo q  ok oo Mok  qoC
+                 qo o  o o  oq   oo o
+     r     r   C  o      o o   o       oo   q    C
+          q     oo C    Cooo    o      oq   o
+                o o   o oo o o
+       o           ooo  oo   oooo  q o oo
+     q q q        o  o  oo o oo   o     o  o
+  G      q            o o o  oo o   o   Go
+ o    d   q      q    o  oo q  o  k    oo       o
+          4B                            ko  e    C
+      4                                     oo k5
+      oq  o                            qoo q5
+      qd                               o
+       o                                     e
+          q                             q    o  q
+            C     B     B     r     r     r    o
+     B     o       q  k   q      o   q qo o ok  oC
+            o k  o    okkq             k
+      q
+          q  k     k k  o    k         o oq
+          k       q             oo
+            B     r     B     r     C     B

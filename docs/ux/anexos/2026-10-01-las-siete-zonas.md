@@ -156,7 +156,7 @@ con sus consecuencias:
 - **Materiales:** sin resultado. La separación dE 9,2 sigue sin comprobar con
   personas, así que **la parte 1 sigue abierta** solo por esto. Las zonas se
   dibujan sobre el tileset aprobado y, si la prueba falla más adelante, la
-  enmienda 10 (antes reservada como 6 y como 9) cambia tintas y no mapas: los mapas son de material, no de color.
+  enmienda 11 (antes reservada como 6, como 9 y como 10) cambia tintas y no mapas: los mapas son de material, no de color.
 - **Las dos siguen como deuda** en la guía §4 y en el plan, con la hoja lista
   en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`.
 
@@ -400,7 +400,7 @@ estén los resultados.
      y 3), y quizá un nodo con una persona que la nombre (parte 5). Es una
      dirección distinta, más densa.
 2. **Los materiales (prueba B):** si la separación dE 9,2 no basta, hace falta
-   la enmienda 10 (antes reservada como 6 y como 9) antes de dibujar siete zonas sobre el tileset.
+   la enmienda 11 (antes reservada como 6, como 9 y como 10) antes de dibujar siete zonas sobre el tileset.
 3. **Formato de mapa: texto o editor.** Lo decide Diego en la primera zona
    (guía §5). Las zonas de prueba de la parte 2 ya son texto, y `ZoneRules`
    las valida: es lo que existe hoy.
@@ -1216,3 +1216,125 @@ esquirlas. Pinos y peñascos se desplazan como los árboles.
 **Siguiente:** el visto bueno de Diego a la Cumbre. Después, la **Cripta de la
 Avaricia**, la última zona. Antes hay que preguntarle lo que el contrato dejó
 abierto: si sus viñetas son las cinco causas o una sola.
+
+La Cumbre sigue a la espera del visto bueno de Diego en el PR #16, abierto;
+Diego pasó a la Cripta respondiendo a sus dos preguntas.
+
+## Fase 5 · Cripta de la Avaricia — 2026-10-28
+
+### Las dos preguntas de la Cripta, respondidas por Diego el 2026-10-28
+
+1. **Cinco bóvedas, una por región.** Las viñetas son las cinco causas, no
+   una sola. Cada bóveda junta **lo que la Compañía se llevó de una región**
+   con **el oro que sacó de ello**: la causa y su motivo en la misma imagen.
+   Es una enmienda del contrato solo para la Cripta: **5 viñetas** en lugar
+   de 3, con las mismas reglas (dos elementos, ≤ 2 tiles del camino, en orden
+   y nunca dos en la misma pantalla).
+2. **Material de piedra** (enmienda 10, abajo).
+
+### Enmienda 10 — la piedra, autorizada por Diego el 2026-10-28
+
+Bajo tierra no hay suelo, agua, follaje ni arena: **muro** (`%`, sólido) y
+**losa** (`,`, se pisa). No hay color nuevo; la piedra usa las rampas que ya
+existían.
+
+| | Enfermo | Purificado |
+|---|---|---|
+| Muro (filas 11-12) | sillares `WATER_700` con aristas `ASH_700` y una fisura | sillares `ASH_700` con aristas `ASH_600` y hiedra en una junta |
+| Losa (filas 13-14) | losa fría `WATER_300` con juntas `WATER_500` | losa templada `SOIL_300` con juntas `WOOD_500` y musgo en las juntas |
+
+- **La piedra no convive con los otros cuatro materiales.** `verify_tileset`
+  imprime esos pares como «no conviven en ninguna zona» y no les exige dE.
+  `verify_zone` comprueba que ninguna zona con piedra tenga `.`, `~`, `#` ni
+  `:`.
+- **Medido:** valor purificado/enfermo 1,58 en el muro y 1,53 en la losa
+  (piso 1,5). dE muro/losa 20,4 enfermo y 25,8 purificado; camino/muro 18,5 y
+  17,7; camino/losa 14,1 y 20,6 (piso 9).
+- **Dos intentos fallidos, y se dicen:**
+  - La grieta de la losa enferma, dibujada en el tile, se repetía igual en
+    cada casilla. Pasó al decorado (`crack`).
+  - El primer musgo purificado, cuatro matas redondas por tile, convertía la
+    Cripta en un prado de lunares. Al quitarlo, la losa bajó a 1,30 de valor y
+    a dE 4,4 del camino. Las losas claras (`ASH_400`, `WOOD_100`) pasan el
+    valor pero rompen el contorno de lo que responde y los acentos. Queda una
+    mata y el musgo siguiendo las juntas. **Es el mínimo de verde que pide el
+    piso de valor**, y se nota: la Cripta purificada sigue siendo verde en
+    cada losa.
+- La reserva para revisar el dE entre materiales pasa a la **enmienda 11**.
+
+### Adaptación de los puntos 1 a 4: la Cripta es el final
+
+El contrato dice que Valdehoja y la Cripta adaptan los puntos 2 a 4. La Cripta
+adapta también el 1: **detrás de la Sombra no hay región que abrir.** El
+combate final cambia el mundo entero; no queda paso cerrado ni salida de ida.
+`verify_zone` lo comprueba: la única salida es la de vuelta a la Cumbre.
+**Es una decisión de la sesión, no de Diego**, y se le pregunta: si prefiere
+una salida a la superficie detrás de la Sombra, se añade sin tocar el resto.
+
+### Pasos 1 a 3 — mapa, arte y motor · HECHOS, esperan visto bueno
+
+**La fuente** es la cámara del tesoro, en el centro, con la estatua de oro del
+Barón Cendral (el hito, 32 × 56 sobre su base de 2 × 3) y la Sombra de la
+Avaricia. La estatua lleva chistera, levita y la mano alzada con una moneda:
+la silueta se lee sin color.
+
+**Composición** (`greed_crypt.txt` y `.deco.txt`, 60 × 66). Un rodeo en
+espiral alrededor de la cámara, con galerías de 5 tiles de ancho:
+
+1. **Llegada desde la Cumbre** por el este. **Bóveda 1, el Bosque:** la madera
+   apilada y su oro.
+2. **Galería norte.** **Bóveda 2, la Cuenca:** barriles de crudo y oro.
+3. **Galería oeste.** **Bóveda 3, la Costa:** botellas y oro. **Asomo:** desde
+   aquí la estatua entra en pantalla, **al 51 % del camino**; el muro la tapa
+   otra vez al bajar.
+4. **Bóveda 4, la Llanura:** sacos de grano y oro.
+5. **Galería sur y subida.** **Bóveda 5, la Cumbre:** el hielo guardado y su
+   oro. Después, la cámara.
+
+**Gradiente:** las monedas se derraman hacia la fuente (0,32 > 0,10 > 0,02
+por tile). En el fondo de cada bóveda hay montones de oro sueltos, no en
+cuadrícula.
+
+**Al purificar:**
+
+- el oro desaparece: monedas, montones y la mitad «avaricia» de cada bóveda;
+- también desaparece lo que era daño (crudo, plástico, hielo derretido). Queda
+  lo que era recurso: la madera y el grano;
+- desaparecen los estandartes rasgados de la Compañía;
+- la estatua pierde el oro: queda de piedra gris, con musgo en el pedestal;
+- las columnas se enteran y las raíces de arriba echan hojas.
+
+**Nada se mueve en la Cripta purificada** (no hay agua ni plantas que se
+mezan): no se graba movimiento.
+
+**Arte nuevo** (140 piezas en total): oro, monedas, columna, raíces,
+estandarte, estatua del Barón y Sombra de la Avaricia. Columnas, raíces y
+estandartes se apoyan también en el muro.
+
+#### Verificado en Godot 4.7.2
+
+- `verify_zone -- greed_crypt`: **44 de 44**. La primera pasada falló en un
+  punto: el camino acababa a dos tiles de la Sombra y no la tocaba.
+- **La Cumbre pasa a 0 pendientes.** Valdehoja 50/50, Bosque 46/46, Cuenca
+  45/45, Costa 46/46, Llanura 45/45 y Cumbre 45/45.
+- `verify_movement` 99/99, `verify_usability` 16/16 y `verify_camera` 37/37.
+- `verify_tileset` en verde y tokens sin deriva (47).
+- `verify_palette --world`: pasan todas las capturas del 2026-10-28. Con
+  `--strict`, pasan los 140 sprites.
+- `verify_squint.py greed_crypt`: OK. Lo más luminoso es el pie de la
+  estatua, el hito (el decorado ocupa un 22 % del 1 % más luminoso; límite
+  50 %).
+- **Capturas del motor:** `docs/ux/capturas/2026-10-28-cripta-motor-*.png`
+  (entrada, las cinco bóvedas, asomo, fuente, fuente purificada y galería
+  purificada). **Vista de la zona entera:** `2026-10-28-cripta-enferma.png`
+  y `-purificada.png`.
+
+#### Pendiente, y se dice
+
+- La Ciudad Dorada no es una zona: la salida de la Cumbre lleva directamente
+  a la Cripta. Si la compuerta de Rasgo (guía §3.3, desenlace «aliado») pide
+  un lugar propio, se abre como zona nueva.
+- El combate final con la Sombra (parte 4) y la ola no están en el mapa.
+
+**Siguiente:** el visto bueno de Diego a la Cripta y su respuesta sobre la
+salida detrás de la Sombra. Con eso, **la parte 3 queda cerrada**.

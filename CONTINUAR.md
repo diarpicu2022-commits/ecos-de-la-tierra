@@ -10,14 +10,14 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el visto bueno a la Cumbre, y la Cripta
+## 1. Lo primero: el visto bueno a la Cumbre y a la Cripta
 
-El 2026-10-28 se cerraron **Valdehoja y cuatro regiones** (PR #13, #14 y #15),
-y la **Cumbre Menguante** quedó hecha, a la espera del visto bueno de Diego.
-Las cinco regiones están dibujadas. Falta la **Cripta de la Avaricia**, cuya
-entrada viene de la salida (0, 36) de la Cumbre. Antes de dibujarla hay que
-preguntar a Diego si sus viñetas son las cinco causas o una sola (contrato
-«Rastro», «Las dos zonas que no son regionales»).
+El 2026-10-28 se cerraron **Valdehoja y cuatro regiones** (PR #13, #14 y
+#15). La **Cumbre Menguante** (PR #16, abierto) y la **Cripta de la Avaricia**
+quedaron hechas, a la espera del visto bueno de Diego. La Cripta tiene cinco bóvedas, una por región, y la enmienda 10 (la piedra). Queda una
+pregunta suya: si la Cripta, que hoy no tiene paso cerrado ni salida de ida
+por ser el final, lleva una salida a la superficie detrás de la Sombra. Con
+esa respuesta, la parte 3 se cierra.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -32,7 +32,7 @@ preguntar a Diego si sus viñetas son las cinco causas o una sola (contrato
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: Valdehoja y cuatro regiones cerradas; Cumbre hecha (2026-10-28); falta la Cripta |
+| 3 | Las siete zonas | **En curso**: Valdehoja y cuatro regiones cerradas; Cumbre y Cripta hechas (2026-10-28), esperan visto bueno |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -83,7 +83,8 @@ dentro de ellas:
   por Diego el 2026-10-01. Hoja lista en
   `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. Cierran la parte 1. **No se
   pueden hacer en la nube**: necesitan tres personas reales.
-- **Enmienda 10** si dE 9,2 entre materiales no basta (se decide con esa prueba).
+- **Enmienda 11** si dE 9,2 entre materiales no basta (se decide con esa prueba;
+  la 10 fue la piedra de la Cripta).
 - **Fondo de batalla por región + parallax de 3 capas**, con las rampas del
   tileset de la región. Parte 4.
 - **Mobbin y Pinterest** sin consultar en el anexo de exploración: abrir con
