@@ -34,6 +34,52 @@ static func load_zone(zone_id: String) -> PackedStringArray:
 	return lines
 
 
+## Capa de decorado, hito y entidades de una zona (contrato «Rastro»):
+## `data/world/zones/<zona>.deco.txt`. La cabecera declara la leyenda, una
+## línea por carácter con la forma `; X = tipo, id, sólido|pisable`, y
+## termina en `---`. Debajo va una fila por fila del mapa; un espacio, o el
+## final de una fila más corta, es «nada». Devuelve
+## `{"legend": {X: {kind, id, solid}}, "rows": PackedStringArray}`, o un
+## diccionario vacío si la zona no tiene capa.
+static func load_deco(zone_id: String) -> Dictionary:
+	var path := ZONES_DIR + zone_id + ".deco.txt"
+	if not FileAccess.file_exists(path):
+		return {}
+	var lines := FileAccess.get_file_as_string(path).replace("\r", "").split("\n")
+	var split := lines.find("---")
+	if split < 0:
+		return {}
+	var entry := RegEx.create_from_string("^; (\\S) = (\\w+), (\\w+), (sólido|pisable)")
+	var legend := {}
+	for i in split:
+		var found := entry.search(lines[i])
+		if found:
+			legend[found.get_string(1)] = {
+				"kind": found.get_string(2),
+				"id": found.get_string(3),
+				"solid": found.get_string(4) == "sólido",
+			}
+	var rows := lines.slice(split + 1)
+	if not rows.is_empty() and rows[rows.size() - 1].is_empty():
+		rows.remove_at(rows.size() - 1)
+	return {"legend": legend, "rows": rows}
+
+
+## Partes de una zona por id, con sus rectángulos en tiles (`zones.json`).
+## Solo Valdehoja las tiene: es el marcador de progreso.
+static func load_parts(zone_id: String) -> Dictionary:
+	var data = JSON.parse_string(FileAccess.get_file_as_string(NAMES_PATH))
+	var parts := {}
+	if data is Dictionary and data["zones"].has(zone_id):
+		var raw: Dictionary = data["zones"][zone_id].get("parts", {})
+		for id in raw:
+			var rects: Array[Rect2i] = []
+			for r in raw[id]:
+				rects.append(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])))
+			parts[id] = rects
+	return parts
+
+
 ## Todas las salidas del juego, tal como están en `exits.json`.
 static func load_exits() -> Array:
 	var data = JSON.parse_string(FileAccess.get_file_as_string(EXITS_PATH))

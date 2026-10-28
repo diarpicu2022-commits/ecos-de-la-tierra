@@ -18,8 +18,8 @@ Este anexo decide **cómo se compone cada zona**.
 aplazadas por decisión de Diego** (2026-10-01; ver «Pruebas aplazadas»), y la
 fase 4 se planteó con la hipótesis prudente. **Diego eligió el 2026-10-28:
 dirección A «Rastro», mapas en texto, hipótesis prudente confirmada.** Contrato
-«Rastro» escrito; **espera el visto bueno de Diego a sus valores** antes de
-abrir Valdehoja.
+«Rastro» escrito y **valores aprobados por Diego el 2026-10-28**. Abierta la
+fase 5 con Valdehoja: paso 1 entregado.
 
 **Subdivisión (guía §5): una zona por sesión,** en este orden: Valdehoja →
 Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura
@@ -301,6 +301,8 @@ y de las fuentes de la fase 3; el visto bueno de Diego a esos valores es el
 punto de control antes de Valdehoja. Si alguno no le sirve, se cambia antes de
 dibujar, no después.
 
+**Visto bueno de Diego a los valores: 2026-10-28**, sin cambios.
+
 ### Composición de una zona regional (Bosque, Cuenca, Costa, Llanura, Cumbre)
 
 | Cláusula | Valor | Respaldo |
@@ -416,3 +418,111 @@ pruebas:
   purificar (búsqueda en anchura, guía §5);
 - ningún decorado de una clase que responde;
 - el verde solo en lo purificado.
+
+## Fase 5 · Valdehoja — abierta el 2026-10-28
+
+### Las dos preguntas de Valdehoja, respondidas por Diego el 2026-10-28
+
+1. **Cinco partes, una por región**, además del jardín de Yara, que es verde
+   desde el principio. La Cripta no devuelve ninguna: su final cambia el mundo
+   entero.
+2. **Cada parte está ligada al daño de su región**, para que el pueblo repita
+   la causa que el jugador ya aprendió:
+
+| Región purificada | Parte de Valdehoja que vuelve | Id en `zones.json` |
+|---|---|---|
+| Bosque de las Cenizas | La arboleda del pueblo (sureste) | `ashen_forest` |
+| Cuenca de Alquitrán | El río (este) | `tar_basin` |
+| Costa Quebrada | La era y sus caminos, sin basura (centro) | `broken_coast` |
+| Llanura Marchita | Las terrazas de cultivo (noroeste) | `withered_plain` |
+| Cumbre Menguante | La acequia que baja del deshielo y riega las terrazas | `waning_peak` |
+| — (desde el principio) | El jardín de Yara, con el primer semillero y el hito | `yara_garden` |
+
+### Paso 1 — Mapa en texto y `verify_zone.gd` · ENTREGADO, espera visto bueno
+
+**Cláusulas:** contrato «Rastro», «Formato de los mapas», «Las dos zonas que
+no son regionales» (Valdehoja) y «Verificación de cada zona»; «Umbral» para
+las salidas y el borde.
+
+**Entregado (rama `chore/continuar-nube`):**
+
+- `data/world/zones/valdehoja.txt`: 60 × 34 tiles, 2 × 2 pantallas. Es un
+  valle cerrado por follaje, con el río al este y la acequia bajando del norte
+  hasta las terrazas. El **camino principal** va de la casa de Ilan (suroeste)
+  a la era y de la era al jardín de Yara (norte). Un ramal sale de la era
+  hacia el este, cruza el río por un vado y llega a la **única salida**, la del
+  Bosque (59, 17). Otro ramal cruza la acequia y sube a las terrazas.
+- `data/world/zones/valdehoja.deco.txt`: la segunda capa, con su leyenda en
+  cabecera. Lleva cuatro casas, el hito (el árbol de Yara, 3 × 4 tiles, en el
+  jardín), el semillero, a Yara, la aparición y el decorado del daño de cada
+  parte: tocones en la arboleda, basura suelta en la era e hileras de un solo
+  cultivo en las terrazas.
+- `data/world/zones.json`: el nombre y las **seis partes** como rectángulos en
+  tiles. `WorldTiles.paint` ya pinta el estado por celda, así que las partes
+  entran sin tocar el pintado.
+- `data/world/exits.json`: la salida (59, 17) hacia `ashen_forest`. La casilla
+  de llegada (1, 17) es **provisional**: se fija al dibujar el Bosque.
+- `src/world/zone_rules.gd`: `load_deco()` y `load_parts()`.
+- `tools/verify_zone.gd` y `.tscn`: la prueba del contrato. Las comprobaciones
+  regionales (camino a la fuente, 3 viñetas, paso cerrado) quedan declaradas
+  pendientes: se escriben con el Bosque, que es la primera zona que las tiene.
+- `tools/zone_preview.py`: compone el mapa de texto con el atlas real
+  (`assets/tilesets/world.png`) con la misma regla que `WorldTiles`, para
+  revisar el paso 1 sin el motor. Solo pinta materiales.
+
+**Capturas** (`zone_preview.py`, 1×; solo materiales, sin decorado hasta el
+paso 2):
+
+- `docs/ux/capturas/2026-10-28-valdehoja-mapa-inicio.png`: la zona entera al
+  empezar la partida. El único verde es el jardín de Yara.
+- `docs/ux/capturas/2026-10-28-valdehoja-mapa-cinco-regiones.png`: con las
+  cinco partes devueltas.
+- `docs/ux/capturas/2026-10-28-valdehoja-mapa-aparicion.png`: la pantalla de
+  480 × 270 en la aparición, con la cámara encerrada en la zona. El jardín no
+  se ve todavía: el hito asoma a media zona, al subir por el camino.
+
+#### Verificado
+
+- `python tools/verify_palette.py image <captura> --world` sobre las dos
+  capturas de la zona entera: **todo píxel es un token**.
+- `python tools/verify_palette.py tokens`: 24 tokens, sin deriva.
+- Las comprobaciones de `verify_zone.gd`, ejecutadas con un espejo en Python
+  de la misma lógica (en la carpeta temporal de la sesión, sin commit): **19
+  de 19**. El espejo cazó un fallo real en el primer borrador: la arboleda y
+  el río se solapaban en una columna. Se corrigió en `zones.json`.
+
+#### FALLA o pendiente, y se dice
+
+- **`verify_zone.tscn` no se ha ejecutado en Godot.** En la sesión en la nube
+  no se dio permiso para ejecutar el binario de Godot descargado. Está escrito
+  y revisado, pero **sin ejecutar no se da por bueno**. Lo mismo vale para
+  `verify_movement` (99/99) y `verify_usability` (16/16): no se han vuelto a
+  pasar en esta sesión, aunque del código que ya existía solo cambia
+  `ZoneRules`, con dos funciones nuevas que nadie más llama todavía.
+- **La salida al Bosque aparece como PENDIENTE**: lleva a una zona que aún no
+  existe. Cruzarla hoy fallaría. Se cierra con el Bosque.
+- **Prueba de entrecerrar:** pendiente hasta la captura del motor con
+  decorado (paso 3).
+
+#### Se dice, para decidir en la revisión
+
+- **Las partes se purifican por rectángulos**, y en la captura de las cinco
+  regiones se nota: el suelo purificado acaba en un canto recto en mitad del
+  suelo enfermo, sobre todo en la era. Lo enfermo es diagonal y lo purificado,
+  redondo; un canto recto de 200 px no es ninguna de las dos cosas. En el
+  jardín se resolvió redondeando el seto y recortando las esquinas de su
+  parte. Para el resto hay dos salidas sin color nuevo: (a) que cada parte
+  acabe siempre en un borde de material (follaje, agua o camino), y no en
+  mitad del suelo; (b) dejarlo así, porque en el juego la parte se ve de una
+  en una y con la ola. **Se recomienda (a)**, y es un cambio de mapa, no de
+  contrato.
+- **Valdehoja tiene una sola salida, al Bosque.** Cómo se llega a las otras
+  cuatro regiones (en cadena desde el Bosque, o volviendo al pueblo) no está
+  decidido en ningún sitio. Se pregunta al abrir el Bosque.
+- **Mucho suelo vacío** en la captura: es espacio negativo a propósito (fuente
+  7), pero sin las casas ni el decorado del paso 2 parece más vacío de lo que
+  será. Se juzga en el paso 3.
+
+**Siguiente:** paso 2, decorado del daño de Valdehoja, casas y el árbol de
+Yara con `tools/gen_world_sprites.py`. Antes, el visto bueno de Diego al
+paso 1 y su elección sobre los cantos rectos.

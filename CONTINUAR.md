@@ -10,21 +10,18 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: el contrato «Rastro» espera visto bueno
+## 1. Lo primero: Valdehoja, paso 1
 
-**Desbloqueado el 2026-10-28.** El PR #11 se fusionó sin comentario, y en la
-sesión 7 Diego respondió las tres preguntas:
+El 2026-10-28 Diego eligió «Rastro», mapas en texto y la hipótesis prudente,
+aprobó los valores del contrato y respondió las dos preguntas de Valdehoja.
+El **paso 1 de Valdehoja** (mapa en texto y `tools/verify_zone.gd`) está
+entregado y espera visto bueno. Antes de seguir:
 
-1. Dirección **A · «Rastro»**.
-2. Mapas en **texto** (`data/world/zones/<zona>.txt` + `<zona>.deco.txt`).
-3. **Confirma la hipótesis prudente:** cada zona enseña la causa antes del
-   combate.
-
-Con eso se escribió el **contrato «Rastro»** en
-`docs/ux/anexos/2026-10-01-las-siete-zonas.md`. **Lo siguiente es el visto
-bueno de Diego a sus valores** (3 viñetas junto al camino, una por pantalla;
-hito de 2×3 a 4×4 tiles; paso cerrado detrás de la fuente). Después empieza
-**Valdehoja**, con sus dos preguntas propias.
+1. Ejecutar en Godot `verify_zone.tscn` (no se pudo en la nube), y también
+   `verify_movement` y `verify_usability`.
+2. Que Diego decida qué se hace con los cantos rectos de las partes del
+   pueblo (anexo de la parte 3, Valdehoja, «Se dice, para decidir»).
+3. Paso 2: decorado, casas y el árbol de Yara.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -39,7 +36,7 @@ hito de 2×3 a 4×4 tiles; paso cerrado detrás de la fuente). Después empieza
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: contrato «Rastro» escrito el 2026-10-28; espera visto bueno |
+| 3 | Las siete zonas | **En curso**: contrato «Rastro» bloqueado; Valdehoja, paso 1 entregado (2026-10-28) |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -133,6 +130,7 @@ python tools/verify_tileset.py
 $GODOT --headless --path . res://tools/verify_usability.tscn   # 16/16
 $GODOT --headless --path . res://tools/verify_movement.tscn    # 99/99
 $GODOT --headless --path . res://tools/verify_camera.tscn      # 37/37
+$GODOT --headless --path . res://tools/verify_zone.tscn -- valdehoja
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

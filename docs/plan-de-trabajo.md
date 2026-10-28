@@ -49,15 +49,19 @@ válidos:
 > del combate). El PR #11 se fusionó sin comentario; las respuestas se le
 > pidieron en la sesión 7 y están en el anexo.
 >
-> **Contrato «Rastro» escrito** en el anexo (sesión 7): composición de las
-> zonas regionales, lo que heredan Valdehoja y la Cripta, el formato de los
-> mapas (`<zona>.txt` + `<zona>.deco.txt`) y la verificación de
-> `verify_zone.gd`. Ningún color ni token nuevo. **Lo siguiente es el visto
-> bueno de Diego a los valores del contrato** (3 viñetas, hito de 2×3 a 4×4
-> tiles, viñetas a ≤ 2 tiles del camino y una por pantalla). Con él, se abre
-> **Valdehoja**: primero las dos preguntas de su apartado (cuántas partes
-> tiene el pueblo y cuál devuelve cada región), después el paso 1, mapa en
-> texto y `verify_zone.gd` en verde. Una zona por sesión.
+> **Contrato «Rastro» bloqueado y valores aprobados por Diego** (2026-10-28).
+> Valdehoja: cinco partes, una por región y ligada a su daño (arboleda, río,
+> era, terrazas, acequia), además del jardín de Yara.
+>
+> **Valdehoja, paso 1 (mapa en texto y `verify_zone.gd`): ENTREGADO, espera
+> visto bueno.** Capturas `docs/ux/capturas/2026-10-28-valdehoja-mapa-*`
+> (hechas con `tools/zone_preview.py`, solo materiales). El espejo en Python
+> da 19 de 19; **`verify_zone.tscn` todavía no se ha ejecutado en Godot**:
+> en la nube no hubo permiso para lanzar el binario. **Lo primero de la
+> próxima sesión:** pasar `verify_zone`, `verify_movement` y
+> `verify_usability` en Godot, y que Diego elija qué se hace con los cantos
+> rectos de las partes (anexo, «Se dice, para decidir en la revisión»).
+> Después, el paso 2: decorado, casas y el árbol de Yara.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -115,7 +119,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» escrito (2026-10-28), espera visto bueno a sus valores. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado (2026-10-28). Valdehoja: paso 1 entregado. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |

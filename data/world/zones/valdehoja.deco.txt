@@ -1,0 +1,49 @@
+; Valdehoja — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md). Mismo tamaño que
+; valdehoja.txt: una fila por fila y una columna por columna. Un espacio, o
+; el final de una fila más corta, es «nada».
+;
+; Leyenda: carácter = tipo, id, ¿sólido?
+; H = decor, house, sólido        casa del pueblo, 3 x 2 tiles
+; Y = landmark, yara_tree, sólido hito: el árbol del jardín de Yara, 3 x 4 tiles
+; t = decor, stump, sólido        tocón (daño del Bosque)
+; b = decor, loose_litter, pisable  basura suelta y dispersa (daño de la Costa)
+; r = decor, single_crop_row, pisable  hilera de un solo cultivo (daño de la Llanura)
+; S = entity, seedbed, sólido     semillero del jardín de Yara
+; p = entity, person, sólido      Yara
+; @ = spawn, start, pisable       aparición al empezar la partida
+---
+
+
+
+     r r r r r r r             YYY
+                               YYY
+                               YYY
+                               YYY
+     r r r r r r r              p
+                           S
+
+
+           r r r r
+
+                                 HHH
+                                 HHH
+
+
+
+             HHH
+             HHH           b        b
+                                 b
+                         b
+      HHH
+      HHH
+                      HHH   b        t
+         @            HHH
+
+                                      t
+                                          t
+
+
+
+
+
