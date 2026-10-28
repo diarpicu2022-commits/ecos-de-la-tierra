@@ -10,21 +10,14 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: Valdehoja, pasos 1 y 2
+## 1. Lo primero: el Bosque de las Cenizas
 
-El 2026-10-28 Diego eligió «Rastro», mapas en texto y la hipótesis prudente.
-Al ver Valdehoja sin decorado la juzgó «desabrida» y autorizó las **enmiendas
-6, 7 y 8** (guía §3.2 bis): paleta rica con color al purificar, animales
-domésticos y movimiento en lo purificado. Los pasos 1 y 2 de Valdehoja están
-entregados y esperan visto bueno. Antes de seguir:
-
-1. Diego aprobó los pasos 2 y 3. El **paso 4** (estados y movimiento de la
-   enmienda 8, prueba de entrecerrar) está hecho y verificado en Godot
-   (`verify_zone` 49/49), y espera visto bueno.
-2. Dos decisiones de Diego (anexo de la parte 3, Valdehoja, paso 4): las
-   gallinas quietas en lo enfermo y el sprite de Ilan frente a `--world`.
-3. Después: **Bosque de las Cenizas**, la primera zona regional completa.
-   La ola de purificación va con el combate (parte 4).
+**Valdehoja quedó cerrada el 2026-10-28** (sesión 7, en la nube): contrato
+«Rastro», enmiendas 6, 7 y 8, decorado, motor y movimiento, todo con visto
+bueno de Diego. La siguiente sesión abre el **Bosque de las Cenizas**, la
+primera zona regional completa. Lo primero es preguntar a Diego cómo se llega
+a las otras cuatro regiones; el orden de trabajo está en
+`docs/plan-de-trabajo.md`.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -39,7 +32,7 @@ entregados y esperan visto bueno. Antes de seguir:
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1-3 aprobados y paso 4 hecho (2026-10-28) |
+| 3 | Las siete zonas | **En curso**: Valdehoja cerrada (2026-10-28); siguiente, el Bosque |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -117,6 +110,9 @@ El proyecto es Godot 4 + GDScript, sin dependencias externas.
 wget https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
 unzip Godot_v4.7.2-stable_linux.x86_64.zip && chmod +x Godot_v4.7.2-stable_linux.x86_64
 export GODOT=$PWD/Godot_v4.7.2-stable_linux.x86_64
+
+# Godot no arranca en la nube sin permiso: Diego tiene que permitir que la
+# sesión ejecute el binario descargado.
 
 # Python para las herramientas de paleta y tileset
 pip install pillow

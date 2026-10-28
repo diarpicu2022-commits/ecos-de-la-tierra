@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-28 (sesión 7, en la nube)
+Última actualización: 2026-10-28 (sesión 7, en la nube; cierre)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,40 +42,36 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 3 — Las siete zonas. EN CURSO.** Anexo
-> `docs/ux/anexos/2026-10-01-las-siete-zonas.md`: fases 1 a 4 cerradas.
-> **Diego eligió el 2026-10-28:** dirección A **«Rastro»**, mapas en
-> **texto** y la hipótesis prudente confirmada (la zona enseña la causa antes
-> del combate). El PR #11 se fusionó sin comentario; las respuestas se le
-> pidieron en la sesión 7 y están en el anexo.
+> **Parte 3 — Las siete zonas. EN CURSO. Valdehoja CERRADA el 2026-10-28.**
+> Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
 >
-> **Contrato «Rastro» bloqueado y valores aprobados por Diego** (2026-10-28).
-> Valdehoja: cinco partes, una por región y ligada a su daño (arboleda, río,
-> era, terrazas, acequia), además del jardín de Yara.
+> **Lo siguiente, en una sesión nueva: el Bosque de las Cenizas.** Es la
+> primera zona con la composición regional completa del contrato «Rastro»:
+> camino a la fuente, 3 viñetas, hito y paso cerrado. Orden:
+> 1. preguntar a Diego cómo se llega a las otras cuatro regiones (en cadena
+>    desde el Bosque o volviendo a Valdehoja);
+> 2. paso 1: el mapa en texto y las comprobaciones regionales de
+>    `verify_zone`;
+> 3. paso 2: el decorado del daño (tocones, troncos, árboles calcinados,
+>    ceniza), el hito (el árbol quemado mayor) y el `blocker`;
+> 4. paso 3, el motor; paso 4, los estados.
 >
-> **Valdehoja, pasos 1 y 2 ENTREGADOS (2026-10-28), esperan visto bueno.**
-> Diego juzgó «desabrida» la primera entrega, que solo tenía materiales, y
-> autorizó las enmiendas 6, 7 y 8. Con ellas, el paso 2 llevó:
-> - 34 piezas de decorado (`tools/gen_world_decor.py`) y el prado purificado
->   con su borde en el tileset;
-> - el agua viva;
-> - las partes del pueblo como capa de texto (`valdehoja.parts.txt`).
+> **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
+> Diego):
+> - el contrato «Rastro»;
+> - las enmiendas 6, 7 y 8 (paleta rica con color al purificar, animales,
+>   movimiento en lo purificado);
+> - 38 piezas de decorado y el atlas con el prado, su borde y el agua viva;
+> - `WorldDecor` y `WorldAmbient` en el motor, `verify_zone` 49/49 y
+>   `verify_squint` en verde.
 >
-> Capturas en `docs/ux/capturas/2026-10-28-valdehoja-*`. El espejo de
-> `verify_zone` da 28 de 28 y `verify_tileset` está en verde. **Falla
-> `--world` con el sprite de Ilan** (`ash_950`, de la parte 2): está anotado y
-> no se ha tocado.
+> Quedan dos cosas que dependen de otras partes: **la ola de purificación por
+> partes** (con el combate, parte 4) y **la llegada al Bosque** (se fija al
+> dibujarlo).
 >
-> Diego aprobó los pasos 2 y 3 el mismo día. **Paso 4, estados y movimiento
-> (enmienda 8): HECHO y verificado en Godot**: `verify_zone` 49/49,
-> `verify_movement` 99/99, `verify_usability` 16/16, `verify_camera` 37/37 y
-> la prueba de entrecerrar (`tools/verify_squint.py`) en verde. Espera el visto
-> bueno de Diego y dos decisiones suyas (anexo, Valdehoja, paso 4): las
-> gallinas quietas en lo enfermo y el sprite de Ilan frente a `--world`.
->
-> **Lo siguiente:** con ese visto bueno, Valdehoja se cierra salvo la ola de
-> purificación (va con el combate, parte 4) y abre el **Bosque de las
-> Cenizas**, que es la primera zona regional completa.
+> **Godot en la nube:** se descarga como dice `CONTINUAR.md` §4 en
+> `/home/user/godot/` y hace falta que Diego permita ejecutar el binario. Con
+> eso se pasan todas las pruebas y las capturas con `xvfb-run`.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -133,7 +129,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado; enmiendas 6-8 (2026-10-28). Valdehoja: pasos 1-3 aprobados, paso 4 hecho (movimiento, estados, entrecerrar). Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. **Valdehoja cerrada** (2026-10-28). Siguiente: Bosque. Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
@@ -207,6 +203,11 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
   paleta rica con color al purificar (madera, tejado, agua viva, flores,
   prado); animales domésticos siempre y fauna silvestre al purificar;
   movimiento ambiental solo en lo purificado. Detalle en la guía §3.2 bis.
+- **Tinta de personaje** (2026-10-28, Diego): `ash_950` y `ash_900` se aceptan
+  en `verify_palette --world` solo como contorno y ojos de personaje; el
+  decorado y el terreno se miden con `--strict`.
+- **Partes de Valdehoja como capa de texto** (`valdehoja.parts.txt`), no como
+  rectángulos (2026-10-28).
 - **Zonas: «Rastro»** (2026-10-28, elegido por Diego): un camino principal
   lleva a la fuente del daño pasando por 3 viñetas de causa y efecto; hito en
   la fuente; paso cerrado detrás del monstruo de historia. **Mapas en texto**
@@ -238,6 +239,7 @@ Salvo información nueva. Si alguna se enmienda, se anota con fecha.
 | Si dE 9,2 entre materiales basta en pantalla, o hace falta la **enmienda 9** (la 5 se usó para la cámara; la 6 a la 8, para Valdehoja) | Paso 2b, sobre la captura del tileset |
 | IA-5: enmienda del contrato de batalla (solo el turno de Ilan) y orden de líder | Diego, en el anexo de la parte 4 |
 | IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
+| Cómo se llega a las cuatro regiones tras el Bosque (cadena o vuelta a Valdehoja) | Diego, al abrir el Bosque |
 | Prueba con personas de «¿Por qué pierdo?» y de materiales | **Aplazadas por Diego el 2026-10-01.** Deuda; hoja lista en `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md` |
 | Mobbin y Pinterest, no consultadas | Primera sesión con navegador |
 

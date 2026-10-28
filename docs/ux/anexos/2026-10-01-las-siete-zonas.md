@@ -18,8 +18,8 @@ Este anexo decide **cómo se compone cada zona**.
 aplazadas por decisión de Diego** (2026-10-01; ver «Pruebas aplazadas»), y la
 fase 4 se planteó con la hipótesis prudente. **Diego eligió el 2026-10-28:
 dirección A «Rastro», mapas en texto, hipótesis prudente confirmada.** Contrato
-«Rastro» escrito y **valores aprobados por Diego el 2026-10-28**. Abierta la
-fase 5 con Valdehoja: paso 1 entregado.
+«Rastro» escrito y **valores aprobados por Diego el 2026-10-28**. Fase 5:
+**Valdehoja cerrada el 2026-10-28** (pasos 1 a 4); la siguiente es el Bosque.
 
 **Subdivisión (guía §5): una zona por sesión,** en este orden: Valdehoja →
 Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura
@@ -729,7 +729,33 @@ combate. Aquí, cada parte se ve ya devuelta al entrar en Valdehoja.
   (a)**.
 - **El sprite de Ilan frente a `--world`**, pendiente desde el paso 2.
 
-**Siguiente:** con el visto bueno, Valdehoja queda cerrada salvo la ola (parte
-4) y la salida al Bosque. La siguiente sesión abre el **Bosque de las
-Cenizas**, la primera zona con la composición regional completa: camino a la
-fuente, 3 viñetas y paso cerrado.
+#### Decidido por Diego, 2026-10-28
+
+- **Visto bueno al paso 4** («sigue»).
+- **Gallinas: opción (a).** Pasan a la orilla de la era: (26, 17), (22, 18) y
+  (27, 18). Andan en cuanto vuelve la Costa; `verify_zone` lo mide con
+  `chicken_26_17` y sigue en 49 de 49.
+- **Ilan: excepción de personaje.** `ash_950` y `ash_900` cuentan como tinta de
+  personaje en `verify_palette.py image --world`. Con `--strict` no valen, y
+  así se mide el decorado y el terreno.
+  - Las nueve capturas del motor pasan `--world`.
+  - Los 38 sprites del decorado y el atlas pasan `--strict`.
+  - El sprite de Ilan no pasa `--strict`, como se espera: la excepción no
+    abre nada más.
+
+### Cierre de Valdehoja · 2026-10-28
+
+**Valdehoja queda cerrada**, salvo dos cosas que dependen de otras partes y se
+dicen:
+
+1. **La ola de purificación por partes** (enmienda 3) va con el combate, en la
+   parte 4.
+2. **La salida al Bosque** lleva a una zona aún sin dibujar. La casilla de
+   llegada, hoy (1, 17), se fija al dibujar el Bosque.
+
+**Siguiente zona: Bosque de las Cenizas**, en una sesión nueva (una zona por
+sesión, confirmado por Diego). Es la primera con la composición regional
+completa: camino a la fuente, 3 viñetas, hito y paso cerrado. `verify_zone`
+tiene que ganar las comprobaciones regionales (hoy declaradas pendientes).
+Antes de dibujar, pregunta pendiente para Diego: **cómo se llega a las otras
+cuatro regiones** (en cadena desde el Bosque o volviendo a Valdehoja).
