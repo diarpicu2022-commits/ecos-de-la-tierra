@@ -626,7 +626,10 @@ texto, y que el jugador sepa siempre hacia dónde seguir.
 **Anexo:** `docs/ux/anexos/2026-10-01-las-siete-zonas.md`. Fases 1 a 4
 cerradas; **contrato «Rastro»** escrito el 2026-10-28 (dirección A elegida por
 Diego, con la hipótesis prudente). **Empieza por el contrato de ese anexo**:
-manda sobre lo que queda escrito debajo.
+manda sobre lo que queda escrito debajo. **Valdehoja, cerrada el 2026-10-28**,
+sirve de modelo de los cuatro pasos de cada zona. Herramientas:
+`zone_preview.py`, `gen_world_decor.py`, `verify_zone.tscn`,
+`verify_squint.py` y `valdehoja_capture.tscn`.
 
 **Subdividir: una zona por sesión**, en este orden: Valdehoja → Bosque de las
 Cenizas → Cuenca de Alquitrán → Costa Quebrada → Llanura Marchita → Cumbre

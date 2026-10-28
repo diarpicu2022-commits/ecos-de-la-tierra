@@ -7,10 +7,14 @@ significado. Eso no se comprueba mirando una captura: se comprueba aquí.
         Coteja la paleta de `tools/pixel.py` con `src/ui/design_tokens.gd`.
         Un token que existe en un lado y no en el otro es deriva.
 
-    python tools/verify_palette.py image <png> [--world]
+    python tools/verify_palette.py image <png> [--world [--strict]]
         Todo píxel opaco debe ser un token exacto. Con --world, además, todo
         color que no sea brasa ni verde debe quedar bajo el techo de
-        saturación 0,22 del contrato «Vereda».
+        saturación 0,22 del contrato «Vereda». El agua viva y las flores
+        (enmienda 6) cuentan como acento, y el contorno y los ojos de los
+        personajes (ash_950, ash_900) como tinta de personaje. Con --strict, la
+        tinta de personaje tampoco vale: es la medida del decorado y del
+        terreno.
 
     python tools/verify_palette.py cvd
         Simula deuteranopía, protanopía y tritanopía (Machado et al. 2009,
@@ -122,6 +126,15 @@ def py_tokens() -> dict[str, tuple[int, int, int]]:
     return {k: v[:3] for k, v in PALETTE.items() if v[3] == 255}
 
 
+# Tinta de personaje (decisión de Diego, 2026-10-28): el contorno oscuro y los
+# ojos de los sprites de personaje (Ilan, parte 2, paso 5) salen de la rampa de
+# la interfaz y superan el techo del mundo. Se aceptan en una captura del
+# mundo porque es el contorno lo que separa a Ilan del prado purificado. Con
+# --strict no se aceptan: así se mide el decorado y el terreno, que nunca las
+# usan.
+CHARACTER_INKS = {"ash_950", "ash_900"}
+
+
 def is_accent(name: str) -> bool:
     # Enmienda 6 (2026-10-28): el agua viva y las flores van por encima del
     # techo de saturación, como el verde, porque solo existen en lo purificado.
@@ -148,7 +161,7 @@ def cmd_tokens() -> bool:
     return ok
 
 
-def cmd_image(path: str, world: bool) -> bool:
+def cmd_image(path: str, world: bool, strict: bool = False) -> bool:
     tokens = {**py_tokens(), **gd_tokens()}
     by_rgb = {v: k for k, v in tokens.items()}
     img = Image.open(path).convert("RGBA")
@@ -161,7 +174,7 @@ def cmd_image(path: str, world: bool) -> bool:
         if name is None:
             loose[(r, g, b)] = loose.get((r, g, b), 0) + 1
             continue
-        if world and not is_accent(name):
+        if world and not is_accent(name) and (strict or name not in CHARACTER_INKS):
             s = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[1]
             if s > WORLD_SATURATION_CEILING + 1e-3:
                 over[name] = over.get(name, 0) + 1
@@ -223,7 +236,7 @@ def main(argv: list[str]) -> int:
     if cmd == "tokens":
         ok = cmd_tokens()
     elif cmd == "image" and len(argv) >= 2:
-        ok = cmd_image(argv[1], "--world" in argv)
+        ok = cmd_image(argv[1], "--world" in argv, "--strict" in argv)
     elif cmd == "cvd":
         ok = cmd_cvd()
     elif cmd == "value" and len(argv) == 3:
