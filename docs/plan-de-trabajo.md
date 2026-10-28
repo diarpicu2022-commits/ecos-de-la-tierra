@@ -66,13 +66,16 @@ válidos:
 > `--world` con el sprite de Ilan** (`ash_950`, de la parte 2): está anotado y
 > no se ha tocado.
 >
-> Diego aprobó el paso 2 el mismo día. **Paso 3, Valdehoja en el motor
-> (`WorldDecor`): HECHO y verificado en Godot**: `verify_zone` 41/41,
-> `verify_movement` 99/99, `verify_usability` 16/16 y `verify_camera` 37/37.
-> Capturas del motor en `docs/ux/capturas/2026-10-28-valdehoja-motor-*`. Espera
-> el visto bueno de Diego. **Lo siguiente** es el paso 4: estados, movimiento
-> en lo purificado (enmienda 8) y la prueba de entrecerrar. Sigue abierto el
-> sprite de Ilan frente a `--world`.
+> Diego aprobó los pasos 2 y 3 el mismo día. **Paso 4, estados y movimiento
+> (enmienda 8): HECHO y verificado en Godot**: `verify_zone` 49/49,
+> `verify_movement` 99/99, `verify_usability` 16/16, `verify_camera` 37/37 y
+> la prueba de entrecerrar (`tools/verify_squint.py`) en verde. Espera el visto
+> bueno de Diego y dos decisiones suyas (anexo, Valdehoja, paso 4): las
+> gallinas quietas en lo enfermo y el sprite de Ilan frente a `--world`.
+>
+> **Lo siguiente:** con ese visto bueno, Valdehoja se cierra salvo la ola de
+> purificación (va con el combate, parte 4) y abre el **Bosque de las
+> Cenizas**, que es la primera zona regional completa.
 >
 > **Parte 2 — Movimiento, colisiones y transición entre zonas. CERRADA el
 > 2026-10-01.** Contrato «Umbral», seis pasos, PR #4 a #9; `verify_movement`
@@ -130,7 +133,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado; enmiendas 6-8 (2026-10-28). Valdehoja: pasos 1-2 aprobados, paso 3 hecho y verificado en Godot. Una zona por sesión |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro» bloqueado; enmiendas 6-8 (2026-10-28). Valdehoja: pasos 1-3 aprobados, paso 4 hecho (movimiento, estados, entrecerrar). Una zona por sesión |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |

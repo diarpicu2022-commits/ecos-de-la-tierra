@@ -34,8 +34,16 @@ extends Node
 ##   - en Valdehoja, el jardín está purificado al empezar, la arboleda no, y al
 ##     purificar el Bosque vuelven la arboleda y su fauna.
 ##
-## Se declara pendiente: `verify_palette.py image --world` sobre la captura del
-## motor y la prueba de entrecerrar.
+## Paso 4, movimiento (enmienda 8), cuadro a cuadro con `WorldAmbient.advance()`:
+##   - el agua viva alterna sus dos cuadros cada DUR_AMBIENT_WATER; la enferma
+##     no se mueve;
+##   - la hierba purificada se mece cada DUR_AMBIENT_SWAY; la enferma no;
+##   - un animal en lo purificado anda, en píxeles enteros, cerca de su sitio
+##     y en suelo sano; uno en lo enfermo se queda quieto;
+##   - con movimiento reducido no se mueve nada.
+##
+## Se declara pendiente: `verify_palette.py image --world` y la prueba de
+## entrecerrar, que se miden sobre la captura con `tools/verify_squint.py`.
 
 const SCREEN_COLUMNS := 30  ## 480 px de ancho en tiles de 16.
 const LANDMARK_MIN_SIDE := 2
@@ -147,8 +155,120 @@ func _measure_engine(zone_id: String) -> void:
 	_check("purificado el Bosque, la arboleda vuelve", _cell_pure(world, grove_soil, lines))
 	_check("y vuelve su fauna silvestre (%d -> %d)" % [birds_before, _count_fauna(world)],
 		_count_fauna(world) > birds_before)
+	await _measure_ambient(world, zone_id, spawn, lines, state)
 	state.flags.clear()
 	world.queue_free()
+
+
+## Paso 4 — el movimiento de la enmienda 8, cuadro a cuadro: solo se mueve lo
+## purificado, cada ciclo dura su token y con movimiento reducido no se mueve
+## nada.
+func _measure_ambient(world: WorldRoot, zone_id: String, spawn: Vector2i,
+		lines: PackedStringArray, state: Node) -> void:
+	print("\nMovimiento (enmienda 8)")
+	state.flags.clear()
+	state.set_zone_purified("broken_coast")
+	state.set_zone_purified("tar_basin")
+	world.enter_zone(zone_id, spawn)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	var amb := world.ambient
+	amb.set_physics_process(false)
+	DesignTokens.reduced_motion = false
+	var pure_water := -Vector2i.ONE
+	var sick_water := -Vector2i.ONE
+	for c in world._layer.get_used_cells():
+		if lines[c.y][c.x] != "~":
+			continue
+		var row := world._layer.get_cell_atlas_coords(c).y
+		if row == 4 and pure_water.x < 0:
+			pure_water = c
+		elif row == 3 and sick_water.x < 0:
+			sick_water = c
+	var sway_pure: Sprite2D = null
+	var sway_sick: Sprite2D = null
+	var animal_pure: Sprite2D = null
+	var animal_sick: Sprite2D = null
+	for n in world.entities.get_children():
+		if not n is Sprite2D:
+			continue
+		var nm := String(n.name)
+		if nm.begins_with("grass") and n.has_meta("frames") and sway_pure == null:
+			sway_pure = n
+		elif nm.begins_with("grass") and not n.has_meta("frames") and sway_sick == null:
+			sway_sick = n
+		elif n.has_meta("kind") and n.get_meta("kind") == "animal":
+			var lookup := WorldDecor.purified_lookup(zone_id, state)
+			if lookup.call(WorldAmbient._cell_of(n.position)):
+				if animal_pure == null:
+					animal_pure = n
+			elif animal_sick == null:
+				animal_sick = n
+	var water_period := WorldAmbient._frames(DesignTokens.DUR_AMBIENT_WATER)
+	var water_rows := {}
+	var water_changes := 0
+	var last_row := world._layer.get_cell_atlas_coords(pure_water).y
+	var sick_row := world._layer.get_cell_atlas_coords(sick_water).y
+	var sick_water_still := true
+	var sway_changes := 0
+	var sway_last: Texture2D = sway_pure.texture if sway_pure else null
+	var sick_tex: Texture2D = sway_sick.texture if sway_sick else null
+	var sick_grass_still := true
+	var home: Vector2 = animal_pure.position if animal_pure else Vector2.ZERO
+	var moved := false
+	var integer := true
+	var in_range := true
+	var on_walkable := true
+	var sick_animal_pos: Vector2 = animal_sick.position if animal_sick else Vector2.ZERO
+	var sick_animal_still := true
+	var frames := 600
+	for _i in frames:
+		amb.advance()
+		var row := world._layer.get_cell_atlas_coords(pure_water).y
+		water_rows[row] = true
+		if row != last_row:
+			water_changes += 1
+			last_row = row
+		if world._layer.get_cell_atlas_coords(sick_water).y != sick_row:
+			sick_water_still = false
+		if sway_pure and sway_pure.texture != sway_last:
+			sway_changes += 1
+			sway_last = sway_pure.texture
+		if sway_sick and sway_sick.texture != sick_tex:
+			sick_grass_still = false
+		if animal_pure:
+			var p := animal_pure.position
+			moved = moved or p != home
+			integer = integer and p == p.round()
+			in_range = in_range and p.distance_to(home) <= DesignTokens.ANIMAL_RANGE + DesignTokens.ANIMAL_HOP_MAX
+			on_walkable = on_walkable and amb._walkable.call(WorldAmbient._cell_of(p))
+		if animal_sick and animal_sick.position != sick_animal_pos:
+			sick_animal_still = false
+	_check("el agua viva alterna sus dos cuadros cada %d cuadros (%d cambios en %d)" % [
+		water_period, water_changes, frames],
+		pure_water.x >= 0 and water_rows.has(4) and water_rows.has(WorldTiles.WATER_ALT_ROW)
+		and water_changes == frames / water_period, "filas %s" % str(water_rows.keys()))
+	_check("el agua enferma no se mueve", sick_water.x >= 0 and sick_water_still)
+	_check("la hierba purificada se mece (%d cambios)" % sway_changes,
+		sway_pure != null and sway_changes == frames / WorldAmbient._frames(DesignTokens.DUR_AMBIENT_SWAY))
+	_check("la hierba enferma no se mueve", sway_sick != null and sick_grass_still)
+	_check("un animal en lo purificado anda (%s)" % (animal_pure.name if animal_pure else "ninguno"),
+		animal_pure != null and moved)
+	_check("y siempre en píxeles enteros, cerca de su sitio y en suelo sano",
+		integer and in_range and on_walkable)
+	_check("un animal en lo enfermo se queda quieto", animal_sick != null and sick_animal_still)
+	# Movimiento reducido: nada cambia.
+	DesignTokens.reduced_motion = true
+	var before_row := world._layer.get_cell_atlas_coords(pure_water).y
+	var before_tex: Texture2D = sway_pure.texture
+	var before_pos := animal_pure.position
+	for _i in 300:
+		amb.advance()
+	_check("con movimiento reducido no se mueve nada",
+		world._layer.get_cell_atlas_coords(pure_water).y == before_row
+		and sway_pure.texture == before_tex and animal_pure.position == before_pos)
+	DesignTokens.reduced_motion = false
+	amb.set_physics_process(true)
 
 
 ## ¿La casilla está pintada en su estado purificado? El suelo purificado está
@@ -283,7 +403,8 @@ func _measure(zone_id: String) -> void:
 		_measure_home(zone_id, lines, cells, legend, spawn[0], reach, landmark)
 	else:
 		_wait("composición regional (camino a la fuente, 3 viñetas, paso cerrado): se mide desde el Bosque")
-	_wait("verify_palette.py image --world y prueba de entrecerrar: necesitan la captura del paso 3")
+	print("  (la paleta y la prueba de entrecerrar se miden aparte: tools/verify_palette.py image --world"
+		+ " sobre las capturas del motor y tools/verify_squint.py %s)" % zone_id)
 
 
 func _measure_home(zone_id: String, lines: PackedStringArray, cells: Dictionary,

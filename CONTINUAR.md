@@ -18,13 +18,13 @@ Al ver Valdehoja sin decorado la juzgó «desabrida» y autorizó las **enmienda
 domésticos y movimiento en lo purificado. Los pasos 1 y 2 de Valdehoja están
 entregados y esperan visto bueno. Antes de seguir:
 
-1. Diego aprobó el paso 2. El **paso 3** (Valdehoja en el motor, con
-   `WorldDecor`) está hecho y verificado en Godot (`verify_zone` 41/41), y
-   espera visto bueno. En la nube, Godot se descarga como dice el §4 de
-   este archivo; hace falta que Diego permita ejecutarlo.
-2. Decidir qué se hace con el sprite de Ilan frente a `--world` (anexo de la
-   parte 3, Valdehoja, «FALLA medido»).
-3. Paso 4: estados y movimiento en lo purificado (enmienda 8).
+1. Diego aprobó los pasos 2 y 3. El **paso 4** (estados y movimiento de la
+   enmienda 8, prueba de entrecerrar) está hecho y verificado en Godot
+   (`verify_zone` 49/49), y espera visto bueno.
+2. Dos decisiones de Diego (anexo de la parte 3, Valdehoja, paso 4): las
+   gallinas quietas en lo enfermo y el sprite de Ilan frente a `--world`.
+3. Después: **Bosque de las Cenizas**, la primera zona regional completa.
+   La ola de purificación va con el combate (parte 4).
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -39,7 +39,7 @@ entregados y esperan visto bueno. Antes de seguir:
 | — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1-2 aprobados y paso 3 verificado en Godot (2026-10-28) |
+| 3 | Las siete zonas | **En curso**: contrato «Rastro» y enmiendas 6-8; Valdehoja, pasos 1-3 aprobados y paso 4 hecho (2026-10-28) |
 | 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
@@ -136,6 +136,7 @@ $GODOT --headless --path . res://tools/verify_camera.tscn      # 37/37
 $GODOT --headless --path . res://tools/verify_zone.tscn -- valdehoja
 xvfb-run -a $GODOT --path . res://tools/valdehoja_capture.tscn   # capturas del motor
 $GODOT --path . res://tools/valdehoja_play.tscn                   # pasear por Valdehoja
+python tools/verify_squint.py valdehoja                          # prueba de entrecerrar
 ```
 
 Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.

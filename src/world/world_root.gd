@@ -35,6 +35,9 @@ var camera := WorldCamera.new()
 var entities := Node2D.new()
 ## Cuerpos sólidos del decorado de la zona: casas, árboles, pozo, rocas.
 var solids := Node2D.new()
+## Lo que se mueve solo en lo purificado: agua, plantas, fauna y animales
+## (enmienda 8).
+var ambient := WorldAmbient.new()
 var label := PlaceLabel.new()
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
@@ -74,6 +77,7 @@ func _ready() -> void:
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
 	entities.y_sort_enabled = true
+	add_child(ambient)
 	add_child(solids)
 	add_child(entities)
 	entities.add_child(body)
@@ -106,7 +110,12 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 		if child != body:
 			child.get_parent().remove_child(child)
 			child.queue_free()
-	WorldDecor.build(id, purified_at, entities, solids)
+	var blocked := {}
+	WorldDecor.build(id, purified_at, entities, solids, blocked)
+	var size := Vector2i(lines[0].length(), lines.size())
+	ambient.setup(_layer, entities, func(c: Vector2i) -> bool:
+		return Rect2i(Vector2i.ZERO, size).has_point(c) and not blocked.has(c) \
+			and ZoneRules.walkable(lines[c.y][c.x]) and purified_at.call(c))
 	zone_id = id
 	zone_size = Vector2i(lines[0].length(), lines.size())
 	_zone_exits = ZoneRules.exits_from(id, _exits)

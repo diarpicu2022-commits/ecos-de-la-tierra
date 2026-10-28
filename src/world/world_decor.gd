@@ -25,10 +25,18 @@ const SPRITE := {"person": "yara", "chicken": "chicken_0", "bird": "bird_0",
 	"butterfly": "butterfly_0"}
 
 
+## Lo que se mece al purificar (enmienda 8): tiene un segundo cuadro
+## `<id>_pure_1.png`.
+const SWAYS := ["grass", "flower", "weed", "crop_row"]
+
+
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos
-## sólidos a `solids`. Devuelve la casilla de aparición, o (-1, -1) si la
-## capa no la tiene.
-static func build(zone_id: String, purified_at: Callable, entities: Node, solids: Node) -> Vector2i:
+## sólidos a `solids`; las casillas que ocupa lo sólido se anotan en
+## `blocked`. Devuelve la casilla de aparición, o (-1, -1) si la capa no la
+## tiene. Lo que se mueve (enmienda 8) lleva sus cuadros en la meta `frames`,
+## para `WorldAmbient`.
+static func build(zone_id: String, purified_at: Callable, entities: Node, solids: Node,
+		blocked: Dictionary = {}) -> Vector2i:
 	var deco := ZoneRules.load_deco(zone_id)
 	if deco.is_empty():
 		return Vector2i(-1, -1)
@@ -62,7 +70,11 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		sprite.position = feet
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
+		_mark_motion(sprite, entry, at, pure)
 		if entry["solid"]:
+			for j in size.y:
+				for i in size.x:
+					blocked[at + Vector2i(i, j)] = true
 			var body := StaticBody2D.new()
 			body.name = "solid_" + sprite.name
 			var shape := RectangleShape2D.new()
@@ -111,6 +123,32 @@ static func purified_lookup(zone_id: String, state: Node) -> Callable:
 			for c: Vector2i in parts[id]:
 				pure_cells[c] = true
 	return func(c: Vector2i) -> bool: return zone_pure or pure_cells.has(c)
+
+
+## Cuadros y fase de lo que se mueve. Lo enfermo no lleva cuadros: no se
+## mueve. Los animales sí los llevan siempre; `WorldAmbient` solo los deja
+## andar por lo purificado.
+static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure: bool) -> void:
+	var id: String = entry["id"]
+	var kind: String = entry["kind"]
+	var frames: Array[Texture2D] = []
+	if kind == "decor" and pure and id in SWAYS:
+		var alt := "%s%s_pure_1.png" % [DECOR_DIR, id]
+		if ResourceLoader.exists(alt):
+			frames = [sprite.texture, load(alt)]
+	elif kind == "fauna" or kind == "animal":
+		var base: String = SPRITE.get(id, id)
+		frames = [sprite.texture]
+		if base.ends_with("_0"):
+			var alt := "%s%s_1_%s.png" % [DECOR_DIR, base.trim_suffix("_0"), "pure" if pure else "sick"]
+			if ResourceLoader.exists(alt):
+				frames.append(load(alt))
+	if frames.is_empty():
+		return
+	sprite.set_meta("frames", frames)
+	sprite.set_meta("kind", kind)
+	sprite.set_meta("phase", absi(hash(at)) % 97)
+	sprite.set_meta("base_y", sprite.position.y)
 
 
 static func _texture(id: String, pure: bool) -> Texture2D:
