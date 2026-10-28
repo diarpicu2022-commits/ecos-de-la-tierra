@@ -1,0 +1,79 @@
+; Cumbre Menguante — capa de decorado, hito y entidades. Contrato «Rastro»
+; (docs/ux/anexos/2026-10-01-las-siete-zonas.md), zona regional. Mismo tamaño
+; que waning_peak.txt. El estado lo da la bandera purified_waning_peak.
+;
+; Nada del decorado se parece a una lona doblada: el manto reflectante es la
+; clase que responde de la Cumbre (catálogo 2a).
+;
+; Leyenda: carácter = tipo, id, sólido|pisable[, ancho x alto en tiles]
+; 1 = vignette, v1_dark_rock, sólido          roca oscura que asoma donde había nieve
+; a = vignette, v1_meltwater, pisable         el deshielo que corre por ella
+; b = vignette, v2_stake, sólido              la estaca que marcaba hasta dónde llegaba el hielo
+; 2 = vignette, v2_moraine, pisable           la morrena que dejó al retirarse, muy abajo
+; c = vignette, v3_ice_block, sólido          bloque de hielo caído del glaciar
+; 3 = vignette, v3_meltpool, pisable          la charca de deshielo
+; Y = landmark, glacier, sólido, 4x4          hito: el glaciar partido, sobre el Refugio de Altahielo
+; M = entity, monster, sólido                 el Coloso del Deshielo (combate de historia)
+; X = entity, blocker, sólido                 paso cerrado: esquirlas de hielo sucio y piedra
+; S = entity, seedbed, sólido                 semillero de la ladera oeste
+; P = decor, pine, sólido, 2x2                pino de montaña, también sobre la roca
+; B = decor, boulder, sólido, 2x2             peñasco, también sobre la roca
+; k = decor, dark_rock, pisable               placa de roca oscura expuesta
+; w = decor, meltwater, pisable               reguero de deshielo
+; q = decor, crack, pisable                   grieta en el suelo
+; g = decor, grass, pisable                   hierba alpina
+; R = decor, rock, sólido                     piedra suelta
+; @ = spawn, start, pisable                   llegada desde la Llanura
+---
+BBPPPPPPPPBBBBBB    PPPPPPPPPPBBPP  PP  BBBBBBPPPP      BBPPBBPP  PPBBPP
+BBPPPPPPPPBBBBBB    PPPPPPPPPPBBPP  PP  BBBBBBPPPP  @   BBPPBBPP  PPBBPP
+PP  BBBBPPPPPPBBBBPPBBPP  BBPP  PPBB  PPBBPP  BB   g    q PPPPPPBBBB  PP
+PP  BBBBPPPPPPBBBBPPBBPP  BBPP  PPBB  PPBBPP  BB          PPPPPPBBBB  PP
+PPPP  BB    PPPP  BBPPBB  PPPPBBPPBBPPBBPPPPPP        g     BBPP
+PPPP  BB    PPPP  BBPPBB  PPPPBBPPBBPPBBPPPPPP              BBPP
+PPPPPPPPBBBB    BB    PP  PPBBBBPPPPPPBB          R       BB    BBPPBBBB
+PPPPPPPPBBBB    BB    PP  PPBBBBPPPPPPBB      1       R  qBB    BBPPBBBB
+PPBBBBPPPP                                    a  1        BBPPPP  PPBBPP
+PPBBBBPPPP                                                BBPPPP  PPBBPP
+PPPPBB            PPPPBB    PP  PPBBPP q       aa a   PPPPBBBBPP      PP
+PPPPBB     g q    PPPPBB    PP  PPBBPP         1 g    PPPPBBBBPP      PP
+PP  PP              PPBBPPBBPPPPPPBBBBPPPP R        BBPPBBPPBB  PPBBPPBB
+PP  PP        S     PPBBPPBBPPPPPPBBBBPPPP          BBPPBBPPBB  PPBBPPBB
+PPBB  PP            PPBBPPBBPP  PPPPBBPPBB  PPBBBBBB  PPPPBB    PPPPBBPP
+PPBB  PP           RPPBBPPBBPP  PPPPBBPPBB  PPBBBBBB  PPPPBB    PPPPBBPP
+PPPPPPBB          BBPP  BB  PP  BB  PP  PPPP  PPPPBBPPBBBBBBPPBBPP  PP
+PPPPPPBB          BBPP  BB  PP  BB  PP  PPPP  PPPPBBPPBBBBBBPPBBPP  PP
+  BBBB  PP   g    PPBB  BB  PPPPPPBB  BBPPPP    BB  PPBBPPPPPP  BBPPPP
+  BBBB  PP        PPBB  BB  PPPPPPBB  BBPPPP    BB  PPBBPPPPPP  BBPPPP
+PP  BBPPBB    PPBB  BBPPPPPPPPBBPPPPBB  BB  PPPPPPPPPPPP  BB  PPPPPPBBPP
+PP  BBPPBB    PPBB  BBPPPPPPPPBBPPPPBB  BB  PPPPPPPPPPPP  BB  PPPPPPBBPP
+PPPP     gb   2   PPBBBB  PPPPBBBBBBBBPPPPBB    BB      PP  BBBB  PP  PP
+PPPP       2  2 q PPBBBB  PPPPBBBBBBBBPPPPBB    BB      PP  BBBB  PP  PP
+PPPPPP    R2  kg    PPBB               q        PPPP  PPPP  PPPP  PPBBPP
+PPPPPP   k g g      PPBB R      k   q w kqw    RPPPP  PPPP  PPPP  PPBBPP
+    BB          g             k    g w q q q  gw    BBBBPPBBPPPPBBBB
+    BB        q  g      w  qk  kg kg    k     w  g  BBBBPPBBPPPPBBBB
+  BBBBBB                                                            BBBB
+  BBBBBB                    w qqqg  q k   kkkk k                    BBBB
+  BB  BBPPBBBBPPPPBB  BBPPPPBBPP  PP  PPPPPPPP  PP  PPPPBBPPBB  w     PP
+  BB  BBPPBBBBPPPPBB  BBPPPPBBPP  PP  PPPPPPPP  PP  PPPPBBPPBB        PP
+BBPPPPBBPPPPPPPPBBPPPPBBPPPP      g   q     PPBBBBBB            g     BB
+BBPPPPBBPPPPPPPPBBPPPPBBPPPP  w RwkqYYYY  k PPBBBBBB            wg    BB
+  PPPPBBBBBB  PPPPPPPPPP  PP      wgYYYY    w BBBBPPPPPPBBBB    g
+  PPPPBBBBBB  PPPPPPPPPP  PP     q  YYYY    k BBBBPPPPPPBBBB  R     g
+                            X   w wRYYYY  wk w  BBPP  PPPPBB   g
+                               g    kkM         BBPP  PPPPBB
+BB  BBPPPPBB  BB  PPPPPP      wk   q k  gk    PPPPPP  PPBBPPk  w
+BB  BBPPPPBB  BB  PPPPPP      g k  kkkqqk     PPPPPP  PPBBPP g  kk
+PPBBPPPPPPPPPP      PPPP  BBPP  g   k               PP  PPBB q w q    PP
+PPBBPPPPPPPPPP      PPPP  BBPP                      PP  PPBB       g  PP
+      BBBB                                                     wg     PP
+      BBBB                                               k     k      PP
+                        PP                          c3c3c3         g  BB
+                        PP                     k  kk   qk   g         BB
+BBPPPP  PPPP    PP  PPPPPP  BB  PP  BBPP  BB                        BBPP
+BBPPPP  PPPP    PP  PPPPPP  BB  PP  BBPP  BB                g       BBPP
+PP      BBPPBBBB  PPPPBBBBPPPP  PPPPPPPPPP  PP  k k k           PPBB  PP
+PP      BBPPBBBB  PPPPBBBBPPPP  PPPPPPPPPP  PP        q         PPBB  PP
+BBBBPPBBPPPP  PPBBPPPPPPPP  PPPPBB    BBPP  PPPPPPBBPP  PPPPBB  BBPPBBPP
+BBBBPPBBPPPP  PPBBPPPPPPPP  PPPPBB    BBPP  PPPPPPBBPP  PPPPBB  BBPPBBPP

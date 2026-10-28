@@ -40,7 +40,8 @@ SCREEN = (480, 270)
 # Lo que desaparece al purificar: el mismo listado que WorldDecor.VANISH_WHEN_PURE.
 VANISH_WHEN_PURE = ("blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
                     "v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag",
-                    "v2_sack", "v2_salt", "salt")
+                    "v2_sack", "v2_salt", "salt",
+                    "meltwater", "crack", "v1_meltwater", "v3_ice_block", "v3_meltpool")
 SPRITE = {"person": "yara", "chicken": "chicken_0", "bird": "bird_0", "butterfly": "butterfly_0"}
 ENTRY = re.compile(r"^; (\S) = (\w+), (\w+), (sólido|pisable)(?:, (\d+)x(\d+))?")
 
@@ -202,7 +203,7 @@ def render(zone_id: str, purified_parts: set[str], terrain_only: bool = False,
             # Lo pequeño (animales, fauna) se apoya en el centro de su tile.
             bottom -= (TILE - img.height) // 2
         left = x * TILE + (w * TILE - img.width) // 2
-        if entry["id"] in ("tree", "tree_b", "burnt_tree", "bush"):
+        if entry["id"] in ("tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"):
             # Como WorldDecor: unos píxeles por árbol, para romper la cuadrícula.
             hsh = gd_hash_v2i(x, y)
             left += (hsh % 7) - 3

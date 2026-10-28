@@ -61,10 +61,10 @@ const CRYPT_ID := "greed_crypt"
 const HOME_ID := "valdehoja"
 const HOME_PARTS := ["yara_garden", "ashen_forest", "tar_basin", "broken_coast",
 	"withered_plain", "waning_peak"]
-const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush"]
+const TREES_ON_FLORA := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
 ## Decorado del daño (catálogo 2a, «decorado permitido»): lo que cuenta para el
 ## gradiente.
-const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel", "bottle", "torn_bag", "salt"]
+const DAMAGE_DECOR := ["stump", "ash", "burnt_tree", "litter", "crop_row", "oil", "barrel", "bottle", "torn_bag", "salt", "dark_rock", "crack", "meltwater"]
 const STEPS := [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var _pass := 0

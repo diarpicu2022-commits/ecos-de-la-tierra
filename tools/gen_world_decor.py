@@ -949,6 +949,243 @@ def wire_blocker(pure: bool) -> Canvas:
     return c
 
 
+# --- Cumbre Menguante: el deshielo y su vuelta ---------------------------------------------
+# AQUA solo existe en lo purificado (enmienda 6): el hielo enfermo es gris
+# (ASH), el que vuelve, blanco y azul. Nada se parece a una lona doblada: el
+# manto reflectante es la clase que responde de la Cumbre (catálogo 2a).
+
+
+def dark_rock(pure: bool, seed: int) -> Canvas:
+    """Placa de roca oscura expuesta donde antes había nieve: es la que se
+    calienta y derrite el resto. Purificada, la nieve vuelve a cubrirla."""
+    c = Canvas(16, 16)
+    noise = ValueNoise(seed)
+    if pure:
+        blob(c, 8, 10, 6.5, 3.5, "ash_200", noise, 0.5)
+        blob(c, 7, 9, 4.5, 2.2, "ash_050", noise, 0.4)
+        return c
+    blob(c, 8, 10, 6.5, 3.5, "water_700", noise, 0.7)
+    blob(c, 7.5, 9.5, 4.5, 2.4, "ash_700", noise, 0.6)
+    line(c, 4, 9, 7, 12, "water_700")
+    return c
+
+
+def meltwater(pure: bool, seed: int) -> Canvas:
+    """Reguero de deshielo, en diagonal. Purificado, ya no corre."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    x = rng.randint(2, 6)
+    for i in range(10):
+        c.set(x + i, 4 + i, color("water_500"))
+        if i % 3 == 0:
+            c.set(x + i + 1, 4 + i, color("water_300"))
+    return c
+
+
+def crack(pure: bool, seed: int) -> Canvas:
+    """Grieta en el suelo de la montaña, en zigzag. Purificada, se cierra."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    x, y = 2, rng.randint(5, 9)
+    for i in range(6):
+        nx, ny = x + 2, y + rng.choice((-2, 2))
+        line(c, x, y, nx, max(2, min(13, ny)), "water_700")
+        x, y = nx, max(2, min(13, ny))
+    return c
+
+
+def pine(pure: bool, seed: int) -> Canvas:
+    """Pino de montaña, 32x40: copa en pisos triangulares. Enfermo, pardo y
+    ralo; purificado, verde."""
+    c = Canvas(32, 40)
+    rng = random.Random(seed)
+    ground_shadow(c, 16, 36, 9, "vital_900" if pure else "soil_700")
+    for y in range(28, 37):
+        c.set(15, y, color("wood_700"))
+        c.set(16, y, color("wood_500"))
+    tiers = ((6, 6), (12, 9), (18, 12), (24, 14))
+    dark, base, lit = (("vital_900", "vital_700", "vital_500") if pure
+                       else ("flora_700", "flora_500", "flora_300"))
+    for top, half in tiers:
+        for k in range(8):
+            y = top + k
+            w = int(half * (k + 1) / 8)
+            for x in range(16 - w, 16 + w + 1):
+                ink = lit if x < 16 - w + 2 else dark if x > 16 + w - 2 else base
+                if not pure and rng.random() < 0.12:
+                    continue
+                c.set(x, y, color(ink))
+    c.set(16, 5, color(lit))
+    return c
+
+
+def boulder(seed: int) -> Canvas:
+    """Peñasco de 32x32, de aristas partidas."""
+    c = Canvas(32, 32)
+    noise = ValueNoise(seed)
+    ground_shadow(c, 16, 28, 13, "soil_700")
+    blob(c, 16, 19, 13, 10, "ash_700", noise, 0.5)
+    blob(c, 14.5, 17, 10, 7, "ash_600", noise, 0.5)
+    blob(c, 12, 14, 5, 3.5, "ash_400", noise, 0.4)
+    line(c, 9, 20, 15, 26, "water_700")
+    return c
+
+
+def stake(pure: bool) -> Canvas:
+    """Estaca de medición del glaciar, 16x16: un poste con franjas que marcaba
+    hasta dónde llegaba el hielo. Se queda: purificada, el hielo vuelve a su pie."""
+    c = Canvas(16, 16)
+    ground_shadow(c, 8, 14, 4, "soil_700")
+    for y in range(1, 15):
+        ink = "roof_300" if (y // 3) % 2 == 0 else "ash_200"
+        c.set(7, y, color(ink))
+        c.set(8, y, color("roof_500" if ink == "roof_300" else "ash_400"))
+    if pure:
+        blob(c, 8, 13.5, 6, 2.2, "ash_200")
+        blob(c, 7, 13, 4, 1.4, "ash_050")
+    return c
+
+
+def moraine(pure: bool, seed: int) -> Canvas:
+    """Morrena: piedras sueltas que dejó el glaciar al retirarse. Purificada,
+    la hierba crece entre ellas."""
+    c = Canvas(16, 16)
+    rng = random.Random(seed)
+    for _ in range(5):
+        x, y = rng.randint(2, 12), rng.randint(5, 12)
+        blob(c, x + 0.5, y + 0.5, 1.8, 1.3, "ash_600")
+        c.set(x, y, color("ash_400"))
+    if pure:
+        for x in (4, 9, 13):
+            line(c, x, 14, x, 12, "vital_600")
+    return c
+
+
+def ice_block(pure: bool) -> Canvas:
+    """Bloque de hielo caído del glaciar, sucio y partido en diagonal. Gris: el
+    azul solo vuelve purificado. Purificado, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 6, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "................",
+        "......aab.......",
+        ".....aabbbc.....",
+        "....aabbbbcc....",
+        "...aabbbbbccd...",
+        "...abbbbbccdd...",
+        "...bbbbbccddd...",
+        "....bbbccddd....",
+        ".....bccdd......",
+        "......dd........",
+    ]
+    grid(c, rows, {"a": "ash_050", "b": "ash_200", "c": "ash_400", "d": "ash_600"}, 0, 2)
+    line(c, 5, 6, 10, 11, "ash_600")
+    return c
+
+
+def meltpool(pure: bool, seed: int) -> Canvas:
+    """Charca de deshielo, turbia. Purificada, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    noise = ValueNoise(seed)
+    blob(c, 8, 10, 6.5, 3.5, "water_500", noise, 0.6)
+    blob(c, 7, 9.5, 3.5, 1.6, "water_300", noise, 0.4)
+    return c
+
+
+def glacier(pure: bool) -> Canvas:
+    """El hito de la Cumbre: el glaciar partido, 64x80, sobre el Refugio de
+    Altahielo. Enfermo: hielo gris y sucio, partido por una grieta en diagonal,
+    con la roca oscura asomando y la cascada de deshielo quieta (lo enfermo no
+    se mueve). Purificado: entero, blanco y azul."""
+    c = Canvas(64, 80)
+    rng = random.Random(67)
+    noise = ValueNoise(67)
+    ground_shadow(c, 32, 76, 30, "vital_900" if pure else "soil_700")
+    # Lengua de hielo: ancha abajo, con la cresta arriba.
+    for y in range(8, 78):
+        t = (y - 8) / 70
+        half = int(8 + t * 23 + (noise.fbm(y * 0.25, 2) - 0.5) * 5)
+        for x in range(32 - half, 32 + half):
+            if pure:
+                ink = "ash_050" if x < 32 - half + 6 else "aqua_100" if x < 32 + half - 6 else "aqua_300"
+            else:
+                ink = "ash_200" if x < 32 - half + 5 else "ash_400" if x < 32 + half - 5 else "ash_600"
+            c.set(x, y, color(ink))
+    # Bandas del hielo.
+    for y in range(20, 76, 9):
+        line(c, 32 - int(8 + (y - 8) / 70 * 23) + 3, y, 32 + int(8 + (y - 8) / 70 * 23) - 3, y + 2,
+             "aqua_300" if pure else "ash_600")
+    if not pure:
+        # La grieta en diagonal, con la roca oscura asomando.
+        for k in range(4):
+            line(c, 18 + k, 14, 46 + k, 70, "water_700" if k < 3 else "ash_700")
+        for _ in range(8):
+            x, y = rng.randint(14, 50), rng.randint(30, 74)
+            blob(c, x, y, 2.5, 1.8, "ash_700")
+        # La cascada de deshielo, quieta.
+        for y in range(40, 78):
+            c.set(47 + (y % 3 == 0), y, color("water_500"))
+            c.set(46, y, color("water_300") if y % 4 == 0 else color("water_500"))
+    else:
+        for x, y in ((24, 20), (36, 34), (28, 52)):
+            c.set(x, y, color("ash_050"))
+            c.set(x + 1, y, color("ash_050"))
+    return c
+
+
+def thaw_monster(pure: bool) -> Canvas:
+    """El Coloso del Deshielo en el mapa, 16x24: hielo sucio que gotea, con borde
+    EMBER_300 (el calor que lo derrite) y ojos de brasa. Purificado, ya no está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 7, "soil_700")
+    rows = [
+        "....aaaaaaa.....",
+        "...abbbbbbba....",
+        "..abbcbbbcbba...",
+        "..abbebbbebba...",
+        "..abbbbbbbbba...",
+        ".aabbbbdbbbbaa..",
+        "abbbbbdddbbbbba.",
+        "abbbbbbdbbbbbba.",
+        "abbcbbbbbbbcbba.",
+        ".abbbbbbbbbbba..",
+        "..abbbbbbbbba...",
+        "..abba...abba...",
+        "..abba...abba...",
+        "..aaff...ffaa...",
+        "....f.....f.....",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "ash_200", "c": "ash_050", "d": "ash_400", "e": "ember_400",
+                   "f": "water_500"}, 0, 7)
+    return c
+
+
+def ice_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Cumbre, 16x16: esquirlas de hielo sucio y piedra
+    clavadas en diagonal, puntiagudas y sin contorno. Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    for x0, y0, x1, y1, ink in ((2, 15, 6, 2, "ash_400"), (6, 15, 11, 3, "ash_200"),
+                                (10, 15, 14, 5, "ash_600"), (0, 15, 3, 8, "ash_700")):
+        line(c, x0, y0, x1, y1, ink)
+        line(c, x0 + 1, y0, x1 + 1, y1, "ash_600")
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -1414,6 +1651,19 @@ def pieces() -> dict[str, Canvas]:
         out[f"silo_{state}"] = silo(pure)
         out[f"monster_withered_plain_{state}"] = specter_monster(pure)
         out[f"blocker_withered_plain_{state}"] = wire_blocker(pure)
+        # Cumbre Menguante.
+        out[f"dark_rock_{state}"] = dark_rock(pure, 71)
+        out[f"meltwater_{state}"] = meltwater(pure, 72)
+        out[f"crack_{state}"] = crack(pure, 73)
+        out[f"pine_{state}"] = pine(pure, 74)
+        out[f"stake_{state}"] = stake(pure)
+        out[f"moraine_{state}"] = moraine(pure, 75)
+        out[f"ice_block_{state}"] = ice_block(pure)
+        out[f"meltpool_{state}"] = meltpool(pure, 76)
+        out[f"glacier_{state}"] = glacier(pure)
+        out[f"monster_waning_peak_{state}"] = thaw_monster(pure)
+        out[f"blocker_waning_peak_{state}"] = ice_blocker(pure)
+    out["boulder_sick"] = boulder(77)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)
     out["well_sick"] = well()

@@ -53,15 +53,19 @@ válidos:
 >
 > **Costa Quebrada: aprobada** (2026-10-28). Trae la enmienda 9, la arena.
 >
-> **Llanura Marchita: HECHA el 2026-10-28, espera visto bueno.**
-> - Campos de monocultivo sin cerca partidos por setos; el silo de Grano de
->   Sal como hito.
-> - Viñetas: setos arrancados, sacos de abono con sal, pulverizadora.
+> **Llanura Marchita: aprobada** (2026-10-28, PR #15).
+>
+> **Cumbre Menguante: HECHA el 2026-10-28, espera visto bueno.**
+> - El glaciar partido sobre el Refugio de Altahielo como hito.
+> - Viñetas: roca oscura y deshielo, la estaca de medición con la morrena, y
+>   el hielo caído con la charca.
+> - Al purificar vuelven la nieve y el glaciar blanco y azul.
 > - `verify_zone` **44/44**.
 >
-> **Lo siguiente:** el visto bueno a la Llanura; después, la **Cumbre
-> Menguante** (la última regional), que entra por el norte desde la salida
-> (52, 39) de la Llanura. Luego, la Cripta de la Avaricia.
+> **Las cinco regiones están dibujadas.** **Lo siguiente:** el visto bueno a la
+> Cumbre; después, la **Cripta de la Avaricia**, la última zona. Antes hay que
+> preguntar a Diego si sus viñetas son las cinco causas o una sola. Su entrada
+> viene de la salida (0, 36) de la Cumbre.
 >
 > **Valdehoja, hecho en la sesión 7** (pasos 1 a 4, todos con visto bueno de
 > Diego):
@@ -136,7 +140,7 @@ zonas, ni progresión sin encuentros.
 | — | Pantalla de batalla «Ceniza y Brasa» | **Hecho**, 16/16 en usabilidad |
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
-| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja, Bosque, Cuenca y Costa cerrados; **Llanura** hecha (2026-10-28). Siguiente: Cumbre |
+| 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **En curso** — contrato «Rastro»; enmiendas 6-8. Valdehoja y cuatro regiones cerradas; **Cumbre** hecha (2026-10-28). Siguiente: Cripta |
 | 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |

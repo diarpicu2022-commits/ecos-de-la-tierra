@@ -31,7 +31,7 @@ const SWAYS := ["grass", "flower", "weed", "crop_row", "reeds"]
 
 ## Árboles: se dibujan desplazados hasta JITTER_PX px por pieza para que un
 ## bosque no se lea como plantación (Bosque, 2026-10-28).
-const JITTER := ["tree", "tree_b", "burnt_tree", "bush"]
+const JITTER := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
 const JITTER_PX := 3
 
 ## Lo que desaparece con la ola de purificación: el paso cerrado y el
@@ -39,7 +39,8 @@ const JITTER_PX := 3
 ## Purificado no queda ni el sprite ni el cuerpo: un barril invisible y sólido
 ## sería un muro fantasma.
 const VANISH_WHEN_PURE := ["blocker", "monster", "oil", "v1_oil", "v2_oil", "barrel", "v1_barrel", "litter",
-	"v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag", "v2_sack", "v2_salt", "salt"]
+	"v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag", "v2_sack", "v2_salt", "salt",
+	"meltwater", "crack", "v1_meltwater", "v3_ice_block", "v3_meltpool"]
 
 
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos
