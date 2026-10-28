@@ -565,6 +565,390 @@ def pipe_blocker(pure: bool) -> Canvas:
     return c
 
 
+# --- Costa Quebrada: el plástico y su vuelta ---------------------------------------------
+# La basura de decorado es suelta, tumbada y en diagonal: nunca atada, en fardo
+# ni en contenedor, que son las clases que responden de la Costa (catálogo 2a).
+# El material se lee por silueta: botellas (trazos), red (cuadrícula), latas.
+
+
+def snagged_bag(pure: bool) -> Canvas:
+    """Arbusto de duna con bolsas de plástico enganchadas, 16x16. Purificado,
+    el arbusto queda limpio y redondo."""
+    c = bush(pure, 17)
+    if pure:
+        return c
+    for x, y, ink in ((4, 5, "ash_200"), (5, 6, "ash_400"), (5, 5, "ash_200"),
+                      (11, 7, "ash_400"), (12, 6, "ash_200"), (12, 7, "ash_400"), (9, 11, "ash_400")):
+        c.set(x, y, color(ink))
+    line(c, 3, 4, 2, 2, "ash_400")
+    line(c, 13, 6, 15, 4, "ash_400")
+    return c
+
+
+def bottle(pure: bool, seed: int) -> Canvas:
+    """Botella de plástico tumbada en diagonal. Purificada, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    x, y = rng.randint(3, 6), rng.randint(10, 12)
+    for i in range(6):
+        c.set(x + i, y - i // 2, color("ash_400" if i < 5 else "ash_200"))
+        c.set(x + i, y - i // 2 + 1, color("ash_600"))
+    c.set(x + 6, y - 3, color("roof_300"))
+    return c
+
+
+def ghost_net(pure: bool) -> Canvas:
+    """Red fantasma enredada en las rocas, 32x16. Purificada, las rocas quedan
+    limpias."""
+    c = Canvas(32, 16)
+    for cx, cy, rx in ((7, 10, 6), (19, 11, 7), (27, 9, 4)):
+        blob(c, cx, cy + 1, rx, rx * 0.55, "ash_700")
+        blob(c, cx - 0.6, cy, rx * 0.85, rx * 0.45, "ash_600")
+        c.set(cx - 2, cy - 1, color("ash_400"))
+    if pure:
+        return c
+    for x in range(2, 30, 3):
+        line(c, x, 5, x + 3, 13, "ash_200" if x % 2 else "ash_400")
+    for y in (6, 9, 12):
+        line(c, 2, y, 29, y + 1, "ash_400")
+    for x, y in ((12, 7), (13, 8), (14, 9), (22, 6), (23, 7)):
+        c.px[x, y] = (0, 0, 0, 0)
+    return c
+
+
+def buoy(pure: bool) -> Canvas:
+    """La boya de la red, varada y escorada, 16x16. Purificada, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 13, 5, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "........a.......",
+        ".......aab......",
+        "......abbbc.....",
+        ".....abbbbcc....",
+        "....dbbbbccc....",
+        "....ddbbcccd....",
+        ".....ddccdd.....",
+        "......dddd......",
+    ]
+    grid(c, rows, {"a": "roof_100", "b": "roof_300", "c": "roof_500", "d": "roof_700"})
+    line(c, 9, 5, 12, 2, "ash_400")
+    return c
+
+
+def torn_bag(pure: bool) -> Canvas:
+    """Bolsa de basura rota, abierta en diagonal y vaciándose. Purificada, ya no
+    está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    noise = ValueNoise(29)
+    blob(c, 8, 10, 6, 4, "water_700", noise, 0.7)
+    blob(c, 7, 9, 4, 2.5, "ash_700", noise, 0.5)
+    line(c, 3, 7, 6, 10, "ash_600")
+    for x, y, ink in ((11, 12, "ash_400"), (13, 11, "ash_200"), (12, 13, "roof_300"), (14, 13, "ash_400")):
+        c.set(x, y, color(ink))
+    return c
+
+
+def trail(pure: bool, seed: int) -> Canvas:
+    """El reguero: trozos de plástico en diagonal hacia la montaña. Purificado,
+    ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    for i in range(5):
+        x, y = 2 + i * 3, 13 - i * 2 + rng.randint(-1, 1)
+        ink = ("ash_400", "ash_200", "roof_300", "ash_600", "ash_400")[i]
+        c.set(x, y, color(ink))
+        c.set(x + 1, y, color(ink))
+        c.set(x + 1, y + 1, color("ash_700"))
+    return c
+
+
+def trash_mountain(pure: bool) -> Canvas:
+    """El hito de la Costa: la montaña de basura del vertedero, 64x80 (asoma por
+    encima de su base de 4x4). Enferma, un cerro alto de plástico en capas
+    diagonales con siluetas de botella, red y lata, y gaviotas quietas.
+    Purificada, el cerro se queda, pero es una duna: arena, hierba y flores."""
+    c = Canvas(64, 80)
+    rng = random.Random(53)
+    noise = ValueNoise(53)
+    ground_shadow(c, 32, 76, 30, "vital_900" if pure else "soil_700")
+    if pure:
+        blob(c, 32, 56, 30, 22, "wood_700")
+        blob(c, 31, 53, 27, 19, "wood_500")
+        blob(c, 27, 46, 14, 10, "wood_300")
+        for _ in range(60):
+            x, y = rng.randint(6, 58), rng.randint(36, 74)
+            if c.get(x, y) in (color("wood_500"), color("wood_700")):
+                line(c, x, y, x, y - 2, "vital_600")
+                c.set(x, y - 3, color("vital_400"))
+        for _ in range(16):
+            x, y = rng.randint(8, 56), rng.randint(38, 72)
+            if c.filled(x, y):
+                c.set(x, y, color(rng.choice(["bloom_500", "bloom_300", "bloom_100"])))
+        return c
+    # Perfil de cerro: ancho abajo, pico arriba, en capas.
+    for y in range(16, 78):
+        t = (y - 16) / 62
+        half = int(4 + t * 28 + (noise.fbm(y * 0.3, 1) - 0.5) * 6)
+        for x in range(32 - half, 32 + half):
+            ink = "water_700" if x > 32 + half - 4 or y > 74 else "ash_700"
+            if x < 32 - half + 3 + int(t * 4):
+                ink = "ash_600"
+            c.set(x, y, color(ink))
+    blob(c, 26, 44, 12, 14, "ash_600", noise, 0.4)
+    for _ in range(44):
+        x, y = rng.randint(6, 58), rng.randint(20, 74)
+        if not c.filled(x, y):
+            continue
+        kind = rng.random()
+        if kind < 0.4:
+            for i in range(4):
+                c.set(x + i, y - i // 2, color("ash_400"))
+            c.set(x + 4, y - 2, color("roof_300"))
+        elif kind < 0.7:
+            for i in range(0, 6, 2):
+                line(c, x + i, y, x + i + 2, y + 3, "ash_200")
+            line(c, x, y + 1, x + 6, y + 2, "ash_400")
+        else:
+            c.set(x, y, color("ash_200"))
+            c.set(x + 1, y + 1, color("ash_400"))
+            c.set(x + 2, y + 1, color("water_500"))
+    for x, y in ((16, 10), (44, 4), (52, 14), (30, 2)):
+        line(c, x - 2, y, x, y + 1, "ash_400")
+        line(c, x, y + 1, x + 2, y, "ash_400")
+    return c
+
+
+def plastic_monster(pure: bool) -> Canvas:
+    """El Golem de Plástico en el mapa, 16x24: un cuerpo de basura compactada
+    en diagonal, con borde EMBER_300 y ojos de brasa. Purificado, ya no está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 7, "soil_700")
+    rows = [
+        "................",
+        ".....aaaaa......",
+        "....abbcbba.....",
+        "....abebeba.....",
+        "....abbbbba.....",
+        "...aabcbdbaa....",
+        "..abbdbbbcbba...",
+        ".abbcbbdbbbcba..",
+        ".abdbbcbbdbbba..",
+        "..abbbbbbbcba...",
+        "..abcbbdbbbba...",
+        "...abbbcbbba....",
+        "...abba.abba....",
+        "...abba.abba....",
+        "..aabba.abbaa...",
+        "..aaaa...aaaa...",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "ash_700", "c": "ash_400", "d": "roof_300", "e": "ember_400"}, 0, 6)
+    return c
+
+
+def scrap_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Costa, 16x16: chatarra y plástico retorcidos, en
+    diagonal y puntiagudos, sin contorno. Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    for x0, y0, x1, y1, ink in ((1, 14, 13, 2, "ash_600"), (3, 3, 15, 13, "ash_700"),
+                                (6, 15, 9, 1, "roof_500"), (0, 9, 14, 8, "ash_400")):
+        line(c, x0, y0, x1, y1, ink)
+        line(c, x0, y0 + 1, x1, y1 + 1, "water_700")
+    return c
+
+
+# --- Llanura Marchita: el monocultivo y su vuelta ----------------------------------------
+# Las hileras van sin cerca: la parcela cercada es la clase que responde de la
+# Llanura (catálogo 2a).
+
+
+def sack(pure: bool) -> Canvas:
+    """Saco de abono químico, abierto y tumbado en diagonal, 16x16, vertiendo
+    polvo claro. No es un fardo atado (catálogo 2a). Purificado, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 13, 6, "soil_700")
+    rows = [
+        "................",
+        "................",
+        "................",
+        "................",
+        "......aa........",
+        ".....abbb.......",
+        "....abbbbc......",
+        "...abbbbbcc.....",
+        "...bbbbbbccd....",
+        "...bbbbbccdd....",
+        "....bbbccdd.ee..",
+        ".....bccdd.eeee.",
+        "......ddd...ee..",
+    ]
+    grid(c, rows, {"a": "ash_050", "b": "ash_200", "c": "ash_400", "d": "ash_600", "e": "ash_050"})
+    return c
+
+
+def salt(pure: bool, seed: int) -> Canvas:
+    """Costra de sal en el suelo, en placas rotas: la tierra quemada por el
+    abono (la aldea se llama Grano de Sal). Purificada, ya no está."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    rng = random.Random(seed)
+    for _ in range(4):
+        x, y = rng.randint(1, 10), rng.randint(3, 12)
+        w = rng.randint(3, 5)
+        for i in range(w):
+            c.set(x + i, y + i // 2, color("ash_200"))
+            c.set(x + i, y + i // 2 + 1, color("ash_400"))
+    return c
+
+
+def sprayer(pure: bool) -> Canvas:
+    """La pulverizadora de agroquímicos, tumbada, 32x16: depósito y barra
+    rota en diagonal. Purificada, la hierba la cubre: se queda, ya sin uso."""
+    c = Canvas(32, 16)
+    ground_shadow(c, 14, 13, 13, "vital_900" if pure else "soil_700")
+    blob(c, 10, 8, 7, 4, "roof_700")
+    blob(c, 9.5, 7.5, 6, 3.2, "roof_500")
+    line(c, 5, 6, 13, 6, "roof_300")
+    for k in range(2):
+        line(c, 16, 9 + k, 30, 3 + k, "ash_600")
+    for x in (19, 23, 27):
+        c.set(x, 8 - (x - 19) // 3, color("ash_400"))
+    blob(c, 6, 12, 2, 2, "water_700")
+    blob(c, 14, 12, 2, 2, "water_700")
+    if pure:
+        for x in range(3, 30, 3):
+            line(c, x, 14, x, 11, "vital_600")
+            c.set(x, 10, color("vital_400"))
+    return c
+
+
+def wilted_row(pure: bool, seed: int) -> Canvas:
+    """Hilera marchita: el cultivo muerto, doblado y gris. Purificada, cereal
+    y legumbre alternos, como la hilera curada."""
+    if pure:
+        return crop_row(True, seed)
+    c = Canvas(16, 16)
+    rng = random.Random(seed)
+    for x in range(1, 16, 3):
+        h = rng.randint(4, 6)
+        line(c, x, 15, x + 1, 15 - h, "ash_600")
+        line(c, x + 1, 15 - h, x + 3, 13 - h + 2, "ash_400")
+    line(c, 0, 15, 15, 15, "soil_700")
+    return c
+
+
+def silo(pure: bool) -> Canvas:
+    """El hito de la Llanura: el silo de la aldea Grano de Sal, 48x64. Cilindro
+    alto con cúpula y la tubería de vertido. Enfermo, oxidado y con la mancha
+    clara del abono bajando. Purificado, la enredadera sube y anidan pájaros."""
+    c = Canvas(48, 64)
+    rng = random.Random(61)
+    ground_shadow(c, 24, 60, 18, "vital_900" if pure else "soil_700")
+    # Cuerpo: cilindro con sombreado por columnas.
+    for x in range(10, 38):
+        t = (x - 10) / 27
+        ink = "ash_400" if t < 0.2 else "ash_600" if t < 0.75 else "ash_700"
+        for y in range(16, 60):
+            c.set(x, y, color(ink))
+    for y in range(20, 60, 6):
+        line(c, 10, y, 37, y, "ash_700")
+    # Cúpula.
+    blob(c, 24, 16, 14, 7, "roof_500")
+    blob(c, 22, 14, 10, 4.5, "roof_300")
+    blob(c, 24, 9, 3, 2.5, "roof_700")
+    # Tubería de vertido hacia el suelo, en diagonal.
+    for k in range(3):
+        line(c, 37, 24 + k, 46, 40 + k, "ash_600" if k < 2 else "ash_700")
+    if pure:
+        for y in range(24, 60, 2):
+            c.set(12 + (y % 4 == 0), y, color("vital_700"))
+            c.set(34 + (y % 6 == 0), y, color("vital_700"))
+        for x, y in ((12, 30), (13, 42), (34, 36), (35, 50), (20, 56)):
+            blob(c, x, y, 2.2, 1.6, "vital_500")
+            c.set(x - 1, y - 1, color("vital_300"))
+        for x, y in ((18, 11), (30, 12)):
+            c.set(x, y, color("aqua_300"))
+            c.set(x + 1, y - 1, color("aqua_300"))
+    else:
+        # Óxido y el reguero claro del abono bajando por el costado.
+        for _ in range(30):
+            x, y = rng.randint(11, 36), rng.randint(18, 58)
+            c.set(x, y, color("roof_700"))
+        for y in range(26, 58):
+            c.set(16 + (y // 7) % 2, y, color("ash_200"))
+        line(c, 44, 41, 46, 46, "ash_200")
+    return c
+
+
+def specter_monster(pure: bool) -> Canvas:
+    """El Espectro del Monocultivo en el mapa, 16x24: una figura pálida hecha de
+    espigas iguales, con borde EMBER_300 y ojos de brasa. Purificado, ya no
+    está."""
+    c = Canvas(16, 24)
+    if pure:
+        return c
+    ground_shadow(c, 8, 22, 6, "soil_700")
+    rows = [
+        "......a..a......",
+        ".....aba.aba....",
+        ".....abaaaba....",
+        "....abbbbbbba...",
+        "....abebbbeba...",
+        "....abbbbbbba...",
+        "...abbcbcbcbba..",
+        "...abcbcbcbcba..",
+        "..abbcbcbcbcbba.",
+        "..abcbcbcbcbcba.",
+        "..abbcbcbcbcbba.",
+        "...abcbcbcbcba..",
+        "...abbbbbbbbba..",
+        "....abbbbbbba...",
+        ".....abbbbba....",
+        "......abbba.....",
+        ".......aba......",
+        "........a.......",
+    ]
+    grid(c, rows, {"a": "ember_300", "b": "ash_200", "c": "ash_400", "e": "ember_400"}, 0, 4)
+    return c
+
+
+def wire_blocker(pure: bool) -> Canvas:
+    """Paso cerrado de la Llanura, 16x16: alambre de espino tendido en diagonal
+    entre dos postes rotos, sin contorno. Desaparece con la ola."""
+    c = Canvas(16, 16)
+    if pure:
+        return c
+    ground_shadow(c, 8, 14, 7, "soil_700")
+    line(c, 2, 15, 3, 4, "wood_700")
+    line(c, 13, 15, 12, 5, "wood_700")
+    for y0 in (6, 9, 12):
+        line(c, 2, y0, 13, y0 + 2, "ash_400")
+        for x in range(3, 13, 3):
+            c.set(x, y0 + (x - 2) * 2 // 11 - 1, color("ash_200"))
+            c.set(x, y0 + (x - 2) * 2 // 11 + 1, color("ash_200"))
+    return c
+
+
 # --- Lo construido -------------------------------------------------------------------
 
 
@@ -1012,6 +1396,24 @@ def pieces() -> dict[str, Canvas]:
         out[f"refinery_tower_{state}"] = refinery_tower(pure)
         out[f"monster_tar_basin_{state}"] = oil_monster(pure)
         out[f"blocker_tar_basin_{state}"] = pipe_blocker(pure)
+        # Costa Quebrada.
+        out[f"snagged_bag_{state}"] = snagged_bag(pure)
+        out[f"bottle_{state}"] = bottle(pure, 3)
+        out[f"ghost_net_{state}"] = ghost_net(pure)
+        out[f"buoy_{state}"] = buoy(pure)
+        out[f"torn_bag_{state}"] = torn_bag(pure)
+        out[f"trail_{state}"] = trail(pure, 7)
+        out[f"trash_mountain_{state}"] = trash_mountain(pure)
+        out[f"monster_broken_coast_{state}"] = plastic_monster(pure)
+        out[f"blocker_broken_coast_{state}"] = scrap_blocker(pure)
+        # Llanura Marchita.
+        out[f"sack_{state}"] = sack(pure)
+        out[f"salt_{state}"] = salt(pure, 11)
+        out[f"sprayer_{state}"] = sprayer(pure)
+        out[f"wilted_row_{state}"] = wilted_row(pure, 9)
+        out[f"silo_{state}"] = silo(pure)
+        out[f"monster_withered_plain_{state}"] = specter_monster(pure)
+        out[f"blocker_withered_plain_{state}"] = wire_blocker(pure)
     out["house_sick"] = house(False, 1)
     out["house_stone_sick"] = house(True, 2)
     out["well_sick"] = well()

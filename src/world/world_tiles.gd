@@ -11,7 +11,7 @@ extends RefCounted
 
 const ATLAS_PATH := "res://assets/tilesets/world.png"
 
-enum Terrain { SOIL, PATH, WATER, FLORA }
+enum Terrain { SOIL, PATH, WATER, FLORA, SAND }
 
 ## Máscara de vecinos del mismo material. Mismo orden que en gen_tiles.py.
 const NORTH := 1
@@ -28,6 +28,7 @@ const OVERLAY_ROW := {
 	Terrain.PATH: 1,
 	Terrain.WATER: 3,
 	Terrain.FLORA: 5,
+	Terrain.SAND: 9,  ## Enmienda 9 (2026-10-28): la arena de la Costa.
 }
 
 ## Leyenda de los mapas de texto: un carácter por tile.
@@ -36,6 +37,7 @@ const LEGEND := {
 	"=": Terrain.PATH,
 	"~": Terrain.WATER,
 	"#": Terrain.FLORA,
+	":": Terrain.SAND,
 }
 
 
