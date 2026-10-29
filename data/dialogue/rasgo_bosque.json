@@ -1,0 +1,8 @@
+{
+	"_doc": "Bosque de las Cenizas, primer encuentro con el Comandante Rasgo (IA-6, acto 1). Muestra de la voz de la derecha y del nombre en brasa.",
+	"lines": [
+		{"who": "rasgo", "mood": "neutral", "text": "Alto. Este bosque es de la Compañía Áurea. Da pan a mil familias."},
+		{"who": "ilan", "mood": "determinado", "text": "Lo que da es ceniza. Mira a tu alrededor."},
+		{"who": "rasgo", "mood": "duda", "text": "Yo también crecí entre campos muertos, chico. ¿Y tú qué les das?"}
+	]
+}

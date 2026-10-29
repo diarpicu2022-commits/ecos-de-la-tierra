@@ -46,6 +46,10 @@ var label := PlaceLabel.new()
 var monster: MapMonster = null
 ## Casilla por la que se entró en la zona: adonde se vuelve tras una derrota.
 var arrival_cell := Vector2i.ZERO
+## Diálogo en el mundo (contrato «Columna»): mirando a una persona, `confirm`
+## abre su conversación de `data/dialogue/talk.json`.
+var dialogue := DialogueRunner.new()
+var _talk := {}
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
 var fade := Fade.NONE
@@ -83,6 +87,10 @@ func _ready() -> void:
 	curtain.modulate.a = 0.0
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
+	add_child(dialogue)
+	var talk = JSON.parse_string(FileAccess.get_file_as_string("res://data/dialogue/talk.json"))
+	_talk = talk["talk"] if talk is Dictionary else {}
+	dialogue.finished.connect(func(_id): body.input_enabled = true)
 	entities.y_sort_enabled = true
 	add_child(ambient)
 	add_child(solids)
@@ -249,6 +257,32 @@ func _spawn_monster(id: String, lines: PackedStringArray, blocked: Dictionary) -
 func _on_contact(advantage: MapMonster.Advantage) -> void:
 	body.input_enabled = false
 	encounter.emit(advantage)
+
+
+## Intenta hablar con lo que Ilan tiene delante. Devuelve el id de la
+## conversación abierta, o "" si no hay nadie con quien hablar.
+func try_talk() -> String:
+	if dialogue.is_running() or fade != Fade.NONE or not body.input_enabled:
+		return ""
+	var front := MapMonster.cell_of(Vector2i(body.global_position)) + body.facing
+	for child in entities.get_children():
+		if not (child is Sprite2D and child.has_meta("decor_id")):
+			continue
+		var feet := Vector2i(child.position)
+		if MapMonster.cell_of(feet) != front:
+			continue
+		var key := "%s:%s" % [zone_id, child.get_meta("decor_id")]
+		if _talk.has(key):
+			body.input_enabled = false
+			dialogue.start(_talk[key])
+			return _talk[key]
+	return ""
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("confirm") and not dialogue.is_running():
+		if try_talk() != "":
+			get_viewport().set_input_as_handled()
 
 
 ## Pies del cuerpo de pie en `cell`: centro de la base de la casilla.

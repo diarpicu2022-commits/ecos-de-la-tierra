@@ -1,0 +1,6 @@
+{
+	"_doc": "Con quién se habla en el mundo: «<zona>:<id de la entidad>» -> conversación de data/dialogue/. Mirando a la entidad, confirm la abre.",
+	"talk": {
+		"valdehoja:person": "yara_inicio"
+	}
+}
