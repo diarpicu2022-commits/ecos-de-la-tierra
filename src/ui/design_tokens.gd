@@ -388,3 +388,25 @@ const BATTLE_PARALLAX := 2
 
 ## Tras huir, tiempo sin contacto posible con el monstruo.
 const DUR_FLEE_GRACE := 1.0
+
+
+# --- Sintonía del grupo (IA-5) --------------------------------------------
+# Contrato «Orden de líder», bloqueado el 2026-10-28. No son valores visuales,
+# pero viven aquí por la misma regla: ningún número suelto en el código.
+
+## Red de cada compañero: 12 entradas, 16 ocultas, 4 salidas.
+const PARTY_INPUTS := 12
+const PARTY_HIDDEN := 16
+const PARTY_OUTPUTS := 4
+## Paso de descenso por gradiente tras cada decisión de Ilan.
+const PARTY_LEARNING_RATE := 0.15
+## Decisiones con las que la red debe haber aprendido un estilo (> 80 %).
+const PARTY_LEARN_DECISIONS := 200
+## Cuánto empuja la orden de grupo la salida que favorece (en logits).
+const ORDER_BIAS := 2.0
+## Sintonía: empieza en el medio, sube más deprisa de lo que baja.
+const SYNC_START := 0.5
+const SYNC_UP := 0.25
+const SYNC_DOWN := 0.15
+## Decisiones buenas seguidas que bastan para salir del mínimo al tramo medio.
+const SYNC_RECOVER := 3

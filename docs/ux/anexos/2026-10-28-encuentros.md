@@ -793,6 +793,95 @@ llevo al grupo esta ronda») tiene una palanca inmediata y legible. A deja esa
 palanca en un efecto lento que la regla 1 de IA-5 teme. C renuncia a la idea
 de Diego.
 
+### Contrato «Orden de líder» (IA-5) — BLOQUEADO 2026-10-28
+
+Diego eligió la **B** el 2026-10-28. **Enmienda el contrato de batalla «Ceniza
+y Brasa»**: desde aquí el menú de acción solo se abre para Ilan.
+
+1. **Quién decide.** El jugador elige la acción de Ilan y, en su turno, una
+   **orden de grupo**: *Seguidme*, *Atajad la causa* o *Cubríos*. La orden
+   dura hasta el siguiente turno de Ilan. Los compañeros deciden solos en el
+   suyo.
+2. **La red** (`PartyMind`), por compañero:
+   - perceptrón de **12 entradas, 16 ocultas y 4 salidas**: atacar,
+     contramedida, curar y objeto;
+   - el combate no tiene acción de defender, así que las 5 salidas de la guía
+     quedan en 4. **Adaptación al motor, y se dice;**
+   - GDScript puro y semilla fija;
+   - pesos iniciales de IA-4, aprendidos de la política experta.
+3. **Aprende de Ilan.** Tras cada decisión de Ilan, un paso de descenso por
+   gradiente (`PARTY_LEARNING_RATE`) con el par «situación de Ilan → lo que
+   hizo».
+4. **La orden sesga** la salida de la red con `ORDER_BIAS`: *Atajad* hacia la
+   contramedida, *Cubríos* hacia curar y objeto, *Seguidme* sin sesgo.
+5. **Sintonía** de 0 a 1, en `GameState`, que empieza en `SYNC_START`:
+   - sube con buenas decisiones de Ilan (`SYNC_UP`): contramedida con la causa
+     activa, curar si alguien baja del 45 %, o combinar un tipo nuevo contra la
+     Sombra;
+   - baja con malas (`SYNC_DOWN` < `SYNC_UP`, «siempre se sale»): atacar
+     pudiendo atajar, repetir un tipo contra la Sombra o curar sin que haga
+     falta.
+6. **Precisión.** Cada compañero sigue su red con probabilidad
+   0,5 + 0,5 × sintonía. Si no, **duda** y elige al azar entre lo posible.
+7. **La influencia se ve, en texto** (regla 1 de IA-5): en el registro, una
+   línea corta por acción de compañero, con su motivo («Coral sigue la orden:
+   Barrera Absorbente», o «Coral duda»). Nada solo por color.
+8. **Opciones (parte 10):** sintonía neutra fija para quien la necesite. Se
+   anota.
+
+**Verificación** (`tools/verify_party_ai.gd`, semilla fija):
+
+- la red aprende un estilo sintético, con más del 80 % de acierto tras
+  `PARTY_LEARN_DECISIONS` decisiones;
+- con un líder bueno la sintonía sube, y con uno malo baja;
+- desde la sintonía mínima, `SYNC_RECOVER` decisiones buenas la devuelven al
+  tramo medio (≥ 0,5);
+- cada orden sesga lo que debe.
+
+**Orden:**
+
+1. tokens;
+2. componente clave: `PartyMind` y sintonía, sin interfaz;
+3. combate: compañeros automáticos, la fila de orden en el menú de Ilan y las
+   líneas del registro;
+4. el bot con las políticas nuevas y el **reequilibrado** que pidió Diego.
+   El criterio es que la experta gane siempre, que la voraz pierda contra la
+   Sombra y que la aleatoria gane como mucho el 30 %.
+
+#### IA-5, pasos 1 y 2 — tokens y `PartyMind` · 2026-10-28
+
+- **Tokens** en `DesignTokens`, sección «Sintonía del grupo»:
+  - red: 12 / 16 / 4;
+  - `PARTY_LEARNING_RATE` 0,15 y `PARTY_LEARN_DECISIONS` 200;
+  - `ORDER_BIAS` 2,0;
+  - sintonía: `SYNC_START` 0,5, `SYNC_UP` 0,25, `SYNC_DOWN` 0,15 y
+    `SYNC_RECOVER` 3.
+- **`src/battle/party_mind.gd`** (`PartyMind`):
+  - perceptrón en GDScript puro (tanh y softmax), con entropía cruzada y un
+    paso de gradiente;
+  - las 12 entradas de la situación;
+  - el sesgo de la orden;
+  - la elección con duda según la sintonía;
+  - el juicio de la decisión del líder y la actualización de la sintonía;
+  - se exporta y se carga para el guardado (parte 9).
+
+**Medido** — `tools/verify_party_ai.gd`: **10 de 10**, semilla fija.
+
+- La red pasa del **19 % al 88 %** de acierto sobre 500 situaciones nuevas
+  tras 200 decisiones de un líder sintético (piso 80 %).
+- *Atajad la causa* lleva a la contramedida en 300 de 300, y *Cubríos* a
+  curar u objeto en 300 de 300. Nunca elige lo que no puede hacer.
+- **Sintonía:** un líder bueno la sube de 0,50 a 0,91 en 6 decisiones, y uno
+  malo la baja a 0,19. Desde 0, 3 buenas la devuelven a 0,58. Repetir un tipo
+  contra la Sombra y curar sin necesidad cuentan como malas.
+- **Duda:** 527 de 1000 con sintonía 0, y 0 con sintonía 1.
+
+**Pendiente para el paso 3**, porque necesita el combate: «con un líder bueno
+el grupo gana en menos rondas», y los pesos iniciales de IA-4.
+
+**Siguiente:** paso 3. Los compañeros deciden solos en «Ceniza y Brasa», la
+orden se elige en el menú de Ilan y el registro dice por qué actúa cada uno.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)
