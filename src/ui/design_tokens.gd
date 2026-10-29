@@ -415,6 +415,29 @@ const SYNC_UP := 0.25
 const SYNC_DOWN := 0.15
 ## Decisiones buenas seguidas que bastan para salir del mínimo al tramo medio.
 const SYNC_RECOVER := 3
+# --- Diálogo ---------------------------------------------------------------
+# Contrato «Columna», bloqueado el 2026-10-28
+# (docs/ux/anexos/2026-10-28-dialogos.md). Ningún color nuevo: el panel es el
+# del repertorio (PANEL_FILL + BORDER_IDLE), el nombre TEXT_SECONDARY, Rasgo en
+# EMBER_400 mientras sirve a la Compañía y la continuación en EMBER_300.
+
+const DIALOGUE_SIZE := Vector2i(312, 52)
+## Margen al borde de la pantalla, abajo y al lado de quien habla.
+const DIALOGUE_MARGIN := SPACE_8
+const DIALOGUE_PADDING := SPACE_8
+const PORTRAIT_SIZE := 48
+## Separación entre el retrato y el texto.
+const PORTRAIT_GAP := SPACE_8
+## Lo que cabe en una caja: 240 px de texto a 6 px por carácter.
+const DIALOGUE_CHARS := 40
+const DIALOGUE_LINES := 2
+## Máquina de escribir: un carácter cada DUR_TYPE_CHAR y una pausa tras la
+## puntuación. Opcional; con movimiento reducido, texto completo directo.
+const DUR_TYPE_CHAR := 0.03
+const DUR_TYPE_PAUSE := 0.20
+const TYPE_PAUSE_AFTER := ".,;:!?"
+
+
 ## Rondas seguidas con la contramedida para atajar la causa de un monstruo
 ## regional (Diego, 2026-10-28: «sostener la contramedida»).
 const COUNTER_SUSTAIN_ROUNDS := 2
