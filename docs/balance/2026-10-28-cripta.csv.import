@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://caetpjoodqr23"
+
+[deps]
+
+files=["res://docs/balance/2026-10-28-cripta.combate.translation", "res://docs/balance/2026-10-28-cripta.resultado.translation", "res://docs/balance/2026-10-28-cripta.rondas.translation", "res://docs/balance/2026-10-28-cripta.habilidades.translation"]
+
+source_file="res://docs/balance/2026-10-28-cripta.csv"
+dest_files=["res://docs/balance/2026-10-28-cripta.combate.translation", "res://docs/balance/2026-10-28-cripta.resultado.translation", "res://docs/balance/2026-10-28-cripta.rondas.translation", "res://docs/balance/2026-10-28-cripta.habilidades.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

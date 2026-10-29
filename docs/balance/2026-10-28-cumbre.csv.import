@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dh0kqdkugpnwp"
+
+[deps]
+
+files=["res://docs/balance/2026-10-28-cumbre.combate.translation", "res://docs/balance/2026-10-28-cumbre.resultado.translation", "res://docs/balance/2026-10-28-cumbre.rondas.translation", "res://docs/balance/2026-10-28-cumbre.habilidades.translation"]
+
+source_file="res://docs/balance/2026-10-28-cumbre.csv"
+dest_files=["res://docs/balance/2026-10-28-cumbre.combate.translation", "res://docs/balance/2026-10-28-cumbre.resultado.translation", "res://docs/balance/2026-10-28-cumbre.rondas.translation", "res://docs/balance/2026-10-28-cumbre.habilidades.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

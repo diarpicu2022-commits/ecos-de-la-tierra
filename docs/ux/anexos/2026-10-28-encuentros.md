@@ -656,6 +656,143 @@ en `verify_flow` (23/23), `battle_bg_sheet` y `verify_wave`.
 - **La fauna en bandada al purificar (IA-2)** no está: es de la parte 3
   según la guía y quedó sin hacer. Se anota como deuda.
 
+Diego aprobó el paso 6 el 2026-10-28 y pidió seguir con IA-4 e IA-5.
+
+---
+
+## IA-4 · Bot de equilibrado — 2026-10-28
+
+Herramienta de desarrollo, sin interfaz: no lleva dirección de diseño, solo
+criterio medido (guía §3.3).
+
+- **`tools/balance_bot.gd`**, sin ventana y con semilla fija `20261028`:
+  - 300 combates por región y por política;
+  - un CSV por región en `docs/balance/2026-10-28-<región>.csv`, una fila por
+    combate (resultado, rondas y habilidades usadas);
+  - la tabla Q de la Sombra, entrenada encadenando sus combates, en
+    `data/balance/sombra_q.json`.
+- **Políticas:**
+  - **aleatoria:** cualquier acción;
+  - **voraz:** el grupo repite solo la contramedida del fuego;
+  - **experta:** cura bajo el 45 %, ataja la causa y, contra la Sombra,
+    combina las que no ha usado.
+- **Un error mío, y se dice:** la primera voraz usaba la primera habilidad
+  ofensiva *de cada personaje*. Con cinco personajes eso suma cinco
+  contramedidas, justo lo que la Sombra exige, y ganaba 300 de 300. Se
+  corrigió a «el grupo repite una sola», que es lo que dice la guía.
+
+**Medido** (victorias de 300 · rondas de media):
+
+| Región | Aleatoria | Voraz | Experta |
+|---|---|---|---|
+| Bosque | 298 · 12,4 | 299 · 6,6 | **300** · 9,1 |
+| Cuenca | 300 · 9,9 | 0 · 20,5 | **300** · 5,9 |
+| Costa | 300 · 9,9 | 0 · 25,9 | **300** · 7,6 |
+| Llanura | 290 · 10,5 | 0 · 13,4 | **300** · 6,0 |
+| Cumbre | 297 · 8,7 | 0 · 11,6 | **300** · 6,9 |
+| Cripta | 299 · 12,3 | **0** · 28,1 | **300** · 9,2 |
+
+- **Criterio 1, la experta gana siempre:** OK en las seis regiones.
+- **Criterio 2, la voraz pierde contra la Sombra:** OK, 0 de 300.
+- En el Bosque, la voraz es la experta: el fuego *es* la contramedida.
+
+**Hallazgo, y se le lleva a Diego:** **la aleatoria gana entre el 97 y el
+100 % en todas las regiones, también contra la Sombra.** Pulsar al azar
+termina usando la contramedida, porque las acciones posibles son pocas. El
+mensaje «hay que atajar la causa» no se impone a quien juega sin pensar. Solo
+lo nota en las rondas: tarda entre 1,4 y 2 veces más que la experta.
+
+---
+
+## IA-5 · Sintonía del grupo — fases 1 a 3 · 2026-10-28
+
+**Comunicación.** Hoy el jugador elige la acción de cada personaje. IA-5
+(guía §3.3, aprobada el 2026-09-30) quiere que sea **el líder**: los
+compañeros actúan por su cuenta según lo que vean hacer a Ilan, aprendido con
+una red pequeña, y la *sintonía* (de 0 a 1) mide la calidad del liderazgo.
+
+- **Decisión dominante del jugador:** *¿cómo llevo al grupo esta ronda?*
+- **Lo que no puede faltar:** que se vea que es él quien arrastra al grupo
+  (regla 1 de IA-5: «un castigo que no se entiende es un error»).
+
+**Investigación** (`observación → decisión → límite`):
+
+1. **Dragon Quest, IA del grupo** (Dragon Quest Wiki):
+   https://dragon-quest.org/wiki/Artificial_Intelligence
+   → Tácticas por personaje («Lucha con cabeza», «Sin piedad», «Cura
+   primero»…); la IA decide al empezar el turno de cada uno; «Sigue mis
+   órdenes» devuelve el control. → Una orden con nombre, elegida de una lista
+   corta, es legible. La decisión al inicio del turno usa el estado real. →
+   No copio la lista larga ni la opción de volver al control total en cada
+   combate: anularía la idea del líder.
+2. **«Dragon Quest's Tactics system…»** (Boss Rush, 2026-02-19):
+   https://bossrush.net/2026/02/19/boss-rush-banter-dragon-quests-tactics-system-is-the-secret-to-grander-immersion-and-faster-combat
+   → Llevar solo al protagonista se siente «más cerca de la acción», como
+   luchar junto a los compañeros y no mirarlos desde arriba, y el combate va
+   más rápido. → Apoya que el jugador lleve solo a Ilan. → El autor no recoge
+   frustraciones porque la serie es indulgente; aquí la sintonía sí castiga, y
+   por eso la influencia tiene que verse.
+3. **Katano sobre los gambits de FFXII** (Game Developer):
+   https://www.gamedeveloper.com/design/why-i-final-fantasy-iv-i-was-key-to-i-ffxii-i-s-ai-driven-gambit-system
+   → Elegir cada comando de 3-4 personajes «habría estropeado la diversión»:
+   se cede el control a una IA con condiciones asignadas. → Con cinco
+   personajes, el menú por personaje de hoy es la carga que el referente
+   evita. → No copio los gambits: programar condiciones es otro juego y otra
+   interfaz entera.
+4. **Reseña de FFXII: The Zodiac Age** (RPG Site):
+   https://www.rpgsite.net/review/5777-final-fantasy-xii-the-zodiac-age-review
+   → «Casi como si el jugador programara el combate a distancia»: divide a
+   los jugadores, porque no se controla al personaje ni se elige del menú. →
+   El riesgo es la distancia. Mantener a Ilan en mano directa evita que el
+   jugador quede solo como espectador. → No copio el modelo de distancia
+   total.
+5. **Game Accessibility Guidelines** (ya en la fase 3 de este anexo): nada
+   esencial solo por color, y que la precisión no sea esencial. → La reacción
+   de un compañero («Coral duda») va en texto, en el registro. Y el modo de
+   sintonía neutra de opciones (regla 3 de IA-5) se mantiene.
+
+**Fuentes de pantalla de Diego:** como en la fase 3, son catálogos web y no
+aplican a un sistema de combate. La de FFXII en Fandom
+(https://finalfantasy.fandom.com/wiki/Gambit) **no se pudo abrir el
+2026-10-28** (HTTP 402).
+
+## IA-5 — fase 4: direcciones (pendiente de elección de Diego)
+
+Las tres respetan las reglas de IA-5: la red aprende de Ilan, la sintonía
+existe, la influencia se ve en texto y hay un modo neutro en opciones.
+
+- **A · «El líder»** (literal de la guía). El jugador maneja **solo a
+  Ilan**. Cada compañero decide con su red, que imita a Ilan, y la sintonía
+  le da precisión. Cada acción de compañero deja en el registro su motivo
+  corto («Coral sigue a Ilan: Barrera Absorbente»).
+  - *Gana:* es la idea de Diego tal cual, y es el combate más rápido.
+  - *Cuesta:* la única palanca del jugador es su propio turno. La influencia
+    llega lenta, y con la sintonía baja puede sentirse opaca.
+  - *Enmienda:* el menú de acción solo para Ilan.
+- **B · «Líder con orden»** — recomendada. Como A, y además, en el turno de
+  Ilan, **una orden de grupo** de tres: *Seguidme* (imitan a Ilan), *Atajad
+  la causa* (prioridad a la contramedida) y *Cubríos* (curar y defender).
+  - La orden sesga la red; la sintonía decide cuánto aciertan al cumplirla.
+  - Es una fila más en el menú de Ilan, con el mismo estilo: no hay
+    componente nuevo.
+  - *Gana:* el jugador orquesta en cada ronda y ve el efecto en esa misma
+    ronda, sin volver a manejar a cinco (Dragon Quest con lista corta, FFXII
+    sin programar).
+  - *Cuesta:* una decisión más por ronda.
+  - *Enmienda:* el menú de acción solo para Ilan, más la fila de orden.
+- **C · «Propuesta del compañero»** (sin enmienda). El jugador sigue
+  manejando a los cinco, pero el menú de cada compañero se abre con el cursor
+  en lo que propone su red. La sintonía se ve en lo buenas que son las
+  propuestas.
+  - *Gana:* no toca el contrato y no hay pérdida de control.
+  - *Cuesta:* el jugador deja de ser el líder y la IA pasa a ser una
+    sugerencia. Además, no resuelve la carga de elegir cinco menús por ronda.
+
+**Recomendación: B.** Es la única en la que la decisión dominante («cómo
+llevo al grupo esta ronda») tiene una palanca inmediata y legible. A deja esa
+palanca en un efecto lento que la regla 1 de IA-5 teme. C renuncia a la idea
+de Diego.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

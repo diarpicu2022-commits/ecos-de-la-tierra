@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://7gvdytmns4gh"
+
+[deps]
+
+files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.habilidades.translation"]
+
+source_file="res://docs/balance/2026-10-28-llanura.csv"
+dest_files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.habilidades.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bjwd08jg6656m"
+
+[deps]
+
+files=["res://docs/balance/2026-10-28-cuenca.combate.translation", "res://docs/balance/2026-10-28-cuenca.resultado.translation", "res://docs/balance/2026-10-28-cuenca.rondas.translation", "res://docs/balance/2026-10-28-cuenca.habilidades.translation"]
+
+source_file="res://docs/balance/2026-10-28-cuenca.csv"
+dest_files=["res://docs/balance/2026-10-28-cuenca.combate.translation", "res://docs/balance/2026-10-28-cuenca.resultado.translation", "res://docs/balance/2026-10-28-cuenca.rondas.translation", "res://docs/balance/2026-10-28-cuenca.habilidades.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
