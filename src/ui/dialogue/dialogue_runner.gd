@@ -54,7 +54,15 @@ func _next() -> void:
 	var line: Dictionary = _lines[index]
 	var voice: Dictionary = _voices.get(line["who"], {})
 	var side: int = DialogueBox.Side.RIGHT if voice.get("side", "left") == "right" else DialogueBox.Side.LEFT
-	var tint: Color = DesignTokens.EMBER_400 if voice.get("name_color", "") == "ember" \
-		else DesignTokens.TEXT_SECONDARY
 	var face: Texture2D = load(PORTRAITS + "%s_%s.png" % [line["who"], line["mood"]])
-	box.show_line(voice.get("name", line["who"]), line["text"], side, face, tint)
+	box.show_line(voice.get("name", line["who"]), line["text"], side, face, name_color(voice))
+
+
+## Color del nombre (contrato §1): brasa mientras la voz sirve a la Compañía,
+## ceniza cuando la bandera `ember_until` de `GameState` dice que la dejó.
+func name_color(voice: Dictionary) -> Color:
+	if voice.get("name_color", "") != "ember":
+		return DesignTokens.TEXT_SECONDARY
+	var state := get_node_or_null("/root/GameState")
+	var left: bool = state != null and voice.has("ember_until") and bool(state.flag(voice["ember_until"]))
+	return DesignTokens.TEXT_SECONDARY if left else DesignTokens.EMBER_400

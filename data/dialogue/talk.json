@@ -1,6 +1,9 @@
 {
-	"_doc": "Con quién se habla en el mundo: «<zona>:<id de la entidad>» -> conversación de data/dialogue/. Mirando a la entidad, confirm la abre.",
+	"_doc": "Con quién se habla en el mundo. talk: «<zona>:<id de la entidad>» -> conversación de data/dialogue/; mirando a la entidad, confirm la abre. on_enter: <zona> -> conversación que abre sola la primera vez que se entra en la zona (Yara de lejos, por el ave); se marca como oída con la bandera heard_<conversación>.",
 	"talk": {
 		"valdehoja:person": "yara_inicio"
+	},
+	"on_enter": {
+		"ashen_forest": "yara_ave_bosque"
 	}
 }
