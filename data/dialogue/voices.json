@@ -1,12 +1,77 @@
 {
-	"_doc": "Voces del diálogo (contrato «Columna», docs/ux/anexos/2026-10-28-dialogos.md). side: lado de la caja; los de casa a la izquierda, los de fuera a la derecha. name_color: 'secondary' o 'ember' (Rasgo mientras sirve a la Compañía). Los retratos están en assets/sprites/portraits/<id>_<expresión>.png.",
+	"_doc": "Voces del diálogo (contrato «Columna», docs/ux/anexos/2026-10-28-dialogos.md). side: lado de la caja; los de casa a la izquierda, los de fuera a la derecha. name_color: 'secondary' o 'ember' (Rasgo mientras sirve a la Compañía). Los retratos están en assets/sprites/portraits/<id>_<expresión>.png. Yara tiene dos retratos (enmienda 1): «yara» en persona y «yara_ave» cuando habla de lejos por el ave.",
 	"voices": {
-		"ilan": {"name": "Ilan", "side": "left", "name_color": "secondary", "moods": ["neutral", "determinado"]},
-		"yara": {"name": "Yara", "side": "left", "name_color": "secondary", "moods": ["neutral", "alerta"]},
-		"bruma": {"name": "Bruma", "side": "left", "name_color": "secondary", "moods": ["neutral", "dolida"]},
-		"coral": {"name": "Coral", "side": "left", "name_color": "secondary", "moods": ["neutral", "risa"]},
-		"nix": {"name": "Nix", "side": "left", "name_color": "secondary", "moods": ["neutral", "concentrado"]},
-		"suri": {"name": "Suri", "side": "left", "name_color": "secondary", "moods": ["neutral", "firme"]},
-		"rasgo": {"name": "Rasgo", "side": "right", "name_color": "ember", "moods": ["neutral", "duda"]}
+		"ilan": {
+			"name": "Ilan",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"determinado"
+			]
+		},
+		"yara": {
+			"name": "Yara",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"alerta"
+			]
+		},
+		"yara_ave": {
+			"name": "Yara",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"alerta"
+			]
+		},
+		"bruma": {
+			"name": "Bruma",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"dolida"
+			]
+		},
+		"coral": {
+			"name": "Coral",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"risa"
+			]
+		},
+		"nix": {
+			"name": "Nix",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"concentrado"
+			]
+		},
+		"suri": {
+			"name": "Suri",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral",
+				"firme"
+			]
+		},
+		"rasgo": {
+			"name": "Rasgo",
+			"side": "right",
+			"name_color": "ember",
+			"moods": [
+				"neutral",
+				"duda"
+			]
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
     python tools/verify_portraits.py
 
-- Siete voces × dos expresiones, todas de 48×48.
+- Ocho retratos (Yara en persona y por el ave) × dos expresiones, de 48×48.
 - Todo píxel es un token de la paleta.
 - **Cada voz se distingue por la silueta**: entre dos voces cualesquiera, el
   solape de sus siluetas (lo que no es fondo ASH_900) es ≤ SILHOUETTE_MAX.
@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pixel import PALETTE  # noqa: E402
 
 DIR = Path(__file__).resolve().parents[1] / "assets" / "sprites" / "portraits"
-VOICES = {"ilan": "determinado", "yara": "alerta", "bruma": "dolida", "coral": "risa",
+VOICES = {"ilan": "determinado", "yara": "alerta", "yara_ave": "alerta", "bruma": "dolida", "coral": "risa",
           "nix": "concentrado", "suri": "firme", "rasgo": "duda"}
 SILHOUETTE_MAX = 0.90
 EXPRESSION_MIN = 12
@@ -73,7 +73,7 @@ def main() -> int:
             iou = len(m1 & m2) / len(m1 | m2)
             if iou > worst[2]:
                 worst = (names[i], names[j], iou)
-    check(f"las siete siluetas se distinguen: el par más parecido, {worst[0]} y {worst[1]}, "
+    check(f"las {len(names)} siluetas se distinguen: el par más parecido, {worst[0]} y {worst[1]}, "
           f"solapa {worst[2]:.2f} (tope {SILHOUETTE_MAX})", worst[2] <= SILHOUETTE_MAX)
     ratio = (lum(PALETTE["ash_200"]) + 0.05) / (lum(PALETTE["ash_950"]) + 0.05)
     check(f"ojos sobre la piel: {ratio:.1f}:1 (≥ 3)", ratio >= 3.0)

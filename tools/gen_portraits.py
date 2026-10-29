@@ -2,14 +2,15 @@
 docs/ux/anexos/2026-10-28-dialogos.md, §3).
 
 Busto de frente, 48×48, sobre fondo ASH_900 (la ventana del retrato dentro del
-panel). Siete voces y **dos expresiones** cada una: la neutra y la que define
+panel). Ocho retratos de siete voces (Yara en persona y por el ave) y **dos expresiones** cada una: la neutra y la que define
 su arco. Como los sprites del grupo, **todo en la rampa de ceniza**: el verde
 es de la purificación y la brasa del daño activo. Lo que distingue a cada uno
 es la **silueta** (lo mismo que en su sprite de combate: capucha, trenza,
 gafas, sombrero) y el valor.
 
     ilan   pelo corto y el Fragmento al cuello · neutral / determinado
-    yara   el ave mensajera (Yara habla por ella) · neutral / alerta
+    yara      en persona: moño, pelo claro, arrugas y chal · neutral / alerta
+    yara_ave  el ave mensajera, cuando habla de lejos · neutral / alerta
     bruma  capucha · neutral / dolida (perdió su hogar en un incendio)
     coral  trenza sobre el hombro · neutral / risa (el alivio cómico)
     nix    pelo revuelto en punta y gafas de taller · neutral / concentrado (gafas puestas)
@@ -74,7 +75,7 @@ def face(c: Canvas, mood: str) -> None:
             c.set(ex, EYE_Y, ink)
             c.set(ex + 1, EYE_Y, ink)
             c.set(ex + 2, EYE_Y + 1, ink)
-        elif mood == "wide":
+        elif mood in ("wide", "alert"):
             for dy in (-1, 0, 1):
                 c.set(ex, EYE_Y + dy, ink)
                 c.set(ex + 1, EYE_Y + dy, ink)
@@ -95,6 +96,8 @@ def face(c: Canvas, mood: str) -> None:
                 y = EYE_Y - 4 - (i // 2 if side > 0 else 0)
             elif mood == "laugh":
                 y = EYE_Y - 4 - (1 if 0 < i < 4 else 0)
+            elif mood == "alert":
+                y = EYE_Y - 6 - (1 if 0 < i < 4 else 0)
             else:
                 y = EYE_Y - 4
             c.set(x, y, brow)
@@ -108,6 +111,12 @@ def face(c: Canvas, mood: str) -> None:
         for x in range(int(CX) - 2, int(CX) + 4):
             c.set(x, my + 1, ink)
             c.set(x, my + 2, color("ash_800"))
+    elif mood == "alert":
+        # Boca entreabierta de sorpresa.
+        for x in range(int(CX), int(CX) + 2):
+            c.set(x, my - 1, ink)
+            c.set(x, my, ink)
+            c.set(x, my + 1, ink)
     elif mood == "frown":
         # Labios apretados: línea corta y gruesa.
         for x in range(int(CX) - 1, int(CX) + 3):
@@ -157,8 +166,31 @@ def ilan(mood: str) -> Canvas:
 
 
 def yara(mood: str) -> Canvas:
-    """El ave mensajera: cuerpo redondo de perfil, pico y cola. Alerta: alas
-    abiertas."""
+    """Yara en persona (enmienda 1, Diego 2026-10-28): anciana, pelo claro
+    recogido en moño, arrugas y chal. Alerta: los ojos muy abiertos."""
+    c = Canvas(SIZE, SIZE)
+    shawl = ["ash_700", "ash_600", "ash_400"]
+    shoulders(c, shawl)
+    face(c, "alert" if mood == "arc" else "neutral")
+    hair = ["ash_400", "ash_200", "ash_050"]
+    fill_ellipse(c, CX, 13.0, 9.8, 5.2, hair, base=0.40)       # pelo recogido
+    fill_ellipse(c, CX, 4.5, 4.6, 3.6, hair, base=0.46)        # moño
+    for side in (-1, 1):                                       # mechones a los lados
+        for y in range(14, 25):
+            c.set(int(CX) + side * 9, y, color("ash_200"))
+    for side in (-1, 1):                                       # arrugas
+        for i in range(3):
+            c.set(int(CX) + side * (6 + i // 2), 25 + i, color("ash_400"))
+    # El chal cruzado sobre el pecho.
+    for i in range(10):
+        c.set(int(CX) - 9 + i, 36 + i // 2, color("ash_800"))
+        c.set(int(CX) + 10 - i, 36 + i // 2, color("ash_800"))
+    return finish(c)
+
+
+def yara_ave(mood: str) -> Canvas:
+    """El ave mensajera, por la que Yara habla de lejos: cuerpo redondo de
+    perfil, pico y cola. Alerta: alas abiertas."""
     c = Canvas(SIZE, SIZE)
     body = ["ash_600", "ash_400", "ash_200", "ash_050"]
     fill_ellipse(c, 24, 28, 11, 9, body, base=0.36)
@@ -280,9 +312,10 @@ def rasgo(mood: str) -> Canvas:
     return finish(c)
 
 
-VOICES = {"ilan": ilan, "yara": yara, "bruma": bruma, "coral": coral, "nix": nix,
+VOICES = {"ilan": ilan, "yara": yara, "yara_ave": yara_ave, "bruma": bruma, "coral": coral, "nix": nix,
           "suri": suri, "rasgo": rasgo}
 MOODS = {"ilan": ("neutral", "determinado"), "yara": ("neutral", "alerta"),
+         "yara_ave": ("neutral", "alerta"),
          "bruma": ("neutral", "dolida"), "coral": ("neutral", "risa"),
          "nix": ("neutral", "concentrado"), "suri": ("neutral", "firme"),
          "rasgo": ("neutral", "duda")}
