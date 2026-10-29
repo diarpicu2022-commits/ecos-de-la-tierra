@@ -83,6 +83,19 @@ enum Phase { IDLE, PLAYING, CHOOSING, FINISHED }
 ## Región del combate, por id de zona (contrato «Persiana» §4). Vacía: el
 ## fondo genérico de ceniza de la parte de batalla.
 var region := ""
+## IA-5 (contrato «Orden de líder»): con true, el menú solo se abre para el
+## líder, lleva la fila de orden y los compañeros deciden solos. Las mentes y
+## la sintonía llegan de GameState y vuelven allí al terminar.
+var companions_auto := false
+var minds: Dictionary = {}
+var sync: float = DesignTokens.SYNC_START
+
+## Las tres órdenes de grupo, con la etiqueta corta del menú y su explicación.
+const ORDERS := [
+	{"label": "SEGUIDME", "description": "Orden: hacen lo que te ven hacer a ti."},
+	{"label": "ATAJAD", "description": "Orden: atajad la causa. Usan su contramedida si pueden."},
+	{"label": "CUBRÍOS", "description": "Orden: cubríos. Curan y usan la bolsa con quien esté tocado."},
+]
 
 var _font: Font = null
 ## Parallax de entrada: cuadros desde que empezó el combate. Cada capa del
@@ -200,6 +213,9 @@ func start_battle(players: Array[Combatant], enemies: Array[Combatant],
 		inventory: Inventory, opening_team: int = -1) -> void:
 	_manager = BattleManager.new()
 	_manager.opening_team = opening_team
+	_manager.companions_auto = companions_auto
+	_manager.minds = minds
+	_manager.sync = sync
 	add_child(_manager)
 
 	_build_party_huds(players)
@@ -506,8 +522,18 @@ func _open_root_menu() -> void:
 		},
 		{"label": "HUIR", "cost": -1, "enabled": true, "kind": "flee",
 			"description": "Retirarse. Depende de la velocidad del grupo."},
-	])
+	] + _order_entry())
 	_menu.open()
+
+
+## La fila de orden, solo para el líder con los compañeros en automático.
+## Elegirla cambia a la orden siguiente sin gastar el turno.
+func _order_entry() -> Array:
+	if not companions_auto or _actor != _manager.leader:
+		return []
+	var o: Dictionary = ORDERS[_manager.order]
+	return [{"label": "ORDEN: " + o["label"], "cost": -1, "enabled": true, "kind": "order",
+		"description": o["description"] + " Confirma para cambiarla."}]
 
 
 func _open_skill_menu() -> void:
@@ -586,6 +612,12 @@ func _on_option_chosen(entry: Dictionary) -> void:
 			_open_item_menu()
 		"flee":
 			_submit(BattleAction.flee(_actor))
+		"order":
+			_manager.order = (_manager.order + 1) % ORDERS.size()
+			_open_root_menu()
+			_menu.focused = _menu.entries.size() - 1
+			_menu.queue_redraw()
+			_on_option_focused(_menu.entries[-1])
 		"skill":
 			_pending_skill = entry["skill"] as Skill
 			if _pending_skill.targets_all:

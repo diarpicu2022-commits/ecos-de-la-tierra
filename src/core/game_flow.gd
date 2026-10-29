@@ -81,6 +81,9 @@ func _start_battle() -> void:
 	result = -1
 	screen = BattleScreen.new()
 	screen.region = world.zone_id
+	screen.companions_auto = true
+	screen.minds = state.party_minds
+	screen.sync = state.party_sync
 	_battle_layer.add_child(screen)
 	screen.battle_finished.connect(_on_finished)
 	_enemy = Encounters.build_monster(index)
@@ -111,6 +114,8 @@ func _unhandled_input(event: InputEvent) -> void:
 ## Vuelve al mundo con el desenlace. Lo llama `confirm`; la prueba, a mano.
 func leave_battle() -> void:
 	awaiting_confirm = false
+	if screen != null and screen._manager != null:
+		get_node("/root/GameState").party_sync = screen._manager.sync
 	blinds.close(int(blinds.size.y / 2), blinds.side)
 	await blinds.finished
 	if screen != null:

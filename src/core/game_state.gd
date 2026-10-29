@@ -27,6 +27,11 @@ var bag := Inventory.new()
 ## Clave en inglés y `snake_case`, valor libre.
 var flags: Dictionary = {}
 
+## IA-5: la mente de cada compañero (`PartyMind`, por nombre) y la sintonía
+## del grupo. Viven aquí entre combates; el guardado (parte 9) las persiste.
+var party_minds: Dictionary = {}
+var party_sync: float = DesignTokens.SYNC_START
+
 
 ## Bandera de zona purificada: `purified_<id de zona>`. La escribe la ola de
 ## purificación (parte 4); el mundo la lee al pintar la zona.

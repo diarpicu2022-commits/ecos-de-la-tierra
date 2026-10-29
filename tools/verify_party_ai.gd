@@ -11,6 +11,11 @@ extends Node
 ## - Con un líder bueno la sintonía sube; con uno malo baja; desde 0,
 ##   SYNC_RECOVER decisiones buenas la devuelven al tramo medio.
 ## - Con la sintonía alta el compañero duda menos que con la baja.
+## - En combate (Cuenca, 40 combates por líder): solo se le pide decisión al
+##   líder; cada compañero deja su línea en el registro; con un líder bueno la
+##   sintonía sube y se gana en menos rondas que con uno malo.
+## - El menú de Ilan lleva la fila de orden, cabe sin recorte y cambia la
+##   orden al confirmar.
 ## Sale con código 1 si algo falla.
 
 const C := PartyMind.Choice
@@ -26,6 +31,8 @@ func _ready() -> void:
 	_orders()
 	_sync()
 	_doubt()
+	await _battles()
+	await _menu()
 	print("\n%d de %d OK" % [_pass, _pass + _fail])
 	get_tree().quit(1 if _fail else 0)
 
@@ -131,3 +138,101 @@ func _doubt() -> void:
 		doubts[sync] = d
 	_check("duda %d de 1000 con sintonía 0 y %d con sintonía 1" % [doubts[0.0], doubts[1.0]],
 		doubts[0.0] > 400 and doubts[1.0] == 0)
+
+
+## Combates reales con los compañeros en automático.
+func _battles() -> void:
+	print("
+En combate")
+	var stats := {}
+	for style in ["bueno", "malo"]:
+		var rounds := 0
+		var wins := 0
+		var sync_end := 0.0
+		# Contadores en un diccionario: las lambdas capturan los enteros por valor.
+		var count := {"asked": 0, "lines": 0}
+		for n in 40:
+			var holder := Node.new()
+			add_child(holder)
+			var players: Array[Combatant] = []
+			for c in Encounters.build_party(1):
+				holder.add_child(c)
+				players.append(c)
+			var monster := Encounters.build_monster(1)
+			holder.add_child(monster)
+			var enemies: Array[Combatant] = [monster]
+			var m := BattleManager.new()
+			holder.add_child(m)
+			m.companions_auto = true
+			m.player_input_required.connect(func(c: Character):
+				if c != m.leader:
+					count["asked"] += 1
+				if m._turn_manager.round_number > 30:
+					m.submit_action(BattleAction.flee(c))
+					return
+				var target := m._monster()
+				var counter := m._counter_skill(c)
+				if style == "bueno" and counter != null:
+					m.order = PartyMind.Order.CAUSE
+					m.submit_action(BattleAction.use_skill(c, counter, target))
+				else:
+					m.order = PartyMind.Order.FOLLOW
+					m.submit_action(BattleAction.attack(c, target)))
+			m.action_resolved.connect(func(l: Array):
+				for t in l:
+					if " sigue " in str(t) or " duda:" in str(t):
+						count["lines"] += 1)
+			m.start_battle(players, enemies, Encounters.build_inventory(1))
+			rounds += m._turn_manager.round_number
+			wins += int(m.result == Enums.BattleResult.VICTORY)
+			sync_end += m.sync
+			holder.free()
+		stats[style] = {"rounds": rounds / 40.0, "wins": wins, "sync": sync_end / 40.0}
+		_check("líder %s: solo se le pide decisión a él (%d peticiones a otros)" % [style, count["asked"]],
+			count["asked"] == 0)
+		_check("  cada compañero deja su motivo en el registro (%d líneas)" % count["lines"], count["lines"] > 40)
+	_check("con un líder bueno la sintonía sube (%.2f) y con uno malo baja (%.2f)" % [
+		stats["bueno"]["sync"], stats["malo"]["sync"]],
+		stats["bueno"]["sync"] > DesignTokens.SYNC_START and stats["malo"]["sync"] < DesignTokens.SYNC_START)
+	_check("con un líder bueno se gana en menos rondas (%.1f frente a %.1f; victorias %d y %d de 40)" % [
+		stats["bueno"]["rounds"], stats["malo"]["rounds"], stats["bueno"]["wins"], stats["malo"]["wins"]],
+		stats["bueno"]["rounds"] < stats["malo"]["rounds"])
+	await get_tree().process_frame
+
+
+## La fila de orden en el menú de Ilan.
+func _menu() -> void:
+	print("
+Menú del líder")
+	var holder := Node.new()
+	add_child(holder)
+	var screen := BattleScreen.new()
+	screen.companions_auto = true
+	holder.add_child(screen)
+	var players: Array[Combatant] = []
+	for c in Encounters.build_party(1):
+		holder.add_child(c)
+		players.append(c)
+	var monster := Encounters.build_monster(1)
+	holder.add_child(monster)
+	var enemies: Array[Combatant] = [monster]
+	screen.start_battle(players, enemies, Encounters.build_inventory(1), Enums.Team.PLAYER)
+	for i in 300:
+		if screen._phase == BattleScreen.Phase.CHOOSING and screen._actor == screen._manager.leader:
+			break
+		screen._advance_queue()
+		await get_tree().process_frame
+	var labels: Array = screen._menu.entries.map(func(e): return str(e["label"]))
+	_check("el menú de Ilan lleva la fila de orden (%s)" % ", ".join(labels),
+		labels.size() == 5 and labels[-1].begins_with("ORDEN"))
+	var room: float = screen._menu.size.x - ActionMenu.CURSOR_WIDTH
+	var widest := 0.0
+	for o in BattleScreen.ORDERS:
+		widest = maxf(widest, screen._menu._width("ORDEN: " + o["label"]))
+	_check("las tres órdenes caben sin recorte (%d de %d px)" % [widest, room], widest <= room)
+	var before: int = screen._manager.order
+	screen._on_option_chosen(screen._menu.entries[-1])
+	_check("confirmar la fila cambia la orden sin gastar el turno (%d → %d)" % [before, screen._manager.order],
+		screen._manager.order == (before + 1) % 3 and screen._phase == BattleScreen.Phase.CHOOSING)
+	holder.queue_free()
+	await get_tree().process_frame
