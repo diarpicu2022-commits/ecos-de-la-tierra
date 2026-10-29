@@ -1839,6 +1839,53 @@ def swayed(c: Canvas, below: int) -> Canvas:
     return out
 
 
+def posed(c: Canvas, pose: str) -> Canvas:
+    """Postura del monstruo de mapa (contrato «Persiana», IA-1), sacada de su
+    dibujo de reposo para que los cuatro estados se lean por la silueta y no
+    por el color. Mira a la derecha; el motor lo voltea.
+
+    - «alert»: erguido. Todo lo que está por encima del pie sube 1 px.
+    - «chase»: adelantado y agachado. Cada fila se corre hacia delante en
+      proporción a su altura sobre el pie, medida en la silueta y no en el
+      lienzo (3 px en su fila más alta, 0 en el pie), y baja 1 px.
+
+    Lienzo de 20x24: 2 px de margen a cada lado para la inclinación."""
+    out = Canvas(c.width + 4, c.height)
+    feet = c.height - 3
+    top = min(y for y in range(c.height) for x in range(c.width) if c.filled(x, y))
+    for y in range(c.height):
+        for x in range(c.width):
+            px = c.get(x, y)
+            if px[3] == 0:
+                continue
+            nx, ny = x + 2, y
+            if y < feet:
+                if pose == "alert":
+                    ny = y - 1
+                elif pose == "chase":
+                    nx += round((feet - y) * 3 / (feet - top))
+                    ny = y + 1
+            out.set(nx, ny, px)
+    return out
+
+
+def alert_shadow(vertical: bool, edge: int = 1) -> Canvas:
+    """Un tile de la señal de alerta, 16x16 (contrato «Persiana», enmienda 1):
+    se estira hacia Ilan un tile por paso. Banda de 3 px en EMBER_400, el
+    aviso del repertorio, que contrasta sobre la tierra enferma, con 1 px de
+    filo ASH_950 por debajo, que contrasta sobre la losa clara de la Cripta.
+    En vertical, la banda va por el centro del tile y el filo a su derecha.
+    En la Cripta el filo mide 2 px (excepción medida, Diego 2026-10-28)."""
+    c = Canvas(16, 16)
+    if vertical:
+        c.rect(6, 0, 3, 16, color("ember_400"))
+        c.rect(9, 0, edge, 16, color("ash_950"))
+    else:
+        c.rect(0, 11, 16, 3, color("ember_400"))
+        c.rect(0, 14, 16, edge, color("ash_950"))
+    return c
+
+
 def pieces() -> dict[str, Canvas]:
     out: dict[str, Canvas] = {}
     for state, pure in (("sick", False), ("pure", True)):
@@ -1929,6 +1976,15 @@ def pieces() -> dict[str, Canvas]:
     # Enmienda 8: segundo cuadro de lo que se mece, solo purificado.
     for name, below in (("grass", 12), ("flower", 11), ("weed", 11), ("crop_row", 11), ("reeds", 11)):
         out[f"{name}_pure_1"] = swayed(out[f"{name}_pure"], below)
+    # Contrato «Persiana»: posturas de los seis monstruos y la sombra de alerta.
+    for zone in ("ashen_forest", "tar_basin", "broken_coast", "withered_plain",
+                 "waning_peak", "greed_crypt"):
+        for pose in ("alert", "chase"):
+            out[f"monster_{zone}_{pose}_sick"] = posed(out[f"monster_{zone}_sick"], pose)
+    out["alert_shadow_sick"] = alert_shadow(False)
+    out["alert_shadow_v_sick"] = alert_shadow(True)
+    out["alert_shadow_greed_crypt_sick"] = alert_shadow(False, 2)
+    out["alert_shadow_v_greed_crypt_sick"] = alert_shadow(True, 2)
     return out
 
 

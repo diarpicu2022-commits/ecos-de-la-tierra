@@ -10,12 +10,21 @@ quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
 
 ---
 
-## 1. Lo primero: abrir la parte 4
+## 1. Lo primero: abrir la parte 5
 
-La **parte 3 se cerró el 2026-10-28**: las siete zonas aprobadas por Diego.
-La Cripta lleva la enmienda 12: detrás de la Sombra, un túnel y un pozo suben
-a una bocamina de Valdehoja que se abre al purificarla. Lo siguiente es la
-**parte 4**, encuentros y paso mundo ↔ combate, empezando por su anexo.
+La **parte 4 se cerró el 2026-10-28** (anexo
+`docs/ux/anexos/2026-10-28-encuentros.md`):
+
+- monstruos que patrullan y persiguen;
+- la persiana con ventaja;
+- el combate con fondo regional;
+- la ola de purificación;
+- el bot de equilibrado (IA-4);
+- el jugador como líder con orden de grupo (IA-5).
+
+Lo siguiente es la **parte 5**, diálogos y retratos, empezando por su anexo.
+Las deudas de equilibrado de la parte 4 (Costa, Llanura, Cuenca y Bosque)
+están escritas en el anexo.
 
 > Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
 > una respuesta suya, se le pregunta y se espera.
@@ -31,7 +40,7 @@ a una bocamina de Valdehoja que se abre al purificarla. Lo siguiente es la
 | 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
 | 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
 | 3 | Las siete zonas | **Cerrada** 2026-10-28 (enmiendas 6-10 y 12) |
-| 4 | Encuentros y paso mundo ↔ combate | Sin empezar |
+| 4 | Encuentros y paso mundo ↔ combate | **Cerrada** 2026-10-28 (contratos «Persiana» y «Orden de líder») |
 | 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
 | 6 | Progresión | Sin empezar |
 | 7 | Puzzles ambientales, uno por región | Sin empezar |
@@ -76,6 +85,12 @@ dentro de ellas:
 | IA-1 patrulla/persecución, IA-3 pistas de Yara, IA-4 bot de equilibrado | Cada una en su parte (guía §3.3) |
 
 ### Deudas sueltas (guía §4)
+
+- **Equilibrado (parte 4):**
+  - el Gólem de la Costa no presiona;
+  - en la Llanura, la Cuenca y el Bosque la fuerza bruta gana más del 30 %.
+  - Medir con `tools/balance_bot.gd`.
+- **IA-2, fauna en bandada al purificar:** de la parte 3, sin hacer.
 
 - **Pruebas con personas** «¿Por qué pierdo?» y materiales (dE 9,2): aplazadas
   por Diego el 2026-10-01. Hoja lista en

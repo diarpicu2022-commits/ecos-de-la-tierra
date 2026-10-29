@@ -1,0 +1,601 @@
+politica,combate,resultado,rondas,sintonia,habilidades
+aleatoria,0,victoria,9,0.38,Escudo de Albedo:7
+aleatoria,1,victoria,9,0.29,Escudo de Albedo:5
+aleatoria,2,victoria,20,0.96,Escudo de Albedo:5
+aleatoria,3,victoria,15,0.52,Escudo de Albedo:7
+aleatoria,4,victoria,17,0.85,Escudo de Albedo:7
+aleatoria,5,victoria,10,0.42,Escudo de Albedo:5
+aleatoria,6,victoria,10,0.52,Escudo de Albedo:3
+aleatoria,7,victoria,11,0.75,Escudo de Albedo:5
+aleatoria,8,victoria,16,0.57,Escudo de Albedo:6
+aleatoria,9,victoria,10,0.32,Escudo de Albedo:3
+aleatoria,10,derrota,15,0.43,Escudo de Albedo:2
+aleatoria,11,victoria,14,0.69,Escudo de Albedo:5
+aleatoria,12,derrota,15,0.77,Escudo de Albedo:5
+aleatoria,13,victoria,12,0.49,Escudo de Albedo:2
+aleatoria,14,derrota,19,0.39,Escudo de Albedo:5
+aleatoria,15,victoria,13,0.29,Escudo de Albedo:6
+aleatoria,16,victoria,13,0.32,Escudo de Albedo:5
+aleatoria,17,victoria,15,0.68,Escudo de Albedo:5
+aleatoria,18,derrota,21,0.36,Escudo de Albedo:5
+aleatoria,19,victoria,18,0.83,Escudo de Albedo:5
+aleatoria,20,victoria,9,0.64,Escudo de Albedo:4
+aleatoria,21,derrota,25,0.56,Escudo de Albedo:4
+aleatoria,22,victoria,10,0.60,Escudo de Albedo:7
+aleatoria,23,victoria,15,0.88,Escudo de Albedo:7
+aleatoria,24,victoria,10,0.28,Escudo de Albedo:6
+aleatoria,25,victoria,10,0.52,Escudo de Albedo:5
+aleatoria,26,victoria,11,0.45,Escudo de Albedo:4
+aleatoria,27,victoria,15,0.69,Escudo de Albedo:6
+aleatoria,28,victoria,16,0.82,Escudo de Albedo:5
+aleatoria,29,victoria,13,0.47,Escudo de Albedo:5
+aleatoria,30,derrota,25,0.91,Escudo de Albedo:7
+aleatoria,31,derrota,16,0.66,Escudo de Albedo:4
+aleatoria,32,victoria,10,0.37,Escudo de Albedo:3
+aleatoria,33,victoria,11,0.30,Escudo de Albedo:3
+aleatoria,34,victoria,12,0.26,Escudo de Albedo:5
+aleatoria,35,derrota,28,0.82,Escudo de Albedo:4
+aleatoria,36,victoria,13,0.62,Escudo de Albedo:7
+aleatoria,37,victoria,14,0.90,Escudo de Albedo:5
+aleatoria,38,derrota,17,0.64,Escudo de Albedo:5
+aleatoria,39,victoria,12,0.85,Escudo de Albedo:4
+aleatoria,40,victoria,13,0.45,Escudo de Albedo:6
+aleatoria,41,derrota,23,0.84,Escudo de Albedo:6
+aleatoria,42,victoria,13,0.60,Escudo de Albedo:4
+aleatoria,43,derrota,23,0.75,Escudo de Albedo:8
+aleatoria,44,victoria,16,0.66,Escudo de Albedo:6
+aleatoria,45,victoria,11,0.52,Escudo de Albedo:5
+aleatoria,46,victoria,15,0.94,Escudo de Albedo:7
+aleatoria,47,victoria,11,0.33,Escudo de Albedo:5
+aleatoria,48,victoria,14,0.81,Escudo de Albedo:7
+aleatoria,49,victoria,20,0.67,Escudo de Albedo:8
+aleatoria,50,victoria,13,0.83,Escudo de Albedo:5
+aleatoria,51,victoria,18,0.89,Escudo de Albedo:6
+aleatoria,52,victoria,12,0.69,Escudo de Albedo:5
+aleatoria,53,victoria,15,0.48,Escudo de Albedo:5
+aleatoria,54,victoria,12,0.41,Escudo de Albedo:5
+aleatoria,55,derrota,26,0.44,Escudo de Albedo:3
+aleatoria,56,derrota,12,0.86,Escudo de Albedo:5
+aleatoria,57,victoria,19,0.63,Escudo de Albedo:4
+aleatoria,58,victoria,19,0.77,Escudo de Albedo:7
+aleatoria,59,victoria,17,0.77,Escudo de Albedo:8
+aleatoria,60,derrota,58,0.50,Escudo de Albedo:5
+aleatoria,61,victoria,14,0.60,Escudo de Albedo:5
+aleatoria,62,victoria,17,0.49,Escudo de Albedo:7
+aleatoria,63,victoria,9,0.39,Escudo de Albedo:4
+aleatoria,64,victoria,15,0.63,Escudo de Albedo:5
+aleatoria,65,derrota,20,0.67,Escudo de Albedo:5
+aleatoria,66,victoria,14,0.76,Escudo de Albedo:6
+aleatoria,67,victoria,9,0.34,Escudo de Albedo:5
+aleatoria,68,victoria,12,0.31,Escudo de Albedo:6
+aleatoria,69,victoria,9,0.34,Escudo de Albedo:5
+aleatoria,70,victoria,17,0.64,Escudo de Albedo:6
+aleatoria,71,victoria,9,0.39,Escudo de Albedo:5
+aleatoria,72,victoria,12,0.64,Escudo de Albedo:7
+aleatoria,73,victoria,16,0.76,Escudo de Albedo:6
+aleatoria,74,victoria,9,0.37,Escudo de Albedo:5
+aleatoria,75,victoria,17,0.43,Escudo de Albedo:6
+aleatoria,76,victoria,13,0.51,Escudo de Albedo:5
+aleatoria,77,derrota,17,0.73,Escudo de Albedo:5
+aleatoria,78,victoria,12,0.55,Escudo de Albedo:6
+aleatoria,79,victoria,15,0.44,Escudo de Albedo:6
+aleatoria,80,victoria,16,0.66,Escudo de Albedo:7
+aleatoria,81,victoria,13,0.64,Escudo de Albedo:6
+aleatoria,82,derrota,23,0.65,Escudo de Albedo:4
+aleatoria,83,victoria,14,0.88,Escudo de Albedo:7
+aleatoria,84,victoria,13,0.64,Escudo de Albedo:5
+aleatoria,85,derrota,19,0.77,Escudo de Albedo:5
+aleatoria,86,victoria,15,0.71,Escudo de Albedo:7
+aleatoria,87,victoria,17,0.51,Escudo de Albedo:5
+aleatoria,88,victoria,22,0.85,Escudo de Albedo:7
+aleatoria,89,victoria,17,0.86,Escudo de Albedo:7
+aleatoria,90,victoria,18,0.66,Escudo de Albedo:6
+aleatoria,91,victoria,41,0.79,Escudo de Albedo:5
+aleatoria,92,derrota,16,0.55,Escudo de Albedo:4
+aleatoria,93,victoria,19,0.53,Escudo de Albedo:7
+aleatoria,94,victoria,11,0.54,Escudo de Albedo:4
+aleatoria,95,victoria,12,0.59,Escudo de Albedo:7
+aleatoria,96,victoria,11,0.63,Escudo de Albedo:3
+aleatoria,97,victoria,15,0.42,Escudo de Albedo:8
+aleatoria,98,victoria,14,0.54,Escudo de Albedo:8
+aleatoria,99,victoria,12,0.75,Escudo de Albedo:6
+aleatoria,100,victoria,12,0.76,Escudo de Albedo:4
+aleatoria,101,victoria,19,0.80,Escudo de Albedo:6
+aleatoria,102,victoria,22,0.61,Escudo de Albedo:7
+aleatoria,103,derrota,16,0.36,Escudo de Albedo:4
+aleatoria,104,victoria,14,0.52,Escudo de Albedo:7
+aleatoria,105,victoria,10,0.37,Escudo de Albedo:3
+aleatoria,106,derrota,13,0.75,Escudo de Albedo:5
+aleatoria,107,victoria,13,0.56,Escudo de Albedo:5
+aleatoria,108,victoria,9,0.29,Escudo de Albedo:4
+aleatoria,109,victoria,11,0.65,Escudo de Albedo:7
+aleatoria,110,victoria,12,0.80,Escudo de Albedo:5
+aleatoria,111,victoria,15,0.85,Escudo de Albedo:6
+aleatoria,112,victoria,11,0.63,Escudo de Albedo:6
+aleatoria,113,victoria,10,0.34,Escudo de Albedo:4
+aleatoria,114,victoria,10,0.32,Escudo de Albedo:4
+aleatoria,115,victoria,17,0.70,Escudo de Albedo:6
+aleatoria,116,victoria,18,0.71,Escudo de Albedo:7
+aleatoria,117,victoria,14,0.69,Escudo de Albedo:5
+aleatoria,118,victoria,13,0.62,Escudo de Albedo:5
+aleatoria,119,victoria,21,0.80,Escudo de Albedo:5
+aleatoria,120,victoria,19,0.39,Escudo de Albedo:7
+aleatoria,121,victoria,11,0.65,Escudo de Albedo:5
+aleatoria,122,victoria,18,0.75,Escudo de Albedo:6
+aleatoria,123,derrota,21,0.41,Escudo de Albedo:3
+aleatoria,124,derrota,17,0.66,Escudo de Albedo:5
+aleatoria,125,victoria,13,0.48,Escudo de Albedo:4
+aleatoria,126,victoria,9,0.28,Escudo de Albedo:3
+aleatoria,127,derrota,17,0.83,Escudo de Albedo:6
+aleatoria,128,victoria,16,0.59,Escudo de Albedo:5
+aleatoria,129,victoria,16,0.74,Escudo de Albedo:6
+aleatoria,130,victoria,12,0.53,Escudo de Albedo:5
+aleatoria,131,victoria,12,0.37,Escudo de Albedo:6
+aleatoria,132,victoria,14,0.89,Escudo de Albedo:6
+aleatoria,133,victoria,10,0.28,Escudo de Albedo:4
+aleatoria,134,victoria,12,0.33,Escudo de Albedo:7
+aleatoria,135,victoria,13,0.43,Escudo de Albedo:4
+aleatoria,136,victoria,10,0.51,Escudo de Albedo:5
+aleatoria,137,victoria,15,0.89,Escudo de Albedo:5
+aleatoria,138,victoria,24,0.81,Escudo de Albedo:7
+aleatoria,139,victoria,16,0.77,Escudo de Albedo:7
+aleatoria,140,victoria,15,0.58,Escudo de Albedo:7
+aleatoria,141,victoria,12,0.28,Escudo de Albedo:5
+aleatoria,142,victoria,16,0.88,Escudo de Albedo:8
+aleatoria,143,victoria,14,0.55,Escudo de Albedo:5
+aleatoria,144,derrota,20,0.79,Escudo de Albedo:8
+aleatoria,145,victoria,16,0.66,Escudo de Albedo:6
+aleatoria,146,victoria,11,0.32,Escudo de Albedo:5
+aleatoria,147,victoria,11,0.29,Escudo de Albedo:4
+aleatoria,148,victoria,13,0.37,Escudo de Albedo:5
+aleatoria,149,victoria,14,0.78,Escudo de Albedo:7
+aleatoria,150,victoria,14,0.46,Escudo de Albedo:5
+aleatoria,151,victoria,10,0.24,Escudo de Albedo:3
+aleatoria,152,victoria,19,0.85,Escudo de Albedo:7
+aleatoria,153,victoria,17,0.83,Escudo de Albedo:4
+aleatoria,154,victoria,15,0.49,Escudo de Albedo:8
+aleatoria,155,victoria,13,0.62,Escudo de Albedo:5
+aleatoria,156,victoria,8,0.53,Escudo de Albedo:4
+aleatoria,157,victoria,12,0.77,Escudo de Albedo:8
+aleatoria,158,victoria,16,0.83,Escudo de Albedo:6
+aleatoria,159,victoria,16,0.75,Escudo de Albedo:7
+aleatoria,160,victoria,13,0.50,Escudo de Albedo:3
+aleatoria,161,derrota,63,0.67,Escudo de Albedo:5
+aleatoria,162,victoria,13,0.95,Escudo de Albedo:6
+aleatoria,163,victoria,17,0.71,Escudo de Albedo:6
+aleatoria,164,victoria,13,0.38,Escudo de Albedo:2
+aleatoria,165,victoria,17,0.81,Escudo de Albedo:7
+aleatoria,166,victoria,13,0.89,Escudo de Albedo:4
+aleatoria,167,victoria,14,0.91,Escudo de Albedo:5
+aleatoria,168,derrota,20,0.65,Escudo de Albedo:5
+aleatoria,169,victoria,13,0.53,Escudo de Albedo:4
+aleatoria,170,victoria,32,0.86,Escudo de Albedo:9
+aleatoria,171,victoria,12,0.43,Escudo de Albedo:7
+aleatoria,172,derrota,23,0.79,Escudo de Albedo:5
+aleatoria,173,victoria,14,0.75,Escudo de Albedo:7
+aleatoria,174,derrota,17,0.50,Escudo de Albedo:2
+aleatoria,175,victoria,19,0.75,Escudo de Albedo:7
+aleatoria,176,victoria,16,0.70,Escudo de Albedo:6
+aleatoria,177,victoria,18,0.77,Escudo de Albedo:7
+aleatoria,178,derrota,18,0.53,Escudo de Albedo:4
+aleatoria,179,victoria,14,0.41,Escudo de Albedo:5
+aleatoria,180,victoria,15,0.88,Escudo de Albedo:6
+aleatoria,181,victoria,11,0.65,Escudo de Albedo:6
+aleatoria,182,victoria,21,0.71,Escudo de Albedo:6
+aleatoria,183,victoria,10,0.81,Escudo de Albedo:5
+aleatoria,184,victoria,12,0.76,Escudo de Albedo:5
+aleatoria,185,victoria,12,0.31,Escudo de Albedo:3
+aleatoria,186,derrota,21,0.70,Escudo de Albedo:7
+aleatoria,187,victoria,9,0.38,Escudo de Albedo:4
+aleatoria,188,victoria,17,0.67,Escudo de Albedo:7
+aleatoria,189,victoria,16,0.69,Escudo de Albedo:7
+aleatoria,190,victoria,15,0.75,Escudo de Albedo:6
+aleatoria,191,victoria,15,0.72,Escudo de Albedo:7
+aleatoria,192,derrota,16,0.48,Escudo de Albedo:4
+aleatoria,193,victoria,18,0.44,Escudo de Albedo:6
+aleatoria,194,victoria,14,0.78,Escudo de Albedo:7
+aleatoria,195,derrota,20,0.62,Escudo de Albedo:2
+aleatoria,196,victoria,15,0.49,Escudo de Albedo:5
+aleatoria,197,victoria,14,0.37,Escudo de Albedo:4
+aleatoria,198,victoria,13,0.78,Escudo de Albedo:5
+aleatoria,199,victoria,14,0.33,Escudo de Albedo:8
+voraz,0,derrota,25,0.03,
+voraz,1,derrota,24,0.01,
+voraz,2,derrota,19,0.03,
+voraz,3,derrota,37,0.03,
+voraz,4,derrota,28,0.06,
+voraz,5,derrota,17,0.03,
+voraz,6,derrota,27,0.02,
+voraz,7,derrota,29,0.01,
+voraz,8,derrota,19,0.02,
+voraz,9,derrota,22,0.04,
+voraz,10,derrota,22,0.02,
+voraz,11,derrota,30,0.01,
+voraz,12,derrota,31,0.03,
+voraz,13,derrota,20,0.05,
+voraz,14,derrota,21,0.04,
+voraz,15,derrota,19,0.03,
+voraz,16,derrota,24,0.03,
+voraz,17,derrota,16,0.06,
+voraz,18,derrota,17,0.10,
+voraz,19,huida,31,0.00,
+voraz,20,derrota,21,0.02,
+voraz,21,derrota,16,0.05,
+voraz,22,derrota,26,0.03,
+voraz,23,huida,31,0.00,
+voraz,24,derrota,22,0.03,
+voraz,25,huida,31,0.00,
+voraz,26,derrota,19,0.03,
+voraz,27,derrota,33,0.03,
+voraz,28,derrota,24,0.02,
+voraz,29,derrota,32,0.04,
+voraz,30,derrota,22,0.02,
+voraz,31,derrota,19,0.03,
+voraz,32,derrota,17,0.08,
+voraz,33,derrota,31,0.00,
+voraz,34,derrota,18,0.05,
+voraz,35,derrota,17,0.03,
+voraz,36,derrota,30,0.02,
+voraz,37,derrota,16,0.04,
+voraz,38,derrota,16,0.05,
+voraz,39,derrota,69,0.03,
+voraz,40,derrota,28,0.03,
+voraz,41,derrota,23,0.02,
+voraz,42,derrota,15,0.04,
+voraz,43,derrota,19,0.04,
+voraz,44,derrota,21,0.02,
+voraz,45,derrota,24,0.01,
+voraz,46,derrota,14,0.10,
+voraz,47,derrota,19,0.04,
+voraz,48,derrota,21,0.02,
+voraz,49,derrota,26,0.01,
+voraz,50,derrota,23,0.01,
+voraz,51,derrota,28,0.01,
+voraz,52,derrota,20,0.02,
+voraz,53,derrota,17,0.03,
+voraz,54,derrota,21,0.02,
+voraz,55,derrota,22,0.01,
+voraz,56,derrota,25,0.04,
+voraz,57,derrota,19,0.02,
+voraz,58,derrota,24,0.02,
+voraz,59,derrota,24,0.01,
+voraz,60,derrota,16,0.04,
+voraz,61,derrota,17,0.04,
+voraz,62,derrota,13,0.06,
+voraz,63,derrota,18,0.03,
+voraz,64,derrota,18,0.04,
+voraz,65,derrota,20,0.02,
+voraz,66,derrota,29,0.01,
+voraz,67,derrota,28,0.01,
+voraz,68,derrota,15,0.06,
+voraz,69,derrota,19,0.05,
+voraz,70,derrota,18,0.03,
+voraz,71,derrota,26,0.02,
+voraz,72,derrota,17,0.03,
+voraz,73,derrota,31,0.01,
+voraz,74,derrota,23,0.02,
+voraz,75,derrota,41,0.01,
+voraz,76,derrota,30,0.01,
+voraz,77,derrota,17,0.10,
+voraz,78,derrota,32,0.00,
+voraz,79,derrota,24,0.01,
+voraz,80,derrota,25,0.02,
+voraz,81,derrota,14,0.06,
+voraz,82,derrota,18,0.03,
+voraz,83,derrota,25,0.01,
+voraz,84,derrota,15,0.05,
+voraz,85,derrota,28,0.01,
+voraz,86,derrota,18,0.06,
+voraz,87,derrota,13,0.07,
+voraz,88,derrota,18,0.08,
+voraz,89,derrota,27,0.01,
+voraz,90,derrota,23,0.01,
+voraz,91,derrota,17,0.03,
+voraz,92,derrota,15,0.05,
+voraz,93,derrota,20,0.06,
+voraz,94,derrota,15,0.05,
+voraz,95,derrota,18,0.04,
+voraz,96,derrota,26,0.01,
+voraz,97,derrota,118,0.04,
+voraz,98,derrota,22,0.02,
+voraz,99,derrota,21,0.07,
+voraz,100,derrota,18,0.05,
+voraz,101,derrota,27,0.01,
+voraz,102,derrota,19,0.03,
+voraz,103,derrota,15,0.10,
+voraz,104,derrota,41,0.02,
+voraz,105,derrota,17,0.07,
+voraz,106,derrota,23,0.01,
+voraz,107,derrota,28,0.01,
+voraz,108,derrota,22,0.02,
+voraz,109,derrota,19,0.04,
+voraz,110,derrota,54,0.01,
+voraz,111,derrota,23,0.02,
+voraz,112,derrota,16,0.04,
+voraz,113,derrota,102,0.00,
+voraz,114,derrota,32,0.03,
+voraz,115,derrota,33,0.00,
+voraz,116,derrota,20,0.02,
+voraz,117,derrota,28,0.02,
+voraz,118,derrota,12,0.08,
+voraz,119,derrota,17,0.04,
+voraz,120,derrota,18,0.04,
+voraz,121,derrota,27,0.04,
+voraz,122,derrota,14,0.06,
+voraz,123,derrota,19,0.04,
+voraz,124,derrota,24,0.01,
+voraz,125,derrota,14,0.07,
+voraz,126,derrota,17,0.04,
+voraz,127,derrota,30,0.01,
+voraz,128,derrota,13,0.07,
+voraz,129,derrota,20,0.03,
+voraz,130,derrota,25,0.04,
+voraz,131,derrota,20,0.03,
+voraz,132,derrota,22,0.01,
+voraz,133,derrota,35,0.04,
+voraz,134,derrota,17,0.04,
+voraz,135,derrota,22,0.02,
+voraz,136,derrota,22,0.01,
+voraz,137,derrota,33,0.01,
+voraz,138,derrota,22,0.01,
+voraz,139,derrota,79,0.06,
+voraz,140,derrota,24,0.01,
+voraz,141,derrota,22,0.02,
+voraz,142,derrota,25,0.02,
+voraz,143,derrota,47,0.02,
+voraz,144,huida,31,0.00,
+voraz,145,derrota,22,0.03,
+voraz,146,derrota,18,0.04,
+voraz,147,derrota,28,0.02,
+voraz,148,derrota,28,0.01,
+voraz,149,derrota,19,0.02,
+voraz,150,derrota,19,0.03,
+voraz,151,derrota,25,0.01,
+voraz,152,derrota,36,0.01,
+voraz,153,derrota,24,0.04,
+voraz,154,derrota,26,0.01,
+voraz,155,derrota,13,0.08,
+voraz,156,derrota,30,0.01,
+voraz,157,derrota,16,0.07,
+voraz,158,derrota,57,0.03,
+voraz,159,derrota,21,0.02,
+voraz,160,derrota,24,0.01,
+voraz,161,derrota,31,0.02,
+voraz,162,derrota,29,0.01,
+voraz,163,derrota,18,0.04,
+voraz,164,derrota,18,0.03,
+voraz,165,derrota,16,0.04,
+voraz,166,derrota,29,0.04,
+voraz,167,derrota,18,0.10,
+voraz,168,derrota,48,0.02,
+voraz,169,derrota,19,0.03,
+voraz,170,derrota,20,0.04,
+voraz,171,derrota,13,0.07,
+voraz,172,derrota,17,0.05,
+voraz,173,derrota,18,0.04,
+voraz,174,derrota,27,0.01,
+voraz,175,derrota,17,0.04,
+voraz,176,derrota,22,0.01,
+voraz,177,derrota,30,0.01,
+voraz,178,derrota,23,0.02,
+voraz,179,derrota,19,0.04,
+voraz,180,derrota,67,0.03,
+voraz,181,derrota,23,0.02,
+voraz,182,derrota,25,0.06,
+voraz,183,derrota,37,0.00,
+voraz,184,derrota,12,0.07,
+voraz,185,derrota,15,0.07,
+voraz,186,derrota,21,0.02,
+voraz,187,derrota,20,0.02,
+voraz,188,derrota,15,0.04,
+voraz,189,derrota,23,0.01,
+voraz,190,derrota,35,0.01,
+voraz,191,derrota,67,0.02,
+voraz,192,derrota,33,0.03,
+voraz,193,derrota,22,0.02,
+voraz,194,derrota,15,0.06,
+voraz,195,derrota,21,0.02,
+voraz,196,derrota,20,0.04,
+voraz,197,derrota,20,0.03,
+voraz,198,derrota,15,0.04,
+voraz,199,derrota,28,0.01,
+experta,0,victoria,10,0.91,Escudo de Albedo:2
+experta,1,victoria,9,0.88,Escudo de Albedo:2
+experta,2,victoria,11,0.98,Escudo de Albedo:2
+experta,3,victoria,11,0.93,Escudo de Albedo:2
+experta,4,victoria,10,0.91,Escudo de Albedo:2
+experta,5,victoria,9,0.72,Escudo de Albedo:2
+experta,6,victoria,8,0.72,Escudo de Albedo:2
+experta,7,victoria,8,0.84,Escudo de Albedo:2
+experta,8,victoria,11,0.98,Escudo de Albedo:2
+experta,9,victoria,9,0.72,Escudo de Albedo:2
+experta,10,victoria,10,0.93,Escudo de Albedo:2
+experta,11,victoria,8,0.72,Escudo de Albedo:2
+experta,12,victoria,10,0.72,Escudo de Albedo:2
+experta,13,victoria,10,0.91,Escudo de Albedo:2
+experta,14,victoria,8,0.84,Escudo de Albedo:2
+experta,15,victoria,8,0.72,Escudo de Albedo:2
+experta,16,victoria,10,0.95,Escudo de Albedo:2
+experta,17,victoria,9,0.91,Escudo de Albedo:2
+experta,18,victoria,10,0.95,Escudo de Albedo:2
+experta,19,victoria,9,0.72,Escudo de Albedo:2
+experta,20,victoria,11,0.97,Escudo de Albedo:2
+experta,21,victoria,8,0.72,Escudo de Albedo:2
+experta,22,victoria,9,0.84,Escudo de Albedo:2
+experta,23,victoria,9,0.72,Escudo de Albedo:2
+experta,24,victoria,9,0.91,Escudo de Albedo:2
+experta,25,victoria,9,0.72,Escudo de Albedo:2
+experta,26,victoria,9,0.91,Escudo de Albedo:2
+experta,27,victoria,9,0.95,Escudo de Albedo:2
+experta,28,victoria,9,0.91,Escudo de Albedo:2
+experta,29,victoria,11,0.95,Escudo de Albedo:2
+experta,30,victoria,10,0.97,Escudo de Albedo:2
+experta,31,victoria,8,0.72,Escudo de Albedo:2
+experta,32,victoria,8,0.91,Escudo de Albedo:2
+experta,33,victoria,10,0.98,Escudo de Albedo:2
+experta,34,victoria,9,0.72,Escudo de Albedo:2
+experta,35,victoria,9,0.88,Escudo de Albedo:2
+experta,36,victoria,8,0.72,Escudo de Albedo:2
+experta,37,victoria,10,0.97,Escudo de Albedo:2
+experta,38,victoria,11,0.95,Escudo de Albedo:2
+experta,39,victoria,11,0.97,Escudo de Albedo:2
+experta,40,victoria,9,0.95,Escudo de Albedo:2
+experta,41,victoria,9,0.95,Escudo de Albedo:2
+experta,42,victoria,8,0.84,Escudo de Albedo:2
+experta,43,victoria,11,0.91,Escudo de Albedo:2
+experta,44,victoria,8,0.84,Escudo de Albedo:2
+experta,45,victoria,8,0.84,Escudo de Albedo:2
+experta,46,victoria,11,0.93,Escudo de Albedo:2
+experta,47,victoria,11,0.98,Escudo de Albedo:2
+experta,48,victoria,8,0.72,Escudo de Albedo:2
+experta,49,victoria,9,0.72,Escudo de Albedo:2
+experta,50,victoria,10,0.97,Escudo de Albedo:2
+experta,51,victoria,10,0.88,Escudo de Albedo:2
+experta,52,victoria,10,0.84,Escudo de Albedo:2
+experta,53,victoria,10,0.84,Escudo de Albedo:2
+experta,54,victoria,11,0.98,Escudo de Albedo:2
+experta,55,victoria,8,0.84,Escudo de Albedo:2
+experta,56,victoria,10,0.96,Escudo de Albedo:2
+experta,57,victoria,11,0.91,Escudo de Albedo:2
+experta,58,victoria,8,0.72,Escudo de Albedo:2
+experta,59,victoria,8,0.91,Escudo de Albedo:2
+experta,60,victoria,9,0.84,Escudo de Albedo:2
+experta,61,victoria,8,0.72,Escudo de Albedo:2
+experta,62,victoria,10,0.91,Escudo de Albedo:2
+experta,63,victoria,9,0.72,Escudo de Albedo:2
+experta,64,victoria,8,0.72,Escudo de Albedo:2
+experta,65,victoria,9,0.91,Escudo de Albedo:2
+experta,66,victoria,8,0.84,Escudo de Albedo:2
+experta,67,victoria,9,0.72,Escudo de Albedo:2
+experta,68,victoria,10,0.93,Escudo de Albedo:2
+experta,69,victoria,9,0.72,Escudo de Albedo:2
+experta,70,victoria,9,0.84,Escudo de Albedo:2
+experta,71,victoria,8,0.72,Escudo de Albedo:2
+experta,72,victoria,10,0.84,Escudo de Albedo:2
+experta,73,victoria,8,0.72,Escudo de Albedo:2
+experta,74,victoria,9,0.84,Escudo de Albedo:2
+experta,75,victoria,10,0.97,Escudo de Albedo:2
+experta,76,victoria,8,0.72,Escudo de Albedo:2
+experta,77,victoria,8,0.91,Escudo de Albedo:2
+experta,78,victoria,10,0.95,Escudo de Albedo:2
+experta,79,victoria,8,0.72,Escudo de Albedo:2
+experta,80,victoria,9,0.72,Escudo de Albedo:2
+experta,81,victoria,9,0.72,Escudo de Albedo:2
+experta,82,victoria,9,0.84,Escudo de Albedo:2
+experta,83,victoria,8,0.84,Escudo de Albedo:2
+experta,84,victoria,9,0.72,Escudo de Albedo:2
+experta,85,victoria,10,0.84,Escudo de Albedo:2
+experta,86,victoria,9,0.91,Escudo de Albedo:2
+experta,87,victoria,8,0.72,Escudo de Albedo:2
+experta,88,victoria,8,0.72,Escudo de Albedo:2
+experta,89,victoria,8,0.72,Escudo de Albedo:2
+experta,90,victoria,11,0.95,Escudo de Albedo:2
+experta,91,victoria,8,0.84,Escudo de Albedo:2
+experta,92,victoria,9,0.91,Escudo de Albedo:2
+experta,93,victoria,10,0.91,Escudo de Albedo:2
+experta,94,victoria,8,0.84,Escudo de Albedo:2
+experta,95,victoria,10,0.84,Escudo de Albedo:2
+experta,96,victoria,8,0.72,Escudo de Albedo:2
+experta,97,victoria,10,0.95,Escudo de Albedo:2
+experta,98,victoria,10,0.88,Escudo de Albedo:2
+experta,99,victoria,8,0.72,Escudo de Albedo:2
+experta,100,victoria,9,0.84,Escudo de Albedo:2
+experta,101,victoria,10,0.93,Escudo de Albedo:2
+experta,102,victoria,8,0.72,Escudo de Albedo:2
+experta,103,victoria,8,0.84,Escudo de Albedo:2
+experta,104,victoria,9,0.95,Escudo de Albedo:2
+experta,105,victoria,9,0.84,Escudo de Albedo:2
+experta,106,victoria,10,0.95,Escudo de Albedo:2
+experta,107,victoria,10,0.95,Escudo de Albedo:2
+experta,108,victoria,9,0.72,Escudo de Albedo:2
+experta,109,victoria,10,0.84,Escudo de Albedo:2
+experta,110,victoria,8,0.84,Escudo de Albedo:2
+experta,111,victoria,8,0.72,Escudo de Albedo:2
+experta,112,victoria,8,0.72,Escudo de Albedo:2
+experta,113,victoria,9,0.72,Escudo de Albedo:2
+experta,114,victoria,8,0.72,Escudo de Albedo:2
+experta,115,victoria,9,0.84,Escudo de Albedo:2
+experta,116,victoria,8,0.72,Escudo de Albedo:2
+experta,117,victoria,9,0.72,Escudo de Albedo:2
+experta,118,victoria,10,0.96,Escudo de Albedo:2
+experta,119,victoria,10,0.97,Escudo de Albedo:2
+experta,120,victoria,9,0.84,Escudo de Albedo:2
+experta,121,victoria,10,0.93,Escudo de Albedo:2
+experta,122,victoria,10,0.97,Escudo de Albedo:2
+experta,123,victoria,11,0.97,Escudo de Albedo:2
+experta,124,victoria,10,0.84,Escudo de Albedo:2
+experta,125,victoria,11,0.98,Escudo de Albedo:2
+experta,126,victoria,9,0.91,Escudo de Albedo:2
+experta,127,victoria,9,0.84,Escudo de Albedo:2
+experta,128,victoria,8,0.84,Escudo de Albedo:2
+experta,129,victoria,9,0.91,Escudo de Albedo:2
+experta,130,victoria,9,0.84,Escudo de Albedo:2
+experta,131,victoria,9,0.84,Escudo de Albedo:2
+experta,132,victoria,8,0.91,Escudo de Albedo:2
+experta,133,victoria,9,0.96,Escudo de Albedo:2
+experta,134,victoria,10,0.84,Escudo de Albedo:2
+experta,135,victoria,8,0.72,Escudo de Albedo:2
+experta,136,victoria,8,0.84,Escudo de Albedo:2
+experta,137,victoria,10,0.91,Escudo de Albedo:2
+experta,138,victoria,9,0.72,Escudo de Albedo:2
+experta,139,victoria,9,0.72,Escudo de Albedo:2
+experta,140,victoria,8,0.72,Escudo de Albedo:2
+experta,141,victoria,9,0.84,Escudo de Albedo:2
+experta,142,victoria,9,0.84,Escudo de Albedo:2
+experta,143,victoria,8,0.72,Escudo de Albedo:2
+experta,144,victoria,9,0.84,Escudo de Albedo:2
+experta,145,victoria,10,0.95,Escudo de Albedo:2
+experta,146,victoria,9,0.84,Escudo de Albedo:2
+experta,147,victoria,9,0.95,Escudo de Albedo:2
+experta,148,victoria,9,0.84,Escudo de Albedo:2
+experta,149,victoria,10,0.96,Escudo de Albedo:2
+experta,150,victoria,10,0.93,Escudo de Albedo:2
+experta,151,victoria,8,0.72,Escudo de Albedo:2
+experta,152,victoria,9,0.84,Escudo de Albedo:2
+experta,153,victoria,10,0.96,Escudo de Albedo:2
+experta,154,victoria,10,0.95,Escudo de Albedo:2
+experta,155,victoria,10,0.96,Escudo de Albedo:2
+experta,156,victoria,10,0.91,Escudo de Albedo:2
+experta,157,victoria,9,0.72,Escudo de Albedo:2
+experta,158,victoria,9,0.72,Escudo de Albedo:2
+experta,159,victoria,9,0.72,Escudo de Albedo:2
+experta,160,victoria,10,0.91,Escudo de Albedo:2
+experta,161,victoria,8,0.72,Escudo de Albedo:2
+experta,162,victoria,11,0.95,Escudo de Albedo:2
+experta,163,victoria,8,0.84,Escudo de Albedo:2
+experta,164,victoria,9,0.72,Escudo de Albedo:2
+experta,165,victoria,9,0.72,Escudo de Albedo:2
+experta,166,victoria,9,0.88,Escudo de Albedo:2
+experta,167,victoria,11,0.97,Escudo de Albedo:2
+experta,168,victoria,10,0.91,Escudo de Albedo:2
+experta,169,victoria,10,0.96,Escudo de Albedo:2
+experta,170,victoria,8,0.72,Escudo de Albedo:2
+experta,171,victoria,11,0.91,Escudo de Albedo:2
+experta,172,victoria,10,0.88,Escudo de Albedo:2
+experta,173,victoria,10,0.84,Escudo de Albedo:2
+experta,174,victoria,9,0.84,Escudo de Albedo:2
+experta,175,victoria,9,0.84,Escudo de Albedo:2
+experta,176,victoria,9,0.91,Escudo de Albedo:2
+experta,177,victoria,10,0.72,Escudo de Albedo:2
+experta,178,victoria,10,0.96,Escudo de Albedo:2
+experta,179,victoria,11,0.98,Escudo de Albedo:2
+experta,180,victoria,11,0.98,Escudo de Albedo:2
+experta,181,victoria,9,0.91,Escudo de Albedo:2
+experta,182,victoria,9,0.72,Escudo de Albedo:2
+experta,183,victoria,9,0.72,Escudo de Albedo:2
+experta,184,victoria,8,0.72,Escudo de Albedo:2
+experta,185,victoria,8,0.84,Escudo de Albedo:2
+experta,186,victoria,9,0.72,Escudo de Albedo:2
+experta,187,victoria,10,0.96,Escudo de Albedo:2
+experta,188,victoria,9,0.84,Escudo de Albedo:2
+experta,189,victoria,7,0.84,Escudo de Albedo:2
+experta,190,victoria,9,0.95,Escudo de Albedo:2
+experta,191,victoria,8,0.84,Escudo de Albedo:2
+experta,192,victoria,9,0.84,Escudo de Albedo:2
+experta,193,victoria,9,0.84,Escudo de Albedo:2
+experta,194,victoria,9,0.84,Escudo de Albedo:2
+experta,195,victoria,10,0.84,Escudo de Albedo:2
+experta,196,victoria,9,0.84,Escudo de Albedo:2
+experta,197,victoria,8,0.72,Escudo de Albedo:2
+experta,198,victoria,8,0.72,Escudo de Albedo:2
+experta,199,victoria,9,0.72,Escudo de Albedo:2

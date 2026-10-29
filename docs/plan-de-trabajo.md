@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-28 (sesión 8; cierre de la parte 3)
+Última actualización: 2026-10-28 (sesión 8; cierre de la parte 4)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,8 +42,34 @@ válidos:
 
 ## Punto de retome
 
-> **Parte 3 — Las siete zonas. CERRADA el 2026-10-28.** Lo siguiente es
-> abrir la **parte 4** (encuentros y paso mundo ↔ combate) con su anexo.
+> **Parte 4 — Encuentros y paso mundo ↔ combate. CERRADA el 2026-10-28.**
+> Anexo `docs/ux/anexos/2026-10-28-encuentros.md`. Lo siguiente es abrir la
+> **parte 5** (diálogos y retratos) con su anexo.
+>
+> - Contrato «Persiana»:
+>   - IA-1 en el mapa: patrulla, alerta, persecución y rendición;
+>   - ventaja por la espalda;
+>   - persiana de 300 ms y fondo regional en tres capas;
+>   - el grupo vive en `GameState`;
+>   - huida con 1 s de gracia;
+>   - la ola de purificación pieza a pieza.
+> - Enmienda 1: señal de alerta en brasa, con la Cripta como excepción.
+> - IA-4: `tools/balance_bot.gd`.
+> - IA-5, contrato «Orden de líder»:
+>   - el jugador maneja solo a Ilan y da una orden de grupo;
+>   - la orden se juzga (enmienda 1);
+>   - la sintonía manda (enmienda 2).
+> - Reglas nuevas de combate:
+>   - en las regiones, la contramedida se sostiene 2 rondas;
+>   - la Sombra exige combinar en la misma ronda.
+> - **Deudas de equilibrado:**
+>   - el Gólem de la Costa no presiona;
+>   - la fuerza bruta gana demasiado en la Llanura (100 %), la Cuenca (64 %)
+>     y el Bosque (41 %).
+> - Pendientes: la fauna en bandada (IA-2, parte 3) y arrancar el juego en el
+>   mundo con `GameFlow` (parte 10).
+>
+> **Parte 3 — Las siete zonas. CERRADA el 2026-10-28.**
 >
 > **Parte 3, historial:**
 > Anexo `docs/ux/anexos/2026-10-01-las-siete-zonas.md`.
@@ -145,7 +171,7 @@ zonas, ni progresión sin encuentros.
 | 1 | Tokens de mundo, tileset y cámara | **En curso** — tokens, catálogo y tileset aprobados; cámara aprobada 2026-09-30; falta la prueba con personas |
 | 2 | Movimiento, colisiones y transición entre zonas | **Hecha** (2026-10-01) — contrato «Umbral», `verify_movement` 99/99 |
 | 3 | Las siete zonas: Valdehoja + cinco regiones + Cripta de la Avaricia | **Cerrada** 2026-10-28 — contrato «Rastro»; enmiendas 6-10 y 12. Las siete zonas aprobadas, `verify_zone` en verde |
-| 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | |
+| 4 | Encuentros y paso mundo ↔ combate conservando el estado del grupo | **Cerrada** 2026-10-28 — contratos «Persiana» y «Orden de líder» (IA-1, IA-4, IA-5); deudas de equilibrado en el anexo |
 | 5 | Diálogos y retratos: Yara, los cuatro compañeros, Rasgo | |
 | 6 | Progresión: quién se une dónde, qué habilidad trae, qué región quedó purificada | |
 | 7 | Puzzles ambientales, uno por región | |

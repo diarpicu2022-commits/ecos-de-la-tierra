@@ -50,9 +50,12 @@ func _check_regeneration_rule() -> void:
 		monster.hp, monster.is_purified
 	])
 
+	# Sostener la contramedida (Diego, 2026-10-28): dos rondas seguidas.
 	var counter := SkillLibrary.firebreak_line()
-	for line in monster.receive_eco_skill(counter):
-		print("   %s" % line)
+	for i in DesignTokens.COUNTER_SUSTAIN_ROUNDS:
+		monster.begin_round()
+		for line in monster.receive_eco_skill(counter):
+			print("   %s" % line)
 
 	monster.take_damage(monster.max_hp * 4, Enums.EcoType.NONE, true)
 	print("   Tras el mismo golpe ya purificado: %d PV, sigue en pie = %s" % [

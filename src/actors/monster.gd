@@ -28,6 +28,13 @@ signal regenerated(current_hp: int)
 
 var is_purified: bool = false
 var skills: Array[Skill] = []
+## Sostener la contramedida (enmienda de IA-5, Diego 2026-10-28): la causa se
+## ataja cuando la contramedida se aplica en COUNTER_SUSTAIN_ROUNDS rondas
+## seguidas. Una ronda sin ella y el avance se pierde. Un gesto aislado no
+## basta, la misma lección que la Sombra en pequeño.
+var counter_streak: int = 0
+var _round: int = 0
+var _countered_this_round := false
 
 
 func _ready() -> void:
@@ -62,6 +69,18 @@ func _on_hp_depleted() -> void:
 	regenerated.emit(hp)
 
 
+## Al empezar cada ronda: si la anterior no llevó la contramedida, el avance
+## para atajar la causa se pierde. Lo llama el BattleManager.
+func begin_round() -> Array[String]:
+	var log_lines: Array[String] = []
+	_round += 1
+	if not is_purified and counter_streak > 0 and not _countered_this_round:
+		log_lines.append("%s se rehace: la contramedida no se sostuvo." % display_name)
+		counter_streak = 0
+	_countered_this_round = false
+	return log_lines
+
+
 ## Reacción a una Habilidad Ecológica. El BattleManager la invoca a través de
 ## EcoSkill.execute(); aquí se valida la contramedida sin lógica por monstruo.
 func receive_eco_skill(skill: EcoSkill) -> Array[String]:
@@ -69,11 +88,19 @@ func receive_eco_skill(skill: EcoSkill) -> Array[String]:
 	if is_purified:
 		return log_lines
 	if skill.weakness_type == required_counter_type:
-		is_purified = true
-		purified.emit()
-		log_lines.append("¡%s deja de regenerarse! %s ataja la causa del daño." % [
-			display_name, skill.display_name
-		])
+		if not _countered_this_round:
+			_countered_this_round = true
+			counter_streak += 1
+		if counter_streak >= DesignTokens.COUNTER_SUSTAIN_ROUNDS:
+			is_purified = true
+			purified.emit()
+			log_lines.append("¡%s deja de regenerarse! %s ataja la causa del daño." % [
+				display_name, skill.display_name
+			])
+		else:
+			log_lines.append("%s frena a %s, pero hay que sostenerla: %d de %d rondas." % [
+				skill.display_name, display_name, counter_streak, DesignTokens.COUNTER_SUSTAIN_ROUNDS
+			])
 	else:
 		log_lines.append("%s resiste: %s no corrige el daño que lo origina." % [
 			display_name, skill.display_name

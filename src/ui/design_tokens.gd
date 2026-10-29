@@ -351,3 +351,70 @@ const BAYER_4X4 := [
 ## normalizar: normalizar daría 0,707 px por cuadro, fracciones de píxel que la
 ## cámara a entero convierte en tirones.
 const DIAGONAL_NORMALIZED := false
+
+
+# --- Encuentros ------------------------------------------------------------
+# Contrato «Persiana», bloqueado el 2026-10-28
+# (docs/ux/anexos/2026-10-28-encuentros.md). Ningún color nuevo: la sombra de
+# alerta y la persiana son ASH_950. El monstruo anda y persigue a WALK_SPEED,
+# la regla de velocidades: quien corre (RUN_SPEED) siempre escapa.
+
+## IA-1. A cuántos tiles ve el monstruo a Ilan, en el semiplano al que mira.
+const MONSTER_SIGHT_TILES := 6
+## Pausa en cada extremo de la ruta de patrulla.
+const MONSTER_PATROL_PAUSE := 1.2
+## La alerta: la sombra se estira hacia Ilan un tile por paso, hasta
+## MONSTER_ALERT_STEPS. Cuando llega al último, empieza la persecución. Es la
+## señal de que lo ha visto, y avanza en vez de aparecer (Shadow Tactics).
+const DUR_MONSTER_ALERT_STEP := 0.12
+const MONSTER_ALERT_STEPS := 4
+## Sin ver a Ilan durante este tiempo, el monstruo se rinde y vuelve a su ruta.
+const DUR_MONSTER_GIVE_UP := 2.0
+
+## La persiana: franjas horizontales que cubren la pantalla al entrar en
+## combate y la descubren al salir. Exclusiva de ese paso (repertorio §3.1).
+## Usa el techo de 300 ms del contrato de batalla.
+const DUR_BATTLE_BLINDS := 0.30
+const BLIND_STRIP := 8           ## Alto de cada franja, en píxeles.
+## Margen entre la primera franja (la de la fila del monstruo) y la más lejana.
+## Se reparte por igual entre las franjas que haya, estén donde estén, y cada
+## una se cierra en DUR_BATTLE_BLINDS - BLIND_SPREAD: la última termina justo a
+## los 300 ms, con el monstruo en el centro o en el borde.
+const BLIND_SPREAD := 0.10
+
+## Fondo de batalla en tres capas: cuánto se desplaza cada capa, en píxeles,
+## mientras se abre la persiana. Quieto con movimiento reducido.
+const BATTLE_PARALLAX := 2
+
+## Tras huir, tiempo sin contacto posible con el monstruo.
+const DUR_FLEE_GRACE := 1.0
+
+
+# --- Sintonía del grupo (IA-5) --------------------------------------------
+# Contrato «Orden de líder», bloqueado el 2026-10-28. No son valores visuales,
+# pero viven aquí por la misma regla: ningún número suelto en el código.
+
+## Red de cada compañero: 12 entradas, 16 ocultas, 4 salidas.
+const PARTY_INPUTS := 12
+const PARTY_HIDDEN := 16
+const PARTY_OUTPUTS := 4
+## Paso de descenso por gradiente.
+const PARTY_LEARNING_RATE := 0.15
+## Pasos por cada decisión de Ilan. Enmienda 2 (2026-10-28): aprenden tres
+## veces más rápido para que el líder pese en el mismo combate. Tres pasos de
+## 0,15 y no uno de 0,45: con 0,45 el descenso se desestabiliza (el acierto del
+## estilo sintético cayó del 88 % al 53 %).
+const PARTY_STEPS_PER_DECISION := 3
+## Decisiones con las que la red debe haber aprendido un estilo (> 80 %).
+const PARTY_LEARN_DECISIONS := 200
+## Cuánto empuja la orden de grupo la salida que favorece (en logits).
+const ORDER_BIAS := 2.0
+## Sintonía: empieza en el medio, sube más deprisa de lo que baja.
+const SYNC_START := 0.5
+const SYNC_UP := 0.25
+const SYNC_DOWN := 0.15
+## Decisiones buenas seguidas que bastan para salir del mínimo al tramo medio.
+const SYNC_RECOVER := 3
+## Rondas seguidas con la contramedida para atajar la causa de un monstruo
+## regional (Diego, 2026-10-28: «sostener la contramedida»).
+const COUNTER_SUSTAIN_ROUNDS := 2

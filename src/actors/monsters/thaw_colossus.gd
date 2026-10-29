@@ -9,7 +9,7 @@ func _init() -> void:
 	lore = "El último bloque de un glaciar que ya no vuelve a formarse en invierno."
 	max_hp = 300
 	max_energy = 40
-	base_attack = 20
+	base_attack = 25  # Equilibrado IA-4, 2026-10-28 (antes 20): ver anexo de encuentros.
 	base_defense = 14
 	base_speed = 9
 	required_counter_type = Enums.EcoType.THAW

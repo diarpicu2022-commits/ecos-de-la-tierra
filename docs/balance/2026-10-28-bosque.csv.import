@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cphtg023dccjd"
+
+[deps]
+
+files=["res://docs/balance/2026-10-28-bosque.combate.translation", "res://docs/balance/2026-10-28-bosque.resultado.translation", "res://docs/balance/2026-10-28-bosque.rondas.translation", "res://docs/balance/2026-10-28-bosque.sintonia.translation"]
+
+source_file="res://docs/balance/2026-10-28-bosque.csv"
+dest_files=["res://docs/balance/2026-10-28-bosque.combate.translation", "res://docs/balance/2026-10-28-bosque.resultado.translation", "res://docs/balance/2026-10-28-bosque.rondas.translation", "res://docs/balance/2026-10-28-bosque.sintonia.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

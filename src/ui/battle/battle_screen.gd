@@ -80,7 +80,28 @@ const LOG_BEAT_SECONDS := 1.15
 
 enum Phase { IDLE, PLAYING, CHOOSING, FINISHED }
 
+## Región del combate, por id de zona (contrato «Persiana» §4). Vacía: el
+## fondo genérico de ceniza de la parte de batalla.
+var region := ""
+## IA-5 (contrato «Orden de líder»): con true, el menú solo se abre para el
+## líder, lleva la fila de orden y los compañeros deciden solos. Las mentes y
+## la sintonía llegan de GameState y vuelven allí al terminar.
+var companions_auto := false
+var minds: Dictionary = {}
+var sync: float = DesignTokens.SYNC_START
+
+## Las tres órdenes de grupo, con la etiqueta corta del menú y su explicación.
+const ORDERS := [
+	{"label": "SEGUIDME", "description": "Orden: hacen lo que te ven hacer a ti."},
+	{"label": "ATAJAD", "description": "Orden: atajad la causa. Usan su contramedida si pueden."},
+	{"label": "CUBRÍOS", "description": "Orden: cubríos. Curan y usan la bolsa con quien esté tocado."},
+]
+
 var _font: Font = null
+## Parallax de entrada: cuadros desde que empezó el combate. Cada capa del
+## fondo entra desplazada BATTLE_PARALLAX px por su profundidad y llega a su
+## sitio en DUR_BATTLE_BLINDS, mientras se abre la persiana.
+var _entry_frame := 0
 var _manager: BattleManager = null
 var _phase: int = Phase.IDLE
 
@@ -189,8 +210,12 @@ static func options_rect() -> Rect2:
 # --- Arranque del combate ----------------------------------------------------
 
 func start_battle(players: Array[Combatant], enemies: Array[Combatant],
-		inventory: Inventory) -> void:
+		inventory: Inventory, opening_team: int = -1) -> void:
 	_manager = BattleManager.new()
+	_manager.opening_team = opening_team
+	_manager.companions_auto = companions_auto
+	_manager.minds = minds
+	_manager.sync = sync
 	add_child(_manager)
 
 	_build_party_huds(players)
@@ -217,6 +242,7 @@ func start_battle(players: Array[Combatant], enemies: Array[Combatant],
 	_overlay.hide_result()
 
 	_set_views_paused(true)
+	_entry_frame = 0
 	_manager.start_battle(players, enemies, inventory)
 	_start_playback()
 
@@ -496,8 +522,18 @@ func _open_root_menu() -> void:
 		},
 		{"label": "HUIR", "cost": -1, "enabled": true, "kind": "flee",
 			"description": "Retirarse. Depende de la velocidad del grupo."},
-	])
+	] + _order_entry())
 	_menu.open()
+
+
+## La fila de orden, solo para el líder con los compañeros en automático.
+## Elegirla cambia a la orden siguiente sin gastar el turno.
+func _order_entry() -> Array:
+	if not companions_auto or _actor != _manager.leader:
+		return []
+	var o: Dictionary = ORDERS[_manager.order]
+	return [{"label": "ORDEN: " + o["label"], "cost": -1, "enabled": true, "kind": "order",
+		"description": o["description"] + " Confirma para cambiarla."}]
 
 
 func _open_skill_menu() -> void:
@@ -576,6 +612,12 @@ func _on_option_chosen(entry: Dictionary) -> void:
 			_open_item_menu()
 		"flee":
 			_submit(BattleAction.flee(_actor))
+		"order":
+			_manager.order = (_manager.order + 1) % ORDERS.size()
+			_open_root_menu()
+			_menu.focused = _menu.entries.size() - 1
+			_menu.queue_redraw()
+			_on_option_focused(_menu.entries[-1])
 		"skill":
 			_pending_skill = entry["skill"] as Skill
 			if _pending_skill.targets_all:
@@ -656,9 +698,32 @@ func _draw() -> void:
 	_draw_message()
 
 
+func _physics_process(_delta: float) -> void:
+	var frames := roundi(DesignTokens.DUR_BATTLE_BLINDS * Engine.physics_ticks_per_second)
+	if region != "" and _entry_frame < frames:
+		_entry_frame += 1
+		queue_redraw()
+
+
+## Desplazamiento de la capa `depth` (1 lejos, 3 cerca) en el parallax de
+## entrada, en píxeles enteros. Con movimiento reducido, quieto.
+func parallax_offset(depth: int) -> int:
+	if DesignTokens.reduced_motion:
+		return 0
+	var frames := roundi(DesignTokens.DUR_BATTLE_BLINDS * Engine.physics_ticks_per_second)
+	var t := clampf(float(_entry_frame) / frames, 0.0, 1.0)
+	var eased := 1.0 - pow(1.0 - t, 3.0)
+	return roundi((1.0 - eased) * depth * DesignTokens.BATTLE_PARALLAX)
+
+
 ## Fondo del campo, en escalones de token. Nada de degradados interpolados: un
 ## lerp genera tonos que no son tokens y la auditoría de paleta los detecta.
+## Con región, el fondo es el de esa región (contrato «Persiana» §4).
 func _draw_background() -> void:
+	if region != "":
+		_draw_region_background()
+		_platform(Vector2(78, 176), 94.0, 15.0)
+		return
 	draw_rect(Rect2(Vector2(0, 0), Vector2(SCREEN.x, FIELD_TOP + 34.0)),
 			DesignTokens.ASH_900)
 	draw_rect(Rect2(Vector2(0, FIELD_TOP + 34.0),
@@ -687,6 +752,92 @@ func _draw_background() -> void:
 	# plano. Los enemigos se escalonan en diagonal y cada uno necesita la suya:
 	# sobre una sola elipse plana, los de atrás quedaban flotando.
 	_platform(Vector2(78, 176), 94.0, 15.0)
+
+
+## Fondo regional en tres capas (contrato «Persiana» §4), sacado de las
+## rampas del tileset de la región y siempre en su estado enfermo: se lucha
+## contra la causa. Lejos, la silueta propia de la región contra el cielo de
+## ceniza; en medio, la franja de su material; cerca, ese material en su tono
+## más oscuro, para que el contraste baje junto a los paneles.
+const REGION_GROUND := {
+	"ashen_forest": [DesignTokens.SOIL_500, DesignTokens.SOIL_700],
+	"tar_basin": [DesignTokens.WATER_500, DesignTokens.WATER_700],
+	"broken_coast": [DesignTokens.WATER_300, DesignTokens.SOIL_700],
+	"withered_plain": [DesignTokens.FLORA_500, DesignTokens.SOIL_700],
+	"waning_peak": [DesignTokens.ASH_700, DesignTokens.WATER_700],
+	"greed_crypt": [DesignTokens.WATER_500, DesignTokens.WATER_700],
+}
+
+
+func _draw_region_background() -> void:
+	var far := parallax_offset(1)
+	var mid := parallax_offset(2)
+	var near := parallax_offset(3)
+	var ground: Array = REGION_GROUND.get(region, [DesignTokens.ASH_800, DesignTokens.ASH_900])
+	# Cielo de ceniza, como el genérico.
+	draw_rect(Rect2(0, 0, SCREEN.x, FIELD_TOP + 34.0), DesignTokens.ASH_900)
+	draw_rect(Rect2(0, FIELD_TOP + 34.0, SCREEN.x, HORIZON - FIELD_TOP - 34.0), DesignTokens.ASH_800)
+	_draw_silhouette(far)
+	# Medio: la franja del material, con su línea de horizonte.
+	draw_rect(Rect2(0, HORIZON, SCREEN.x, 1), DesignTokens.ASH_600)
+	draw_rect(Rect2(0, HORIZON + 1.0, SCREEN.x, 22.0), ground[0])
+	for i in 12:
+		var x := float((i * 41 + mid) % int(SCREEN.x))
+		draw_rect(Rect2(x, HORIZON + 6.0 + (i % 3) * 5.0, 10.0 + (i % 4) * 4.0, 1.0), ground[1])
+	# Cerca: el material oscuro hasta los paneles.
+	draw_rect(Rect2(0, HORIZON + 23.0, SCREEN.x, BAND_TOP - HORIZON - 23.0), ground[1])
+	for i in 8:
+		var x := float((i * 67 + near) % int(SCREEN.x))
+		draw_rect(Rect2(x, HORIZON + 30.0 + (i % 4) * 9.0, 18.0 + (i % 3) * 6.0, 1.0), DesignTokens.ASH_950)
+
+
+## La silueta lejana de cada región, en ASH_700 contra el cielo. Formas
+## rectas y en píxel entero: troncos, torres, montones, silo, picos, columnas.
+func _draw_silhouette(dx: int) -> void:
+	var c := DesignTokens.ASH_700
+	match region:
+		"ashen_forest":
+			for i in 14:
+				var x := float(i * 35 + 6 + dx)
+				var h := 30.0 + float((i * 13) % 26)
+				draw_rect(Rect2(x, HORIZON - h, 3.0, h), c)
+				draw_rect(Rect2(x - 5.0, HORIZON - h + 8.0, 5.0, 2.0), c)
+				draw_rect(Rect2(x + 3.0, HORIZON - h + 14.0, 6.0, 2.0), c)
+		"tar_basin":
+			for i in 5:
+				var x := float(i * 96 + 20 + dx)
+				var h := 44.0 + float((i * 17) % 22)
+				draw_rect(Rect2(x, HORIZON - h, 8.0, h), c)
+				draw_rect(Rect2(x - 6.0, HORIZON - h * 0.5, 34.0, 6.0), c)
+				draw_rect(Rect2(x + 22.0, HORIZON - h * 0.7, 5.0, h * 0.7), c)
+		"broken_coast":
+			for i in 7:
+				var cx := float(i * 72 + 30 + dx)
+				var h := 14.0 + float((i * 11) % 16)
+				for row in int(h):
+					var span := (h - row) * 1.6
+					draw_rect(Rect2(cx - span, HORIZON - row - 1.0, span * 2.0, 1.0), c)
+		"withered_plain":
+			draw_rect(Rect2(330.0 + dx, HORIZON - 52.0, 26.0, 52.0), c)
+			draw_rect(Rect2(326.0 + dx, HORIZON - 58.0, 34.0, 6.0), c)
+			for i in 30:
+				draw_rect(Rect2(float(i * 16 + dx), HORIZON - 6.0, 10.0, 6.0), c)
+		"waning_peak":
+			var peaks := [30, 52, 38, 64, 44, 58, 34, 48]
+			var step: float = SCREEN.x / float(peaks.size())
+			for i in peaks.size():
+				var h: float = float(peaks[i])
+				for row in int(h):
+					var span: float = (h - row) * 0.55
+					var tone := DesignTokens.ASH_600 if row > h - 8.0 else c
+					draw_rect(Rect2(step * i + step / 2.0 - span + dx, HORIZON - row - 1.0,
+						span * 2.0, 1.0), tone)
+		"greed_crypt":
+			draw_rect(Rect2(0, FIELD_TOP, SCREEN.x, 8.0), c)
+			for i in 9:
+				var x := float(i * 56 + 10 + dx)
+				draw_rect(Rect2(x, FIELD_TOP + 8.0, 12.0, HORIZON - FIELD_TOP - 8.0), c)
+				draw_rect(Rect2(x - 3.0, FIELD_TOP + 8.0, 18.0, 4.0), c)
 
 
 ## Plataforma elíptica bajo un bando. Es lo que convierte el suelo en un
