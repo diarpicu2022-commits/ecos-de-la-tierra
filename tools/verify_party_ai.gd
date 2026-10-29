@@ -11,7 +11,9 @@ extends Node
 ## - Con un líder bueno la sintonía sube; con uno malo baja; desde 0,
 ##   SYNC_RECOVER decisiones buenas la devuelven al tramo medio.
 ## - Con la sintonía alta el compañero duda menos que con la baja.
-## - En combate (Cuenca, 40 combates por líder): solo se le pide decisión al
+## - En combate (contra la Sombra, 40 combates por líder; en una región la
+##   compañera con la contramedida purifica antes de que Ilan decida, y la
+##   causa no dura lo bastante para juzgar): solo se le pide decisión al
 ##   líder; cada compañero deja su línea en el registro; con un líder bueno la
 ##   sintonía sube y se gana en menos rondas que con uno malo.
 ## - El menú de Ilan lleva la fila de orden, cabe sin recorte y cambia la
@@ -155,10 +157,10 @@ En combate")
 			var holder := Node.new()
 			add_child(holder)
 			var players: Array[Combatant] = []
-			for c in Encounters.build_party(1):
+			for c in Encounters.build_party(5):
 				holder.add_child(c)
 				players.append(c)
-			var monster := Encounters.build_monster(1)
+			var monster := Encounters.build_monster(5)
 			holder.add_child(monster)
 			var enemies: Array[Combatant] = [monster]
 			var m := BattleManager.new()
@@ -172,9 +174,15 @@ En combate")
 					return
 				var target := m._monster()
 				var counter := m._counter_skill(c)
-				if style == "bueno" and counter != null:
+				var fresh: bool = counter != null and not (target is AdaptiveBoss
+					and (target as AdaptiveBoss).used_eco_types.has(counter.weakness_type))
+				if style == "bueno":
+					# Manda atajar y combina: usa su contramedida solo si es un tipo nuevo.
 					m.order = PartyMind.Order.CAUSE
-					m.submit_action(BattleAction.use_skill(c, counter, target))
+					if fresh:
+						m.submit_action(BattleAction.use_skill(c, counter, target))
+					else:
+						m.submit_action(BattleAction.attack(c, target))
 				else:
 					m.order = PartyMind.Order.FOLLOW
 					m.submit_action(BattleAction.attack(c, target)))
@@ -182,7 +190,7 @@ En combate")
 				for t in l:
 					if " sigue " in str(t) or " duda:" in str(t):
 						count["lines"] += 1)
-			m.start_battle(players, enemies, Encounters.build_inventory(1))
+			m.start_battle(players, enemies, Encounters.build_inventory(5))
 			rounds += m._turn_manager.round_number
 			wins += int(m.result == Enums.BattleResult.VICTORY)
 			sync_end += m.sync

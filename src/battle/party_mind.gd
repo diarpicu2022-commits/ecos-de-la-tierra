@@ -168,6 +168,23 @@ static func judge(choice: int, cause_active: bool, could_counter: bool, lowest_h
 	return 0
 
 
+## Juicio de la orden de grupo (enmienda 1 del contrato «Orden de líder»,
+## Diego 2026-10-28): mandar también es decidir. +1, -1 o 0.
+## - Atajad: buena con la causa activa y alguien del grupo que puede atajarla.
+## - Cubríos: buena si alguien baja del 45 %; mala si nadie está tocado.
+## - Seguidme: mala si el grupo podía atajar la causa y el líder no lo hace.
+static func judge_order(order: int, cause_active: bool, party_can_counter: bool,
+		lowest_hp: float, leader_choice: int) -> int:
+	match order:
+		Order.CAUSE:
+			return 1 if cause_active and party_can_counter else 0
+		Order.COVER:
+			return 1 if lowest_hp < HURT else -1
+	if cause_active and party_can_counter and leader_choice != Choice.COUNTER:
+		return -1
+	return 0
+
+
 ## Sintonía tras un juicio. Sube hacia 1 más deprisa de lo que baja hacia 0.
 static func update_sync(sync: float, verdict: int) -> float:
 	if verdict > 0:

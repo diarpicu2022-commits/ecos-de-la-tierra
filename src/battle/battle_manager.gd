@@ -398,8 +398,19 @@ func _learn_from_leader(action: BattleAction) -> void:
 	if choice == PartyMind.Choice.COUNTER and monster is AdaptiveBoss:
 		repeated = (monster as AdaptiveBoss).used_eco_types.has((action.skill as EcoSkill).weakness_type)
 	var low := _weakest().get_hp_ratio() if _weakest() != null else 1.0
-	sync = PartyMind.update_sync(sync, PartyMind.judge(choice, cause,
-		_counter_skill(leader as Character) != null, low, repeated))
+	# «Podía atajar» solo con un tipo que sirva: contra la Sombra, uno sin usar.
+	var leader_counter := _counter_skill(leader as Character)
+	var leader_can := leader_counter != null and not (monster is AdaptiveBoss
+		and (monster as AdaptiveBoss).used_eco_types.has(leader_counter.weakness_type))
+	sync = PartyMind.update_sync(sync, PartyMind.judge(choice, cause, leader_can, low, repeated))
+	# Enmienda 1: la orden también es decisión del líder.
+	var party_can := false
+	for c in player_party:
+		var cc := _counter_skill(c as Character) if c != leader and c.is_alive() else null
+		if cc != null and not (monster is AdaptiveBoss
+				and (monster as AdaptiveBoss).used_eco_types.has(cc.weakness_type)):
+			party_can = true
+	sync = PartyMind.update_sync(sync, PartyMind.judge_order(order, cause, party_can, low, choice))
 	_last_leader_choice = choice
 
 

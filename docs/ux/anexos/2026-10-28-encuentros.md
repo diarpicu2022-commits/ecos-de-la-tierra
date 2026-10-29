@@ -882,6 +882,70 @@ el grupo gana en menos rondas», y los pesos iniciales de IA-4.
 **Siguiente:** paso 3. Los compañeros deciden solos en «Ceniza y Brasa», la
 orden se elige en el menú de Ilan y el registro dice por qué actúa cada uno.
 
+Diego aprobó los pasos 1 y 2 de IA-5 el 2026-10-28.
+
+#### IA-5, paso 3 — Los compañeros en el combate · 2026-10-28
+
+- **`BattleManager`** (`companions_auto`; apagado por defecto, así que la demo
+  y las pruebas viejas no cambian):
+  - el líder es el primero del grupo, Ilan;
+  - los compañeros resuelven su turno con su `PartyMind`, la orden vigente y
+    la sintonía;
+  - cada compañero deja su motivo en el registro: «Coral sigue la orden:
+    Barrera Absorbente.», «Bruma sigue a Ilan: …» o «Bruma duda: …»;
+  - tras cada decisión de Ilan, las mentes aprenden un paso y la sintonía se
+    juzga.
+- **`BattleScreen`:** el menú solo se abre para Ilan, con una quinta fila,
+  **«ORDEN: SEGUIDME / ATAJAD / CUBRÍOS»**, que cambia la orden al
+  confirmarla sin gastar el turno. Su descripción va en el área de mensaje.
+- **`GameState`** guarda `party_minds` y `party_sync` entre combates, y
+  `GameFlow` los pasa al combate y recoge la sintonía al salir.
+
+### Enmienda 1 de «Orden de líder» — la orden también se juzga, autorizada por Diego el 2026-10-28
+
+**Lo que pasó:** con el §5 original, la sintonía no se movía (0,50 con un
+líder bueno y con uno malo). Ilan casi nunca tiene la contramedida: solo la
+suya en la Cumbre. Y la compañera que la tiene, más rápida, purificaba antes
+del primer turno de Ilan.
+
+**Enmienda:** la orden es decisión del líder y se juzga junto a su acción
+(`PartyMind.judge_order`):
+
+- *Atajad* es buena con la causa activa y alguien que pueda atajarla;
+- *Cubríos* es buena si alguien baja del 45 %, y mala si nadie está tocado;
+- *Seguidme* es mala si el grupo podía atajar y el líder no lo hace.
+
+**Un error del juez en el motor, y se dice:** «podía atajar» contaba también
+el tipo ya usado contra la Sombra. Entonces atacar en vez de repetir salía
+como malo, justo al revés. Ahora solo cuenta un tipo sin usar.
+
+**Medido** — `tools/verify_party_ai.gd`: **19 de 19**.
+
+- Lo del paso 2 (10/10), más el combate contra la Sombra, 40 combates por
+  líder:
+  - solo se le pide decisión a Ilan (0 peticiones a otros);
+  - cada compañero deja su motivo (unas 480 líneas por serie);
+  - la sintonía **sube a 0,72 con el líder bueno y baja a 0,00 con el malo**;
+  - el bueno gana 40 de 40 en **6,3 rondas** y el malo 0 de 40.
+- **Menú:** lleva la fila de orden, las tres caben sin recorte (90 de 100 px)
+  y confirmarla cambia la orden sin gastar el turno.
+- **Tres fallos de la propia prueba, y se dicen:**
+  - las lambdas capturaban los contadores por valor (daban 0);
+  - se usó la fase 1 por «elegir», que es la 2;
+  - el líder «bueno» repetía su contramedida contra la Sombra.
+- **Por qué se mide contra la Sombra:** en una región, la causa no dura lo
+  bastante para juzgar. **Eso es un síntoma del equilibrado:** una
+  contramedida purifica al momento. Se trata en el paso 4.
+- **Regresión:** `verify_flow` 23/23, `verify_usability` 16/16,
+  `verify_encounters` 82/82 y `battle_demo` sin errores.
+
+**Capturas:** `2026-10-28-combate-desde-el-mapa.png` (la fila «ORDEN:
+SEGUIDME» en el menú de Ilan) y `2026-10-28-combate-orden-registro.png`
+(«Bruma duda: Línea Cortafuegos.»).
+
+**Pendiente para el paso 4:** los pesos iniciales de las mentes desde IA-4 (hoy
+parten de una semilla por nombre), y el reequilibrado.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

@@ -6,7 +6,8 @@ extends Node
 ##
 ## En el Bosque, con Ilan junto a la Llama: la persiana a mitad de cierre
 ## (cuadro 9 de 18) con cada ventaja, y «Ceniza y Brasa» ya abierta con el
-## grupo de GameState.
+## grupo de GameState, y una línea del registro en que un compañero dice por
+## qué actúa (IA-5).
 
 const OUT_DIR := "res://docs/ux/capturas/"
 const DATE := "2026-10-28"
@@ -40,6 +41,17 @@ func _ready() -> void:
 			for _i in 30:
 				await get_tree().physics_frame
 			await _save("combate-desde-el-mapa")
+			# IA-5: Ilan manda «Atajad» y ataca; se avanza el registro hasta la
+			# línea en que un compañero dice por qué actúa.
+			var screen: BattleScreen = flow.screen
+			screen._manager.order = PartyMind.Order.CAUSE
+			screen._submit(BattleAction.attack(screen._actor, screen._manager._monster()))
+			for _i in 40:
+				if " sigue " in screen._message or " duda:" in screen._message:
+					break
+				screen._advance_queue()
+				await get_tree().process_frame
+			await _save("combate-orden-registro")
 		flow.result = Enums.BattleResult.FLED
 		flow.leave_battle()
 		while flow.screen != null or flow.blinds.running:
