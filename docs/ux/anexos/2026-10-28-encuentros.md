@@ -426,6 +426,57 @@ de la recomendación («que la alerta no se lea a 480 × 270: se mide»).
 persecución y rendición con A* encerrado en la zona), el contacto y la
 ventaja, con `tools/verify_encounters.gd`.
 
+#### Paso 3 — Esqueleto: IA-1 en el mapa, contacto y ventaja · 2026-10-28
+
+**Cláusulas:** contrato §1 (estados, visión, zona y velocidad) y §2 (contacto
+y ventaja).
+
+- **`src/world/map_monster.gd`** (`MapMonster`):
+  - máquina de cuatro estados;
+  - `AStarGrid2D` con todo sólido salvo su territorio, sin diagonales;
+  - 1 px por cuadro, eje a eje;
+  - visión por distancia, semiplano y línea de Bresenham sin sólidos;
+  - contacto por cajas que se tocan, y ventaja por la espalda.
+- **`WorldRoot`:** mientras la zona está enferma, cambia el sprite fijo del
+  monstruo por el `MapMonster`, que lleva su cuerpo entre los sólidos. Al
+  tocarlo, Ilan se para y el mundo emite `encounter(ventaja)`. La persiana va
+  en el paso 4.
+- **Decisión de la sesión, pendiente del visto bueno de Diego:** el contrato
+  no fija cuánto mide el territorio. Para no inventar un valor, usa
+  `MONSTER_SIGHT_TILES`: las casillas libres a ≤ 6 pasos ortogonales del
+  puesto. Mide entre 42 casillas (Cuenca) y 79 (Cripta).
+- **Ruta de patrulla:** del puesto a 2 tiles en la primera dirección libre,
+  ida y vuelta.
+
+**Medido** — `tools/verify_encounters.gd`: **82 de 82**.
+
+- Ventaja en los tres casos, más el de lado.
+- En las seis regiones:
+  - territorio pisable y ruta dentro de él;
+  - 900 cuadros con Ilan rondando, sin salir nunca del territorio;
+  - patrulla → alerta de frente, y nada a la espalda;
+  - alerta → persecución en **28 cuadros** (4 × 7);
+  - persecución → se rinde en **120 cuadros** sin verlo;
+  - se rinde → patrulla al llegar a su ruta;
+  - Ilan corriendo en línea recta (82-178 px) sin que la distancia baje nunca;
+  - contacto real por la espalda del monstruo, que da ventaja a Ilan;
+  - con gracia, sin contacto.
+- **La primera pasada dio 68 de 82, y los tres errores eran de la prueba:**
+  - Ilan corría más allá de la línea libre, chocaba y se paraba;
+  - el contacto se probaba a 13 px, y con un monstruo sólido no se llega a
+    menos de 12;
+  - la línea de la Cuenca tenía un barril sólido que la prueba no miraba.
+- **Regresión en verde:** `verify_zone` en las siete zonas, `verify_movement`
+  99/99, `verify_usability` 16/16 y `verify_camera` 37/37.
+- **`tools/monster_sheet.gd`** mide ahora el componente real y no una
+  maqueta. Brasa: 4,61 · 3,49 · 4,13 · 3,75 · 4,91:1. Cripta 2,60:1, la
+  excepción ya autorizada. Las capturas `-monstruo-*.png` se regeneraron con
+  él.
+
+**Siguiente:** paso 4. La persiana con su ventaja, el paso a «Ceniza y
+Brasa» con el grupo en `GameState`, y la vuelta al mapa con huida (1 s de
+gracia) y victoria (la ola).
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)
