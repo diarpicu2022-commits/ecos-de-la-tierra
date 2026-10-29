@@ -545,6 +545,49 @@ abre con Ilan.
 **Siguiente:** paso 5, el fondo de cada región en tres capas dentro de
 «Ceniza y Brasa».
 
+Diego aprobó el paso 4 el 2026-10-28.
+
+#### Paso 5 — El fondo de cada región en el combate · 2026-10-28
+
+**Cláusula:** contrato §4. Es la deuda del anexo de batalla, que dejaba el
+campo en dos bandas planas.
+
+- **`BattleScreen.region`:** con región, el campo se pinta en tres capas, siempre
+  en el estado enfermo de la región (se lucha contra la causa):
+  - **lejos:** la silueta propia de la región en `ASH_700` contra el cielo de
+    ceniza: troncos quemados con ramas (Bosque), torres y tubería (Cuenca),
+    montones de basura (Costa), silo e hileras (Llanura), picos con la cima en
+    `ASH_600` (Cumbre) y columnas bajo un dintel (Cripta);
+  - **medio:** la franja de su material: tierra, crudo, orilla, cultivo seco,
+    roca o losa;
+  - **cerca:** el material en su tono más oscuro, con vetas `ASH_950`, para
+    que el contraste baje junto a los paneles.
+- Sin región, el fondo genérico de antes: la demo y las pruebas viejas no
+  cambian.
+- **Parallax de entrada:** la capa *k* entra desplazada *k* ×
+  `BATTLE_PARALLAX` px y llega a su sitio con `ease-out` mientras se abre la
+  persiana. Con movimiento reducido, quieta.
+- `GameFlow` pasa la zona del combate, y la demo del selector, la de su
+  región.
+
+**Medido** — `tools/battle_bg_sheet.gd`:
+
+- **Parallax:** la capa cercana sale a 6 px y llega a 0 en 12 cuadros (≤ 18),
+  sin retroceder. Con movimiento reducido, 0 desde el primer cuadro.
+- **El monstruo se lee sobre su fondo:** borde `EMBER_300` frente al tono más
+  claro del campo junto a él: Bosque 5,04 · Cuenca 5,58 · Costa 4,18 ·
+  Llanura 4,44 · Cumbre 5,58 · Cripta 5,58:1 (piso 3:1).
+- `verify_palette image` sobre las seis capturas: todo píxel es un token.
+- **Regresión:** `verify_usability` 16/16, `verify_flow` 23/23 y
+  `battle_demo` sin errores.
+
+**Capturas:** `docs/ux/capturas/2026-10-28-combate-fondo-<región>.png`, las
+seis.
+
+**Siguiente:** paso 6, los estados. La ola de purificación animada al ganar
+(tramado 4 × 4 desde el punto del combate, 900 ms, enmienda 3), y un repaso
+de huida, derrota y movimiento reducido con capturas.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

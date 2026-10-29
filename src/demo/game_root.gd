@@ -34,6 +34,10 @@ func _start_battle(index: int) -> void:
 		_select = null
 
 	_screen = BattleScreen.new()
+	# El fondo de la región del combate (contrato «Persiana» §4).
+	for zone in GameFlow.ZONE_ENCOUNTER:
+		if GameFlow.ZONE_ENCOUNTER[zone] == index:
+			_screen.region = zone
 	add_child(_screen)
 	_screen.battle_finished.connect(_on_battle_finished)
 

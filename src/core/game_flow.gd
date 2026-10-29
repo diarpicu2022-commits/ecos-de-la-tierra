@@ -76,6 +76,7 @@ func _start_battle() -> void:
 	state.ensure_party(index)
 	result = -1
 	screen = BattleScreen.new()
+	screen.region = world.zone_id
 	_battle_layer.add_child(screen)
 	screen.battle_finished.connect(_on_finished)
 	_enemy = Encounters.build_monster(index)
