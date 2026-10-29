@@ -189,8 +189,9 @@ static func options_rect() -> Rect2:
 # --- Arranque del combate ----------------------------------------------------
 
 func start_battle(players: Array[Combatant], enemies: Array[Combatant],
-		inventory: Inventory) -> void:
+		inventory: Inventory, opening_team: int = -1) -> void:
 	_manager = BattleManager.new()
+	_manager.opening_team = opening_team
 	add_child(_manager)
 
 	_build_party_huds(players)

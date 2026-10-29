@@ -25,6 +25,9 @@ var player_party: Array[Combatant] = []
 var enemy_party: Array[Combatant] = []
 var inventory: Inventory = null
 var result: Enums.BattleResult = Enums.BattleResult.ONGOING
+## Equipo que abre la primera ronda por ventaja, o -1 si nadie la tiene y manda
+## la velocidad (contrato «Persiana» §2).
+var opening_team: int = -1
 
 var _turn_manager: TurnManager = null
 var _basic_attack: AttackSkill = null
@@ -124,6 +127,8 @@ func _start_round() -> void:
 	participants.append_array(player_party)
 	participants.append_array(enemy_party)
 	_turn_manager.start_round(participants)
+	if _turn_manager.round_number == 1 and opening_team >= 0:
+		_turn_manager.prioritize(opening_team)
 
 	for combatant in player_party:
 		if combatant.is_alive():

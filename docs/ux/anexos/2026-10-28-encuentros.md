@@ -477,6 +477,74 @@ y ventaja).
 Brasa» con el grupo en `GameState`, y la vuelta al mapa con huida (1 s de
 gracia) y victoria (la ola).
 
+Diego aprobó el paso 3 el 2026-10-28, **territorio de 6 tiles incluido**.
+
+#### Paso 4 — La persiana, el grupo y la vuelta · 2026-10-28
+
+**Cláusulas:** contrato §2 (ventaja), §3 (persiana) y §5 (salida).
+
+- **`src/world/battle_blinds.gd`** (`BattleBlinds`):
+  - 34 franjas de 8 px en `ASH_950`;
+  - empieza la de la fila del monstruo y las demás la siguen, repartidas en
+    `BLIND_SPREAD`;
+  - cada franja va con `ease-out` y en píxeles enteros;
+  - entra desde el lado de Ilan, desde el del monstruo o desde los dos;
+  - al abrir, se recoge hacia el mismo borde;
+  - se cuenta en cuadros de física.
+- **`src/core/game_flow.gd`** (`GameFlow`):
+  - contacto → persiana → mundo parado y oculto → «Ceniza y Brasa» con el
+    grupo y la bolsa de `GameState` y el monstruo de la región → persiana
+    abierta;
+  - al confirmar el desenlace, el camino inverso.
+- **La ventaja llega al combate.** `BattleManager.opening_team` y
+  `TurnManager.prioritize()` adelantan al equipo entero en la primera ronda,
+  sin romper su orden por velocidad. La composición de «Ceniza y Brasa» no
+  cambia, solo el orden.
+- **`GameState.ensure_party()`:** el grupo vive en `GameState` entre combates.
+  Los que ya viajaban conservan PV, energía y estados, y la bolsa se llena la
+  primera vez. Quién se une dónde sigue siendo de la parte 6.
+- **La vuelta al mapa:**
+  - **huida:** el monstruo se rinde y hay 1 s de gracia;
+  - **victoria:** `purified_<zona>` y la zona repintada, sin monstruo;
+  - **derrota:** a `arrival_cell` con el grupo a 1 PV.
+
+**Medido** — `tools/verify_flow.gd`: **23 de 23**.
+
+- **Persiana, en los tres lados:**
+  - cerrar y abrir en **18 cuadros** (300 ms);
+  - cubre las 34 franjas a 480 px;
+  - la fila del monstruo va siempre por delante y nada retrocede.
+- **Con movimiento reducido:** cubierta en el primer cuadro y 18 de espera.
+- **Ventaja:** abre el equipo con ventaja aunque sea más lento.
+- **Paso completo:** el mundo parado y oculto, y el grupo de `GameState`.
+  - Huida: monstruo rendido, **60 cuadros de gracia** y PV conservados.
+  - Derrota: vuelta a la casilla de llegada con 1 PV.
+  - Victoria: zona purificada y sin monstruo.
+- **Un fallo real, y se dice:** la gracia de la huida empezaba a contar con la
+  persiana aún abriéndose; se perdían 18 de los 60 cuadros tras la cortina.
+  Ahora el monstruo se suelta cuando el mundo se ve entero.
+- **Regresión en verde:** `verify_encounters` 82/82, `verify_movement`
+  99/99, `verify_usability` 16/16, `verify_camera` 37/37 y `verify_zone` en
+  Valdehoja, Bosque y Cripta. `battle_demo` sin errores.
+
+**Capturas** (`tools/blinds_sheet.gd`): `2026-10-28-persiana-ventaja-ilan.png`,
+`-ventaja-monstruo.png` y `-sin-ventaja.png`, en el cuadro 9 de 18, y
+`2026-10-28-combate-desde-el-mapa.png`. En esta última, la tira de turnos ya
+abre con Ilan.
+
+**Pendiente, y se dice:**
+
+- **La ola de purificación animada.** Hoy la victoria repinta la zona entera
+  de golpe. La ola (tramado 4 × 4 desde el punto del combate, 900 ms,
+  enmienda 3) va en el paso 6, con los estados.
+- **La escena principal** sigue abriendo el selector de región de pruebas.
+  Arrancar el juego en el mundo con `GameFlow` es de la parte 10 (título),
+  como ya decía la guía. Para jugarlo hoy: `GameFlow` en una escena con
+  `start_zone`.
+
+**Siguiente:** paso 5, el fondo de cada región en tres capas dentro de
+«Ceniza y Brasa».
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

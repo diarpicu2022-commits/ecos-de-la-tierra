@@ -53,6 +53,17 @@ func get_pending() -> Array[Combatant]:
 	return _queue.duplicate()
 
 
+## Adelanta a todo el equipo `team` en la ronda en curso, sin romper su orden
+## por velocidad. Es la ventaja del contacto (contrato «Persiana» §2): quien
+## toca por la espalda abre la primera ronda.
+func prioritize(team: Enums.Team) -> void:
+	var first: Array[Combatant] = []
+	var rest: Array[Combatant] = []
+	for combatant in _queue:
+		(first if combatant.team == team else rest).append(combatant)
+	_queue = first + rest
+
+
 ## Más rápido primero; a igualdad de velocidad, el desempate es al azar para que
 ## los turnos no queden fijados por el orden de creación.
 func _sort_by_speed(queue: Array[Combatant]) -> void:

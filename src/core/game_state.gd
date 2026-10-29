@@ -41,6 +41,35 @@ func set_zone_purified(id: String, value := true) -> void:
 	set_flag(PURIFIED_PREFIX + id, value)
 
 
+## Pone el grupo como llega al combate `encounter_index` (`Encounters`). Los
+## que ya viajaban conservan sus PV, su energía y sus estados: el combate
+## continúa el viaje (contrato «Persiana» §5). La bolsa se llena la primera
+## vez. Los personajes cuelgan de este nodo para vivir entre combates. La
+## progresión de verdad (quién se une dónde) es de la parte 6.
+func ensure_party(encounter_index: int) -> void:
+	var wanted: Array[Character] = Encounters.build_party(encounter_index)
+	if party.size() == wanted.size():
+		for c in wanted:
+			c.free()
+		return
+	var old := {}
+	for c in party:
+		old[c.display_name] = c
+	party.clear()
+	for c in wanted:
+		add_child(c)
+		if old.has(c.display_name):
+			c.free()
+			party.append(old[c.display_name])
+			old.erase(party[-1].display_name)
+		else:
+			party.append(c)
+	for c in old.values():
+		c.queue_free()
+	if bag.get_all().is_empty():
+		bag = Encounters.build_inventory(encounter_index)
+
+
 func set_zone(id: String) -> void:
 	zone_id = id
 	zone_changed.emit(id)

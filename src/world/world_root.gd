@@ -44,6 +44,8 @@ var ambient := WorldAmbient.new()
 var label := PlaceLabel.new()
 ## El monstruo de historia de la zona mientras está enferma (IA-1), o null.
 var monster: MapMonster = null
+## Casilla por la que se entró en la zona: adonde se vuelve tras una derrota.
+var arrival_cell := Vector2i.ZERO
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
 var fade := Fade.NONE
@@ -122,6 +124,8 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	ambient.setup(_layer, entities, func(c: Vector2i) -> bool:
 		return Rect2i(Vector2i.ZERO, size).has_point(c) and not blocked.has(c) \
 			and ZoneRules.walkable(lines[c.y][c.x]) and purified_at.call(c))
+	if id != zone_id:
+		arrival_cell = cell
 	zone_id = id
 	zone_size = Vector2i(lines[0].length(), lines.size())
 	_zone_exits = ZoneRules.exits_from(id, _exits)
