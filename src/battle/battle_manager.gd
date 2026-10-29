@@ -67,7 +67,7 @@ func start_battle(players: Array[Combatant], enemies: Array[Combatant], shared_i
 	if companions_auto:
 		for c in players:
 			if c != leader and not minds.has(c.display_name):
-				minds[c.display_name] = PartyMind.new(hash(c.display_name))
+				minds[c.display_name] = PartyMind.initial(hash(c.display_name))
 
 	for combatant in player_party:
 		combatant.team = Enums.Team.PLAYER
@@ -421,7 +421,7 @@ func _companion_action(c: Character) -> BattleAction:
 	var heal := _heal_skill(c)
 	var item := _heal_item()
 	var allowed := [true, counter != null, heal != null, item != null]
-	var mind: PartyMind = minds.get(c.display_name, PartyMind.new(hash(c.display_name)))
+	var mind: PartyMind = minds.get(c.display_name, PartyMind.initial(hash(c.display_name)))
 	var pick := mind.choose(_situation(c), order, sync, allowed, _ai_rng)
 	var monster := _monster()
 	var action: BattleAction = null

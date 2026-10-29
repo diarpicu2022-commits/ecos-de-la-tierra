@@ -1,901 +1,601 @@
-politica,combate,resultado,rondas,habilidades
-aleatoria,0,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:4 Barrera Absorbente:1 Filtro Biológico:3
-aleatoria,1,victoria,13,Filtro Biológico:3 Barrera Absorbente:2 Línea Cortafuegos:4 Separación en la Fuente:4 Reforestación:2
-aleatoria,2,victoria,11,Filtro Biológico:6 Línea Cortafuegos:6 Separación en la Fuente:5 Reforestación:3
-aleatoria,3,victoria,10,Filtro Biológico:4 Separación en la Fuente:3 Reforestación:3 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,4,victoria,12,Línea Cortafuegos:4 Barrera Absorbente:2 Filtro Biológico:4 Reforestación:2 Separación en la Fuente:6
-aleatoria,5,victoria,9,Filtro Biológico:3 Reforestación:4 Separación en la Fuente:5 Barrera Absorbente:1
-aleatoria,6,victoria,9,Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:3 Filtro Biológico:3 Reforestación:2
-aleatoria,7,victoria,11,Reforestación:3 Filtro Biológico:3 Separación en la Fuente:2 Línea Cortafuegos:2 Barrera Absorbente:1
-aleatoria,8,victoria,9,Línea Cortafuegos:5 Separación en la Fuente:5 Reforestación:2 Filtro Biológico:3
-aleatoria,9,victoria,9,Filtro Biológico:2 Separación en la Fuente:4 Reforestación:2 Barrera Absorbente:1 Línea Cortafuegos:1
-aleatoria,10,victoria,10,Separación en la Fuente:2 Filtro Biológico:3 Línea Cortafuegos:2 Barrera Absorbente:3 Reforestación:1
-aleatoria,11,victoria,9,Reforestación:5 Separación en la Fuente:3 Filtro Biológico:1 Línea Cortafuegos:1 Barrera Absorbente:1
-aleatoria,12,victoria,12,Barrera Absorbente:4 Línea Cortafuegos:1 Reforestación:5 Separación en la Fuente:3 Filtro Biológico:5
-aleatoria,13,victoria,12,Barrera Absorbente:6 Línea Cortafuegos:8 Filtro Biológico:3 Separación en la Fuente:3 Reforestación:1
-aleatoria,14,victoria,12,Línea Cortafuegos:3 Reforestación:7 Filtro Biológico:4 Separación en la Fuente:4 Barrera Absorbente:1
-aleatoria,15,victoria,11,Línea Cortafuegos:5 Filtro Biológico:5 Barrera Absorbente:2 Reforestación:2 Separación en la Fuente:4
-aleatoria,16,victoria,10,Barrera Absorbente:2 Línea Cortafuegos:2 Reforestación:3 Separación en la Fuente:4 Filtro Biológico:5
-aleatoria,17,victoria,12,Filtro Biológico:3 Reforestación:2 Barrera Absorbente:3 Línea Cortafuegos:2 Separación en la Fuente:3
-aleatoria,18,victoria,10,Filtro Biológico:4 Separación en la Fuente:2 Barrera Absorbente:1 Reforestación:2 Línea Cortafuegos:1
-aleatoria,19,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:5 Barrera Absorbente:3 Filtro Biológico:3 Reforestación:2
-aleatoria,20,victoria,10,Reforestación:4 Barrera Absorbente:3 Línea Cortafuegos:2 Separación en la Fuente:3 Filtro Biológico:2
-aleatoria,21,victoria,10,Filtro Biológico:3 Línea Cortafuegos:3 Separación en la Fuente:3 Reforestación:2 Barrera Absorbente:3
-aleatoria,22,victoria,9,Barrera Absorbente:3 Filtro Biológico:3 Separación en la Fuente:3 Línea Cortafuegos:3 Reforestación:1
-aleatoria,23,victoria,10,Reforestación:4 Separación en la Fuente:2 Filtro Biológico:3 Línea Cortafuegos:2 Barrera Absorbente:4
-aleatoria,24,victoria,7,Separación en la Fuente:3 Línea Cortafuegos:3 Barrera Absorbente:2 Filtro Biológico:1
-aleatoria,25,victoria,12,Reforestación:1 Filtro Biológico:4 Línea Cortafuegos:5 Barrera Absorbente:2 Separación en la Fuente:4
-aleatoria,26,victoria,11,Filtro Biológico:7 Reforestación:5 Separación en la Fuente:3 Barrera Absorbente:1 Línea Cortafuegos:1
-aleatoria,27,victoria,11,Barrera Absorbente:4 Línea Cortafuegos:2 Reforestación:2 Separación en la Fuente:5 Filtro Biológico:1
-aleatoria,28,victoria,14,Reforestación:4 Barrera Absorbente:2 Filtro Biológico:5 Línea Cortafuegos:7 Separación en la Fuente:4
-aleatoria,29,victoria,9,Separación en la Fuente:5 Reforestación:3 Filtro Biológico:2 Línea Cortafuegos:1
-aleatoria,30,victoria,10,Barrera Absorbente:2 Filtro Biológico:3 Línea Cortafuegos:2 Separación en la Fuente:4 Reforestación:1
-aleatoria,31,victoria,8,Reforestación:1 Separación en la Fuente:4 Filtro Biológico:3 Línea Cortafuegos:2
-aleatoria,32,victoria,10,Línea Cortafuegos:5 Separación en la Fuente:5 Filtro Biológico:4
-aleatoria,33,victoria,12,Barrera Absorbente:4 Reforestación:4 Filtro Biológico:5 Separación en la Fuente:3 Línea Cortafuegos:3
-aleatoria,34,victoria,10,Barrera Absorbente:4 Filtro Biológico:2 Separación en la Fuente:4 Reforestación:3 Línea Cortafuegos:2
-aleatoria,35,victoria,11,Filtro Biológico:4 Línea Cortafuegos:3 Barrera Absorbente:4 Reforestación:4 Separación en la Fuente:4
-aleatoria,36,victoria,10,Barrera Absorbente:6 Reforestación:3 Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:2
-aleatoria,37,victoria,9,Barrera Absorbente:4 Separación en la Fuente:4 Filtro Biológico:1 Línea Cortafuegos:2
-aleatoria,38,victoria,8,Separación en la Fuente:4 Barrera Absorbente:4 Línea Cortafuegos:2 Reforestación:2 Filtro Biológico:1
-aleatoria,39,victoria,8,Barrera Absorbente:3 Separación en la Fuente:3 Reforestación:1 Filtro Biológico:1 Línea Cortafuegos:3
-aleatoria,40,victoria,8,Barrera Absorbente:2 Separación en la Fuente:2 Reforestación:1 Filtro Biológico:1 Línea Cortafuegos:3
-aleatoria,41,victoria,10,Separación en la Fuente:5 Reforestación:4 Filtro Biológico:2 Línea Cortafuegos:2
-aleatoria,42,victoria,9,Separación en la Fuente:2 Barrera Absorbente:3 Línea Cortafuegos:3 Filtro Biológico:4 Reforestación:1
-aleatoria,43,victoria,8,Separación en la Fuente:4 Barrera Absorbente:4 Reforestación:2 Filtro Biológico:1 Línea Cortafuegos:1
-aleatoria,44,victoria,10,Reforestación:4 Separación en la Fuente:4 Barrera Absorbente:2 Filtro Biológico:3 Línea Cortafuegos:1
-aleatoria,45,victoria,10,Barrera Absorbente:2 Separación en la Fuente:1 Filtro Biológico:3 Reforestación:2 Línea Cortafuegos:3
-aleatoria,46,victoria,8,Filtro Biológico:1 Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:2 Línea Cortafuegos:1
-aleatoria,47,victoria,11,Barrera Absorbente:2 Línea Cortafuegos:3 Separación en la Fuente:4 Reforestación:4 Filtro Biológico:4
-aleatoria,48,victoria,9,Filtro Biológico:3 Separación en la Fuente:3 Barrera Absorbente:2 Reforestación:3 Línea Cortafuegos:2
-aleatoria,49,victoria,10,Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:2 Reforestación:1 Barrera Absorbente:1
-aleatoria,50,victoria,10,Barrera Absorbente:5 Filtro Biológico:3 Línea Cortafuegos:2 Separación en la Fuente:2 Reforestación:1
-aleatoria,51,victoria,13,Barrera Absorbente:4 Reforestación:4 Filtro Biológico:3 Separación en la Fuente:1 Línea Cortafuegos:2
-aleatoria,52,victoria,10,Barrera Absorbente:4 Separación en la Fuente:6 Filtro Biológico:4 Reforestación:4
-aleatoria,53,victoria,10,Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:4 Filtro Biológico:3 Línea Cortafuegos:1
-aleatoria,54,victoria,12,Barrera Absorbente:4 Reforestación:3 Línea Cortafuegos:3 Filtro Biológico:3 Separación en la Fuente:5
-aleatoria,55,victoria,9,Reforestación:2 Separación en la Fuente:5 Filtro Biológico:4 Línea Cortafuegos:3 Barrera Absorbente:1
-aleatoria,56,victoria,9,Barrera Absorbente:5 Reforestación:3 Separación en la Fuente:3 Línea Cortafuegos:1 Filtro Biológico:1
-aleatoria,57,victoria,10,Filtro Biológico:6 Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:2 Reforestación:1
-aleatoria,58,victoria,9,Filtro Biológico:2 Reforestación:4 Separación en la Fuente:2 Barrera Absorbente:2 Línea Cortafuegos:1
-aleatoria,59,victoria,9,Filtro Biológico:2 Línea Cortafuegos:5 Barrera Absorbente:2 Separación en la Fuente:3 Reforestación:1
-aleatoria,60,victoria,10,Línea Cortafuegos:3 Separación en la Fuente:5 Filtro Biológico:2 Reforestación:4 Barrera Absorbente:2
-aleatoria,61,victoria,10,Reforestación:5 Línea Cortafuegos:2 Filtro Biológico:2 Separación en la Fuente:5 Barrera Absorbente:2
-aleatoria,62,victoria,13,Filtro Biológico:6 Separación en la Fuente:2 Barrera Absorbente:3 Reforestación:3 Línea Cortafuegos:2
-aleatoria,63,victoria,9,Filtro Biológico:2 Línea Cortafuegos:1 Separación en la Fuente:4 Barrera Absorbente:5 Reforestación:4
-aleatoria,64,victoria,8,Línea Cortafuegos:2 Separación en la Fuente:7 Filtro Biológico:2 Reforestación:2 Barrera Absorbente:3
-aleatoria,65,victoria,9,Filtro Biológico:3 Separación en la Fuente:3 Barrera Absorbente:4 Reforestación:1 Línea Cortafuegos:1
-aleatoria,66,victoria,10,Barrera Absorbente:5 Reforestación:5 Separación en la Fuente:5 Filtro Biológico:2 Línea Cortafuegos:1
-aleatoria,67,victoria,8,Separación en la Fuente:4 Reforestación:3 Barrera Absorbente:4 Línea Cortafuegos:3 Filtro Biológico:1
-aleatoria,68,victoria,11,Reforestación:6 Barrera Absorbente:4 Línea Cortafuegos:2 Separación en la Fuente:3 Filtro Biológico:2
-aleatoria,69,victoria,9,Línea Cortafuegos:5 Separación en la Fuente:3 Reforestación:2 Barrera Absorbente:3 Filtro Biológico:1
-aleatoria,70,victoria,10,Barrera Absorbente:2 Separación en la Fuente:5 Reforestación:3 Filtro Biológico:3 Línea Cortafuegos:1
-aleatoria,71,victoria,9,Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:3 Filtro Biológico:1
-aleatoria,72,victoria,8,Barrera Absorbente:4 Separación en la Fuente:4 Filtro Biológico:2 Línea Cortafuegos:3 Reforestación:1
-aleatoria,73,victoria,9,Separación en la Fuente:3 Barrera Absorbente:2 Filtro Biológico:3 Reforestación:2 Línea Cortafuegos:1
-aleatoria,74,victoria,11,Reforestación:4 Filtro Biológico:5 Línea Cortafuegos:5 Separación en la Fuente:5 Barrera Absorbente:2
-aleatoria,75,victoria,11,Filtro Biológico:6 Barrera Absorbente:2 Línea Cortafuegos:4 Reforestación:3 Separación en la Fuente:3
-aleatoria,76,victoria,11,Reforestación:5 Filtro Biológico:1 Barrera Absorbente:4 Línea Cortafuegos:2 Separación en la Fuente:4
-aleatoria,77,victoria,8,Barrera Absorbente:3 Separación en la Fuente:5 Reforestación:1 Filtro Biológico:2 Línea Cortafuegos:3
-aleatoria,78,victoria,9,Línea Cortafuegos:4 Separación en la Fuente:2 Filtro Biológico:1 Barrera Absorbente:2 Reforestación:1
-aleatoria,79,victoria,10,Barrera Absorbente:4 Filtro Biológico:3 Línea Cortafuegos:4 Separación en la Fuente:2 Reforestación:2
-aleatoria,80,victoria,10,Filtro Biológico:2 Barrera Absorbente:4 Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:3
-aleatoria,81,victoria,9,Barrera Absorbente:3 Línea Cortafuegos:3 Separación en la Fuente:5 Reforestación:2 Filtro Biológico:2
-aleatoria,82,victoria,9,Separación en la Fuente:4 Filtro Biológico:3 Barrera Absorbente:2 Línea Cortafuegos:2
-aleatoria,83,victoria,8,Reforestación:4 Barrera Absorbente:4 Separación en la Fuente:4 Línea Cortafuegos:2
-aleatoria,84,victoria,12,Filtro Biológico:6 Reforestación:5 Barrera Absorbente:2 Separación en la Fuente:5 Línea Cortafuegos:1
-aleatoria,85,victoria,10,Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:6 Filtro Biológico:2 Línea Cortafuegos:2
-aleatoria,86,victoria,8,Filtro Biológico:1 Línea Cortafuegos:2 Separación en la Fuente:4 Reforestación:1 Barrera Absorbente:3
-aleatoria,87,victoria,9,Barrera Absorbente:5 Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:1 Reforestación:2
-aleatoria,88,victoria,8,Separación en la Fuente:1 Reforestación:1 Línea Cortafuegos:2 Barrera Absorbente:4
-aleatoria,89,victoria,10,Filtro Biológico:4 Separación en la Fuente:5 Línea Cortafuegos:2 Barrera Absorbente:3 Reforestación:1
-aleatoria,90,victoria,10,Línea Cortafuegos:4 Separación en la Fuente:3 Filtro Biológico:2 Reforestación:1 Barrera Absorbente:1
-aleatoria,91,victoria,14,Línea Cortafuegos:2 Barrera Absorbente:2 Filtro Biológico:4 Reforestación:5 Separación en la Fuente:5
-aleatoria,92,victoria,9,Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:3 Línea Cortafuegos:1 Filtro Biológico:1
-aleatoria,93,victoria,11,Barrera Absorbente:2 Reforestación:4 Filtro Biológico:4 Separación en la Fuente:4 Línea Cortafuegos:2
-aleatoria,94,victoria,9,Filtro Biológico:3 Línea Cortafuegos:5 Barrera Absorbente:2 Separación en la Fuente:3 Reforestación:1
-aleatoria,95,victoria,9,Línea Cortafuegos:5 Separación en la Fuente:5 Reforestación:4 Filtro Biológico:3 Barrera Absorbente:1
-aleatoria,96,victoria,14,Filtro Biológico:3 Reforestación:7 Barrera Absorbente:5 Separación en la Fuente:5 Línea Cortafuegos:1
-aleatoria,97,victoria,11,Reforestación:6 Filtro Biológico:2 Separación en la Fuente:5 Barrera Absorbente:4 Línea Cortafuegos:1
-aleatoria,98,victoria,10,Filtro Biológico:2 Barrera Absorbente:3 Reforestación:2 Línea Cortafuegos:2 Separación en la Fuente:5
-aleatoria,99,victoria,10,Filtro Biológico:3 Línea Cortafuegos:1 Separación en la Fuente:4 Barrera Absorbente:2 Reforestación:6
-aleatoria,100,victoria,10,Filtro Biológico:4 Línea Cortafuegos:3 Reforestación:4 Separación en la Fuente:4 Barrera Absorbente:1
-aleatoria,101,victoria,11,Filtro Biológico:4 Reforestación:5 Separación en la Fuente:5 Barrera Absorbente:2 Línea Cortafuegos:1
-aleatoria,102,victoria,11,Barrera Absorbente:3 Reforestación:5 Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:1
-aleatoria,103,victoria,9,Filtro Biológico:2 Reforestación:3 Separación en la Fuente:2 Barrera Absorbente:3 Línea Cortafuegos:1
-aleatoria,104,victoria,15,Línea Cortafuegos:3 Reforestación:8 Filtro Biológico:5 Barrera Absorbente:2 Separación en la Fuente:3
-aleatoria,105,victoria,10,Reforestación:5 Barrera Absorbente:2 Separación en la Fuente:4 Línea Cortafuegos:1
-aleatoria,106,victoria,9,Línea Cortafuegos:4 Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:1 Filtro Biológico:1
-aleatoria,107,victoria,11,Línea Cortafuegos:2 Filtro Biológico:5 Separación en la Fuente:5 Reforestación:2 Barrera Absorbente:1
-aleatoria,108,victoria,12,Barrera Absorbente:3 Línea Cortafuegos:1 Separación en la Fuente:5 Filtro Biológico:6 Reforestación:2
-aleatoria,109,victoria,9,Línea Cortafuegos:3 Barrera Absorbente:5 Separación en la Fuente:3 Reforestación:2 Filtro Biológico:2
-aleatoria,110,victoria,9,Separación en la Fuente:2 Filtro Biológico:3 Barrera Absorbente:3 Línea Cortafuegos:3 Reforestación:3
-aleatoria,111,victoria,9,Barrera Absorbente:3 Filtro Biológico:2 Separación en la Fuente:3 Línea Cortafuegos:2 Reforestación:1
-aleatoria,112,victoria,10,Separación en la Fuente:5 Línea Cortafuegos:2 Filtro Biológico:4 Reforestación:3 Barrera Absorbente:1
-aleatoria,113,victoria,14,Barrera Absorbente:3 Reforestación:4 Filtro Biológico:2 Línea Cortafuegos:3 Separación en la Fuente:3
-aleatoria,114,victoria,9,Separación en la Fuente:6 Línea Cortafuegos:3 Filtro Biológico:1 Barrera Absorbente:3 Reforestación:3
-aleatoria,115,victoria,8,Reforestación:2 Separación en la Fuente:5 Línea Cortafuegos:4 Barrera Absorbente:2 Filtro Biológico:3
-aleatoria,116,victoria,10,Reforestación:6 Filtro Biológico:4 Separación en la Fuente:3 Barrera Absorbente:4 Línea Cortafuegos:1
-aleatoria,117,victoria,10,Filtro Biológico:3 Separación en la Fuente:3 Línea Cortafuegos:3 Barrera Absorbente:1 Reforestación:1
-aleatoria,118,victoria,11,Filtro Biológico:4 Línea Cortafuegos:3 Barrera Absorbente:4 Separación en la Fuente:3 Reforestación:1
-aleatoria,119,victoria,10,Línea Cortafuegos:3 Barrera Absorbente:4 Reforestación:2 Separación en la Fuente:5 Filtro Biológico:2
-aleatoria,120,victoria,13,Línea Cortafuegos:1 Reforestación:7 Barrera Absorbente:5 Filtro Biológico:2 Separación en la Fuente:3
-aleatoria,121,victoria,8,Barrera Absorbente:2 Separación en la Fuente:4 Filtro Biológico:3 Línea Cortafuegos:3 Reforestación:2
-aleatoria,122,victoria,13,Barrera Absorbente:4 Línea Cortafuegos:6 Filtro Biológico:5 Reforestación:2 Separación en la Fuente:5
-aleatoria,123,victoria,9,Separación en la Fuente:3 Línea Cortafuegos:2 Filtro Biológico:2 Barrera Absorbente:1 Reforestación:1
-aleatoria,124,victoria,9,Filtro Biológico:2 Línea Cortafuegos:1 Separación en la Fuente:3 Barrera Absorbente:4 Reforestación:1
-aleatoria,125,victoria,8,Reforestación:1 Separación en la Fuente:4 Filtro Biológico:4 Barrera Absorbente:1 Línea Cortafuegos:4
-aleatoria,126,victoria,9,Barrera Absorbente:5 Filtro Biológico:1 Separación en la Fuente:4 Reforestación:1 Línea Cortafuegos:2
-aleatoria,127,victoria,9,Filtro Biológico:4 Línea Cortafuegos:4 Separación en la Fuente:2 Reforestación:3 Barrera Absorbente:1
-aleatoria,128,victoria,11,Barrera Absorbente:4 Reforestación:3 Filtro Biológico:3 Línea Cortafuegos:2 Separación en la Fuente:4
-aleatoria,129,victoria,8,Línea Cortafuegos:3 Barrera Absorbente:1 Reforestación:1 Separación en la Fuente:4 Filtro Biológico:1
-aleatoria,130,victoria,9,Línea Cortafuegos:4 Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:2 Filtro Biológico:1
-aleatoria,131,victoria,10,Separación en la Fuente:2 Reforestación:3 Barrera Absorbente:3 Filtro Biológico:1 Línea Cortafuegos:1
-aleatoria,132,victoria,14,Barrera Absorbente:4 Reforestación:4 Línea Cortafuegos:3 Filtro Biológico:3 Separación en la Fuente:5
-aleatoria,133,victoria,10,Barrera Absorbente:4 Reforestación:4 Separación en la Fuente:2 Filtro Biológico:4 Línea Cortafuegos:2
-aleatoria,134,victoria,10,Filtro Biológico:5 Línea Cortafuegos:5 Barrera Absorbente:2 Separación en la Fuente:5 Reforestación:2
-aleatoria,135,victoria,7,Barrera Absorbente:2 Separación en la Fuente:6 Línea Cortafuegos:4 Reforestación:2
-aleatoria,136,victoria,11,Reforestación:1 Filtro Biológico:5 Línea Cortafuegos:6 Barrera Absorbente:1 Separación en la Fuente:5
-aleatoria,137,victoria,8,Línea Cortafuegos:5 Separación en la Fuente:4 Filtro Biológico:3 Barrera Absorbente:2
-aleatoria,138,victoria,10,Barrera Absorbente:4 Línea Cortafuegos:5 Filtro Biológico:3 Separación en la Fuente:2
-aleatoria,139,victoria,9,Línea Cortafuegos:4 Separación en la Fuente:3 Filtro Biológico:3 Barrera Absorbente:2
-aleatoria,140,victoria,9,Línea Cortafuegos:2 Separación en la Fuente:4 Reforestación:3 Filtro Biológico:4 Barrera Absorbente:2
-aleatoria,141,victoria,8,Filtro Biológico:3 Separación en la Fuente:2 Barrera Absorbente:2 Línea Cortafuegos:5
-aleatoria,142,victoria,9,Reforestación:4 Separación en la Fuente:5 Barrera Absorbente:3 Filtro Biológico:3 Línea Cortafuegos:2
-aleatoria,143,victoria,8,Separación en la Fuente:3 Reforestación:1 Barrera Absorbente:2 Línea Cortafuegos:3
-aleatoria,144,victoria,12,Barrera Absorbente:5 Línea Cortafuegos:3 Reforestación:6 Separación en la Fuente:7 Filtro Biológico:3
-aleatoria,145,victoria,7,Barrera Absorbente:2 Separación en la Fuente:3 Reforestación:1 Línea Cortafuegos:4
-aleatoria,146,victoria,12,Filtro Biológico:3 Reforestación:4 Barrera Absorbente:2 Línea Cortafuegos:3 Separación en la Fuente:1
-aleatoria,147,victoria,9,Reforestación:3 Línea Cortafuegos:4 Separación en la Fuente:3 Filtro Biológico:2 Barrera Absorbente:2
-aleatoria,148,victoria,9,Separación en la Fuente:3 Filtro Biológico:2 Reforestación:2 Barrera Absorbente:1 Línea Cortafuegos:1
-aleatoria,149,victoria,9,Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:4 Filtro Biológico:2 Línea Cortafuegos:3
-aleatoria,150,victoria,12,Filtro Biológico:5 Línea Cortafuegos:1 Barrera Absorbente:5 Reforestación:4 Separación en la Fuente:3
-aleatoria,151,victoria,9,Barrera Absorbente:3 Separación en la Fuente:4 Filtro Biológico:1 Reforestación:4
-aleatoria,152,victoria,8,Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:2 Reforestación:2
-aleatoria,153,victoria,10,Filtro Biológico:3 Línea Cortafuegos:2 Separación en la Fuente:4 Reforestación:4 Barrera Absorbente:2
-aleatoria,154,victoria,8,Separación en la Fuente:3 Barrera Absorbente:2 Línea Cortafuegos:1 Filtro Biológico:1 Reforestación:1
-aleatoria,155,victoria,9,Separación en la Fuente:5 Filtro Biológico:4 Barrera Absorbente:2 Reforestación:1 Línea Cortafuegos:1
-aleatoria,156,victoria,19,Filtro Biológico:4 Barrera Absorbente:3 Reforestación:6 Línea Cortafuegos:6 Separación en la Fuente:1
-aleatoria,157,victoria,10,Línea Cortafuegos:4 Filtro Biológico:3 Reforestación:3 Separación en la Fuente:3 Barrera Absorbente:2
-aleatoria,158,victoria,8,Filtro Biológico:1 Línea Cortafuegos:4 Separación en la Fuente:1 Barrera Absorbente:3 Reforestación:1
-aleatoria,159,victoria,8,Barrera Absorbente:4 Separación en la Fuente:2 Filtro Biológico:2 Línea Cortafuegos:3
-aleatoria,160,victoria,9,Línea Cortafuegos:4 Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:2 Filtro Biológico:3
-aleatoria,161,victoria,10,Filtro Biológico:3 Separación en la Fuente:3 Reforestación:3 Línea Cortafuegos:2
-aleatoria,162,victoria,9,Barrera Absorbente:3 Reforestación:6 Separación en la Fuente:5 Línea Cortafuegos:1 Filtro Biológico:1
-aleatoria,163,victoria,8,Línea Cortafuegos:4 Filtro Biológico:3 Separación en la Fuente:5 Barrera Absorbente:2
-aleatoria,164,victoria,10,Barrera Absorbente:3 Separación en la Fuente:3 Reforestación:2 Filtro Biológico:2 Línea Cortafuegos:4
-aleatoria,165,victoria,11,Filtro Biológico:3 Línea Cortafuegos:3 Separación en la Fuente:5 Barrera Absorbente:2 Reforestación:3
-aleatoria,166,victoria,11,Filtro Biológico:3 Línea Cortafuegos:4 Barrera Absorbente:3 Separación en la Fuente:1 Reforestación:1
-aleatoria,167,victoria,10,Línea Cortafuegos:2 Reforestación:1 Separación en la Fuente:3 Barrera Absorbente:1 Filtro Biológico:1
-aleatoria,168,victoria,10,Separación en la Fuente:2 Filtro Biológico:2 Reforestación:3 Línea Cortafuegos:1
-aleatoria,169,victoria,9,Barrera Absorbente:3 Separación en la Fuente:4 Línea Cortafuegos:2 Filtro Biológico:2 Reforestación:2
-aleatoria,170,victoria,12,Reforestación:7 Línea Cortafuegos:2 Separación en la Fuente:6 Filtro Biológico:6
-aleatoria,171,victoria,11,Filtro Biológico:3 Línea Cortafuegos:3 Reforestación:3 Separación en la Fuente:2 Barrera Absorbente:1
-aleatoria,172,victoria,8,Barrera Absorbente:3 Separación en la Fuente:5 Línea Cortafuegos:3 Filtro Biológico:2
-aleatoria,173,victoria,9,Barrera Absorbente:6 Reforestación:2 Separación en la Fuente:1 Línea Cortafuegos:4
-aleatoria,174,victoria,9,Reforestación:2 Línea Cortafuegos:2 Separación en la Fuente:5 Barrera Absorbente:4 Filtro Biológico:2
-aleatoria,175,victoria,8,Reforestación:2 Separación en la Fuente:4 Barrera Absorbente:2 Línea Cortafuegos:4 Filtro Biológico:3
-aleatoria,176,victoria,15,Reforestación:6 Filtro Biológico:2 Barrera Absorbente:6 Separación en la Fuente:2 Línea Cortafuegos:1
-aleatoria,177,victoria,8,Barrera Absorbente:4 Reforestación:2 Separación en la Fuente:3 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,178,victoria,10,Filtro Biológico:4 Línea Cortafuegos:4 Separación en la Fuente:3 Reforestación:3
-aleatoria,179,victoria,10,Reforestación:5 Separación en la Fuente:3 Barrera Absorbente:4 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,180,victoria,10,Barrera Absorbente:2 Línea Cortafuegos:2 Separación en la Fuente:6 Filtro Biológico:2 Reforestación:3
-aleatoria,181,victoria,11,Filtro Biológico:3 Línea Cortafuegos:1 Reforestación:6 Separación en la Fuente:6 Barrera Absorbente:1
-aleatoria,182,victoria,10,Línea Cortafuegos:4 Barrera Absorbente:3 Separación en la Fuente:4 Filtro Biológico:3 Reforestación:2
-aleatoria,183,victoria,9,Separación en la Fuente:4 Filtro Biológico:4 Reforestación:4 Barrera Absorbente:3 Línea Cortafuegos:1
-aleatoria,184,victoria,9,Filtro Biológico:3 Reforestación:2 Línea Cortafuegos:3 Separación en la Fuente:4 Barrera Absorbente:3
-aleatoria,185,victoria,9,Filtro Biológico:2 Línea Cortafuegos:3 Separación en la Fuente:3 Barrera Absorbente:3 Reforestación:2
-aleatoria,186,victoria,9,Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:4 Filtro Biológico:1 Línea Cortafuegos:1
-aleatoria,187,victoria,9,Filtro Biológico:2 Barrera Absorbente:4 Separación en la Fuente:4 Reforestación:2
-aleatoria,188,victoria,10,Barrera Absorbente:4 Separación en la Fuente:4 Reforestación:4 Línea Cortafuegos:1 Filtro Biológico:2
-aleatoria,189,victoria,9,Barrera Absorbente:2 Separación en la Fuente:2 Línea Cortafuegos:2 Filtro Biológico:2 Reforestación:1
-aleatoria,190,victoria,8,Separación en la Fuente:5 Barrera Absorbente:3 Reforestación:2 Filtro Biológico:1 Línea Cortafuegos:2
-aleatoria,191,victoria,12,Barrera Absorbente:3 Línea Cortafuegos:5 Separación en la Fuente:4 Filtro Biológico:3 Reforestación:2
-aleatoria,192,victoria,9,Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,193,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:2 Reforestación:2 Barrera Absorbente:2 Filtro Biológico:2
-aleatoria,194,victoria,9,Reforestación:2 Separación en la Fuente:3 Línea Cortafuegos:3 Filtro Biológico:1 Barrera Absorbente:1
-aleatoria,195,victoria,10,Filtro Biológico:5 Separación en la Fuente:3 Línea Cortafuegos:2 Reforestación:3
-aleatoria,196,victoria,14,Barrera Absorbente:4 Línea Cortafuegos:3 Filtro Biológico:5 Reforestación:3 Separación en la Fuente:3
-aleatoria,197,victoria,10,Barrera Absorbente:6 Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:2
-aleatoria,198,victoria,10,Filtro Biológico:2 Reforestación:3 Barrera Absorbente:4 Línea Cortafuegos:3 Separación en la Fuente:2
-aleatoria,199,victoria,11,Reforestación:4 Filtro Biológico:1 Barrera Absorbente:4 Separación en la Fuente:2 Línea Cortafuegos:2
-aleatoria,200,victoria,9,Barrera Absorbente:3 Reforestación:3 Separación en la Fuente:4 Filtro Biológico:4 Línea Cortafuegos:2
-aleatoria,201,victoria,8,Barrera Absorbente:5 Separación en la Fuente:4 Reforestación:3 Línea Cortafuegos:1
-aleatoria,202,victoria,10,Línea Cortafuegos:4 Separación en la Fuente:3 Reforestación:3 Barrera Absorbente:2 Filtro Biológico:1
-aleatoria,203,victoria,9,Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:2 Filtro Biológico:1
-aleatoria,204,victoria,9,Filtro Biológico:5 Separación en la Fuente:4 Línea Cortafuegos:2 Barrera Absorbente:1 Reforestación:1
-aleatoria,205,victoria,10,Filtro Biológico:5 Separación en la Fuente:6 Reforestación:5 Línea Cortafuegos:2 Barrera Absorbente:1
-aleatoria,206,victoria,9,Barrera Absorbente:4 Filtro Biológico:2 Línea Cortafuegos:3 Separación en la Fuente:4 Reforestación:3
-aleatoria,207,victoria,8,Reforestación:1 Separación en la Fuente:4 Línea Cortafuegos:3 Barrera Absorbente:1 Filtro Biológico:2
-aleatoria,208,victoria,9,Filtro Biológico:2 Separación en la Fuente:4 Línea Cortafuegos:4 Barrera Absorbente:2 Reforestación:4
-aleatoria,209,victoria,11,Filtro Biológico:3 Barrera Absorbente:4 Reforestación:3 Línea Cortafuegos:4 Separación en la Fuente:3
-aleatoria,210,victoria,10,Barrera Absorbente:2 Filtro Biológico:3 Línea Cortafuegos:6 Separación en la Fuente:4 Reforestación:1
-aleatoria,211,victoria,8,Filtro Biológico:1 Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:2 Reforestación:3
-aleatoria,212,victoria,10,Filtro Biológico:3 Línea Cortafuegos:4 Barrera Absorbente:1 Separación en la Fuente:6 Reforestación:3
-aleatoria,213,victoria,9,Reforestación:5 Separación en la Fuente:4 Barrera Absorbente:2 Línea Cortafuegos:1
-aleatoria,214,victoria,9,Línea Cortafuegos:2 Separación en la Fuente:3 Filtro Biológico:3 Reforestación:3 Barrera Absorbente:2
-aleatoria,215,victoria,9,Barrera Absorbente:4 Línea Cortafuegos:3 Separación en la Fuente:3 Filtro Biológico:1 Reforestación:2
-aleatoria,216,victoria,9,Separación en la Fuente:2 Línea Cortafuegos:1 Barrera Absorbente:3 Reforestación:4 Filtro Biológico:2
-aleatoria,217,victoria,10,Barrera Absorbente:2 Filtro Biológico:5 Separación en la Fuente:5 Reforestación:1 Línea Cortafuegos:2
-aleatoria,218,victoria,8,Separación en la Fuente:5 Barrera Absorbente:2 Línea Cortafuegos:2 Filtro Biológico:3 Reforestación:4
-aleatoria,219,victoria,9,Barrera Absorbente:3 Separación en la Fuente:6 Reforestación:2
-aleatoria,220,victoria,10,Filtro Biológico:5 Línea Cortafuegos:1 Separación en la Fuente:4 Reforestación:1 Barrera Absorbente:2
-aleatoria,221,victoria,13,Línea Cortafuegos:5 Filtro Biológico:7 Barrera Absorbente:1 Reforestación:3 Separación en la Fuente:5
-aleatoria,222,victoria,8,Separación en la Fuente:5 Barrera Absorbente:4 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,223,victoria,9,Separación en la Fuente:7 Línea Cortafuegos:1 Filtro Biológico:1 Reforestación:2 Barrera Absorbente:1
-aleatoria,224,victoria,9,Barrera Absorbente:3 Línea Cortafuegos:4 Separación en la Fuente:3 Reforestación:1 Filtro Biológico:2
-aleatoria,225,victoria,9,Barrera Absorbente:5 Línea Cortafuegos:1 Filtro Biológico:2 Separación en la Fuente:4 Reforestación:1
-aleatoria,226,victoria,11,Filtro Biológico:3 Línea Cortafuegos:5 Separación en la Fuente:3 Reforestación:2
-aleatoria,227,victoria,11,Barrera Absorbente:2 Filtro Biológico:5 Línea Cortafuegos:2 Reforestación:2 Separación en la Fuente:4
-aleatoria,228,victoria,8,Separación en la Fuente:4 Línea Cortafuegos:2 Filtro Biológico:1 Barrera Absorbente:1
-aleatoria,229,victoria,10,Filtro Biológico:4 Reforestación:3 Separación en la Fuente:6 Línea Cortafuegos:1 Barrera Absorbente:1
-aleatoria,230,victoria,9,Línea Cortafuegos:3 Filtro Biológico:2 Barrera Absorbente:4 Separación en la Fuente:2
-aleatoria,231,victoria,12,Filtro Biológico:5 Línea Cortafuegos:2 Reforestación:3 Barrera Absorbente:3 Separación en la Fuente:3
-aleatoria,232,victoria,11,Filtro Biológico:3 Barrera Absorbente:3 Reforestación:3 Separación en la Fuente:5 Línea Cortafuegos:1
-aleatoria,233,victoria,9,Línea Cortafuegos:5 Barrera Absorbente:3 Separación en la Fuente:4 Reforestación:1 Filtro Biológico:1
-aleatoria,234,victoria,12,Línea Cortafuegos:3 Filtro Biológico:4 Reforestación:5 Barrera Absorbente:4 Separación en la Fuente:2
-aleatoria,235,victoria,14,Línea Cortafuegos:3 Filtro Biológico:5 Reforestación:5 Barrera Absorbente:4 Separación en la Fuente:4
-aleatoria,236,victoria,10,Línea Cortafuegos:2 Separación en la Fuente:4 Filtro Biológico:3 Reforestación:2
-aleatoria,237,victoria,11,Línea Cortafuegos:2 Filtro Biológico:4 Reforestación:6 Separación en la Fuente:3 Barrera Absorbente:1
-aleatoria,238,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:2 Filtro Biológico:3
-aleatoria,239,victoria,13,Filtro Biológico:6 Barrera Absorbente:4 Reforestación:4 Separación en la Fuente:3 Línea Cortafuegos:2
-aleatoria,240,victoria,9,Filtro Biológico:5 Reforestación:1 Separación en la Fuente:5 Línea Cortafuegos:1 Barrera Absorbente:1
-aleatoria,241,victoria,9,Línea Cortafuegos:5 Filtro Biológico:2 Barrera Absorbente:4 Separación en la Fuente:4
-aleatoria,242,victoria,12,Línea Cortafuegos:2 Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:5
-aleatoria,243,victoria,10,Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:3 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,244,victoria,10,Filtro Biológico:5 Línea Cortafuegos:3 Barrera Absorbente:3 Reforestación:3 Separación en la Fuente:3
-aleatoria,245,victoria,9,Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:1 Filtro Biológico:4 Línea Cortafuegos:2
-aleatoria,246,victoria,10,Barrera Absorbente:4 Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,247,victoria,10,Línea Cortafuegos:3 Filtro Biológico:3 Reforestación:3 Separación en la Fuente:6 Barrera Absorbente:3
-aleatoria,248,victoria,11,Línea Cortafuegos:1 Barrera Absorbente:4 Reforestación:5 Filtro Biológico:2 Separación en la Fuente:5
-aleatoria,249,victoria,7,Separación en la Fuente:3 Barrera Absorbente:6 Línea Cortafuegos:1
-aleatoria,250,victoria,9,Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:2 Filtro Biológico:2 Línea Cortafuegos:2
-aleatoria,251,victoria,11,Línea Cortafuegos:4 Reforestación:3 Separación en la Fuente:3 Filtro Biológico:3 Barrera Absorbente:2
-aleatoria,252,victoria,8,Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:2 Línea Cortafuegos:1
-aleatoria,253,victoria,10,Reforestación:4 Separación en la Fuente:3 Filtro Biológico:2 Barrera Absorbente:1
-aleatoria,254,victoria,9,Filtro Biológico:2 Separación en la Fuente:4 Línea Cortafuegos:3 Reforestación:2
-aleatoria,255,victoria,9,Línea Cortafuegos:5 Filtro Biológico:4 Separación en la Fuente:5 Reforestación:2 Barrera Absorbente:2
-aleatoria,256,victoria,8,Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:1 Filtro Biológico:2 Línea Cortafuegos:2
-aleatoria,257,victoria,10,Reforestación:3 Filtro Biológico:4 Separación en la Fuente:3 Barrera Absorbente:1 Línea Cortafuegos:4
-aleatoria,258,victoria,11,Filtro Biológico:3 Reforestación:3 Barrera Absorbente:3 Separación en la Fuente:3 Línea Cortafuegos:1
-aleatoria,259,victoria,10,Filtro Biológico:5 Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:2 Barrera Absorbente:1
-aleatoria,260,victoria,14,Filtro Biológico:8 Reforestación:7 Línea Cortafuegos:2 Separación en la Fuente:5 Barrera Absorbente:2
-aleatoria,261,victoria,11,Barrera Absorbente:3 Separación en la Fuente:3 Filtro Biológico:1 Reforestación:2 Línea Cortafuegos:1
-aleatoria,262,victoria,11,Filtro Biológico:4 Reforestación:5 Barrera Absorbente:4 Separación en la Fuente:3 Línea Cortafuegos:1
-aleatoria,263,victoria,10,Reforestación:5 Separación en la Fuente:4 Filtro Biológico:5 Línea Cortafuegos:2 Barrera Absorbente:1
-aleatoria,264,victoria,11,Filtro Biológico:5 Línea Cortafuegos:6 Barrera Absorbente:3 Separación en la Fuente:2 Reforestación:1
-aleatoria,265,victoria,11,Barrera Absorbente:4 Línea Cortafuegos:2 Filtro Biológico:4 Reforestación:4 Separación en la Fuente:3
-aleatoria,266,victoria,10,Filtro Biológico:4 Reforestación:4 Separación en la Fuente:5 Barrera Absorbente:2 Línea Cortafuegos:1
-aleatoria,267,victoria,12,Filtro Biológico:4 Barrera Absorbente:4 Línea Cortafuegos:4 Separación en la Fuente:5 Reforestación:3
-aleatoria,268,victoria,8,Reforestación:2 Separación en la Fuente:4 Línea Cortafuegos:2 Barrera Absorbente:3
-aleatoria,269,victoria,10,Reforestación:4 Filtro Biológico:4 Línea Cortafuegos:3 Separación en la Fuente:4 Barrera Absorbente:3
-aleatoria,270,victoria,9,Separación en la Fuente:3 Filtro Biológico:1 Línea Cortafuegos:3 Barrera Absorbente:2 Reforestación:1
-aleatoria,271,victoria,9,Reforestación:2 Separación en la Fuente:3 Filtro Biológico:2 Barrera Absorbente:4 Línea Cortafuegos:4
-aleatoria,272,victoria,10,Línea Cortafuegos:5 Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:3
-aleatoria,273,victoria,8,Filtro Biológico:2 Separación en la Fuente:1 Barrera Absorbente:3 Reforestación:2 Línea Cortafuegos:2
-aleatoria,274,victoria,9,Separación en la Fuente:4 Filtro Biológico:3 Línea Cortafuegos:2 Reforestación:2 Barrera Absorbente:1
-aleatoria,275,victoria,11,Barrera Absorbente:3 Filtro Biológico:7 Separación en la Fuente:3 Línea Cortafuegos:2 Reforestación:3
-aleatoria,276,victoria,11,Línea Cortafuegos:2 Barrera Absorbente:3 Separación en la Fuente:7 Filtro Biológico:3 Reforestación:3
-aleatoria,277,victoria,10,Barrera Absorbente:1 Línea Cortafuegos:3 Reforestación:3 Separación en la Fuente:4 Filtro Biológico:1
-aleatoria,278,victoria,11,Reforestación:2 Filtro Biológico:2 Barrera Absorbente:3 Línea Cortafuegos:4 Separación en la Fuente:3
-aleatoria,279,victoria,8,Filtro Biológico:2 Separación en la Fuente:4 Barrera Absorbente:3 Línea Cortafuegos:1 Reforestación:2
-aleatoria,280,victoria,10,Barrera Absorbente:2 Separación en la Fuente:4 Reforestación:4 Línea Cortafuegos:2 Filtro Biológico:3
-aleatoria,281,victoria,10,Barrera Absorbente:3 Reforestación:3 Filtro Biológico:2 Separación en la Fuente:4 Línea Cortafuegos:4
-aleatoria,282,victoria,8,Filtro Biológico:2 Reforestación:1 Separación en la Fuente:5 Línea Cortafuegos:3 Barrera Absorbente:2
-aleatoria,283,victoria,8,Reforestación:2 Separación en la Fuente:2 Barrera Absorbente:4 Línea Cortafuegos:4 Filtro Biológico:1
-aleatoria,284,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:5 Barrera Absorbente:4 Filtro Biológico:3 Reforestación:2
-aleatoria,285,victoria,9,Línea Cortafuegos:3 Separación en la Fuente:3 Filtro Biológico:3 Reforestación:1 Barrera Absorbente:2
-aleatoria,286,victoria,12,Reforestación:5 Barrera Absorbente:4 Línea Cortafuegos:2 Separación en la Fuente:4
-aleatoria,287,victoria,11,Reforestación:4 Barrera Absorbente:4 Separación en la Fuente:4 Filtro Biológico:1 Línea Cortafuegos:1
-aleatoria,288,victoria,10,Reforestación:4 Separación en la Fuente:5 Filtro Biológico:3 Línea Cortafuegos:2 Barrera Absorbente:1
-aleatoria,289,victoria,10,Filtro Biológico:5 Reforestación:3 Separación en la Fuente:4 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,290,victoria,10,Filtro Biológico:4 Línea Cortafuegos:4 Separación en la Fuente:2 Barrera Absorbente:3 Reforestación:2
-aleatoria,291,victoria,10,Línea Cortafuegos:2 Filtro Biológico:2 Reforestación:4 Separación en la Fuente:2 Barrera Absorbente:4
-aleatoria,292,victoria,12,Barrera Absorbente:4 Filtro Biológico:3 Reforestación:5 Línea Cortafuegos:2 Separación en la Fuente:3
-aleatoria,293,victoria,13,Reforestación:6 Filtro Biológico:5 Separación en la Fuente:3 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,294,victoria,13,Línea Cortafuegos:4 Barrera Absorbente:4 Separación en la Fuente:4 Reforestación:4 Filtro Biológico:3
-aleatoria,295,victoria,10,Filtro Biológico:2 Barrera Absorbente:2 Separación en la Fuente:3 Reforestación:2 Línea Cortafuegos:2
-aleatoria,296,victoria,14,Reforestación:6 Barrera Absorbente:2 Línea Cortafuegos:2 Separación en la Fuente:3 Filtro Biológico:4
-aleatoria,297,victoria,12,Filtro Biológico:4 Línea Cortafuegos:4 Barrera Absorbente:2 Separación en la Fuente:4 Reforestación:2
-aleatoria,298,victoria,12,Filtro Biológico:7 Separación en la Fuente:5 Línea Cortafuegos:2 Reforestación:2 Barrera Absorbente:2
-aleatoria,299,victoria,8,Separación en la Fuente:4 Filtro Biológico:2 Barrera Absorbente:1 Línea Cortafuegos:2 Reforestación:1
-voraz,0,derrota,24,Línea Cortafuegos:17
-voraz,1,derrota,25,Línea Cortafuegos:11
-voraz,2,derrota,27,Línea Cortafuegos:9
-voraz,3,derrota,25,Línea Cortafuegos:11
-voraz,4,derrota,24,Línea Cortafuegos:14
-voraz,5,derrota,24,Línea Cortafuegos:11
-voraz,6,derrota,25,Línea Cortafuegos:17
-voraz,7,derrota,26,Línea Cortafuegos:18
-voraz,8,derrota,26,Línea Cortafuegos:16
-voraz,9,derrota,25,Línea Cortafuegos:17
-voraz,10,derrota,27,Línea Cortafuegos:9
-voraz,11,derrota,23,Línea Cortafuegos:11
-voraz,12,derrota,25,Línea Cortafuegos:11
-voraz,13,derrota,28,Línea Cortafuegos:19
-voraz,14,derrota,29,Línea Cortafuegos:9
-voraz,15,derrota,24,Línea Cortafuegos:11
-voraz,16,derrota,24,Línea Cortafuegos:17
-voraz,17,derrota,26,Línea Cortafuegos:18
-voraz,18,derrota,27,Línea Cortafuegos:12
-voraz,19,derrota,24,Línea Cortafuegos:17
-voraz,20,derrota,25,Línea Cortafuegos:17
-voraz,21,derrota,25,Línea Cortafuegos:17
-voraz,22,derrota,24,Línea Cortafuegos:11
-voraz,23,derrota,24,Línea Cortafuegos:14
-voraz,24,derrota,28,Línea Cortafuegos:19
-voraz,25,derrota,24,Línea Cortafuegos:17
-voraz,26,derrota,27,Línea Cortafuegos:7
-voraz,27,derrota,27,Línea Cortafuegos:18
-voraz,28,derrota,25,Línea Cortafuegos:14
-voraz,29,derrota,24,Línea Cortafuegos:17
-voraz,30,derrota,25,Línea Cortafuegos:14
-voraz,31,derrota,25,Línea Cortafuegos:15
-voraz,32,derrota,26,Línea Cortafuegos:18
-voraz,33,derrota,27,Línea Cortafuegos:15
-voraz,34,derrota,23,Línea Cortafuegos:16
-voraz,35,derrota,25,Línea Cortafuegos:17
-voraz,36,derrota,31,Línea Cortafuegos:12
-voraz,37,derrota,29,Línea Cortafuegos:16
-voraz,38,derrota,25,Línea Cortafuegos:12
-voraz,39,derrota,25,Línea Cortafuegos:8
-voraz,40,derrota,27,Línea Cortafuegos:18
-voraz,41,derrota,25,Línea Cortafuegos:8
-voraz,42,derrota,24,Línea Cortafuegos:11
-voraz,43,derrota,24,Línea Cortafuegos:12
-voraz,44,derrota,23,Línea Cortafuegos:7
-voraz,45,derrota,24,Línea Cortafuegos:14
-voraz,46,derrota,22,Línea Cortafuegos:7
-voraz,47,derrota,28,Línea Cortafuegos:16
-voraz,48,derrota,24,Línea Cortafuegos:14
-voraz,49,derrota,24,Línea Cortafuegos:14
-voraz,50,derrota,25,Línea Cortafuegos:14
-voraz,51,derrota,26,Línea Cortafuegos:18
-voraz,52,derrota,23,Línea Cortafuegos:8
-voraz,53,derrota,26,Línea Cortafuegos:15
-voraz,54,derrota,27,Línea Cortafuegos:16
-voraz,55,derrota,26,Línea Cortafuegos:12
-voraz,56,derrota,25,Línea Cortafuegos:17
-voraz,57,derrota,27,Línea Cortafuegos:15
-voraz,58,derrota,25,Línea Cortafuegos:15
-voraz,59,derrota,26,Línea Cortafuegos:18
-voraz,60,derrota,21,Línea Cortafuegos:13
-voraz,61,derrota,24,Línea Cortafuegos:11
-voraz,62,derrota,27,Línea Cortafuegos:12
-voraz,63,derrota,26,Línea Cortafuegos:18
-voraz,64,derrota,30,Línea Cortafuegos:8
-voraz,65,derrota,25,Línea Cortafuegos:17
-voraz,66,derrota,25,Línea Cortafuegos:11
-voraz,67,derrota,25,Línea Cortafuegos:15
-voraz,68,derrota,24,Línea Cortafuegos:14
-voraz,69,derrota,25,Línea Cortafuegos:15
-voraz,70,derrota,25,Línea Cortafuegos:11
-voraz,71,derrota,27,Línea Cortafuegos:18
-voraz,72,derrota,24,Línea Cortafuegos:10
-voraz,73,derrota,26,Línea Cortafuegos:16
-voraz,74,derrota,29,Línea Cortafuegos:19
-voraz,75,derrota,28,Línea Cortafuegos:12
-voraz,76,derrota,27,Línea Cortafuegos:16
-voraz,77,derrota,23,Línea Cortafuegos:16
-voraz,78,derrota,25,Línea Cortafuegos:11
-voraz,79,derrota,24,Línea Cortafuegos:17
-voraz,80,derrota,26,Línea Cortafuegos:12
-voraz,81,derrota,25,Línea Cortafuegos:15
-voraz,82,derrota,28,Línea Cortafuegos:15
-voraz,83,derrota,27,Línea Cortafuegos:12
-voraz,84,derrota,24,Línea Cortafuegos:11
-voraz,85,derrota,26,Línea Cortafuegos:18
-voraz,86,derrota,27,Línea Cortafuegos:13
-voraz,87,derrota,28,Línea Cortafuegos:19
-voraz,88,derrota,29,Línea Cortafuegos:19
-voraz,89,derrota,28,Línea Cortafuegos:12
-voraz,90,derrota,26,Línea Cortafuegos:9
-voraz,91,derrota,27,Línea Cortafuegos:16
-voraz,92,derrota,26,Línea Cortafuegos:14
-voraz,93,derrota,28,Línea Cortafuegos:12
-voraz,94,derrota,24,Línea Cortafuegos:12
-voraz,95,derrota,27,Línea Cortafuegos:13
-voraz,96,derrota,25,Línea Cortafuegos:13
-voraz,97,derrota,25,Línea Cortafuegos:12
-voraz,98,derrota,25,Línea Cortafuegos:14
-voraz,99,derrota,28,Línea Cortafuegos:12
-voraz,100,derrota,25,Línea Cortafuegos:11
-voraz,101,derrota,28,Línea Cortafuegos:16
-voraz,102,derrota,26,Línea Cortafuegos:16
-voraz,103,derrota,23,Línea Cortafuegos:16
-voraz,104,derrota,26,Línea Cortafuegos:15
-voraz,105,derrota,28,Línea Cortafuegos:15
-voraz,106,derrota,25,Línea Cortafuegos:12
-voraz,107,derrota,26,Línea Cortafuegos:12
-voraz,108,derrota,27,Línea Cortafuegos:17
-voraz,109,derrota,26,Línea Cortafuegos:13
-voraz,110,derrota,26,Línea Cortafuegos:16
-voraz,111,derrota,26,Línea Cortafuegos:18
-voraz,112,derrota,28,Línea Cortafuegos:13
-voraz,113,derrota,26,Línea Cortafuegos:12
-voraz,114,derrota,24,Línea Cortafuegos:11
-voraz,115,derrota,26,Línea Cortafuegos:15
-voraz,116,derrota,28,Línea Cortafuegos:12
-voraz,117,derrota,27,Línea Cortafuegos:12
-voraz,118,derrota,26,Línea Cortafuegos:12
-voraz,119,derrota,27,Línea Cortafuegos:15
-voraz,120,derrota,28,Línea Cortafuegos:19
-voraz,121,derrota,26,Línea Cortafuegos:12
-voraz,122,derrota,26,Línea Cortafuegos:16
-voraz,123,derrota,24,Línea Cortafuegos:11
-voraz,124,derrota,29,Línea Cortafuegos:12
-voraz,125,derrota,26,Línea Cortafuegos:18
-voraz,126,derrota,28,Línea Cortafuegos:14
-voraz,127,derrota,24,Línea Cortafuegos:11
-voraz,128,derrota,24,Línea Cortafuegos:12
-voraz,129,derrota,27,Línea Cortafuegos:16
-voraz,130,derrota,24,Línea Cortafuegos:11
-voraz,131,derrota,29,Línea Cortafuegos:19
-voraz,132,derrota,26,Línea Cortafuegos:12
-voraz,133,derrota,25,Línea Cortafuegos:12
-voraz,134,derrota,23,Línea Cortafuegos:12
-voraz,135,derrota,25,Línea Cortafuegos:14
-voraz,136,derrota,26,Línea Cortafuegos:11
-voraz,137,derrota,27,Línea Cortafuegos:13
-voraz,138,derrota,26,Línea Cortafuegos:11
-voraz,139,derrota,26,Línea Cortafuegos:15
-voraz,140,derrota,25,Línea Cortafuegos:11
-voraz,141,derrota,28,Línea Cortafuegos:19
-voraz,142,derrota,28,Línea Cortafuegos:16
-voraz,143,derrota,25,Línea Cortafuegos:11
-voraz,144,derrota,26,Línea Cortafuegos:11
-voraz,145,derrota,26,Línea Cortafuegos:14
-voraz,146,derrota,22,Línea Cortafuegos:11
-voraz,147,derrota,25,Línea Cortafuegos:15
-voraz,148,derrota,25,Línea Cortafuegos:12
-voraz,149,derrota,26,Línea Cortafuegos:18
-voraz,150,huida,31,Línea Cortafuegos:17
-voraz,151,derrota,24,Línea Cortafuegos:14
-voraz,152,derrota,26,Línea Cortafuegos:13
-voraz,153,derrota,27,Línea Cortafuegos:8
-voraz,154,derrota,25,Línea Cortafuegos:17
-voraz,155,derrota,27,Línea Cortafuegos:12
-voraz,156,derrota,25,Línea Cortafuegos:11
-voraz,157,derrota,25,Línea Cortafuegos:13
-voraz,158,derrota,25,Línea Cortafuegos:8
-voraz,159,derrota,27,Línea Cortafuegos:15
-voraz,160,derrota,25,Línea Cortafuegos:11
-voraz,161,derrota,27,Línea Cortafuegos:15
-voraz,162,derrota,25,Línea Cortafuegos:12
-voraz,163,derrota,26,Línea Cortafuegos:16
-voraz,164,derrota,24,Línea Cortafuegos:12
-voraz,165,derrota,25,Línea Cortafuegos:17
-voraz,166,derrota,24,Línea Cortafuegos:11
-voraz,167,derrota,25,Línea Cortafuegos:17
-voraz,168,derrota,26,Línea Cortafuegos:15
-voraz,169,derrota,26,Línea Cortafuegos:18
-voraz,170,derrota,28,Línea Cortafuegos:19
-voraz,171,derrota,29,Línea Cortafuegos:16
-voraz,172,derrota,28,Línea Cortafuegos:13
-voraz,173,derrota,27,Línea Cortafuegos:15
-voraz,174,derrota,30,Línea Cortafuegos:15
-voraz,175,derrota,29,Línea Cortafuegos:14
-voraz,176,derrota,26,Línea Cortafuegos:12
-voraz,177,derrota,25,Línea Cortafuegos:17
-voraz,178,derrota,24,Línea Cortafuegos:17
-voraz,179,derrota,24,Línea Cortafuegos:14
-voraz,180,derrota,25,Línea Cortafuegos:7
-voraz,181,derrota,25,Línea Cortafuegos:12
-voraz,182,derrota,30,Línea Cortafuegos:14
-voraz,183,derrota,26,Línea Cortafuegos:7
-voraz,184,derrota,29,Línea Cortafuegos:17
-voraz,185,derrota,27,Línea Cortafuegos:13
-voraz,186,derrota,25,Línea Cortafuegos:17
-voraz,187,derrota,25,Línea Cortafuegos:11
-voraz,188,derrota,28,Línea Cortafuegos:10
-voraz,189,derrota,25,Línea Cortafuegos:17
-voraz,190,derrota,24,Línea Cortafuegos:17
-voraz,191,derrota,26,Línea Cortafuegos:17
-voraz,192,derrota,31,Línea Cortafuegos:20
-voraz,193,derrota,26,Línea Cortafuegos:7
-voraz,194,derrota,25,Línea Cortafuegos:14
-voraz,195,derrota,25,Línea Cortafuegos:15
-voraz,196,derrota,24,Línea Cortafuegos:11
-voraz,197,derrota,26,Línea Cortafuegos:11
-voraz,198,derrota,27,Línea Cortafuegos:18
-voraz,199,derrota,26,Línea Cortafuegos:12
-voraz,200,derrota,26,Línea Cortafuegos:15
-voraz,201,derrota,28,Línea Cortafuegos:14
-voraz,202,derrota,24,Línea Cortafuegos:11
-voraz,203,derrota,26,Línea Cortafuegos:12
-voraz,204,derrota,24,Línea Cortafuegos:17
-voraz,205,derrota,27,Línea Cortafuegos:16
-voraz,206,derrota,27,Línea Cortafuegos:5
-voraz,207,derrota,28,Línea Cortafuegos:12
-voraz,208,derrota,25,Línea Cortafuegos:17
-voraz,209,derrota,24,Línea Cortafuegos:5
-voraz,210,derrota,27,Línea Cortafuegos:15
-voraz,211,derrota,28,Línea Cortafuegos:8
-voraz,212,derrota,25,Línea Cortafuegos:11
-voraz,213,derrota,26,Línea Cortafuegos:18
-voraz,214,derrota,24,Línea Cortafuegos:17
-voraz,215,derrota,26,Línea Cortafuegos:15
-voraz,216,derrota,26,Línea Cortafuegos:11
-voraz,217,derrota,28,Línea Cortafuegos:19
-voraz,218,derrota,25,Línea Cortafuegos:16
-voraz,219,derrota,24,Línea Cortafuegos:17
-voraz,220,derrota,23,Línea Cortafuegos:13
-voraz,221,derrota,22,Línea Cortafuegos:7
-voraz,222,derrota,26,Línea Cortafuegos:18
-voraz,223,derrota,26,Línea Cortafuegos:9
-voraz,224,derrota,23,Línea Cortafuegos:10
-voraz,225,derrota,25,Línea Cortafuegos:14
-voraz,226,derrota,26,Línea Cortafuegos:18
-voraz,227,derrota,25,Línea Cortafuegos:17
-voraz,228,derrota,27,Línea Cortafuegos:13
-voraz,229,derrota,25,Línea Cortafuegos:12
-voraz,230,derrota,27,Línea Cortafuegos:18
-voraz,231,derrota,24,Línea Cortafuegos:17
-voraz,232,derrota,28,Línea Cortafuegos:13
-voraz,233,derrota,26,Línea Cortafuegos:18
-voraz,234,derrota,27,Línea Cortafuegos:18
-voraz,235,derrota,25,Línea Cortafuegos:17
-voraz,236,derrota,27,Línea Cortafuegos:16
-voraz,237,derrota,26,Línea Cortafuegos:12
-voraz,238,derrota,24,Línea Cortafuegos:14
-voraz,239,derrota,28,Línea Cortafuegos:8
-voraz,240,derrota,25,Línea Cortafuegos:13
-voraz,241,derrota,26,Línea Cortafuegos:13
-voraz,242,derrota,24,Línea Cortafuegos:17
-voraz,243,derrota,24,Línea Cortafuegos:12
-voraz,244,derrota,24,Línea Cortafuegos:11
-voraz,245,derrota,25,Línea Cortafuegos:17
-voraz,246,derrota,25,Línea Cortafuegos:11
-voraz,247,derrota,25,Línea Cortafuegos:11
-voraz,248,derrota,26,Línea Cortafuegos:18
-voraz,249,derrota,27,Línea Cortafuegos:18
-voraz,250,derrota,24,Línea Cortafuegos:11
-voraz,251,derrota,28,Línea Cortafuegos:19
-voraz,252,derrota,27,Línea Cortafuegos:17
-voraz,253,derrota,26,Línea Cortafuegos:11
-voraz,254,derrota,26,Línea Cortafuegos:15
-voraz,255,derrota,27,Línea Cortafuegos:12
-voraz,256,derrota,29,Línea Cortafuegos:13
-voraz,257,derrota,28,Línea Cortafuegos:19
-voraz,258,derrota,29,Línea Cortafuegos:14
-voraz,259,derrota,26,Línea Cortafuegos:18
-voraz,260,derrota,26,Línea Cortafuegos:18
-voraz,261,derrota,25,Línea Cortafuegos:17
-voraz,262,derrota,24,Línea Cortafuegos:10
-voraz,263,derrota,29,Línea Cortafuegos:13
-voraz,264,derrota,23,Línea Cortafuegos:14
-voraz,265,derrota,30,Línea Cortafuegos:12
-voraz,266,derrota,26,Línea Cortafuegos:11
-voraz,267,derrota,27,Línea Cortafuegos:18
-voraz,268,derrota,25,Línea Cortafuegos:17
-voraz,269,derrota,27,Línea Cortafuegos:13
-voraz,270,derrota,28,Línea Cortafuegos:13
-voraz,271,derrota,27,Línea Cortafuegos:18
-voraz,272,derrota,25,Línea Cortafuegos:17
-voraz,273,derrota,24,Línea Cortafuegos:11
-voraz,274,derrota,25,Línea Cortafuegos:12
-voraz,275,derrota,24,Línea Cortafuegos:17
-voraz,276,derrota,30,Línea Cortafuegos:20
-voraz,277,derrota,25,Línea Cortafuegos:11
-voraz,278,derrota,25,Línea Cortafuegos:17
-voraz,279,derrota,26,Línea Cortafuegos:18
-voraz,280,derrota,27,Línea Cortafuegos:7
-voraz,281,derrota,24,Línea Cortafuegos:7
-voraz,282,derrota,27,Línea Cortafuegos:18
-voraz,283,derrota,26,Línea Cortafuegos:18
-voraz,284,derrota,28,Línea Cortafuegos:19
-voraz,285,derrota,26,Línea Cortafuegos:11
-voraz,286,derrota,25,Línea Cortafuegos:13
-voraz,287,derrota,22,Línea Cortafuegos:11
-voraz,288,derrota,24,Línea Cortafuegos:14
-voraz,289,derrota,25,Línea Cortafuegos:11
-voraz,290,derrota,27,Línea Cortafuegos:18
-voraz,291,derrota,26,Línea Cortafuegos:12
-voraz,292,derrota,24,Línea Cortafuegos:17
-voraz,293,derrota,29,Línea Cortafuegos:16
-voraz,294,derrota,26,Línea Cortafuegos:12
-voraz,295,derrota,28,Línea Cortafuegos:16
-voraz,296,derrota,26,Línea Cortafuegos:9
-voraz,297,derrota,28,Línea Cortafuegos:16
-voraz,298,derrota,26,Línea Cortafuegos:18
-voraz,299,derrota,22,Línea Cortafuegos:6
-experta,0,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,1,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,2,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,3,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,4,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,5,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,6,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,7,victoria,7,Separación en la Fuente:1
-experta,8,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,9,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,10,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,11,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,12,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,13,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,14,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,15,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,16,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,17,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,18,victoria,7,Separación en la Fuente:1 Filtro Biológico:3
-experta,19,victoria,9,Separación en la Fuente:1 Filtro Biológico:3
-experta,20,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,21,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,22,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,23,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,24,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,25,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,26,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,27,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,28,victoria,7,Separación en la Fuente:1
-experta,29,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,30,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,31,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,32,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,33,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,34,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,35,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,36,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,37,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,38,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,39,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,40,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,41,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,42,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,43,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,44,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,45,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,46,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,47,victoria,9,Separación en la Fuente:1 Filtro Biológico:3
-experta,48,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,49,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,50,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,51,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,52,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,53,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,54,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,55,victoria,10,Separación en la Fuente:1 Filtro Biológico:2
-experta,56,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,57,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,58,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,59,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,60,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,61,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,62,victoria,6,Separación en la Fuente:1
-experta,63,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,64,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,65,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,66,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,67,victoria,6,Separación en la Fuente:1
-experta,68,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,69,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,70,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,71,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,72,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,73,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,74,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,75,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,76,victoria,6,Separación en la Fuente:1
-experta,77,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,78,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,79,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,80,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,81,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,82,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,83,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,84,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,85,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,86,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,87,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,88,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,89,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,90,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,91,victoria,9,Separación en la Fuente:1 Filtro Biológico:1
-experta,92,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,93,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,94,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,95,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,96,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,97,victoria,9,Separación en la Fuente:1 Filtro Biológico:3
-experta,98,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,99,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,100,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,101,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,102,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,103,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,104,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,105,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,106,victoria,7,Separación en la Fuente:1
-experta,107,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,108,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,109,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,110,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,111,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,112,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,113,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,114,victoria,9,Separación en la Fuente:1 Filtro Biológico:3
-experta,115,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,116,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,117,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,118,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,119,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,120,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,121,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,122,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,123,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,124,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,125,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,126,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,127,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,128,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,129,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,130,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,131,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,132,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,133,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,134,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,135,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,136,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,137,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,138,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,139,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,140,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,141,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,142,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,143,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,144,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,145,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,146,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,147,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,148,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,149,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,150,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,151,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,152,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,153,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,154,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,155,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,156,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,157,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,158,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,159,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,160,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,161,victoria,7,Separación en la Fuente:1
-experta,162,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,163,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,164,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,165,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,166,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,167,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,168,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,169,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,170,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,171,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,172,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,173,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,174,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,175,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,176,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,177,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,178,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,179,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,180,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,181,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,182,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,183,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,184,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,185,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,186,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,187,victoria,9,Separación en la Fuente:1 Filtro Biológico:3
-experta,188,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,189,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,190,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,191,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,192,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,193,victoria,7,Separación en la Fuente:1
-experta,194,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,195,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,196,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,197,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,198,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,199,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,200,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,201,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,202,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,203,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,204,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,205,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,206,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,207,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,208,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,209,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,210,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,211,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,212,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,213,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,214,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,215,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,216,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,217,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,218,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,219,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,220,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,221,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,222,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,223,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,224,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,225,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,226,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,227,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,228,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,229,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,230,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,231,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,232,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,233,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,234,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,235,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,236,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,237,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,238,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,239,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,240,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,241,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,242,victoria,8,Separación en la Fuente:1 Filtro Biológico:4
-experta,243,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,244,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,245,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,246,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,247,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,248,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,249,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,250,victoria,9,Separación en la Fuente:1 Filtro Biológico:1
-experta,251,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,252,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,253,victoria,9,Separación en la Fuente:1 Filtro Biológico:4
-experta,254,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,255,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,256,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,257,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,258,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,259,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,260,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,261,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,262,victoria,7,Separación en la Fuente:1 Filtro Biológico:3
-experta,263,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,264,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,265,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,266,victoria,7,Separación en la Fuente:1
-experta,267,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,268,victoria,9,Separación en la Fuente:1 Filtro Biológico:1
-experta,269,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,270,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,271,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,272,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,273,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,274,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,275,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,276,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,277,victoria,8,Separación en la Fuente:1 Filtro Biológico:3
-experta,278,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,279,victoria,7,Separación en la Fuente:1
-experta,280,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,281,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,282,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,283,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,284,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,285,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,286,victoria,9,Separación en la Fuente:1 Filtro Biológico:2
-experta,287,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,288,victoria,6,Separación en la Fuente:1
-experta,289,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,290,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
-experta,291,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,292,victoria,8,Separación en la Fuente:1 Filtro Biológico:1
-experta,293,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,294,victoria,7,Separación en la Fuente:1
-experta,295,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,296,victoria,8,Separación en la Fuente:1 Filtro Biológico:2
-experta,297,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,298,victoria,7,Separación en la Fuente:1 Filtro Biológico:1
-experta,299,victoria,7,Separación en la Fuente:1 Filtro Biológico:2
+politica,combate,resultado,rondas,sintonia,habilidades
+aleatoria,0,victoria,10,0.19,
+aleatoria,1,victoria,9,0.19,
+aleatoria,2,victoria,10,0.14,
+aleatoria,3,victoria,10,0.16,
+aleatoria,4,victoria,10,0.19,
+aleatoria,5,victoria,11,0.10,
+aleatoria,6,victoria,9,0.20,
+aleatoria,7,victoria,11,0.22,
+aleatoria,8,victoria,10,0.16,
+aleatoria,9,victoria,10,0.18,
+aleatoria,10,victoria,9,0.10,
+aleatoria,11,victoria,9,0.19,
+aleatoria,12,victoria,9,0.14,
+aleatoria,13,victoria,10,0.14,
+aleatoria,14,victoria,9,0.14,
+aleatoria,15,victoria,9,0.19,
+aleatoria,16,victoria,9,0.12,
+aleatoria,17,victoria,9,0.30,
+aleatoria,18,victoria,9,0.16,
+aleatoria,19,victoria,9,0.12,
+aleatoria,20,victoria,10,0.10,
+aleatoria,21,victoria,9,0.14,
+aleatoria,22,victoria,9,0.14,
+aleatoria,23,victoria,9,0.18,
+aleatoria,24,victoria,11,0.14,
+aleatoria,25,victoria,9,0.20,
+aleatoria,26,victoria,10,0.16,
+aleatoria,27,victoria,9,0.14,
+aleatoria,28,victoria,10,0.12,
+aleatoria,29,victoria,10,0.28,
+aleatoria,30,victoria,10,0.19,
+aleatoria,31,victoria,9,0.25,
+aleatoria,32,victoria,10,0.21,
+aleatoria,33,victoria,9,0.16,
+aleatoria,34,victoria,10,0.24,
+aleatoria,35,victoria,10,0.20,
+aleatoria,36,victoria,9,0.25,
+aleatoria,37,victoria,10,0.18,
+aleatoria,38,victoria,9,0.30,
+aleatoria,39,victoria,9,0.16,
+aleatoria,40,victoria,11,0.16,
+aleatoria,41,victoria,10,0.14,
+aleatoria,42,victoria,10,0.16,
+aleatoria,43,victoria,9,0.14,
+aleatoria,44,victoria,9,0.21,
+aleatoria,45,victoria,9,0.21,
+aleatoria,46,victoria,9,0.10,
+aleatoria,47,victoria,11,0.17,
+aleatoria,48,victoria,9,0.18,
+aleatoria,49,victoria,10,0.14,
+aleatoria,50,victoria,10,0.30,
+aleatoria,51,victoria,9,0.16,
+aleatoria,52,victoria,9,0.30,
+aleatoria,53,victoria,9,0.12,
+aleatoria,54,victoria,10,0.30,
+aleatoria,55,victoria,9,0.16,
+aleatoria,56,victoria,10,0.16,
+aleatoria,57,victoria,9,0.22,
+aleatoria,58,victoria,10,0.14,
+aleatoria,59,victoria,9,0.16,
+aleatoria,60,victoria,10,0.28,
+aleatoria,61,victoria,9,0.42,
+aleatoria,62,victoria,11,0.12,
+aleatoria,63,victoria,10,0.30,
+aleatoria,64,victoria,10,0.14,
+aleatoria,65,victoria,9,0.24,
+aleatoria,66,victoria,9,0.12,
+aleatoria,67,victoria,10,0.19,
+aleatoria,68,victoria,9,0.22,
+aleatoria,69,victoria,10,0.14,
+aleatoria,70,victoria,9,0.25,
+aleatoria,71,victoria,10,0.30,
+aleatoria,72,victoria,9,0.24,
+aleatoria,73,victoria,11,0.16,
+aleatoria,74,victoria,10,0.10,
+aleatoria,75,victoria,10,0.25,
+aleatoria,76,victoria,9,0.12,
+aleatoria,77,victoria,9,0.16,
+aleatoria,78,victoria,10,0.17,
+aleatoria,79,victoria,10,0.08,
+aleatoria,80,victoria,10,0.18,
+aleatoria,81,victoria,9,0.25,
+aleatoria,82,victoria,9,0.08,
+aleatoria,83,victoria,9,0.30,
+aleatoria,84,victoria,10,0.15,
+aleatoria,85,victoria,10,0.18,
+aleatoria,86,victoria,10,0.16,
+aleatoria,87,victoria,10,0.21,
+aleatoria,88,victoria,10,0.14,
+aleatoria,89,victoria,9,0.25,
+aleatoria,90,victoria,9,0.19,
+aleatoria,91,victoria,10,0.21,
+aleatoria,92,victoria,10,0.13,
+aleatoria,93,victoria,11,0.16,
+aleatoria,94,victoria,11,0.08,
+aleatoria,95,victoria,10,0.14,
+aleatoria,96,victoria,10,0.12,
+aleatoria,97,victoria,10,0.12,
+aleatoria,98,victoria,10,0.16,
+aleatoria,99,victoria,9,0.12,
+aleatoria,100,victoria,10,0.28,
+aleatoria,101,victoria,9,0.14,
+aleatoria,102,victoria,10,0.12,
+aleatoria,103,victoria,9,0.14,
+aleatoria,104,victoria,9,0.16,
+aleatoria,105,victoria,10,0.20,
+aleatoria,106,victoria,10,0.12,
+aleatoria,107,victoria,10,0.22,
+aleatoria,108,victoria,10,0.22,
+aleatoria,109,victoria,10,0.19,
+aleatoria,110,victoria,9,0.14,
+aleatoria,111,victoria,11,0.10,
+aleatoria,112,victoria,10,0.12,
+aleatoria,113,victoria,10,0.10,
+aleatoria,114,victoria,8,0.16,
+aleatoria,115,victoria,10,0.16,
+aleatoria,116,victoria,10,0.17,
+aleatoria,117,victoria,9,0.10,
+aleatoria,118,victoria,10,0.12,
+aleatoria,119,victoria,9,0.28,
+aleatoria,120,victoria,9,0.14,
+aleatoria,121,victoria,10,0.18,
+aleatoria,122,victoria,10,0.24,
+aleatoria,123,victoria,9,0.19,
+aleatoria,124,victoria,9,0.12,
+aleatoria,125,victoria,9,0.22,
+aleatoria,126,victoria,9,0.19,
+aleatoria,127,victoria,9,0.22,
+aleatoria,128,victoria,9,0.19,
+aleatoria,129,victoria,9,0.26,
+aleatoria,130,victoria,9,0.10,
+aleatoria,131,victoria,9,0.07,
+aleatoria,132,victoria,9,0.12,
+aleatoria,133,victoria,9,0.37,
+aleatoria,134,victoria,10,0.30,
+aleatoria,135,victoria,10,0.10,
+aleatoria,136,victoria,9,0.16,
+aleatoria,137,victoria,9,0.08,
+aleatoria,138,victoria,9,0.12,
+aleatoria,139,victoria,10,0.14,
+aleatoria,140,victoria,9,0.22,
+aleatoria,141,victoria,10,0.30,
+aleatoria,142,victoria,9,0.16,
+aleatoria,143,victoria,9,0.14,
+aleatoria,144,victoria,9,0.21,
+aleatoria,145,victoria,10,0.20,
+aleatoria,146,victoria,10,0.28,
+aleatoria,147,victoria,10,0.25,
+aleatoria,148,victoria,9,0.12,
+aleatoria,149,victoria,9,0.16,
+aleatoria,150,victoria,10,0.19,
+aleatoria,151,victoria,10,0.11,
+aleatoria,152,victoria,9,0.14,
+aleatoria,153,victoria,9,0.24,
+aleatoria,154,victoria,11,0.16,
+aleatoria,155,victoria,10,0.14,
+aleatoria,156,victoria,10,0.19,
+aleatoria,157,victoria,9,0.12,
+aleatoria,158,victoria,9,0.12,
+aleatoria,159,victoria,10,0.18,
+aleatoria,160,victoria,11,0.16,
+aleatoria,161,victoria,9,0.14,
+aleatoria,162,victoria,10,0.10,
+aleatoria,163,victoria,9,0.21,
+aleatoria,164,victoria,9,0.16,
+aleatoria,165,victoria,9,0.25,
+aleatoria,166,victoria,10,0.12,
+aleatoria,167,victoria,9,0.14,
+aleatoria,168,victoria,11,0.18,
+aleatoria,169,victoria,10,0.14,
+aleatoria,170,victoria,9,0.14,
+aleatoria,171,victoria,11,0.14,
+aleatoria,172,victoria,9,0.14,
+aleatoria,173,victoria,9,0.20,
+aleatoria,174,victoria,9,0.08,
+aleatoria,175,victoria,9,0.14,
+aleatoria,176,victoria,9,0.19,
+aleatoria,177,victoria,9,0.08,
+aleatoria,178,victoria,9,0.18,
+aleatoria,179,victoria,10,0.16,
+aleatoria,180,victoria,10,0.35,
+aleatoria,181,victoria,10,0.10,
+aleatoria,182,victoria,9,0.10,
+aleatoria,183,victoria,9,0.19,
+aleatoria,184,victoria,10,0.25,
+aleatoria,185,victoria,9,0.14,
+aleatoria,186,victoria,9,0.19,
+aleatoria,187,victoria,9,0.16,
+aleatoria,188,victoria,10,0.19,
+aleatoria,189,victoria,10,0.39,
+aleatoria,190,victoria,9,0.18,
+aleatoria,191,victoria,11,0.14,
+aleatoria,192,victoria,9,0.22,
+aleatoria,193,victoria,10,0.14,
+aleatoria,194,victoria,10,0.14,
+aleatoria,195,victoria,9,0.10,
+aleatoria,196,victoria,10,0.10,
+aleatoria,197,victoria,10,0.19,
+aleatoria,198,victoria,10,0.14,
+aleatoria,199,victoria,10,0.08,
+voraz,0,victoria,10,0.42,
+voraz,1,victoria,9,0.42,
+voraz,2,victoria,9,0.42,
+voraz,3,victoria,9,0.42,
+voraz,4,victoria,9,0.42,
+voraz,5,victoria,9,0.42,
+voraz,6,victoria,10,0.42,
+voraz,7,victoria,9,0.42,
+voraz,8,victoria,8,0.42,
+voraz,9,victoria,10,0.42,
+voraz,10,victoria,10,0.42,
+voraz,11,victoria,9,0.42,
+voraz,12,victoria,9,0.42,
+voraz,13,victoria,10,0.42,
+voraz,14,victoria,11,0.42,
+voraz,15,victoria,9,0.42,
+voraz,16,victoria,9,0.42,
+voraz,17,victoria,9,0.42,
+voraz,18,victoria,9,0.42,
+voraz,19,victoria,10,0.42,
+voraz,20,victoria,10,0.42,
+voraz,21,victoria,9,0.42,
+voraz,22,victoria,8,0.42,
+voraz,23,victoria,9,0.42,
+voraz,24,victoria,9,0.42,
+voraz,25,victoria,10,0.42,
+voraz,26,victoria,9,0.42,
+voraz,27,victoria,9,0.42,
+voraz,28,victoria,10,0.42,
+voraz,29,victoria,10,0.42,
+voraz,30,victoria,9,0.42,
+voraz,31,victoria,10,0.42,
+voraz,32,victoria,9,0.42,
+voraz,33,victoria,10,0.42,
+voraz,34,victoria,9,0.42,
+voraz,35,victoria,9,0.42,
+voraz,36,victoria,11,0.42,
+voraz,37,victoria,9,0.42,
+voraz,38,victoria,9,0.42,
+voraz,39,victoria,9,0.42,
+voraz,40,victoria,9,0.42,
+voraz,41,victoria,10,0.42,
+voraz,42,victoria,10,0.42,
+voraz,43,victoria,9,0.42,
+voraz,44,victoria,9,0.42,
+voraz,45,victoria,10,0.42,
+voraz,46,victoria,10,0.42,
+voraz,47,victoria,9,0.42,
+voraz,48,victoria,8,0.42,
+voraz,49,victoria,10,0.42,
+voraz,50,victoria,9,0.42,
+voraz,51,victoria,9,0.42,
+voraz,52,victoria,9,0.42,
+voraz,53,victoria,9,0.42,
+voraz,54,victoria,10,0.42,
+voraz,55,victoria,10,0.42,
+voraz,56,victoria,9,0.42,
+voraz,57,victoria,9,0.42,
+voraz,58,victoria,9,0.42,
+voraz,59,victoria,9,0.42,
+voraz,60,victoria,9,0.42,
+voraz,61,victoria,9,0.42,
+voraz,62,victoria,10,0.42,
+voraz,63,victoria,9,0.42,
+voraz,64,victoria,9,0.42,
+voraz,65,victoria,9,0.42,
+voraz,66,victoria,10,0.42,
+voraz,67,victoria,9,0.42,
+voraz,68,victoria,9,0.42,
+voraz,69,victoria,10,0.42,
+voraz,70,victoria,9,0.42,
+voraz,71,victoria,9,0.42,
+voraz,72,victoria,9,0.42,
+voraz,73,victoria,10,0.42,
+voraz,74,victoria,9,0.42,
+voraz,75,victoria,11,0.42,
+voraz,76,victoria,9,0.42,
+voraz,77,victoria,9,0.42,
+voraz,78,victoria,10,0.42,
+voraz,79,victoria,9,0.42,
+voraz,80,victoria,10,0.42,
+voraz,81,victoria,9,0.42,
+voraz,82,victoria,10,0.42,
+voraz,83,victoria,10,0.42,
+voraz,84,victoria,9,0.42,
+voraz,85,victoria,9,0.42,
+voraz,86,victoria,10,0.42,
+voraz,87,victoria,8,0.42,
+voraz,88,victoria,9,0.42,
+voraz,89,victoria,9,0.42,
+voraz,90,victoria,9,0.42,
+voraz,91,victoria,9,0.42,
+voraz,92,victoria,9,0.42,
+voraz,93,victoria,9,0.42,
+voraz,94,victoria,10,0.42,
+voraz,95,victoria,10,0.42,
+voraz,96,victoria,10,0.42,
+voraz,97,victoria,11,0.42,
+voraz,98,victoria,9,0.42,
+voraz,99,victoria,9,0.42,
+voraz,100,victoria,10,0.42,
+voraz,101,victoria,9,0.42,
+voraz,102,victoria,10,0.42,
+voraz,103,victoria,9,0.42,
+voraz,104,victoria,11,0.42,
+voraz,105,victoria,9,0.42,
+voraz,106,victoria,10,0.42,
+voraz,107,victoria,11,0.42,
+voraz,108,victoria,9,0.42,
+voraz,109,victoria,9,0.42,
+voraz,110,victoria,9,0.42,
+voraz,111,victoria,10,0.42,
+voraz,112,victoria,9,0.42,
+voraz,113,victoria,9,0.42,
+voraz,114,victoria,9,0.42,
+voraz,115,victoria,9,0.42,
+voraz,116,victoria,9,0.42,
+voraz,117,victoria,9,0.42,
+voraz,118,victoria,10,0.42,
+voraz,119,victoria,9,0.42,
+voraz,120,victoria,9,0.42,
+voraz,121,victoria,9,0.42,
+voraz,122,victoria,9,0.42,
+voraz,123,victoria,10,0.42,
+voraz,124,victoria,9,0.42,
+voraz,125,victoria,10,0.42,
+voraz,126,victoria,10,0.42,
+voraz,127,victoria,9,0.42,
+voraz,128,victoria,9,0.42,
+voraz,129,victoria,9,0.42,
+voraz,130,victoria,10,0.42,
+voraz,131,victoria,9,0.42,
+voraz,132,victoria,10,0.42,
+voraz,133,victoria,9,0.42,
+voraz,134,victoria,9,0.42,
+voraz,135,victoria,9,0.42,
+voraz,136,victoria,9,0.42,
+voraz,137,victoria,9,0.42,
+voraz,138,victoria,9,0.42,
+voraz,139,victoria,9,0.42,
+voraz,140,victoria,9,0.42,
+voraz,141,victoria,10,0.42,
+voraz,142,victoria,9,0.42,
+voraz,143,victoria,9,0.42,
+voraz,144,victoria,9,0.42,
+voraz,145,victoria,9,0.42,
+voraz,146,victoria,10,0.42,
+voraz,147,victoria,9,0.42,
+voraz,148,victoria,9,0.42,
+voraz,149,victoria,9,0.42,
+voraz,150,victoria,10,0.42,
+voraz,151,victoria,9,0.42,
+voraz,152,victoria,10,0.42,
+voraz,153,victoria,10,0.42,
+voraz,154,victoria,9,0.42,
+voraz,155,victoria,10,0.42,
+voraz,156,victoria,10,0.42,
+voraz,157,victoria,9,0.42,
+voraz,158,victoria,10,0.42,
+voraz,159,victoria,9,0.42,
+voraz,160,victoria,9,0.42,
+voraz,161,victoria,9,0.42,
+voraz,162,victoria,10,0.42,
+voraz,163,victoria,9,0.42,
+voraz,164,victoria,9,0.42,
+voraz,165,victoria,9,0.42,
+voraz,166,victoria,10,0.42,
+voraz,167,victoria,9,0.42,
+voraz,168,victoria,11,0.42,
+voraz,169,victoria,9,0.42,
+voraz,170,victoria,10,0.42,
+voraz,171,victoria,10,0.42,
+voraz,172,victoria,11,0.42,
+voraz,173,victoria,10,0.42,
+voraz,174,victoria,9,0.42,
+voraz,175,victoria,9,0.42,
+voraz,176,victoria,10,0.42,
+voraz,177,victoria,8,0.42,
+voraz,178,victoria,9,0.42,
+voraz,179,victoria,9,0.42,
+voraz,180,victoria,10,0.42,
+voraz,181,victoria,10,0.42,
+voraz,182,victoria,9,0.42,
+voraz,183,victoria,10,0.42,
+voraz,184,victoria,9,0.42,
+voraz,185,victoria,9,0.42,
+voraz,186,victoria,10,0.42,
+voraz,187,victoria,10,0.42,
+voraz,188,victoria,9,0.42,
+voraz,189,victoria,9,0.42,
+voraz,190,victoria,9,0.42,
+voraz,191,victoria,9,0.42,
+voraz,192,victoria,10,0.42,
+voraz,193,victoria,9,0.42,
+voraz,194,victoria,9,0.42,
+voraz,195,victoria,11,0.42,
+voraz,196,victoria,9,0.42,
+voraz,197,victoria,9,0.42,
+voraz,198,victoria,9,0.42,
+voraz,199,victoria,9,0.42,
+experta,0,victoria,8,0.63,
+experta,1,victoria,8,0.63,
+experta,2,victoria,8,0.63,
+experta,3,victoria,7,0.63,
+experta,4,victoria,8,0.63,
+experta,5,victoria,8,0.63,
+experta,6,victoria,8,0.63,
+experta,7,victoria,8,0.63,
+experta,8,victoria,8,0.63,
+experta,9,victoria,8,0.63,
+experta,10,victoria,8,0.63,
+experta,11,victoria,8,0.63,
+experta,12,victoria,9,0.63,
+experta,13,victoria,9,0.63,
+experta,14,victoria,7,0.63,
+experta,15,victoria,8,0.63,
+experta,16,victoria,8,0.63,
+experta,17,victoria,8,0.63,
+experta,18,victoria,8,0.63,
+experta,19,victoria,9,0.79,
+experta,20,victoria,8,0.63,
+experta,21,victoria,9,0.63,
+experta,22,victoria,8,0.63,
+experta,23,victoria,7,0.63,
+experta,24,victoria,8,0.63,
+experta,25,victoria,7,0.63,
+experta,26,victoria,7,0.63,
+experta,27,victoria,9,0.63,
+experta,28,victoria,8,0.79,
+experta,29,victoria,8,0.63,
+experta,30,victoria,8,0.63,
+experta,31,victoria,7,0.63,
+experta,32,victoria,7,0.63,
+experta,33,victoria,8,0.63,
+experta,34,victoria,8,0.63,
+experta,35,victoria,9,0.63,
+experta,36,victoria,7,0.63,
+experta,37,victoria,9,0.63,
+experta,38,victoria,7,0.63,
+experta,39,victoria,7,0.63,
+experta,40,victoria,9,0.63,
+experta,41,victoria,9,0.63,
+experta,42,victoria,8,0.63,
+experta,43,victoria,9,0.63,
+experta,44,victoria,8,0.63,
+experta,45,victoria,9,0.63,
+experta,46,victoria,9,0.63,
+experta,47,victoria,8,0.63,
+experta,48,victoria,9,0.63,
+experta,49,victoria,8,0.63,
+experta,50,victoria,7,0.63,
+experta,51,victoria,8,0.63,
+experta,52,victoria,7,0.63,
+experta,53,victoria,7,0.63,
+experta,54,victoria,7,0.63,
+experta,55,victoria,9,0.63,
+experta,56,victoria,9,0.63,
+experta,57,victoria,7,0.63,
+experta,58,victoria,8,0.63,
+experta,59,victoria,9,0.63,
+experta,60,victoria,9,0.63,
+experta,61,victoria,8,0.63,
+experta,62,victoria,9,0.63,
+experta,63,victoria,8,0.63,
+experta,64,victoria,9,0.63,
+experta,65,victoria,8,0.63,
+experta,66,victoria,7,0.63,
+experta,67,victoria,9,0.63,
+experta,68,victoria,9,0.63,
+experta,69,victoria,8,0.63,
+experta,70,victoria,8,0.63,
+experta,71,victoria,8,0.63,
+experta,72,victoria,7,0.63,
+experta,73,victoria,8,0.63,
+experta,74,victoria,8,0.63,
+experta,75,victoria,8,0.63,
+experta,76,victoria,9,0.63,
+experta,77,victoria,9,0.63,
+experta,78,victoria,7,0.63,
+experta,79,victoria,8,0.63,
+experta,80,victoria,7,0.63,
+experta,81,victoria,8,0.63,
+experta,82,victoria,7,0.63,
+experta,83,victoria,7,0.63,
+experta,84,victoria,8,0.63,
+experta,85,victoria,7,0.63,
+experta,86,victoria,8,0.63,
+experta,87,victoria,7,0.63,
+experta,88,victoria,8,0.63,
+experta,89,victoria,8,0.63,
+experta,90,victoria,8,0.63,
+experta,91,victoria,9,0.63,
+experta,92,victoria,7,0.63,
+experta,93,victoria,7,0.63,
+experta,94,victoria,9,0.63,
+experta,95,victoria,9,0.63,
+experta,96,victoria,7,0.63,
+experta,97,victoria,8,0.63,
+experta,98,victoria,7,0.63,
+experta,99,victoria,8,0.63,
+experta,100,victoria,7,0.63,
+experta,101,victoria,8,0.63,
+experta,102,victoria,8,0.63,
+experta,103,victoria,8,0.63,
+experta,104,victoria,8,0.63,
+experta,105,victoria,7,0.63,
+experta,106,victoria,8,0.63,
+experta,107,victoria,8,0.79,
+experta,108,victoria,8,0.63,
+experta,109,victoria,8,0.63,
+experta,110,victoria,8,0.63,
+experta,111,victoria,7,0.63,
+experta,112,victoria,9,0.63,
+experta,113,victoria,7,0.63,
+experta,114,victoria,8,0.63,
+experta,115,victoria,8,0.63,
+experta,116,victoria,7,0.63,
+experta,117,victoria,8,0.63,
+experta,118,victoria,8,0.63,
+experta,119,victoria,8,0.63,
+experta,120,victoria,8,0.63,
+experta,121,victoria,7,0.63,
+experta,122,victoria,7,0.63,
+experta,123,victoria,8,0.63,
+experta,124,victoria,8,0.63,
+experta,125,victoria,8,0.63,
+experta,126,victoria,8,0.63,
+experta,127,victoria,7,0.63,
+experta,128,victoria,7,0.63,
+experta,129,victoria,8,0.63,
+experta,130,victoria,8,0.63,
+experta,131,victoria,7,0.63,
+experta,132,victoria,7,0.63,
+experta,133,victoria,7,0.63,
+experta,134,victoria,7,0.63,
+experta,135,victoria,8,0.63,
+experta,136,victoria,8,0.63,
+experta,137,victoria,8,0.63,
+experta,138,victoria,8,0.63,
+experta,139,victoria,8,0.63,
+experta,140,victoria,8,0.63,
+experta,141,victoria,8,0.63,
+experta,142,victoria,8,0.63,
+experta,143,victoria,8,0.63,
+experta,144,victoria,7,0.63,
+experta,145,victoria,9,0.63,
+experta,146,victoria,8,0.63,
+experta,147,victoria,7,0.63,
+experta,148,victoria,7,0.63,
+experta,149,victoria,8,0.63,
+experta,150,victoria,7,0.63,
+experta,151,victoria,7,0.63,
+experta,152,victoria,8,0.63,
+experta,153,victoria,8,0.63,
+experta,154,victoria,9,0.63,
+experta,155,victoria,7,0.63,
+experta,156,victoria,10,0.79,
+experta,157,victoria,7,0.63,
+experta,158,victoria,7,0.63,
+experta,159,victoria,8,0.63,
+experta,160,victoria,8,0.63,
+experta,161,victoria,7,0.63,
+experta,162,victoria,8,0.63,
+experta,163,victoria,9,0.63,
+experta,164,victoria,9,0.63,
+experta,165,victoria,9,0.63,
+experta,166,victoria,8,0.63,
+experta,167,victoria,7,0.63,
+experta,168,victoria,8,0.63,
+experta,169,victoria,10,0.63,
+experta,170,victoria,8,0.63,
+experta,171,victoria,7,0.63,
+experta,172,victoria,8,0.63,
+experta,173,victoria,9,0.63,
+experta,174,victoria,8,0.63,
+experta,175,victoria,8,0.63,
+experta,176,victoria,7,0.63,
+experta,177,victoria,8,0.63,
+experta,178,victoria,7,0.63,
+experta,179,victoria,7,0.63,
+experta,180,victoria,9,0.63,
+experta,181,victoria,9,0.63,
+experta,182,victoria,7,0.63,
+experta,183,victoria,8,0.63,
+experta,184,victoria,9,0.63,
+experta,185,victoria,7,0.63,
+experta,186,victoria,9,0.63,
+experta,187,victoria,7,0.63,
+experta,188,victoria,8,0.63,
+experta,189,victoria,9,0.63,
+experta,190,victoria,7,0.63,
+experta,191,victoria,7,0.63,
+experta,192,victoria,8,0.63,
+experta,193,victoria,7,0.63,
+experta,194,victoria,7,0.63,
+experta,195,victoria,8,0.63,
+experta,196,victoria,7,0.63,
+experta,197,victoria,8,0.63,
+experta,198,victoria,9,0.63,
+experta,199,victoria,9,0.63,

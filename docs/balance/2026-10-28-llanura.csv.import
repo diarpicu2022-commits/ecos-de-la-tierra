@@ -6,10 +6,10 @@ uid="uid://7gvdytmns4gh"
 
 [deps]
 
-files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.habilidades.translation"]
+files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.sintonia.translation"]
 
 source_file="res://docs/balance/2026-10-28-llanura.csv"
-dest_files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.habilidades.translation"]
+dest_files=["res://docs/balance/2026-10-28-llanura.combate.translation", "res://docs/balance/2026-10-28-llanura.resultado.translation", "res://docs/balance/2026-10-28-llanura.rondas.translation", "res://docs/balance/2026-10-28-llanura.sintonia.translation"]
 
 [params]
 

@@ -946,6 +946,51 @@ SEGUIDME» en el menú de Ilan) y `2026-10-28-combate-orden-registro.png`
 **Pendiente para el paso 4:** los pesos iniciales de las mentes desde IA-4 (hoy
 parten de una semilla por nombre), y el reequilibrado.
 
+Diego aprobó el paso 3 de IA-5 el 2026-10-28.
+
+#### IA-5, paso 4 — El bot en modo líder y el reequilibrado · 2026-10-28 (en curso)
+
+- **El bot, en el modo «Orden de líder»:** solo decide por Ilan y la orden.
+  - *aleatoria:* acción y orden al azar;
+  - *voraz:* Ilan repite su habilidad y manda *Seguidme*;
+  - *experta:* cura, ataja si sirve y da la orden que toca.
+- **Pesos iniciales de IA-5:** la experta juega a los cinco y deja 9 779
+  ejemplos. Una mente aprende de ellos (99 % de acierto) y se guarda en
+  `data/balance/party_init.json`. `PartyMind.initial()` parte de ahí.
+
+**Medido con los monstruos de hoy** (200 combates):
+
+- las tres políticas ganan en todas las regiones;
+- **la voraz también gana contra la Sombra** (200 de 200);
+- la sintonía final sí separa: aleatoria 0,17-0,39, voraz 0,28-0,63 y experta
+  0,53-0,94.
+
+**Barrido del ataque del monstruo** (×1,0 a ×2,5; aleatoria / experta, de
+200):
+
+| Región | ×1,0 | ×2,0 | ×2,5 |
+|---|---|---|---|
+| Bosque | 200 / 200 | 198 / 200 | 185 / 198 |
+| Cuenca | 200 / 200 | 200 / 200 | 200 / 200 |
+| Costa | 200 / 200 | 200 / 200 | 200 / 200 |
+| Llanura | 200 / 200 | 197 / 198 | 190 / 188 |
+| Cumbre | 199 / 200 | 129 / 182 | 74 / 125 |
+| Cripta | 200 / 200 | 199 / 200 | 198 / 200 |
+
+**Ningún multiplicador cumple** («la aleatoria ≤ 30 % y la experta, siempre»).
+En la Cumbre, la experta cae antes que la aleatoria.
+
+**Diagnóstico, y se le lleva a Diego:** no es un problema de números, es de
+estructura.
+
+1. **Los compañeros juegan bien sin el líder.** Parten de los pesos de la
+   experta y aprenden un solo paso por decisión de Ilan. Además, con sintonía
+   0 siguen acertando la mitad de las veces (precisión 0,5 + 0,5 × sintonía).
+   Un líder malo apenas los estropea.
+2. **La lección de la Sombra no puede darse con este reparto.** Cada
+   compañero tiene *su* contramedida: si atajan, combinan los cinco tipos
+   aunque el líder repita el suyo.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

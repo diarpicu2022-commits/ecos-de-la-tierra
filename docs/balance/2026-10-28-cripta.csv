@@ -1,901 +1,601 @@
-politica,combate,resultado,rondas,habilidades
-aleatoria,0,victoria,11,Separación en la Fuente:5 Barrera Absorbente:4 Filtro Biológico:3 Escudo de Albedo:4 Línea Cortafuegos:3 Rotación de Cultivos:3 Reforestación:2
-aleatoria,1,victoria,12,Barrera Absorbente:5 Reforestación:4 Separación en la Fuente:5 Línea Cortafuegos:3 Filtro Biológico:3 Rotación de Cultivos:2 Escudo de Albedo:3
-aleatoria,2,victoria,14,Línea Cortafuegos:3 Separación en la Fuente:10 Filtro Biológico:6 Reforestación:7 Barrera Absorbente:2 Escudo de Albedo:4 Rotación de Cultivos:4
-aleatoria,3,victoria,12,Línea Cortafuegos:3 Filtro Biológico:2 Reforestación:3 Rotación de Cultivos:5 Separación en la Fuente:5 Barrera Absorbente:4 Escudo de Albedo:4
-aleatoria,4,victoria,11,Línea Cortafuegos:4 Rotación de Cultivos:4 Reforestación:3 Separación en la Fuente:5 Barrera Absorbente:2 Escudo de Albedo:5 Filtro Biológico:3
-aleatoria,5,victoria,12,Rotación de Cultivos:9 Escudo de Albedo:5 Reforestación:1 Barrera Absorbente:3 Separación en la Fuente:3 Filtro Biológico:4 Línea Cortafuegos:4
-aleatoria,6,victoria,11,Separación en la Fuente:7 Línea Cortafuegos:3 Rotación de Cultivos:6 Filtro Biológico:2 Reforestación:3 Barrera Absorbente:3 Escudo de Albedo:4
-aleatoria,7,victoria,12,Barrera Absorbente:3 Reforestación:4 Rotación de Cultivos:4 Escudo de Albedo:7 Filtro Biológico:3 Separación en la Fuente:5 Línea Cortafuegos:1
-aleatoria,8,victoria,11,Escudo de Albedo:3 Línea Cortafuegos:3 Barrera Absorbente:6 Rotación de Cultivos:5 Reforestación:2 Separación en la Fuente:2 Filtro Biológico:2
-aleatoria,9,victoria,12,Filtro Biológico:5 Reforestación:3 Línea Cortafuegos:2 Barrera Absorbente:2 Rotación de Cultivos:4 Separación en la Fuente:2 Escudo de Albedo:5
-aleatoria,10,victoria,13,Rotación de Cultivos:7 Reforestación:6 Filtro Biológico:5 Línea Cortafuegos:3 Escudo de Albedo:5 Separación en la Fuente:6 Barrera Absorbente:3
-aleatoria,11,victoria,13,Filtro Biológico:4 Reforestación:2 Escudo de Albedo:4 Separación en la Fuente:5 Línea Cortafuegos:6 Rotación de Cultivos:5 Barrera Absorbente:1
-aleatoria,12,victoria,12,Barrera Absorbente:1 Separación en la Fuente:5 Línea Cortafuegos:3 Filtro Biológico:3 Rotación de Cultivos:4 Escudo de Albedo:5 Reforestación:3
-aleatoria,13,victoria,15,Barrera Absorbente:6 Rotación de Cultivos:6 Separación en la Fuente:6 Filtro Biológico:3 Reforestación:5 Escudo de Albedo:5 Línea Cortafuegos:2
-aleatoria,14,victoria,11,Barrera Absorbente:3 Línea Cortafuegos:3 Reforestación:3 Separación en la Fuente:5 Escudo de Albedo:6 Rotación de Cultivos:3 Filtro Biológico:4
-aleatoria,15,victoria,12,Separación en la Fuente:2 Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:5 Filtro Biológico:5 Línea Cortafuegos:2 Reforestación:3
-aleatoria,16,victoria,14,Rotación de Cultivos:5 Separación en la Fuente:7 Escudo de Albedo:7 Reforestación:5 Filtro Biológico:3 Barrera Absorbente:6 Línea Cortafuegos:1
-aleatoria,17,victoria,11,Escudo de Albedo:5 Separación en la Fuente:6 Rotación de Cultivos:4 Filtro Biológico:2 Reforestación:2 Barrera Absorbente:2 Línea Cortafuegos:2
-aleatoria,18,victoria,12,Filtro Biológico:4 Escudo de Albedo:4 Rotación de Cultivos:6 Reforestación:2 Separación en la Fuente:6 Línea Cortafuegos:4 Barrera Absorbente:2
-aleatoria,19,victoria,11,Barrera Absorbente:5 Escudo de Albedo:6 Línea Cortafuegos:3 Separación en la Fuente:4 Reforestación:2 Rotación de Cultivos:2 Filtro Biológico:1
-aleatoria,20,victoria,12,Línea Cortafuegos:5 Filtro Biológico:4 Separación en la Fuente:4 Barrera Absorbente:5 Escudo de Albedo:4 Reforestación:3 Rotación de Cultivos:2
-aleatoria,21,victoria,12,Barrera Absorbente:4 Reforestación:3 Filtro Biológico:5 Escudo de Albedo:5 Separación en la Fuente:2 Línea Cortafuegos:4 Rotación de Cultivos:2
-aleatoria,22,victoria,12,Escudo de Albedo:5 Separación en la Fuente:5 Reforestación:4 Filtro Biológico:4 Línea Cortafuegos:3 Barrera Absorbente:2 Rotación de Cultivos:3
-aleatoria,23,victoria,12,Filtro Biológico:2 Reforestación:7 Rotación de Cultivos:6 Separación en la Fuente:5 Línea Cortafuegos:3 Escudo de Albedo:4 Barrera Absorbente:2
-aleatoria,24,victoria,10,Barrera Absorbente:3 Separación en la Fuente:5 Línea Cortafuegos:2 Escudo de Albedo:2 Rotación de Cultivos:4 Reforestación:1 Filtro Biológico:1
-aleatoria,25,victoria,13,Escudo de Albedo:5 Rotación de Cultivos:4 Reforestación:3 Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:1 Barrera Absorbente:3
-aleatoria,26,victoria,14,Rotación de Cultivos:3 Barrera Absorbente:6 Escudo de Albedo:7 Reforestación:5 Separación en la Fuente:4 Filtro Biológico:3 Línea Cortafuegos:2
-aleatoria,27,victoria,14,Reforestación:5 Rotación de Cultivos:11 Filtro Biológico:6 Línea Cortafuegos:3 Separación en la Fuente:4 Escudo de Albedo:3 Barrera Absorbente:1
-aleatoria,28,victoria,11,Barrera Absorbente:5 Línea Cortafuegos:4 Separación en la Fuente:5 Filtro Biológico:3 Escudo de Albedo:3 Reforestación:4 Rotación de Cultivos:5
-aleatoria,29,victoria,12,Reforestación:3 Filtro Biológico:4 Escudo de Albedo:5 Línea Cortafuegos:4 Rotación de Cultivos:6 Separación en la Fuente:2 Barrera Absorbente:3
-aleatoria,30,victoria,11,Rotación de Cultivos:5 Separación en la Fuente:6 Reforestación:1 Filtro Biológico:3 Línea Cortafuegos:5 Barrera Absorbente:1 Escudo de Albedo:3
-aleatoria,31,victoria,10,Separación en la Fuente:5 Reforestación:2 Línea Cortafuegos:3 Rotación de Cultivos:6 Filtro Biológico:1 Escudo de Albedo:4 Barrera Absorbente:3
-aleatoria,32,victoria,12,Barrera Absorbente:3 Línea Cortafuegos:5 Separación en la Fuente:4 Rotación de Cultivos:5 Filtro Biológico:4 Reforestación:3 Escudo de Albedo:2
-aleatoria,33,victoria,11,Reforestación:2 Separación en la Fuente:5 Rotación de Cultivos:4 Barrera Absorbente:3 Escudo de Albedo:6 Filtro Biológico:2 Línea Cortafuegos:3
-aleatoria,34,victoria,15,Separación en la Fuente:8 Línea Cortafuegos:3 Filtro Biológico:4 Escudo de Albedo:4 Rotación de Cultivos:7 Reforestación:3 Barrera Absorbente:1
-aleatoria,35,victoria,12,Reforestación:3 Rotación de Cultivos:6 Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:3 Escudo de Albedo:2 Filtro Biológico:1
-aleatoria,36,victoria,13,Filtro Biológico:4 Línea Cortafuegos:3 Escudo de Albedo:7 Rotación de Cultivos:4 Barrera Absorbente:2 Reforestación:5 Separación en la Fuente:3
-aleatoria,37,victoria,13,Filtro Biológico:5 Escudo de Albedo:2 Rotación de Cultivos:4 Reforestación:4 Línea Cortafuegos:4 Barrera Absorbente:5 Separación en la Fuente:3
-aleatoria,38,victoria,12,Barrera Absorbente:3 Reforestación:3 Escudo de Albedo:7 Rotación de Cultivos:4 Filtro Biológico:3 Línea Cortafuegos:3 Separación en la Fuente:3
-aleatoria,39,victoria,12,Reforestación:5 Rotación de Cultivos:6 Barrera Absorbente:1 Escudo de Albedo:5 Línea Cortafuegos:2 Separación en la Fuente:4 Filtro Biológico:2
-aleatoria,40,victoria,24,Separación en la Fuente:9 Línea Cortafuegos:10 Rotación de Cultivos:6 Filtro Biológico:10 Reforestación:7 Escudo de Albedo:9 Barrera Absorbente:1
-aleatoria,41,victoria,11,Filtro Biológico:4 Escudo de Albedo:4 Línea Cortafuegos:2 Separación en la Fuente:4 Barrera Absorbente:3 Rotación de Cultivos:6 Reforestación:3
-aleatoria,42,victoria,10,Rotación de Cultivos:2 Escudo de Albedo:3 Reforestación:2 Separación en la Fuente:4 Línea Cortafuegos:4 Barrera Absorbente:2 Filtro Biológico:1
-aleatoria,43,victoria,12,Reforestación:3 Separación en la Fuente:5 Filtro Biológico:2 Barrera Absorbente:3 Rotación de Cultivos:2 Línea Cortafuegos:3 Escudo de Albedo:3
-aleatoria,44,victoria,12,Filtro Biológico:6 Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:6 Separación en la Fuente:3 Reforestación:2 Línea Cortafuegos:2
-aleatoria,45,victoria,12,Rotación de Cultivos:7 Separación en la Fuente:6 Filtro Biológico:6 Escudo de Albedo:3 Reforestación:2 Línea Cortafuegos:4 Barrera Absorbente:2
-aleatoria,46,victoria,11,Escudo de Albedo:6 Reforestación:2 Barrera Absorbente:4 Rotación de Cultivos:4 Línea Cortafuegos:3 Filtro Biológico:2 Separación en la Fuente:3
-aleatoria,47,victoria,11,Filtro Biológico:3 Línea Cortafuegos:2 Rotación de Cultivos:3 Separación en la Fuente:7 Escudo de Albedo:3 Barrera Absorbente:3 Reforestación:2
-aleatoria,48,victoria,10,Filtro Biológico:1 Línea Cortafuegos:3 Separación en la Fuente:4 Barrera Absorbente:5 Escudo de Albedo:6 Reforestación:2 Rotación de Cultivos:2
-aleatoria,49,victoria,16,Barrera Absorbente:4 Rotación de Cultivos:7 Separación en la Fuente:7 Escudo de Albedo:9 Reforestación:6 Filtro Biológico:5 Línea Cortafuegos:1
-aleatoria,50,victoria,11,Barrera Absorbente:3 Reforestación:2 Rotación de Cultivos:7 Línea Cortafuegos:6 Separación en la Fuente:4 Filtro Biológico:4 Escudo de Albedo:3
-aleatoria,51,victoria,12,Barrera Absorbente:7 Escudo de Albedo:6 Reforestación:3 Rotación de Cultivos:4 Separación en la Fuente:5 Línea Cortafuegos:3 Filtro Biológico:1
-aleatoria,52,victoria,12,Reforestación:6 Rotación de Cultivos:6 Separación en la Fuente:4 Línea Cortafuegos:4 Barrera Absorbente:2 Escudo de Albedo:5 Filtro Biológico:3
-aleatoria,53,victoria,13,Filtro Biológico:4 Escudo de Albedo:5 Línea Cortafuegos:3 Rotación de Cultivos:5 Reforestación:3 Barrera Absorbente:4 Separación en la Fuente:2
-aleatoria,54,victoria,11,Barrera Absorbente:3 Filtro Biológico:4 Separación en la Fuente:6 Rotación de Cultivos:3 Línea Cortafuegos:5 Reforestación:1 Escudo de Albedo:4
-aleatoria,55,victoria,13,Barrera Absorbente:2 Filtro Biológico:8 Línea Cortafuegos:5 Rotación de Cultivos:6 Reforestación:5 Escudo de Albedo:2 Separación en la Fuente:2
-aleatoria,56,victoria,12,Rotación de Cultivos:4 Separación en la Fuente:3 Filtro Biológico:4 Línea Cortafuegos:4 Barrera Absorbente:4 Escudo de Albedo:4 Reforestación:1
-aleatoria,57,victoria,17,Separación en la Fuente:5 Escudo de Albedo:7 Filtro Biológico:7 Línea Cortafuegos:7 Reforestación:2 Rotación de Cultivos:3 Barrera Absorbente:1
-aleatoria,58,victoria,12,Escudo de Albedo:4 Línea Cortafuegos:4 Rotación de Cultivos:5 Filtro Biológico:3 Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:2
-aleatoria,59,victoria,11,Barrera Absorbente:3 Línea Cortafuegos:3 Filtro Biológico:2 Separación en la Fuente:6 Rotación de Cultivos:3 Reforestación:2 Escudo de Albedo:3
-aleatoria,60,victoria,13,Filtro Biológico:5 Escudo de Albedo:5 Separación en la Fuente:8 Reforestación:5 Rotación de Cultivos:7 Barrera Absorbente:3 Línea Cortafuegos:3
-aleatoria,61,victoria,11,Escudo de Albedo:6 Separación en la Fuente:6 Rotación de Cultivos:4 Barrera Absorbente:2 Línea Cortafuegos:2 Filtro Biológico:3 Reforestación:1
-aleatoria,62,victoria,11,Reforestación:4 Escudo de Albedo:3 Línea Cortafuegos:3 Separación en la Fuente:4 Filtro Biológico:3 Rotación de Cultivos:4 Barrera Absorbente:3
-aleatoria,63,victoria,11,Filtro Biológico:3 Escudo de Albedo:4 Separación en la Fuente:6 Barrera Absorbente:3 Rotación de Cultivos:3 Reforestación:2 Línea Cortafuegos:3
-aleatoria,64,victoria,14,Separación en la Fuente:3 Barrera Absorbente:3 Escudo de Albedo:7 Línea Cortafuegos:5 Filtro Biológico:10 Reforestación:3 Rotación de Cultivos:5
-aleatoria,65,victoria,11,Filtro Biológico:2 Línea Cortafuegos:5 Separación en la Fuente:6 Escudo de Albedo:2 Reforestación:3 Barrera Absorbente:4 Rotación de Cultivos:5
-aleatoria,66,victoria,12,Línea Cortafuegos:5 Rotación de Cultivos:5 Separación en la Fuente:7 Barrera Absorbente:2 Reforestación:3 Filtro Biológico:3 Escudo de Albedo:3
-aleatoria,67,victoria,12,Escudo de Albedo:5 Filtro Biológico:6 Línea Cortafuegos:3 Rotación de Cultivos:7 Separación en la Fuente:4 Barrera Absorbente:1 Reforestación:1
-aleatoria,68,victoria,10,Separación en la Fuente:5 Barrera Absorbente:5 Escudo de Albedo:4 Línea Cortafuegos:2 Rotación de Cultivos:4 Filtro Biológico:1 Reforestación:1
-aleatoria,69,victoria,10,Barrera Absorbente:5 Rotación de Cultivos:6 Separación en la Fuente:2 Filtro Biológico:2 Escudo de Albedo:4 Línea Cortafuegos:3 Reforestación:1
-aleatoria,70,victoria,13,Línea Cortafuegos:4 Filtro Biológico:3 Rotación de Cultivos:4 Separación en la Fuente:5 Barrera Absorbente:2 Reforestación:3 Escudo de Albedo:2
-aleatoria,71,victoria,13,Filtro Biológico:4 Escudo de Albedo:5 Reforestación:4 Separación en la Fuente:6 Línea Cortafuegos:3 Rotación de Cultivos:5 Barrera Absorbente:1
-aleatoria,72,victoria,13,Escudo de Albedo:8 Rotación de Cultivos:7 Separación en la Fuente:5 Barrera Absorbente:4 Filtro Biológico:2 Reforestación:3 Línea Cortafuegos:1
-aleatoria,73,victoria,14,Barrera Absorbente:5 Escudo de Albedo:1 Línea Cortafuegos:4 Rotación de Cultivos:6 Separación en la Fuente:4 Filtro Biológico:1 Reforestación:2
-aleatoria,74,victoria,12,Filtro Biológico:5 Separación en la Fuente:8 Escudo de Albedo:7 Reforestación:3 Rotación de Cultivos:4 Línea Cortafuegos:1 Barrera Absorbente:3
-aleatoria,75,victoria,15,Barrera Absorbente:3 Filtro Biológico:6 Rotación de Cultivos:5 Reforestación:5 Línea Cortafuegos:3 Separación en la Fuente:5 Escudo de Albedo:2
-aleatoria,76,victoria,12,Línea Cortafuegos:3 Filtro Biológico:6 Escudo de Albedo:4 Reforestación:1 Separación en la Fuente:3 Barrera Absorbente:1 Rotación de Cultivos:4
-aleatoria,77,victoria,11,Separación en la Fuente:3 Barrera Absorbente:4 Escudo de Albedo:3 Línea Cortafuegos:1 Reforestación:3 Rotación de Cultivos:6 Filtro Biológico:2
-aleatoria,78,victoria,14,Escudo de Albedo:9 Filtro Biológico:6 Rotación de Cultivos:8 Reforestación:5 Línea Cortafuegos:4 Barrera Absorbente:3 Separación en la Fuente:2
-aleatoria,79,victoria,12,Filtro Biológico:3 Rotación de Cultivos:4 Separación en la Fuente:4 Barrera Absorbente:4 Línea Cortafuegos:2 Escudo de Albedo:3 Reforestación:5
-aleatoria,80,victoria,12,Escudo de Albedo:7 Línea Cortafuegos:4 Rotación de Cultivos:3 Filtro Biológico:3 Separación en la Fuente:3 Reforestación:3 Barrera Absorbente:2
-aleatoria,81,victoria,11,Barrera Absorbente:7 Escudo de Albedo:5 Reforestación:3 Separación en la Fuente:2 Línea Cortafuegos:4 Rotación de Cultivos:5
-aleatoria,82,victoria,12,Reforestación:4 Escudo de Albedo:4 Barrera Absorbente:3 Filtro Biológico:4 Línea Cortafuegos:1 Rotación de Cultivos:4 Separación en la Fuente:5
-aleatoria,83,victoria,12,Filtro Biológico:9 Línea Cortafuegos:7 Rotación de Cultivos:7 Barrera Absorbente:1 Reforestación:1 Escudo de Albedo:3 Separación en la Fuente:4
-aleatoria,84,victoria,12,Escudo de Albedo:6 Línea Cortafuegos:3 Filtro Biológico:3 Reforestación:4 Rotación de Cultivos:3 Barrera Absorbente:4 Separación en la Fuente:3
-aleatoria,85,victoria,16,Escudo de Albedo:8 Rotación de Cultivos:9 Filtro Biológico:5 Barrera Absorbente:6 Reforestación:7 Separación en la Fuente:4 Línea Cortafuegos:1
-aleatoria,86,victoria,10,Barrera Absorbente:6 Escudo de Albedo:2 Reforestación:3 Rotación de Cultivos:6 Línea Cortafuegos:3 Separación en la Fuente:1 Filtro Biológico:1
-aleatoria,87,victoria,12,Escudo de Albedo:8 Separación en la Fuente:6 Filtro Biológico:3 Rotación de Cultivos:6 Reforestación:3 Línea Cortafuegos:1 Barrera Absorbente:2
-aleatoria,88,victoria,12,Reforestación:2 Barrera Absorbente:2 Línea Cortafuegos:3 Separación en la Fuente:2 Filtro Biológico:5 Escudo de Albedo:5 Rotación de Cultivos:4
-aleatoria,89,victoria,13,Barrera Absorbente:5 Rotación de Cultivos:3 Escudo de Albedo:5 Reforestación:6 Separación en la Fuente:5 Línea Cortafuegos:1 Filtro Biológico:1
-aleatoria,90,victoria,13,Escudo de Albedo:6 Rotación de Cultivos:4 Separación en la Fuente:5 Barrera Absorbente:3 Filtro Biológico:3 Reforestación:3 Línea Cortafuegos:2
-aleatoria,91,victoria,12,Barrera Absorbente:3 Reforestación:3 Línea Cortafuegos:3 Rotación de Cultivos:5 Separación en la Fuente:2 Escudo de Albedo:3
-aleatoria,92,victoria,11,Escudo de Albedo:6 Línea Cortafuegos:3 Rotación de Cultivos:6 Filtro Biológico:1 Barrera Absorbente:3 Reforestación:5 Separación en la Fuente:4
-aleatoria,93,victoria,14,Reforestación:4 Separación en la Fuente:8 Barrera Absorbente:7 Escudo de Albedo:4 Filtro Biológico:2 Rotación de Cultivos:3 Línea Cortafuegos:1
-aleatoria,94,victoria,12,Filtro Biológico:3 Escudo de Albedo:5 Reforestación:2 Rotación de Cultivos:6 Barrera Absorbente:2 Separación en la Fuente:3 Línea Cortafuegos:4
-aleatoria,95,victoria,13,Filtro Biológico:7 Rotación de Cultivos:6 Línea Cortafuegos:5 Reforestación:4 Separación en la Fuente:3 Escudo de Albedo:4 Barrera Absorbente:3
-aleatoria,96,victoria,13,Escudo de Albedo:6 Barrera Absorbente:4 Reforestación:3 Separación en la Fuente:5 Filtro Biológico:5 Línea Cortafuegos:2 Rotación de Cultivos:3
-aleatoria,97,victoria,13,Filtro Biológico:5 Escudo de Albedo:5 Rotación de Cultivos:5 Barrera Absorbente:5 Reforestación:4 Línea Cortafuegos:3 Separación en la Fuente:2
-aleatoria,98,victoria,13,Barrera Absorbente:5 Escudo de Albedo:6 Separación en la Fuente:4 Línea Cortafuegos:4 Filtro Biológico:2 Reforestación:1 Rotación de Cultivos:2
-aleatoria,99,victoria,12,Línea Cortafuegos:4 Separación en la Fuente:5 Filtro Biológico:7 Rotación de Cultivos:8 Barrera Absorbente:3 Reforestación:4 Escudo de Albedo:2
-aleatoria,100,victoria,14,Filtro Biológico:5 Reforestación:4 Separación en la Fuente:5 Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:4 Línea Cortafuegos:1
-aleatoria,101,victoria,10,Barrera Absorbente:3 Rotación de Cultivos:6 Separación en la Fuente:4 Línea Cortafuegos:5 Escudo de Albedo:5 Filtro Biológico:4 Reforestación:1
-aleatoria,102,victoria,11,Escudo de Albedo:5 Rotación de Cultivos:4 Filtro Biológico:2 Reforestación:2 Separación en la Fuente:5 Barrera Absorbente:3 Línea Cortafuegos:4
-aleatoria,103,victoria,14,Escudo de Albedo:8 Filtro Biológico:5 Separación en la Fuente:4 Reforestación:3 Rotación de Cultivos:6 Línea Cortafuegos:3 Barrera Absorbente:1
-aleatoria,104,victoria,12,Escudo de Albedo:3 Reforestación:2 Rotación de Cultivos:4 Línea Cortafuegos:7 Barrera Absorbente:3 Filtro Biológico:3 Separación en la Fuente:4
-aleatoria,105,victoria,11,Línea Cortafuegos:3 Barrera Absorbente:4 Escudo de Albedo:3 Filtro Biológico:3 Separación en la Fuente:3 Rotación de Cultivos:2
-aleatoria,106,victoria,13,Reforestación:5 Rotación de Cultivos:3 Escudo de Albedo:5 Barrera Absorbente:4 Línea Cortafuegos:3 Filtro Biológico:3 Separación en la Fuente:4
-aleatoria,107,victoria,12,Separación en la Fuente:4 Reforestación:4 Filtro Biológico:6 Escudo de Albedo:3 Rotación de Cultivos:3 Barrera Absorbente:2 Línea Cortafuegos:3
-aleatoria,108,victoria,11,Barrera Absorbente:2 Rotación de Cultivos:6 Separación en la Fuente:5 Línea Cortafuegos:4 Escudo de Albedo:3 Filtro Biológico:4 Reforestación:3
-aleatoria,109,victoria,12,Barrera Absorbente:4 Escudo de Albedo:5 Reforestación:3 Filtro Biológico:3 Rotación de Cultivos:5 Separación en la Fuente:4 Línea Cortafuegos:2
-aleatoria,110,victoria,14,Filtro Biológico:5 Rotación de Cultivos:5 Barrera Absorbente:4 Escudo de Albedo:6 Reforestación:5 Separación en la Fuente:3 Línea Cortafuegos:1
-aleatoria,111,victoria,12,Reforestación:5 Escudo de Albedo:5 Línea Cortafuegos:5 Separación en la Fuente:3 Rotación de Cultivos:6 Filtro Biológico:1 Barrera Absorbente:2
-aleatoria,112,victoria,12,Escudo de Albedo:4 Reforestación:5 Rotación de Cultivos:3 Filtro Biológico:3 Separación en la Fuente:2 Barrera Absorbente:5 Línea Cortafuegos:3
-aleatoria,113,victoria,17,Escudo de Albedo:11 Reforestación:7 Filtro Biológico:5 Separación en la Fuente:5 Rotación de Cultivos:4 Barrera Absorbente:5 Línea Cortafuegos:1
-aleatoria,114,victoria,10,Línea Cortafuegos:3 Separación en la Fuente:5 Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:4 Reforestación:2 Filtro Biológico:1
-aleatoria,115,victoria,13,Filtro Biológico:5 Rotación de Cultivos:7 Escudo de Albedo:5 Reforestación:5 Separación en la Fuente:6 Barrera Absorbente:2 Línea Cortafuegos:2
-aleatoria,116,victoria,12,Escudo de Albedo:5 Barrera Absorbente:2 Línea Cortafuegos:3 Rotación de Cultivos:6 Filtro Biológico:3 Reforestación:5 Separación en la Fuente:3
-aleatoria,117,victoria,11,Filtro Biológico:3 Línea Cortafuegos:3 Rotación de Cultivos:2 Separación en la Fuente:4 Barrera Absorbente:3 Escudo de Albedo:5 Reforestación:4
-aleatoria,118,victoria,11,Línea Cortafuegos:9 Filtro Biológico:5 Escudo de Albedo:2 Rotación de Cultivos:3 Separación en la Fuente:4 Barrera Absorbente:1 Reforestación:1
-aleatoria,119,victoria,11,Barrera Absorbente:3 Escudo de Albedo:4 Línea Cortafuegos:5 Separación en la Fuente:6 Filtro Biológico:5 Reforestación:1 Rotación de Cultivos:4
-aleatoria,120,victoria,12,Escudo de Albedo:4 Reforestación:4 Rotación de Cultivos:4 Separación en la Fuente:5 Filtro Biológico:2 Línea Cortafuegos:4 Barrera Absorbente:2
-aleatoria,121,victoria,11,Escudo de Albedo:5 Reforestación:1 Rotación de Cultivos:3 Filtro Biológico:6 Línea Cortafuegos:3 Separación en la Fuente:5 Barrera Absorbente:1
-aleatoria,122,victoria,12,Filtro Biológico:3 Reforestación:3 Barrera Absorbente:4 Escudo de Albedo:4 Separación en la Fuente:3 Línea Cortafuegos:3 Rotación de Cultivos:3
-aleatoria,123,victoria,11,Rotación de Cultivos:3 Reforestación:2 Barrera Absorbente:5 Escudo de Albedo:4 Línea Cortafuegos:5 Separación en la Fuente:3 Filtro Biológico:1
-aleatoria,124,victoria,12,Filtro Biológico:3 Escudo de Albedo:8 Separación en la Fuente:6 Barrera Absorbente:5 Reforestación:4 Rotación de Cultivos:4 Línea Cortafuegos:3
-aleatoria,125,victoria,12,Línea Cortafuegos:3 Barrera Absorbente:3 Reforestación:4 Rotación de Cultivos:5 Filtro Biológico:2 Escudo de Albedo:5 Separación en la Fuente:4
-aleatoria,126,victoria,12,Barrera Absorbente:5 Escudo de Albedo:5 Rotación de Cultivos:7 Reforestación:3 Filtro Biológico:2 Separación en la Fuente:3 Línea Cortafuegos:3
-aleatoria,127,victoria,13,Filtro Biológico:4 Escudo de Albedo:6 Rotación de Cultivos:6 Barrera Absorbente:6 Línea Cortafuegos:2 Reforestación:4 Separación en la Fuente:3
-aleatoria,128,victoria,10,Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:5 Filtro Biológico:3 Línea Cortafuegos:4 Separación en la Fuente:3 Reforestación:2
-aleatoria,129,victoria,11,Escudo de Albedo:3 Línea Cortafuegos:4 Rotación de Cultivos:6 Barrera Absorbente:3 Reforestación:2 Filtro Biológico:1 Separación en la Fuente:4
-aleatoria,130,victoria,11,Escudo de Albedo:6 Filtro Biológico:2 Reforestación:4 Rotación de Cultivos:5 Línea Cortafuegos:3 Barrera Absorbente:4 Separación en la Fuente:4
-aleatoria,131,victoria,12,Escudo de Albedo:3 Separación en la Fuente:7 Filtro Biológico:3 Reforestación:4 Rotación de Cultivos:3 Barrera Absorbente:4 Línea Cortafuegos:3
-aleatoria,132,victoria,11,Reforestación:5 Separación en la Fuente:6 Escudo de Albedo:4 Barrera Absorbente:4 Rotación de Cultivos:4 Línea Cortafuegos:3 Filtro Biológico:2
-aleatoria,133,derrota,40,Barrera Absorbente:9 Reforestación:4 Rotación de Cultivos:13 Línea Cortafuegos:9 Separación en la Fuente:14 Filtro Biológico:6
-aleatoria,134,victoria,12,Reforestación:2 Escudo de Albedo:3 Rotación de Cultivos:6 Filtro Biológico:4 Línea Cortafuegos:4 Separación en la Fuente:5 Barrera Absorbente:2
-aleatoria,135,victoria,13,Barrera Absorbente:6 Rotación de Cultivos:6 Separación en la Fuente:4 Escudo de Albedo:5 Filtro Biológico:2 Reforestación:2 Línea Cortafuegos:2
-aleatoria,136,victoria,13,Filtro Biológico:4 Reforestación:4 Rotación de Cultivos:4 Barrera Absorbente:6 Línea Cortafuegos:4 Escudo de Albedo:3 Separación en la Fuente:4
-aleatoria,137,victoria,11,Filtro Biológico:2 Escudo de Albedo:5 Barrera Absorbente:3 Línea Cortafuegos:4 Separación en la Fuente:5 Rotación de Cultivos:4 Reforestación:2
-aleatoria,138,victoria,13,Escudo de Albedo:3 Rotación de Cultivos:4 Separación en la Fuente:4 Reforestación:4 Filtro Biológico:3 Línea Cortafuegos:2 Barrera Absorbente:3
-aleatoria,139,victoria,13,Barrera Absorbente:7 Rotación de Cultivos:5 Separación en la Fuente:5 Reforestación:2 Filtro Biológico:3 Escudo de Albedo:4 Línea Cortafuegos:3
-aleatoria,140,victoria,11,Línea Cortafuegos:3 Rotación de Cultivos:4 Barrera Absorbente:3 Separación en la Fuente:3 Filtro Biológico:1 Escudo de Albedo:4 Reforestación:3
-aleatoria,141,victoria,12,Barrera Absorbente:5 Escudo de Albedo:3 Separación en la Fuente:4 Rotación de Cultivos:8 Reforestación:4 Filtro Biológico:2 Línea Cortafuegos:1
-aleatoria,142,victoria,12,Filtro Biológico:4 Rotación de Cultivos:7 Barrera Absorbente:4 Reforestación:5 Escudo de Albedo:5 Línea Cortafuegos:2 Separación en la Fuente:4
-aleatoria,143,victoria,12,Escudo de Albedo:6 Rotación de Cultivos:7 Reforestación:6 Filtro Biológico:2 Línea Cortafuegos:2 Barrera Absorbente:2 Separación en la Fuente:4
-aleatoria,144,victoria,12,Barrera Absorbente:2 Escudo de Albedo:2 Rotación de Cultivos:4 Línea Cortafuegos:2 Reforestación:5 Separación en la Fuente:4 Filtro Biológico:3
-aleatoria,145,victoria,13,Barrera Absorbente:2 Escudo de Albedo:7 Reforestación:3 Separación en la Fuente:7 Rotación de Cultivos:2 Línea Cortafuegos:3 Filtro Biológico:2
-aleatoria,146,victoria,13,Filtro Biológico:4 Escudo de Albedo:6 Separación en la Fuente:5 Reforestación:5 Línea Cortafuegos:2 Rotación de Cultivos:2 Barrera Absorbente:1
-aleatoria,147,victoria,10,Barrera Absorbente:4 Separación en la Fuente:5 Escudo de Albedo:4 Línea Cortafuegos:3 Rotación de Cultivos:2 Reforestación:2 Filtro Biológico:1
-aleatoria,148,victoria,12,Reforestación:6 Separación en la Fuente:4 Rotación de Cultivos:2 Barrera Absorbente:6 Línea Cortafuegos:3 Escudo de Albedo:4 Filtro Biológico:2
-aleatoria,149,victoria,12,Escudo de Albedo:8 Barrera Absorbente:3 Rotación de Cultivos:5 Línea Cortafuegos:3 Filtro Biológico:4 Reforestación:4 Separación en la Fuente:3
-aleatoria,150,victoria,14,Reforestación:7 Escudo de Albedo:7 Rotación de Cultivos:6 Barrera Absorbente:3 Filtro Biológico:5 Separación en la Fuente:5 Línea Cortafuegos:2
-aleatoria,151,victoria,11,Reforestación:5 Separación en la Fuente:6 Escudo de Albedo:3 Rotación de Cultivos:7 Filtro Biológico:1 Barrera Absorbente:4 Línea Cortafuegos:2
-aleatoria,152,victoria,13,Escudo de Albedo:8 Rotación de Cultivos:5 Separación en la Fuente:7 Barrera Absorbente:4 Filtro Biológico:3 Reforestación:3 Línea Cortafuegos:2
-aleatoria,153,victoria,12,Escudo de Albedo:4 Línea Cortafuegos:2 Rotación de Cultivos:4 Barrera Absorbente:3 Reforestación:4 Separación en la Fuente:5 Filtro Biológico:2
-aleatoria,154,victoria,13,Filtro Biológico:3 Escudo de Albedo:6 Línea Cortafuegos:2 Rotación de Cultivos:6 Reforestación:7 Barrera Absorbente:4 Separación en la Fuente:3
-aleatoria,155,victoria,13,Línea Cortafuegos:4 Escudo de Albedo:5 Rotación de Cultivos:3 Separación en la Fuente:7 Reforestación:5 Filtro Biológico:6 Barrera Absorbente:1
-aleatoria,156,victoria,11,Separación en la Fuente:7 Filtro Biológico:3 Línea Cortafuegos:4 Rotación de Cultivos:3 Barrera Absorbente:3 Escudo de Albedo:3
-aleatoria,157,victoria,14,Reforestación:5 Línea Cortafuegos:3 Rotación de Cultivos:4 Escudo de Albedo:6 Barrera Absorbente:4 Filtro Biológico:3 Separación en la Fuente:3
-aleatoria,158,victoria,12,Rotación de Cultivos:6 Filtro Biológico:5 Escudo de Albedo:5 Reforestación:4 Separación en la Fuente:4 Línea Cortafuegos:3 Barrera Absorbente:2
-aleatoria,159,victoria,11,Barrera Absorbente:3 Escudo de Albedo:3 Línea Cortafuegos:4 Filtro Biológico:1 Reforestación:4 Rotación de Cultivos:4 Separación en la Fuente:5
-aleatoria,160,victoria,10,Filtro Biológico:3 Rotación de Cultivos:2 Separación en la Fuente:5 Barrera Absorbente:3 Escudo de Albedo:5 Línea Cortafuegos:3
-aleatoria,161,victoria,12,Filtro Biológico:5 Escudo de Albedo:6 Rotación de Cultivos:6 Reforestación:4 Separación en la Fuente:3 Barrera Absorbente:4 Línea Cortafuegos:2
-aleatoria,162,victoria,11,Escudo de Albedo:5 Línea Cortafuegos:5 Filtro Biológico:4 Separación en la Fuente:4 Barrera Absorbente:3 Rotación de Cultivos:2 Reforestación:1
-aleatoria,163,victoria,12,Barrera Absorbente:6 Escudo de Albedo:4 Separación en la Fuente:3 Rotación de Cultivos:3 Reforestación:4 Línea Cortafuegos:2 Filtro Biológico:2
-aleatoria,164,victoria,14,Filtro Biológico:6 Reforestación:4 Rotación de Cultivos:11 Separación en la Fuente:6 Escudo de Albedo:6 Línea Cortafuegos:5 Barrera Absorbente:1
-aleatoria,165,victoria,12,Filtro Biológico:6 Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:3 Línea Cortafuegos:2 Rotación de Cultivos:3 Escudo de Albedo:4
-aleatoria,166,victoria,14,Escudo de Albedo:6 Reforestación:4 Rotación de Cultivos:5 Separación en la Fuente:5 Filtro Biológico:4 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,167,victoria,12,Línea Cortafuegos:2 Rotación de Cultivos:5 Barrera Absorbente:1 Reforestación:3 Filtro Biológico:4 Escudo de Albedo:2 Separación en la Fuente:5
-aleatoria,168,victoria,16,Filtro Biológico:6 Escudo de Albedo:8 Separación en la Fuente:5 Rotación de Cultivos:4 Barrera Absorbente:6 Reforestación:3 Línea Cortafuegos:1
-aleatoria,169,victoria,10,Escudo de Albedo:5 Reforestación:3 Separación en la Fuente:5 Filtro Biológico:2 Línea Cortafuegos:4 Rotación de Cultivos:3 Barrera Absorbente:2
-aleatoria,170,victoria,15,Filtro Biológico:8 Reforestación:3 Rotación de Cultivos:6 Escudo de Albedo:8 Línea Cortafuegos:6 Barrera Absorbente:1 Separación en la Fuente:2
-aleatoria,171,victoria,11,Escudo de Albedo:4 Reforestación:2 Rotación de Cultivos:4 Separación en la Fuente:2 Línea Cortafuegos:5 Barrera Absorbente:3 Filtro Biológico:1
-aleatoria,172,victoria,13,Barrera Absorbente:3 Reforestación:5 Rotación de Cultivos:5 Filtro Biológico:4 Escudo de Albedo:7 Línea Cortafuegos:2 Separación en la Fuente:3
-aleatoria,173,victoria,12,Rotación de Cultivos:3 Separación en la Fuente:4 Filtro Biológico:2 Barrera Absorbente:5 Escudo de Albedo:5 Línea Cortafuegos:2 Reforestación:2
-aleatoria,174,victoria,13,Escudo de Albedo:8 Rotación de Cultivos:8 Filtro Biológico:7 Reforestación:2 Separación en la Fuente:1 Línea Cortafuegos:4 Barrera Absorbente:1
-aleatoria,175,victoria,12,Barrera Absorbente:4 Rotación de Cultivos:5 Filtro Biológico:3 Reforestación:3 Línea Cortafuegos:4 Escudo de Albedo:5 Separación en la Fuente:1
-aleatoria,176,victoria,11,Reforestación:2 Rotación de Cultivos:4 Separación en la Fuente:7 Barrera Absorbente:1 Línea Cortafuegos:3 Filtro Biológico:5 Escudo de Albedo:4
-aleatoria,177,victoria,11,Escudo de Albedo:5 Barrera Absorbente:4 Rotación de Cultivos:2 Separación en la Fuente:4 Línea Cortafuegos:4 Filtro Biológico:2 Reforestación:3
-aleatoria,178,victoria,12,Barrera Absorbente:4 Reforestación:6 Separación en la Fuente:3 Escudo de Albedo:5 Filtro Biológico:3 Línea Cortafuegos:2 Rotación de Cultivos:5
-aleatoria,179,victoria,14,Línea Cortafuegos:6 Escudo de Albedo:3 Filtro Biológico:6 Rotación de Cultivos:2 Reforestación:3 Separación en la Fuente:4 Barrera Absorbente:2
-aleatoria,180,victoria,9,Barrera Absorbente:2 Separación en la Fuente:5 Rotación de Cultivos:4 Escudo de Albedo:5 Línea Cortafuegos:3 Filtro Biológico:2
-aleatoria,181,victoria,15,Filtro Biológico:5 Rotación de Cultivos:7 Escudo de Albedo:4 Reforestación:4 Línea Cortafuegos:4 Separación en la Fuente:2 Barrera Absorbente:2
-aleatoria,182,victoria,12,Barrera Absorbente:1 Línea Cortafuegos:3 Separación en la Fuente:4 Escudo de Albedo:5 Filtro Biológico:3 Rotación de Cultivos:2 Reforestación:2
-aleatoria,183,victoria,11,Reforestación:4 Separación en la Fuente:5 Filtro Biológico:1 Línea Cortafuegos:3 Escudo de Albedo:4 Barrera Absorbente:2 Rotación de Cultivos:2
-aleatoria,184,victoria,11,Barrera Absorbente:4 Escudo de Albedo:3 Rotación de Cultivos:3 Separación en la Fuente:6 Filtro Biológico:2 Línea Cortafuegos:3
-aleatoria,185,victoria,10,Barrera Absorbente:3 Escudo de Albedo:5 Separación en la Fuente:2 Línea Cortafuegos:4 Rotación de Cultivos:6 Reforestación:4 Filtro Biológico:3
-aleatoria,186,victoria,12,Barrera Absorbente:5 Separación en la Fuente:4 Filtro Biológico:3 Escudo de Albedo:3 Reforestación:3 Línea Cortafuegos:4 Rotación de Cultivos:4
-aleatoria,187,victoria,12,Rotación de Cultivos:6 Filtro Biológico:4 Línea Cortafuegos:3 Escudo de Albedo:4 Reforestación:3 Separación en la Fuente:5 Barrera Absorbente:4
-aleatoria,188,victoria,12,Barrera Absorbente:2 Línea Cortafuegos:2 Separación en la Fuente:4 Rotación de Cultivos:4 Filtro Biológico:3 Reforestación:6 Escudo de Albedo:4
-aleatoria,189,victoria,11,Filtro Biológico:3 Barrera Absorbente:6 Escudo de Albedo:5 Reforestación:3 Línea Cortafuegos:4 Separación en la Fuente:2 Rotación de Cultivos:3
-aleatoria,190,victoria,12,Filtro Biológico:4 Escudo de Albedo:6 Línea Cortafuegos:4 Separación en la Fuente:3 Barrera Absorbente:3 Rotación de Cultivos:3 Reforestación:2
-aleatoria,191,victoria,13,Filtro Biológico:7 Línea Cortafuegos:4 Rotación de Cultivos:4 Separación en la Fuente:5 Reforestación:4 Barrera Absorbente:2 Escudo de Albedo:2
-aleatoria,192,victoria,12,Filtro Biológico:3 Reforestación:1 Rotación de Cultivos:4 Separación en la Fuente:3 Barrera Absorbente:6 Escudo de Albedo:4 Línea Cortafuegos:2
-aleatoria,193,victoria,14,Filtro Biológico:6 Rotación de Cultivos:5 Reforestación:6 Separación en la Fuente:8 Barrera Absorbente:3 Escudo de Albedo:1 Línea Cortafuegos:2
-aleatoria,194,victoria,16,Filtro Biológico:5 Escudo de Albedo:8 Reforestación:9 Separación en la Fuente:9 Rotación de Cultivos:4 Barrera Absorbente:3 Línea Cortafuegos:1
-aleatoria,195,victoria,13,Filtro Biológico:5 Rotación de Cultivos:6 Separación en la Fuente:5 Reforestación:2 Barrera Absorbente:4 Escudo de Albedo:4 Línea Cortafuegos:2
-aleatoria,196,victoria,11,Reforestación:3 Filtro Biológico:4 Escudo de Albedo:3 Rotación de Cultivos:4 Barrera Absorbente:2 Línea Cortafuegos:3 Separación en la Fuente:4
-aleatoria,197,victoria,10,Barrera Absorbente:2 Rotación de Cultivos:8 Escudo de Albedo:2 Separación en la Fuente:5 Filtro Biológico:2 Línea Cortafuegos:3 Reforestación:1
-aleatoria,198,victoria,13,Línea Cortafuegos:3 Escudo de Albedo:5 Rotación de Cultivos:7 Barrera Absorbente:2 Filtro Biológico:3 Reforestación:3 Separación en la Fuente:3
-aleatoria,199,victoria,11,Barrera Absorbente:4 Escudo de Albedo:4 Filtro Biológico:4 Reforestación:2 Línea Cortafuegos:5 Separación en la Fuente:3 Rotación de Cultivos:5
-aleatoria,200,victoria,18,Escudo de Albedo:9 Reforestación:9 Línea Cortafuegos:3 Rotación de Cultivos:5 Filtro Biológico:6 Separación en la Fuente:6 Barrera Absorbente:1
-aleatoria,201,victoria,9,Escudo de Albedo:5 Barrera Absorbente:3 Línea Cortafuegos:3 Rotación de Cultivos:4 Separación en la Fuente:5 Filtro Biológico:2
-aleatoria,202,victoria,10,Línea Cortafuegos:3 Separación en la Fuente:5 Escudo de Albedo:3 Rotación de Cultivos:4 Barrera Absorbente:3 Reforestación:3
-aleatoria,203,victoria,13,Escudo de Albedo:4 Línea Cortafuegos:6 Rotación de Cultivos:2 Filtro Biológico:4 Reforestación:3 Barrera Absorbente:5 Separación en la Fuente:2
-aleatoria,204,victoria,12,Línea Cortafuegos:3 Rotación de Cultivos:6 Barrera Absorbente:6 Reforestación:5 Separación en la Fuente:4 Escudo de Albedo:2 Filtro Biológico:1
-aleatoria,205,victoria,13,Reforestación:5 Separación en la Fuente:8 Filtro Biológico:5 Barrera Absorbente:5 Escudo de Albedo:5 Rotación de Cultivos:4 Línea Cortafuegos:3
-aleatoria,206,victoria,12,Escudo de Albedo:4 Rotación de Cultivos:6 Filtro Biológico:3 Barrera Absorbente:5 Reforestación:5 Separación en la Fuente:4 Línea Cortafuegos:2
-aleatoria,207,victoria,15,Filtro Biológico:6 Reforestación:8 Separación en la Fuente:8 Escudo de Albedo:6 Barrera Absorbente:2 Rotación de Cultivos:5 Línea Cortafuegos:1
-aleatoria,208,victoria,12,Filtro Biológico:1 Reforestación:3 Rotación de Cultivos:5 Escudo de Albedo:5 Barrera Absorbente:4 Línea Cortafuegos:3 Separación en la Fuente:3
-aleatoria,209,victoria,12,Filtro Biológico:4 Escudo de Albedo:5 Barrera Absorbente:6 Reforestación:5 Rotación de Cultivos:3 Separación en la Fuente:5 Línea Cortafuegos:3
-aleatoria,210,victoria,10,Barrera Absorbente:7 Separación en la Fuente:3 Línea Cortafuegos:4 Reforestación:1 Rotación de Cultivos:4 Escudo de Albedo:2 Filtro Biológico:1
-aleatoria,211,victoria,13,Línea Cortafuegos:2 Escudo de Albedo:6 Rotación de Cultivos:5 Filtro Biológico:3 Reforestación:3 Barrera Absorbente:3 Separación en la Fuente:3
-aleatoria,212,victoria,13,Escudo de Albedo:4 Reforestación:5 Separación en la Fuente:5 Línea Cortafuegos:3 Rotación de Cultivos:4 Barrera Absorbente:2 Filtro Biológico:2
-aleatoria,213,victoria,11,Escudo de Albedo:6 Línea Cortafuegos:4 Reforestación:2 Barrera Absorbente:2 Separación en la Fuente:2 Rotación de Cultivos:3
-aleatoria,214,victoria,14,Escudo de Albedo:5 Filtro Biológico:5 Línea Cortafuegos:4 Separación en la Fuente:3 Reforestación:3 Rotación de Cultivos:5 Barrera Absorbente:1
-aleatoria,215,victoria,13,Escudo de Albedo:6 Línea Cortafuegos:4 Barrera Absorbente:5 Reforestación:5 Separación en la Fuente:4 Filtro Biológico:2 Rotación de Cultivos:1
-aleatoria,216,victoria,11,Escudo de Albedo:4 Separación en la Fuente:5 Línea Cortafuegos:4 Filtro Biológico:4 Reforestación:4 Barrera Absorbente:5 Rotación de Cultivos:5
-aleatoria,217,victoria,11,Rotación de Cultivos:4 Filtro Biológico:3 Reforestación:3 Separación en la Fuente:2 Escudo de Albedo:3 Línea Cortafuegos:5 Barrera Absorbente:3
-aleatoria,218,victoria,12,Barrera Absorbente:6 Escudo de Albedo:5 Separación en la Fuente:4 Rotación de Cultivos:3 Reforestación:4 Línea Cortafuegos:3 Filtro Biológico:2
-aleatoria,219,victoria,12,Escudo de Albedo:7 Rotación de Cultivos:4 Barrera Absorbente:4 Separación en la Fuente:4 Reforestación:3 Línea Cortafuegos:3
-aleatoria,220,victoria,12,Separación en la Fuente:7 Línea Cortafuegos:3 Rotación de Cultivos:4 Filtro Biológico:3 Reforestación:4 Escudo de Albedo:2 Barrera Absorbente:4
-aleatoria,221,victoria,13,Filtro Biológico:3 Barrera Absorbente:4 Rotación de Cultivos:7 Separación en la Fuente:4 Reforestación:3 Línea Cortafuegos:2 Escudo de Albedo:3
-aleatoria,222,victoria,12,Filtro Biológico:5 Reforestación:3 Rotación de Cultivos:5 Separación en la Fuente:7 Línea Cortafuegos:4 Barrera Absorbente:3 Escudo de Albedo:3
-aleatoria,223,victoria,11,Escudo de Albedo:5 Separación en la Fuente:4 Reforestación:2 Barrera Absorbente:2 Línea Cortafuegos:4 Rotación de Cultivos:2 Filtro Biológico:2
-aleatoria,224,victoria,11,Línea Cortafuegos:6 Reforestación:3 Barrera Absorbente:5 Escudo de Albedo:5 Separación en la Fuente:5 Rotación de Cultivos:2 Filtro Biológico:1
-aleatoria,225,victoria,14,Filtro Biológico:4 Escudo de Albedo:5 Reforestación:5 Separación en la Fuente:7 Rotación de Cultivos:4 Línea Cortafuegos:3 Barrera Absorbente:1
-aleatoria,226,victoria,10,Barrera Absorbente:5 Escudo de Albedo:4 Reforestación:3 Rotación de Cultivos:6 Separación en la Fuente:4 Línea Cortafuegos:2 Filtro Biológico:2
-aleatoria,227,victoria,11,Escudo de Albedo:5 Línea Cortafuegos:6 Reforestación:2 Barrera Absorbente:4 Separación en la Fuente:2 Filtro Biológico:2 Rotación de Cultivos:2
-aleatoria,228,victoria,11,Barrera Absorbente:6 Línea Cortafuegos:5 Separación en la Fuente:3 Rotación de Cultivos:4 Filtro Biológico:1 Escudo de Albedo:4
-aleatoria,229,victoria,13,Rotación de Cultivos:3 Filtro Biológico:3 Separación en la Fuente:8 Escudo de Albedo:8 Barrera Absorbente:5 Reforestación:2 Línea Cortafuegos:2
-aleatoria,230,victoria,11,Rotación de Cultivos:6 Filtro Biológico:2 Barrera Absorbente:4 Línea Cortafuegos:5 Escudo de Albedo:3 Separación en la Fuente:5
-aleatoria,231,victoria,12,Separación en la Fuente:4 Escudo de Albedo:6 Rotación de Cultivos:7 Línea Cortafuegos:1 Filtro Biológico:3 Reforestación:5 Barrera Absorbente:3
-aleatoria,232,victoria,15,Escudo de Albedo:6 Línea Cortafuegos:2 Rotación de Cultivos:6 Barrera Absorbente:5 Reforestación:7 Filtro Biológico:5 Separación en la Fuente:3
-aleatoria,233,victoria,13,Rotación de Cultivos:6 Escudo de Albedo:9 Separación en la Fuente:6 Filtro Biológico:5 Reforestación:6 Línea Cortafuegos:2 Barrera Absorbente:2
-aleatoria,234,victoria,14,Línea Cortafuegos:3 Filtro Biológico:3 Escudo de Albedo:8 Rotación de Cultivos:3 Separación en la Fuente:6 Reforestación:6 Barrera Absorbente:2
-aleatoria,235,victoria,11,Barrera Absorbente:3 Rotación de Cultivos:2 Escudo de Albedo:7 Filtro Biológico:2 Línea Cortafuegos:3 Separación en la Fuente:5 Reforestación:3
-aleatoria,236,victoria,12,Escudo de Albedo:5 Línea Cortafuegos:4 Filtro Biológico:6 Rotación de Cultivos:5 Reforestación:3 Separación en la Fuente:5 Barrera Absorbente:1
-aleatoria,237,victoria,10,Escudo de Albedo:6 Rotación de Cultivos:4 Separación en la Fuente:5 Barrera Absorbente:5 Línea Cortafuegos:2 Filtro Biológico:3 Reforestación:2
-aleatoria,238,victoria,13,Escudo de Albedo:8 Reforestación:4 Filtro Biológico:4 Separación en la Fuente:6 Barrera Absorbente:5 Rotación de Cultivos:4 Línea Cortafuegos:2
-aleatoria,239,victoria,13,Escudo de Albedo:4 Reforestación:3 Filtro Biológico:4 Separación en la Fuente:5 Barrera Absorbente:4 Línea Cortafuegos:2 Rotación de Cultivos:4
-aleatoria,240,victoria,14,Barrera Absorbente:3 Línea Cortafuegos:1 Rotación de Cultivos:6 Separación en la Fuente:3 Filtro Biológico:5 Reforestación:3 Escudo de Albedo:4
-aleatoria,241,victoria,12,Barrera Absorbente:3 Escudo de Albedo:6 Filtro Biológico:4 Reforestación:4 Rotación de Cultivos:5 Separación en la Fuente:5 Línea Cortafuegos:3
-aleatoria,242,victoria,10,Separación en la Fuente:5 Barrera Absorbente:3 Escudo de Albedo:4 Rotación de Cultivos:4 Línea Cortafuegos:3 Filtro Biológico:1
-aleatoria,243,victoria,14,Línea Cortafuegos:4 Rotación de Cultivos:5 Filtro Biológico:4 Separación en la Fuente:6 Escudo de Albedo:6 Reforestación:5 Barrera Absorbente:1
-aleatoria,244,victoria,13,Separación en la Fuente:8 Escudo de Albedo:6 Rotación de Cultivos:7 Barrera Absorbente:4 Reforestación:3 Filtro Biológico:3 Línea Cortafuegos:3
-aleatoria,245,victoria,12,Barrera Absorbente:5 Reforestación:3 Rotación de Cultivos:5 Escudo de Albedo:3 Separación en la Fuente:5 Línea Cortafuegos:2 Filtro Biológico:1
-aleatoria,246,victoria,12,Escudo de Albedo:5 Rotación de Cultivos:2 Separación en la Fuente:4 Reforestación:1 Filtro Biológico:5 Barrera Absorbente:2 Línea Cortafuegos:3
-aleatoria,247,victoria,15,Reforestación:7 Rotación de Cultivos:5 Línea Cortafuegos:2 Separación en la Fuente:5 Escudo de Albedo:5 Filtro Biológico:4 Barrera Absorbente:3
-aleatoria,248,victoria,11,Escudo de Albedo:5 Filtro Biológico:5 Reforestación:4 Rotación de Cultivos:6 Línea Cortafuegos:3 Separación en la Fuente:2 Barrera Absorbente:3
-aleatoria,249,victoria,11,Separación en la Fuente:5 Filtro Biológico:3 Línea Cortafuegos:5 Reforestación:2 Rotación de Cultivos:5 Barrera Absorbente:5 Escudo de Albedo:4
-aleatoria,250,victoria,12,Filtro Biológico:6 Línea Cortafuegos:4 Rotación de Cultivos:5 Separación en la Fuente:3 Barrera Absorbente:2 Reforestación:2 Escudo de Albedo:2
-aleatoria,251,victoria,10,Escudo de Albedo:4 Separación en la Fuente:5 Barrera Absorbente:2 Rotación de Cultivos:4 Línea Cortafuegos:4 Filtro Biológico:1 Reforestación:2
-aleatoria,252,victoria,12,Rotación de Cultivos:5 Reforestación:7 Separación en la Fuente:4 Escudo de Albedo:3 Línea Cortafuegos:2 Barrera Absorbente:4 Filtro Biológico:1
-aleatoria,253,victoria,11,Reforestación:2 Filtro Biológico:3 Línea Cortafuegos:6 Separación en la Fuente:4 Rotación de Cultivos:4 Barrera Absorbente:1 Escudo de Albedo:4
-aleatoria,254,victoria,14,Barrera Absorbente:6 Reforestación:5 Línea Cortafuegos:3 Rotación de Cultivos:6 Filtro Biológico:4 Escudo de Albedo:1 Separación en la Fuente:3
-aleatoria,255,victoria,11,Barrera Absorbente:4 Línea Cortafuegos:3 Filtro Biológico:3 Escudo de Albedo:3 Rotación de Cultivos:5 Separación en la Fuente:4 Reforestación:3
-aleatoria,256,victoria,12,Reforestación:5 Rotación de Cultivos:7 Filtro Biológico:3 Línea Cortafuegos:4 Escudo de Albedo:3 Separación en la Fuente:3 Barrera Absorbente:4
-aleatoria,257,victoria,12,Reforestación:2 Filtro Biológico:7 Rotación de Cultivos:5 Línea Cortafuegos:4 Separación en la Fuente:5 Escudo de Albedo:5 Barrera Absorbente:1
-aleatoria,258,victoria,11,Separación en la Fuente:5 Rotación de Cultivos:5 Barrera Absorbente:4 Escudo de Albedo:3 Línea Cortafuegos:2 Filtro Biológico:1 Reforestación:3
-aleatoria,259,victoria,11,Escudo de Albedo:2 Línea Cortafuegos:3 Rotación de Cultivos:5 Filtro Biológico:1 Separación en la Fuente:2 Barrera Absorbente:2 Reforestación:2
-aleatoria,260,victoria,12,Escudo de Albedo:8 Reforestación:6 Barrera Absorbente:2 Línea Cortafuegos:4 Filtro Biológico:4 Separación en la Fuente:3 Rotación de Cultivos:2
-aleatoria,261,victoria,10,Escudo de Albedo:4 Separación en la Fuente:3 Barrera Absorbente:3 Rotación de Cultivos:4 Línea Cortafuegos:2 Reforestación:2 Filtro Biológico:2
-aleatoria,262,victoria,12,Barrera Absorbente:4 Filtro Biológico:4 Línea Cortafuegos:4 Rotación de Cultivos:5 Reforestación:2 Separación en la Fuente:5 Escudo de Albedo:4
-aleatoria,263,victoria,13,Filtro Biológico:6 Rotación de Cultivos:7 Escudo de Albedo:4 Línea Cortafuegos:5 Separación en la Fuente:5 Barrera Absorbente:2 Reforestación:1
-aleatoria,264,victoria,13,Filtro Biológico:3 Línea Cortafuegos:4 Barrera Absorbente:2 Separación en la Fuente:5 Escudo de Albedo:3 Reforestación:5 Rotación de Cultivos:2
-aleatoria,265,victoria,11,Escudo de Albedo:6 Línea Cortafuegos:3 Separación en la Fuente:4 Rotación de Cultivos:5 Reforestación:3 Barrera Absorbente:3
-aleatoria,266,victoria,11,Filtro Biológico:6 Barrera Absorbente:2 Rotación de Cultivos:4 Escudo de Albedo:3 Línea Cortafuegos:4 Separación en la Fuente:6 Reforestación:2
-aleatoria,267,victoria,17,Reforestación:7 Separación en la Fuente:6 Filtro Biológico:5 Rotación de Cultivos:5 Escudo de Albedo:5 Barrera Absorbente:1 Línea Cortafuegos:2
-aleatoria,268,victoria,11,Barrera Absorbente:5 Línea Cortafuegos:4 Rotación de Cultivos:5 Escudo de Albedo:1 Separación en la Fuente:3 Filtro Biológico:3 Reforestación:1
-aleatoria,269,victoria,13,Filtro Biológico:5 Reforestación:4 Escudo de Albedo:6 Línea Cortafuegos:3 Separación en la Fuente:8 Rotación de Cultivos:4 Barrera Absorbente:3
-aleatoria,270,victoria,11,Escudo de Albedo:7 Reforestación:4 Rotación de Cultivos:4 Barrera Absorbente:3 Separación en la Fuente:4 Filtro Biológico:2 Línea Cortafuegos:4
-aleatoria,271,victoria,12,Filtro Biológico:4 Rotación de Cultivos:4 Separación en la Fuente:4 Barrera Absorbente:5 Escudo de Albedo:6 Reforestación:3 Línea Cortafuegos:2
-aleatoria,272,victoria,12,Reforestación:3 Barrera Absorbente:2 Escudo de Albedo:5 Rotación de Cultivos:4 Separación en la Fuente:3 Filtro Biológico:4 Línea Cortafuegos:3
-aleatoria,273,victoria,12,Filtro Biológico:1 Línea Cortafuegos:3 Rotación de Cultivos:7 Barrera Absorbente:5 Reforestación:3 Escudo de Albedo:4 Separación en la Fuente:4
-aleatoria,274,victoria,13,Barrera Absorbente:5 Escudo de Albedo:5 Reforestación:5 Línea Cortafuegos:3 Separación en la Fuente:3 Rotación de Cultivos:3 Filtro Biológico:2
-aleatoria,275,victoria,11,Separación en la Fuente:4 Barrera Absorbente:3 Reforestación:2 Rotación de Cultivos:3 Escudo de Albedo:5 Línea Cortafuegos:4 Filtro Biológico:1
-aleatoria,276,victoria,11,Separación en la Fuente:2 Filtro Biológico:1 Barrera Absorbente:5 Escudo de Albedo:4 Reforestación:4 Rotación de Cultivos:2 Línea Cortafuegos:2
-aleatoria,277,victoria,12,Línea Cortafuegos:3 Rotación de Cultivos:5 Filtro Biológico:2 Separación en la Fuente:3 Barrera Absorbente:4 Escudo de Albedo:3 Reforestación:2
-aleatoria,278,victoria,11,Escudo de Albedo:6 Rotación de Cultivos:6 Barrera Absorbente:1 Línea Cortafuegos:5 Separación en la Fuente:3 Filtro Biológico:3 Reforestación:2
-aleatoria,279,victoria,10,Escudo de Albedo:7 Línea Cortafuegos:1 Filtro Biológico:4 Rotación de Cultivos:4 Barrera Absorbente:3 Separación en la Fuente:7 Reforestación:3
-aleatoria,280,victoria,11,Línea Cortafuegos:1 Barrera Absorbente:5 Escudo de Albedo:4 Filtro Biológico:3 Rotación de Cultivos:4 Separación en la Fuente:5 Reforestación:1
-aleatoria,281,victoria,12,Filtro Biológico:2 Separación en la Fuente:6 Barrera Absorbente:6 Reforestación:5 Línea Cortafuegos:3 Rotación de Cultivos:3 Escudo de Albedo:3
-aleatoria,282,victoria,11,Reforestación:3 Rotación de Cultivos:5 Filtro Biológico:2 Escudo de Albedo:7 Barrera Absorbente:2 Línea Cortafuegos:5 Separación en la Fuente:2
-aleatoria,283,victoria,14,Separación en la Fuente:7 Escudo de Albedo:2 Línea Cortafuegos:8 Rotación de Cultivos:5 Filtro Biológico:5 Reforestación:2 Barrera Absorbente:1
-aleatoria,284,victoria,11,Rotación de Cultivos:6 Filtro Biológico:4 Escudo de Albedo:6 Separación en la Fuente:5 Reforestación:4 Barrera Absorbente:3 Línea Cortafuegos:3
-aleatoria,285,victoria,11,Barrera Absorbente:2 Separación en la Fuente:7 Filtro Biológico:4 Rotación de Cultivos:3 Escudo de Albedo:3 Línea Cortafuegos:3
-aleatoria,286,victoria,14,Barrera Absorbente:4 Reforestación:5 Escudo de Albedo:7 Separación en la Fuente:5 Filtro Biológico:3 Rotación de Cultivos:1 Línea Cortafuegos:3
-aleatoria,287,victoria,11,Línea Cortafuegos:3 Separación en la Fuente:6 Barrera Absorbente:3 Reforestación:2 Rotación de Cultivos:1 Escudo de Albedo:4 Filtro Biológico:2
-aleatoria,288,victoria,12,Filtro Biológico:2 Rotación de Cultivos:6 Reforestación:4 Escudo de Albedo:5 Barrera Absorbente:2 Línea Cortafuegos:1 Separación en la Fuente:4
-aleatoria,289,victoria,10,Barrera Absorbente:4 Rotación de Cultivos:4 Escudo de Albedo:5 Separación en la Fuente:4 Línea Cortafuegos:4 Filtro Biológico:3
-aleatoria,290,victoria,14,Escudo de Albedo:8 Separación en la Fuente:5 Filtro Biológico:7 Rotación de Cultivos:9 Línea Cortafuegos:2 Reforestación:2 Barrera Absorbente:1
-aleatoria,291,victoria,13,Escudo de Albedo:4 Filtro Biológico:4 Reforestación:4 Separación en la Fuente:2 Barrera Absorbente:4 Línea Cortafuegos:3 Rotación de Cultivos:3
-aleatoria,292,victoria,12,Escudo de Albedo:6 Línea Cortafuegos:4 Reforestación:3 Separación en la Fuente:3 Filtro Biológico:4 Rotación de Cultivos:5 Barrera Absorbente:2
-aleatoria,293,victoria,11,Escudo de Albedo:7 Filtro Biológico:3 Línea Cortafuegos:4 Reforestación:3 Separación en la Fuente:3 Barrera Absorbente:3 Rotación de Cultivos:1
-aleatoria,294,victoria,13,Rotación de Cultivos:6 Filtro Biológico:4 Separación en la Fuente:3 Barrera Absorbente:3 Línea Cortafuegos:1 Reforestación:6 Escudo de Albedo:2
-aleatoria,295,victoria,17,Filtro Biológico:11 Reforestación:8 Rotación de Cultivos:10 Escudo de Albedo:9 Separación en la Fuente:4 Línea Cortafuegos:1 Barrera Absorbente:2
-aleatoria,296,victoria,13,Escudo de Albedo:5 Rotación de Cultivos:6 Filtro Biológico:3 Línea Cortafuegos:5 Separación en la Fuente:4 Reforestación:3 Barrera Absorbente:2
-aleatoria,297,victoria,12,Escudo de Albedo:6 Línea Cortafuegos:2 Barrera Absorbente:3 Reforestación:2 Separación en la Fuente:1 Filtro Biológico:3 Rotación de Cultivos:2
-aleatoria,298,victoria,11,Filtro Biológico:2 Escudo de Albedo:4 Línea Cortafuegos:3 Rotación de Cultivos:3 Separación en la Fuente:4 Barrera Absorbente:4 Reforestación:3
-aleatoria,299,victoria,13,Filtro Biológico:5 Escudo de Albedo:4 Reforestación:4 Línea Cortafuegos:2 Barrera Absorbente:3 Separación en la Fuente:4 Rotación de Cultivos:4
-voraz,0,derrota,29,Línea Cortafuegos:10
-voraz,1,derrota,31,Línea Cortafuegos:11
-voraz,2,derrota,29,Línea Cortafuegos:11
-voraz,3,derrota,25,Línea Cortafuegos:9
-voraz,4,derrota,30,Línea Cortafuegos:11
-voraz,5,derrota,29,Línea Cortafuegos:10
-voraz,6,derrota,27,Línea Cortafuegos:10
-voraz,7,derrota,30,Línea Cortafuegos:11
-voraz,8,derrota,27,Línea Cortafuegos:9
-voraz,9,derrota,26,Línea Cortafuegos:9
-voraz,10,derrota,28,Línea Cortafuegos:10
-voraz,11,derrota,29,Línea Cortafuegos:10
-voraz,12,derrota,29,Línea Cortafuegos:10
-voraz,13,derrota,28,Línea Cortafuegos:9
-voraz,14,derrota,29,Línea Cortafuegos:10
-voraz,15,derrota,32,Línea Cortafuegos:12
-voraz,16,derrota,27,Línea Cortafuegos:10
-voraz,17,derrota,28,Línea Cortafuegos:10
-voraz,18,derrota,28,Línea Cortafuegos:10
-voraz,19,derrota,31,Línea Cortafuegos:11
-voraz,20,derrota,26,Línea Cortafuegos:9
-voraz,21,derrota,26,Línea Cortafuegos:10
-voraz,22,derrota,27,Línea Cortafuegos:10
-voraz,23,derrota,26,Línea Cortafuegos:9
-voraz,24,derrota,29,Línea Cortafuegos:10
-voraz,25,derrota,26,Línea Cortafuegos:9
-voraz,26,derrota,29,Línea Cortafuegos:10
-voraz,27,derrota,29,Línea Cortafuegos:10
-voraz,28,derrota,32,Línea Cortafuegos:12
-voraz,29,derrota,30,Línea Cortafuegos:10
-voraz,30,derrota,27,Línea Cortafuegos:10
-voraz,31,derrota,26,Línea Cortafuegos:10
-voraz,32,derrota,27,Línea Cortafuegos:10
-voraz,33,derrota,30,Línea Cortafuegos:11
-voraz,34,derrota,28,Línea Cortafuegos:10
-voraz,35,derrota,29,Línea Cortafuegos:11
-voraz,36,derrota,26,Línea Cortafuegos:9
-voraz,37,derrota,27,Línea Cortafuegos:10
-voraz,38,derrota,30,Línea Cortafuegos:11
-voraz,39,derrota,30,Línea Cortafuegos:11
-voraz,40,derrota,27,Línea Cortafuegos:10
-voraz,41,derrota,29,Línea Cortafuegos:10
-voraz,42,derrota,28,Línea Cortafuegos:10
-voraz,43,derrota,28,Línea Cortafuegos:9
-voraz,44,derrota,29,Línea Cortafuegos:10
-voraz,45,derrota,30,Línea Cortafuegos:10
-voraz,46,derrota,27,Línea Cortafuegos:10
-voraz,47,derrota,27,Línea Cortafuegos:9
-voraz,48,derrota,31,Línea Cortafuegos:10
-voraz,49,derrota,28,Línea Cortafuegos:11
-voraz,50,derrota,27,Línea Cortafuegos:10
-voraz,51,derrota,28,Línea Cortafuegos:10
-voraz,52,derrota,27,Línea Cortafuegos:10
-voraz,53,derrota,32,Línea Cortafuegos:11
-voraz,54,derrota,27,Línea Cortafuegos:10
-voraz,55,derrota,30,Línea Cortafuegos:10
-voraz,56,derrota,27,Línea Cortafuegos:9
-voraz,57,derrota,28,Línea Cortafuegos:10
-voraz,58,derrota,26,Línea Cortafuegos:9
-voraz,59,derrota,29,Línea Cortafuegos:11
-voraz,60,derrota,28,Línea Cortafuegos:10
-voraz,61,derrota,28,Línea Cortafuegos:10
-voraz,62,derrota,28,Línea Cortafuegos:11
-voraz,63,derrota,28,Línea Cortafuegos:11
-voraz,64,derrota,28,Línea Cortafuegos:10
-voraz,65,derrota,28,Línea Cortafuegos:10
-voraz,66,derrota,26,Línea Cortafuegos:10
-voraz,67,derrota,28,Línea Cortafuegos:10
-voraz,68,derrota,30,Línea Cortafuegos:10
-voraz,69,derrota,30,Línea Cortafuegos:10
-voraz,70,derrota,30,Línea Cortafuegos:10
-voraz,71,derrota,29,Línea Cortafuegos:11
-voraz,72,derrota,28,Línea Cortafuegos:11
-voraz,73,derrota,29,Línea Cortafuegos:10
-voraz,74,derrota,30,Línea Cortafuegos:11
-voraz,75,derrota,30,Línea Cortafuegos:11
-voraz,76,derrota,28,Línea Cortafuegos:10
-voraz,77,derrota,31,Línea Cortafuegos:10
-voraz,78,derrota,27,Línea Cortafuegos:10
-voraz,79,derrota,30,Línea Cortafuegos:10
-voraz,80,derrota,29,Línea Cortafuegos:11
-voraz,81,derrota,27,Línea Cortafuegos:10
-voraz,82,derrota,27,Línea Cortafuegos:9
-voraz,83,derrota,27,Línea Cortafuegos:9
-voraz,84,derrota,29,Línea Cortafuegos:11
-voraz,85,derrota,28,Línea Cortafuegos:10
-voraz,86,derrota,31,Línea Cortafuegos:10
-voraz,87,derrota,28,Línea Cortafuegos:10
-voraz,88,derrota,29,Línea Cortafuegos:10
-voraz,89,derrota,26,Línea Cortafuegos:9
-voraz,90,derrota,26,Línea Cortafuegos:9
-voraz,91,derrota,28,Línea Cortafuegos:10
-voraz,92,derrota,27,Línea Cortafuegos:9
-voraz,93,derrota,27,Línea Cortafuegos:10
-voraz,94,derrota,28,Línea Cortafuegos:10
-voraz,95,derrota,28,Línea Cortafuegos:10
-voraz,96,derrota,26,Línea Cortafuegos:9
-voraz,97,derrota,27,Línea Cortafuegos:10
-voraz,98,derrota,28,Línea Cortafuegos:10
-voraz,99,derrota,28,Línea Cortafuegos:10
-voraz,100,derrota,29,Línea Cortafuegos:10
-voraz,101,derrota,29,Línea Cortafuegos:11
-voraz,102,derrota,26,Línea Cortafuegos:10
-voraz,103,derrota,26,Línea Cortafuegos:9
-voraz,104,derrota,27,Línea Cortafuegos:10
-voraz,105,derrota,28,Línea Cortafuegos:10
-voraz,106,derrota,26,Línea Cortafuegos:9
-voraz,107,derrota,29,Línea Cortafuegos:11
-voraz,108,derrota,28,Línea Cortafuegos:10
-voraz,109,derrota,28,Línea Cortafuegos:10
-voraz,110,derrota,29,Línea Cortafuegos:10
-voraz,111,derrota,30,Línea Cortafuegos:11
-voraz,112,derrota,27,Línea Cortafuegos:9
-voraz,113,derrota,29,Línea Cortafuegos:10
-voraz,114,derrota,27,Línea Cortafuegos:10
-voraz,115,derrota,28,Línea Cortafuegos:10
-voraz,116,derrota,29,Línea Cortafuegos:10
-voraz,117,derrota,26,Línea Cortafuegos:9
-voraz,118,derrota,29,Línea Cortafuegos:10
-voraz,119,derrota,26,Línea Cortafuegos:10
-voraz,120,derrota,27,Línea Cortafuegos:10
-voraz,121,derrota,28,Línea Cortafuegos:10
-voraz,122,derrota,26,Línea Cortafuegos:9
-voraz,123,derrota,27,Línea Cortafuegos:9
-voraz,124,derrota,30,Línea Cortafuegos:10
-voraz,125,derrota,28,Línea Cortafuegos:10
-voraz,126,derrota,27,Línea Cortafuegos:10
-voraz,127,derrota,30,Línea Cortafuegos:11
-voraz,128,derrota,28,Línea Cortafuegos:10
-voraz,129,derrota,27,Línea Cortafuegos:10
-voraz,130,derrota,32,Línea Cortafuegos:10
-voraz,131,derrota,27,Línea Cortafuegos:10
-voraz,132,derrota,26,Línea Cortafuegos:9
-voraz,133,derrota,26,Línea Cortafuegos:10
-voraz,134,derrota,27,Línea Cortafuegos:10
-voraz,135,derrota,29,Línea Cortafuegos:10
-voraz,136,derrota,26,Línea Cortafuegos:9
-voraz,137,derrota,26,Línea Cortafuegos:10
-voraz,138,derrota,31,Línea Cortafuegos:11
-voraz,139,derrota,27,Línea Cortafuegos:10
-voraz,140,derrota,27,Línea Cortafuegos:10
-voraz,141,derrota,27,Línea Cortafuegos:9
-voraz,142,derrota,29,Línea Cortafuegos:10
-voraz,143,derrota,27,Línea Cortafuegos:10
-voraz,144,derrota,25,Línea Cortafuegos:10
-voraz,145,derrota,26,Línea Cortafuegos:10
-voraz,146,derrota,30,Línea Cortafuegos:10
-voraz,147,derrota,31,Línea Cortafuegos:10
-voraz,148,derrota,26,Línea Cortafuegos:9
-voraz,149,derrota,28,Línea Cortafuegos:10
-voraz,150,derrota,31,Línea Cortafuegos:10
-voraz,151,derrota,28,Línea Cortafuegos:10
-voraz,152,derrota,27,Línea Cortafuegos:10
-voraz,153,derrota,29,Línea Cortafuegos:11
-voraz,154,derrota,27,Línea Cortafuegos:10
-voraz,155,derrota,30,Línea Cortafuegos:11
-voraz,156,derrota,29,Línea Cortafuegos:10
-voraz,157,huida,31,Línea Cortafuegos:11
-voraz,158,derrota,28,Línea Cortafuegos:10
-voraz,159,derrota,27,Línea Cortafuegos:10
-voraz,160,derrota,30,Línea Cortafuegos:11
-voraz,161,derrota,26,Línea Cortafuegos:9
-voraz,162,derrota,27,Línea Cortafuegos:10
-voraz,163,derrota,28,Línea Cortafuegos:10
-voraz,164,derrota,28,Línea Cortafuegos:10
-voraz,165,derrota,27,Línea Cortafuegos:9
-voraz,166,derrota,29,Línea Cortafuegos:9
-voraz,167,derrota,26,Línea Cortafuegos:9
-voraz,168,derrota,29,Línea Cortafuegos:11
-voraz,169,derrota,30,Línea Cortafuegos:10
-voraz,170,derrota,29,Línea Cortafuegos:10
-voraz,171,derrota,27,Línea Cortafuegos:10
-voraz,172,derrota,29,Línea Cortafuegos:9
-voraz,173,derrota,26,Línea Cortafuegos:9
-voraz,174,derrota,30,Línea Cortafuegos:10
-voraz,175,derrota,27,Línea Cortafuegos:10
-voraz,176,derrota,29,Línea Cortafuegos:11
-voraz,177,derrota,29,Línea Cortafuegos:10
-voraz,178,derrota,27,Línea Cortafuegos:10
-voraz,179,derrota,28,Línea Cortafuegos:10
-voraz,180,derrota,28,Línea Cortafuegos:10
-voraz,181,derrota,29,Línea Cortafuegos:10
-voraz,182,derrota,24,Línea Cortafuegos:9
-voraz,183,derrota,30,Línea Cortafuegos:10
-voraz,184,derrota,26,Línea Cortafuegos:9
-voraz,185,derrota,26,Línea Cortafuegos:10
-voraz,186,derrota,28,Línea Cortafuegos:9
-voraz,187,derrota,26,Línea Cortafuegos:10
-voraz,188,derrota,25,Línea Cortafuegos:9
-voraz,189,derrota,30,Línea Cortafuegos:11
-voraz,190,derrota,28,Línea Cortafuegos:10
-voraz,191,derrota,29,Línea Cortafuegos:10
-voraz,192,derrota,27,Línea Cortafuegos:9
-voraz,193,derrota,30,Línea Cortafuegos:10
-voraz,194,derrota,27,Línea Cortafuegos:10
-voraz,195,derrota,28,Línea Cortafuegos:10
-voraz,196,derrota,29,Línea Cortafuegos:10
-voraz,197,derrota,28,Línea Cortafuegos:9
-voraz,198,derrota,26,Línea Cortafuegos:9
-voraz,199,derrota,27,Línea Cortafuegos:10
-voraz,200,derrota,27,Línea Cortafuegos:9
-voraz,201,derrota,29,Línea Cortafuegos:10
-voraz,202,derrota,29,Línea Cortafuegos:11
-voraz,203,derrota,29,Línea Cortafuegos:9
-voraz,204,derrota,27,Línea Cortafuegos:10
-voraz,205,derrota,29,Línea Cortafuegos:11
-voraz,206,derrota,30,Línea Cortafuegos:10
-voraz,207,derrota,27,Línea Cortafuegos:10
-voraz,208,derrota,28,Línea Cortafuegos:11
-voraz,209,derrota,27,Línea Cortafuegos:10
-voraz,210,derrota,28,Línea Cortafuegos:10
-voraz,211,derrota,26,Línea Cortafuegos:9
-voraz,212,derrota,28,Línea Cortafuegos:10
-voraz,213,derrota,26,Línea Cortafuegos:9
-voraz,214,derrota,27,Línea Cortafuegos:9
-voraz,215,derrota,28,Línea Cortafuegos:9
-voraz,216,derrota,27,Línea Cortafuegos:10
-voraz,217,derrota,27,Línea Cortafuegos:9
-voraz,218,derrota,28,Línea Cortafuegos:10
-voraz,219,derrota,26,Línea Cortafuegos:9
-voraz,220,derrota,27,Línea Cortafuegos:9
-voraz,221,derrota,28,Línea Cortafuegos:10
-voraz,222,derrota,28,Línea Cortafuegos:10
-voraz,223,derrota,29,Línea Cortafuegos:10
-voraz,224,derrota,28,Línea Cortafuegos:10
-voraz,225,derrota,26,Línea Cortafuegos:9
-voraz,226,derrota,28,Línea Cortafuegos:10
-voraz,227,derrota,27,Línea Cortafuegos:10
-voraz,228,derrota,31,Línea Cortafuegos:11
-voraz,229,derrota,27,Línea Cortafuegos:10
-voraz,230,derrota,26,Línea Cortafuegos:10
-voraz,231,derrota,26,Línea Cortafuegos:10
-voraz,232,derrota,26,Línea Cortafuegos:10
-voraz,233,derrota,27,Línea Cortafuegos:10
-voraz,234,derrota,30,Línea Cortafuegos:10
-voraz,235,derrota,28,Línea Cortafuegos:10
-voraz,236,derrota,28,Línea Cortafuegos:10
-voraz,237,derrota,28,Línea Cortafuegos:10
-voraz,238,derrota,29,Línea Cortafuegos:10
-voraz,239,derrota,30,Línea Cortafuegos:11
-voraz,240,derrota,28,Línea Cortafuegos:9
-voraz,241,derrota,28,Línea Cortafuegos:10
-voraz,242,derrota,29,Línea Cortafuegos:10
-voraz,243,derrota,27,Línea Cortafuegos:10
-voraz,244,derrota,31,Línea Cortafuegos:11
-voraz,245,derrota,29,Línea Cortafuegos:9
-voraz,246,derrota,30,Línea Cortafuegos:10
-voraz,247,derrota,25,Línea Cortafuegos:9
-voraz,248,derrota,30,Línea Cortafuegos:10
-voraz,249,derrota,28,Línea Cortafuegos:10
-voraz,250,derrota,29,Línea Cortafuegos:10
-voraz,251,derrota,26,Línea Cortafuegos:10
-voraz,252,derrota,29,Línea Cortafuegos:10
-voraz,253,derrota,30,Línea Cortafuegos:11
-voraz,254,derrota,27,Línea Cortafuegos:10
-voraz,255,derrota,27,Línea Cortafuegos:10
-voraz,256,derrota,29,Línea Cortafuegos:10
-voraz,257,derrota,28,Línea Cortafuegos:11
-voraz,258,derrota,29,Línea Cortafuegos:10
-voraz,259,derrota,30,Línea Cortafuegos:11
-voraz,260,derrota,27,Línea Cortafuegos:10
-voraz,261,derrota,25,Línea Cortafuegos:10
-voraz,262,derrota,30,Línea Cortafuegos:10
-voraz,263,derrota,28,Línea Cortafuegos:9
-voraz,264,derrota,28,Línea Cortafuegos:10
-voraz,265,derrota,29,Línea Cortafuegos:9
-voraz,266,derrota,32,Línea Cortafuegos:10
-voraz,267,derrota,28,Línea Cortafuegos:10
-voraz,268,derrota,32,Línea Cortafuegos:10
-voraz,269,derrota,27,Línea Cortafuegos:9
-voraz,270,derrota,26,Línea Cortafuegos:10
-voraz,271,derrota,29,Línea Cortafuegos:10
-voraz,272,derrota,27,Línea Cortafuegos:10
-voraz,273,derrota,28,Línea Cortafuegos:10
-voraz,274,derrota,28,Línea Cortafuegos:10
-voraz,275,derrota,28,Línea Cortafuegos:10
-voraz,276,derrota,31,Línea Cortafuegos:11
-voraz,277,derrota,25,Línea Cortafuegos:9
-voraz,278,derrota,31,Línea Cortafuegos:10
-voraz,279,derrota,30,Línea Cortafuegos:10
-voraz,280,huida,31,Línea Cortafuegos:10
-voraz,281,derrota,28,Línea Cortafuegos:10
-voraz,282,derrota,28,Línea Cortafuegos:10
-voraz,283,derrota,28,Línea Cortafuegos:10
-voraz,284,derrota,27,Línea Cortafuegos:10
-voraz,285,derrota,29,Línea Cortafuegos:10
-voraz,286,derrota,31,Línea Cortafuegos:10
-voraz,287,derrota,26,Línea Cortafuegos:9
-voraz,288,derrota,27,Línea Cortafuegos:10
-voraz,289,derrota,27,Línea Cortafuegos:9
-voraz,290,derrota,29,Línea Cortafuegos:11
-voraz,291,derrota,29,Línea Cortafuegos:9
-voraz,292,derrota,29,Línea Cortafuegos:10
-voraz,293,derrota,27,Línea Cortafuegos:10
-voraz,294,derrota,27,Línea Cortafuegos:10
-voraz,295,derrota,28,Línea Cortafuegos:10
-voraz,296,derrota,27,Línea Cortafuegos:10
-voraz,297,derrota,29,Línea Cortafuegos:10
-voraz,298,derrota,30,Línea Cortafuegos:11
-voraz,299,derrota,24,Línea Cortafuegos:9
-experta,0,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,1,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,2,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,3,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,4,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,5,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,6,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,7,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,8,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,9,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,10,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,11,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,12,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,13,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,14,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,15,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,16,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,17,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,18,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,19,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,20,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,21,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,22,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,23,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,24,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,25,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,26,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,27,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,28,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,29,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,30,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,31,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,32,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,33,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,34,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,35,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,36,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,37,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,38,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,39,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,40,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,41,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,42,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,43,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,44,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,45,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,46,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,47,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,48,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,49,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,50,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,51,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,52,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,53,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,54,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,55,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,56,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,57,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,58,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,59,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,60,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,61,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,62,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,63,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,64,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,65,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,66,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,67,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,68,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,69,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,70,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,71,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,72,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,73,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,74,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,75,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,76,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,77,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,78,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,79,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,80,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,81,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,82,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,83,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,84,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,85,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,86,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,87,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,88,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,89,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,90,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,91,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,92,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,93,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,94,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,95,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,96,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,97,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,98,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,99,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,100,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,101,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,102,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,103,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,104,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,105,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,106,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,107,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,108,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,109,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,110,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,111,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,112,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,113,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,114,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,115,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,116,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,117,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,118,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,119,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,120,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,121,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,122,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,123,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,124,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,125,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,126,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,127,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,128,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,129,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,130,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,131,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,132,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,133,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,134,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,135,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,136,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,137,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,138,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,139,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,140,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,141,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,142,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,143,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,144,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,145,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,146,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,147,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,148,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,149,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,150,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,151,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,152,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,153,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,154,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,155,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,156,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,157,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,158,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,159,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,160,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,161,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,162,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,163,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,164,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,165,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,166,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,167,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,168,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,169,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,170,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,171,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,172,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,173,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,174,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,175,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,176,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,177,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,178,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,179,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,180,victoria,8,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,181,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,182,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,183,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,184,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,185,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,186,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,187,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,188,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,189,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,190,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,191,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,192,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,193,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,194,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,195,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,196,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,197,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,198,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,199,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,200,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,201,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,202,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,203,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,204,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,205,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,206,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,207,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,208,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,209,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,210,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,211,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,212,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,213,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,214,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,215,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,216,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,217,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,218,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,219,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,220,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,221,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,222,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,223,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,224,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,225,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,226,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,227,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,228,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,229,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,230,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,231,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,232,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,233,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,234,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,235,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,236,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,237,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,238,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,239,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,240,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,241,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,242,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,243,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,244,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,245,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,246,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,247,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,248,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,249,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,250,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,251,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,252,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,253,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,254,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,255,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,256,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,257,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,258,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,259,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,260,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,261,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,262,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,263,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,264,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,265,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,266,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,267,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,268,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,269,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,270,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,271,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,272,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,273,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,274,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,275,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,276,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,277,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,278,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,279,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,280,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,281,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,282,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,283,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,284,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,285,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,286,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,287,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,288,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,289,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,290,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,291,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,292,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,293,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,294,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,295,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,296,victoria,10,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,297,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,298,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
-experta,299,victoria,9,Barrera Absorbente:1 Escudo de Albedo:1 Línea Cortafuegos:1 Rotación de Cultivos:1 Separación en la Fuente:1
+politica,combate,resultado,rondas,sintonia,habilidades
+aleatoria,0,victoria,10,0.18,Escudo de Albedo:3
+aleatoria,1,victoria,14,0.43,Escudo de Albedo:3
+aleatoria,2,victoria,15,0.19,Escudo de Albedo:3
+aleatoria,3,victoria,8,0.30,Escudo de Albedo:4
+aleatoria,4,victoria,10,0.38,Escudo de Albedo:3
+aleatoria,5,victoria,10,0.10,Escudo de Albedo:2
+aleatoria,6,victoria,11,0.10,Escudo de Albedo:3
+aleatoria,7,victoria,11,0.40,Escudo de Albedo:4
+aleatoria,8,victoria,10,0.15,Escudo de Albedo:3
+aleatoria,9,victoria,9,0.66,Escudo de Albedo:3
+aleatoria,10,victoria,12,0.29,Escudo de Albedo:2
+aleatoria,11,victoria,10,0.19,Escudo de Albedo:3
+aleatoria,12,victoria,11,0.27,Escudo de Albedo:3
+aleatoria,13,victoria,10,0.06,Escudo de Albedo:3
+aleatoria,14,victoria,9,0.14,Escudo de Albedo:5
+aleatoria,15,victoria,15,0.50,Escudo de Albedo:3
+aleatoria,16,victoria,10,0.89,Escudo de Albedo:2
+aleatoria,17,victoria,11,0.10,Escudo de Albedo:4
+aleatoria,18,victoria,6,0.66,Escudo de Albedo:4
+aleatoria,19,victoria,10,0.18,Escudo de Albedo:2
+aleatoria,20,victoria,10,0.20,Escudo de Albedo:3
+aleatoria,21,victoria,8,0.30,Escudo de Albedo:4
+aleatoria,22,victoria,10,0.24,Escudo de Albedo:6
+aleatoria,23,victoria,9,0.34,Escudo de Albedo:1
+aleatoria,24,victoria,11,0.37,Escudo de Albedo:2
+aleatoria,25,victoria,10,0.29,Escudo de Albedo:2
+aleatoria,26,victoria,10,0.08,Escudo de Albedo:5
+aleatoria,27,victoria,11,0.30,Escudo de Albedo:3
+aleatoria,28,victoria,13,0.17,Escudo de Albedo:4
+aleatoria,29,victoria,10,0.10,Escudo de Albedo:4
+aleatoria,30,victoria,12,0.41,Escudo de Albedo:2
+aleatoria,31,victoria,10,0.14,Escudo de Albedo:3
+aleatoria,32,victoria,10,0.23,Escudo de Albedo:2
+aleatoria,33,victoria,12,0.23,Escudo de Albedo:2
+aleatoria,34,victoria,10,0.23,Escudo de Albedo:2
+aleatoria,35,victoria,10,0.14,Escudo de Albedo:2
+aleatoria,36,victoria,14,0.22,Escudo de Albedo:3
+aleatoria,37,victoria,9,0.13,Escudo de Albedo:4
+aleatoria,38,victoria,12,0.21,Escudo de Albedo:3
+aleatoria,39,victoria,13,0.28,Escudo de Albedo:4
+aleatoria,40,victoria,10,0.19,Escudo de Albedo:3
+aleatoria,41,victoria,9,0.14,Escudo de Albedo:4
+aleatoria,42,victoria,12,0.53,Escudo de Albedo:2
+aleatoria,43,victoria,12,0.31,Escudo de Albedo:2
+aleatoria,44,victoria,9,0.14,Escudo de Albedo:3
+aleatoria,45,victoria,10,0.69,Escudo de Albedo:3
+aleatoria,46,victoria,9,0.14,Escudo de Albedo:4
+aleatoria,47,victoria,12,0.55,Escudo de Albedo:2
+aleatoria,48,victoria,12,0.54,Escudo de Albedo:3
+aleatoria,49,victoria,10,0.14,Escudo de Albedo:4
+aleatoria,50,victoria,9,0.16,Escudo de Albedo:4
+aleatoria,51,victoria,9,0.58,Escudo de Albedo:3
+aleatoria,52,victoria,8,0.35,Escudo de Albedo:3
+aleatoria,53,victoria,10,0.17,Escudo de Albedo:2
+aleatoria,54,victoria,10,0.24,Escudo de Albedo:3
+aleatoria,55,victoria,7,0.32,Escudo de Albedo:3
+aleatoria,56,victoria,11,0.28,Escudo de Albedo:3
+aleatoria,57,victoria,12,0.24,Escudo de Albedo:4
+aleatoria,58,victoria,14,0.70,Escudo de Albedo:3
+aleatoria,59,victoria,10,0.10,Escudo de Albedo:3
+aleatoria,60,victoria,11,0.11,Escudo de Albedo:3
+aleatoria,61,victoria,11,0.13,Escudo de Albedo:3
+aleatoria,62,victoria,9,0.23,Escudo de Albedo:3
+aleatoria,63,victoria,10,0.20,Escudo de Albedo:1
+aleatoria,64,victoria,8,0.57,Escudo de Albedo:4
+aleatoria,65,victoria,10,0.14,Escudo de Albedo:3
+aleatoria,66,victoria,11,0.23,Escudo de Albedo:3
+aleatoria,67,victoria,9,0.12,Escudo de Albedo:4
+aleatoria,68,victoria,9,0.24,Escudo de Albedo:2
+aleatoria,69,victoria,11,0.16,Escudo de Albedo:2
+aleatoria,70,victoria,12,0.25,Escudo de Albedo:4
+aleatoria,71,victoria,7,0.20,Escudo de Albedo:5
+aleatoria,72,victoria,8,0.51,Escudo de Albedo:3
+aleatoria,73,victoria,14,0.17,Escudo de Albedo:5
+aleatoria,74,victoria,13,0.32,Escudo de Albedo:3
+aleatoria,75,victoria,10,0.15,Escudo de Albedo:3
+aleatoria,76,victoria,15,0.31,Escudo de Albedo:1
+aleatoria,77,victoria,10,0.10,Escudo de Albedo:2
+aleatoria,78,victoria,12,0.31,Escudo de Albedo:2
+aleatoria,79,victoria,10,0.14,Escudo de Albedo:2
+aleatoria,80,victoria,10,0.10,Escudo de Albedo:3
+aleatoria,81,victoria,7,0.58,Escudo de Albedo:2
+aleatoria,82,victoria,10,0.12,Escudo de Albedo:3
+aleatoria,83,victoria,9,0.17,Escudo de Albedo:3
+aleatoria,84,victoria,11,0.59,Escudo de Albedo:4
+aleatoria,85,victoria,9,0.17,Escudo de Albedo:4
+aleatoria,86,victoria,10,0.21,Escudo de Albedo:3
+aleatoria,87,victoria,10,0.11,Escudo de Albedo:4
+aleatoria,88,victoria,12,0.17,Escudo de Albedo:4
+aleatoria,89,victoria,11,0.08,Escudo de Albedo:2
+aleatoria,90,victoria,11,0.11,Escudo de Albedo:3
+aleatoria,91,victoria,12,0.30,Escudo de Albedo:2
+aleatoria,92,victoria,12,0.26,Escudo de Albedo:3
+aleatoria,93,victoria,10,0.16,Escudo de Albedo:3
+aleatoria,94,victoria,12,0.15,Escudo de Albedo:3
+aleatoria,95,victoria,10,0.65,Escudo de Albedo:2
+aleatoria,96,victoria,8,0.69,Escudo de Albedo:4
+aleatoria,97,victoria,10,0.17,Escudo de Albedo:3
+aleatoria,98,victoria,12,0.50,Escudo de Albedo:3
+aleatoria,99,victoria,10,0.17,Escudo de Albedo:3
+aleatoria,100,victoria,15,0.66,Escudo de Albedo:2
+aleatoria,101,victoria,10,0.10,Escudo de Albedo:4
+aleatoria,102,victoria,10,0.09,Escudo de Albedo:3
+aleatoria,103,victoria,10,0.25,Escudo de Albedo:3
+aleatoria,104,victoria,11,0.37,Escudo de Albedo:3
+aleatoria,105,victoria,13,0.62,Escudo de Albedo:3
+aleatoria,106,victoria,11,0.19,Escudo de Albedo:3
+aleatoria,107,victoria,12,0.17,Escudo de Albedo:3
+aleatoria,108,victoria,10,0.12,Escudo de Albedo:4
+aleatoria,109,victoria,10,0.10,Escudo de Albedo:3
+aleatoria,110,victoria,10,0.17,Escudo de Albedo:3
+aleatoria,111,victoria,12,0.78,Escudo de Albedo:1
+aleatoria,112,victoria,8,0.23,Escudo de Albedo:3
+aleatoria,113,victoria,12,0.21,Escudo de Albedo:3
+aleatoria,114,victoria,10,0.20,Escudo de Albedo:2
+aleatoria,115,victoria,11,0.23,Escudo de Albedo:1
+aleatoria,116,victoria,10,0.90,Escudo de Albedo:1
+aleatoria,117,victoria,10,0.20,Escudo de Albedo:2
+aleatoria,118,victoria,11,0.17,Escudo de Albedo:1
+aleatoria,119,victoria,9,0.12,Escudo de Albedo:4
+aleatoria,120,victoria,9,0.14,Escudo de Albedo:2
+aleatoria,121,victoria,10,0.25,Escudo de Albedo:3
+aleatoria,122,victoria,10,0.14,Escudo de Albedo:3
+aleatoria,123,victoria,10,0.19,Escudo de Albedo:4
+aleatoria,124,victoria,10,0.18,Escudo de Albedo:3
+aleatoria,125,victoria,12,0.24,Escudo de Albedo:3
+aleatoria,126,victoria,9,0.80,Escudo de Albedo:2
+aleatoria,127,victoria,9,0.17,Escudo de Albedo:3
+aleatoria,128,victoria,9,0.16,Escudo de Albedo:5
+aleatoria,129,victoria,11,0.25,Escudo de Albedo:2
+aleatoria,130,victoria,11,0.83,Escudo de Albedo:2
+aleatoria,131,victoria,11,0.15,Escudo de Albedo:3
+aleatoria,132,victoria,10,0.20,Escudo de Albedo:2
+aleatoria,133,victoria,11,0.19,Escudo de Albedo:3
+aleatoria,134,victoria,11,0.81,Escudo de Albedo:1
+aleatoria,135,victoria,9,0.56,Escudo de Albedo:2
+aleatoria,136,victoria,12,0.22,Escudo de Albedo:2
+aleatoria,137,victoria,9,0.18,Escudo de Albedo:3
+aleatoria,138,victoria,12,0.19,Escudo de Albedo:4
+aleatoria,139,victoria,10,0.18,Escudo de Albedo:2
+aleatoria,140,victoria,10,0.21,Escudo de Albedo:3
+aleatoria,141,victoria,8,0.21,Escudo de Albedo:4
+aleatoria,142,victoria,13,0.11,Escudo de Albedo:4
+aleatoria,143,victoria,11,0.37,Escudo de Albedo:4
+aleatoria,144,victoria,11,0.11,Escudo de Albedo:3
+aleatoria,145,victoria,11,0.31,Escudo de Albedo:3
+aleatoria,146,victoria,10,0.50,Escudo de Albedo:3
+aleatoria,147,victoria,12,0.19,Escudo de Albedo:2
+aleatoria,148,victoria,8,0.30,Escudo de Albedo:4
+aleatoria,149,victoria,9,0.14,Escudo de Albedo:4
+aleatoria,150,victoria,10,0.10,Escudo de Albedo:2
+aleatoria,151,victoria,10,0.08,Escudo de Albedo:4
+aleatoria,152,victoria,11,0.26,Escudo de Albedo:2
+aleatoria,153,victoria,15,0.20,Escudo de Albedo:2
+aleatoria,154,victoria,11,0.13,Escudo de Albedo:3
+aleatoria,155,victoria,9,0.26,Escudo de Albedo:1
+aleatoria,156,victoria,8,0.25,Escudo de Albedo:4
+aleatoria,157,victoria,9,0.15,Escudo de Albedo:4
+aleatoria,158,victoria,9,0.74,Escudo de Albedo:4
+aleatoria,159,victoria,9,0.17,Escudo de Albedo:4
+aleatoria,160,victoria,10,0.26,Escudo de Albedo:2
+aleatoria,161,victoria,10,0.19,Escudo de Albedo:3
+aleatoria,162,victoria,8,0.26,Escudo de Albedo:4
+aleatoria,163,victoria,13,0.56,Escudo de Albedo:1
+aleatoria,164,victoria,11,0.23,Escudo de Albedo:3
+aleatoria,165,victoria,9,0.09,Escudo de Albedo:5
+aleatoria,166,victoria,10,0.27,Escudo de Albedo:3
+aleatoria,167,victoria,8,0.20,Escudo de Albedo:4
+aleatoria,168,victoria,11,0.38,Escudo de Albedo:1
+aleatoria,169,victoria,11,0.33,Escudo de Albedo:2
+aleatoria,170,victoria,12,0.23,Escudo de Albedo:1
+aleatoria,171,victoria,11,0.13,Escudo de Albedo:3
+aleatoria,172,victoria,12,0.42,Escudo de Albedo:2
+aleatoria,173,victoria,11,0.45,Escudo de Albedo:2
+aleatoria,174,victoria,11,0.21,Escudo de Albedo:3
+aleatoria,175,victoria,10,0.19,Escudo de Albedo:2
+aleatoria,176,victoria,11,0.28,Escudo de Albedo:3
+aleatoria,177,victoria,11,0.44,Escudo de Albedo:2
+aleatoria,178,victoria,9,0.47,Escudo de Albedo:4
+aleatoria,179,victoria,11,0.19,Escudo de Albedo:4
+aleatoria,180,victoria,9,0.17,Escudo de Albedo:3
+aleatoria,181,victoria,8,0.24,Escudo de Albedo:5
+aleatoria,182,victoria,11,0.35,Escudo de Albedo:1
+aleatoria,183,victoria,11,0.33,Escudo de Albedo:1
+aleatoria,184,victoria,9,0.10,Escudo de Albedo:5
+aleatoria,185,victoria,9,0.15,Escudo de Albedo:5
+aleatoria,186,victoria,11,0.05,Escudo de Albedo:4
+aleatoria,187,victoria,12,0.25,Escudo de Albedo:3
+aleatoria,188,victoria,11,0.23,Escudo de Albedo:2
+aleatoria,189,victoria,11,0.38,Escudo de Albedo:1
+aleatoria,190,victoria,10,0.10,Escudo de Albedo:3
+aleatoria,191,victoria,7,0.31,Escudo de Albedo:4
+aleatoria,192,victoria,9,0.17,Escudo de Albedo:4
+aleatoria,193,victoria,8,0.64,Escudo de Albedo:4
+aleatoria,194,victoria,9,0.55,Escudo de Albedo:2
+aleatoria,195,victoria,10,0.15,Escudo de Albedo:2
+aleatoria,196,victoria,10,0.12,Escudo de Albedo:2
+aleatoria,197,victoria,11,0.41,Escudo de Albedo:3
+aleatoria,198,victoria,11,0.51,Escudo de Albedo:3
+aleatoria,199,victoria,10,0.15,Escudo de Albedo:3
+voraz,0,victoria,7,0.28,Escudo de Albedo:6
+voraz,1,victoria,7,0.28,Escudo de Albedo:6
+voraz,2,victoria,8,0.24,Escudo de Albedo:7
+voraz,3,victoria,7,0.28,Escudo de Albedo:6
+voraz,4,victoria,7,0.28,Escudo de Albedo:6
+voraz,5,victoria,7,0.28,Escudo de Albedo:6
+voraz,6,victoria,7,0.28,Escudo de Albedo:6
+voraz,7,victoria,7,0.28,Escudo de Albedo:6
+voraz,8,victoria,7,0.28,Escudo de Albedo:6
+voraz,9,victoria,7,0.28,Escudo de Albedo:6
+voraz,10,victoria,7,0.28,Escudo de Albedo:6
+voraz,11,victoria,7,0.28,Escudo de Albedo:6
+voraz,12,victoria,7,0.28,Escudo de Albedo:6
+voraz,13,victoria,7,0.28,Escudo de Albedo:6
+voraz,14,victoria,7,0.28,Escudo de Albedo:6
+voraz,15,victoria,7,0.28,Escudo de Albedo:6
+voraz,16,victoria,7,0.28,Escudo de Albedo:6
+voraz,17,victoria,8,0.28,Escudo de Albedo:6
+voraz,18,victoria,7,0.28,Escudo de Albedo:6
+voraz,19,victoria,7,0.28,Escudo de Albedo:6
+voraz,20,victoria,7,0.28,Escudo de Albedo:6
+voraz,21,victoria,7,0.28,Escudo de Albedo:6
+voraz,22,victoria,7,0.28,Escudo de Albedo:6
+voraz,23,victoria,7,0.28,Escudo de Albedo:6
+voraz,24,victoria,7,0.28,Escudo de Albedo:6
+voraz,25,victoria,7,0.28,Escudo de Albedo:6
+voraz,26,victoria,7,0.28,Escudo de Albedo:6
+voraz,27,victoria,8,0.24,Escudo de Albedo:7
+voraz,28,victoria,7,0.28,Escudo de Albedo:6
+voraz,29,victoria,7,0.28,Escudo de Albedo:6
+voraz,30,victoria,7,0.28,Escudo de Albedo:6
+voraz,31,victoria,7,0.28,Escudo de Albedo:6
+voraz,32,victoria,7,0.28,Escudo de Albedo:6
+voraz,33,victoria,8,0.28,Escudo de Albedo:6
+voraz,34,victoria,7,0.28,Escudo de Albedo:6
+voraz,35,victoria,7,0.28,Escudo de Albedo:6
+voraz,36,victoria,8,0.24,Escudo de Albedo:7
+voraz,37,victoria,7,0.28,Escudo de Albedo:6
+voraz,38,victoria,7,0.28,Escudo de Albedo:6
+voraz,39,victoria,7,0.28,Escudo de Albedo:6
+voraz,40,victoria,7,0.28,Escudo de Albedo:6
+voraz,41,victoria,8,0.24,Escudo de Albedo:7
+voraz,42,victoria,7,0.28,Escudo de Albedo:6
+voraz,43,victoria,7,0.28,Escudo de Albedo:6
+voraz,44,victoria,8,0.28,Escudo de Albedo:6
+voraz,45,victoria,7,0.28,Escudo de Albedo:6
+voraz,46,victoria,7,0.28,Escudo de Albedo:6
+voraz,47,victoria,8,0.28,Escudo de Albedo:6
+voraz,48,victoria,7,0.28,Escudo de Albedo:6
+voraz,49,victoria,7,0.28,Escudo de Albedo:6
+voraz,50,victoria,7,0.28,Escudo de Albedo:6
+voraz,51,victoria,7,0.28,Escudo de Albedo:6
+voraz,52,victoria,7,0.28,Escudo de Albedo:6
+voraz,53,victoria,7,0.28,Escudo de Albedo:6
+voraz,54,victoria,7,0.28,Escudo de Albedo:6
+voraz,55,victoria,7,0.28,Escudo de Albedo:6
+voraz,56,victoria,7,0.28,Escudo de Albedo:6
+voraz,57,victoria,7,0.28,Escudo de Albedo:6
+voraz,58,victoria,7,0.28,Escudo de Albedo:6
+voraz,59,victoria,7,0.28,Escudo de Albedo:6
+voraz,60,victoria,7,0.28,Escudo de Albedo:6
+voraz,61,victoria,7,0.28,Escudo de Albedo:6
+voraz,62,victoria,7,0.28,Escudo de Albedo:6
+voraz,63,victoria,7,0.28,Escudo de Albedo:6
+voraz,64,victoria,7,0.28,Escudo de Albedo:6
+voraz,65,victoria,7,0.28,Escudo de Albedo:6
+voraz,66,victoria,7,0.28,Escudo de Albedo:6
+voraz,67,victoria,8,0.28,Escudo de Albedo:6
+voraz,68,victoria,7,0.28,Escudo de Albedo:6
+voraz,69,victoria,7,0.28,Escudo de Albedo:6
+voraz,70,victoria,7,0.28,Escudo de Albedo:6
+voraz,71,victoria,7,0.28,Escudo de Albedo:6
+voraz,72,victoria,7,0.28,Escudo de Albedo:6
+voraz,73,victoria,7,0.28,Escudo de Albedo:6
+voraz,74,victoria,7,0.28,Escudo de Albedo:6
+voraz,75,victoria,7,0.28,Escudo de Albedo:6
+voraz,76,victoria,7,0.28,Escudo de Albedo:6
+voraz,77,victoria,7,0.28,Escudo de Albedo:6
+voraz,78,victoria,7,0.28,Escudo de Albedo:6
+voraz,79,victoria,7,0.28,Escudo de Albedo:6
+voraz,80,victoria,7,0.28,Escudo de Albedo:6
+voraz,81,victoria,7,0.28,Escudo de Albedo:6
+voraz,82,victoria,7,0.28,Escudo de Albedo:6
+voraz,83,victoria,7,0.28,Escudo de Albedo:6
+voraz,84,victoria,7,0.28,Escudo de Albedo:6
+voraz,85,victoria,7,0.28,Escudo de Albedo:6
+voraz,86,victoria,7,0.28,Escudo de Albedo:6
+voraz,87,victoria,7,0.28,Escudo de Albedo:6
+voraz,88,victoria,7,0.28,Escudo de Albedo:6
+voraz,89,victoria,7,0.28,Escudo de Albedo:6
+voraz,90,victoria,7,0.28,Escudo de Albedo:6
+voraz,91,victoria,7,0.28,Escudo de Albedo:6
+voraz,92,victoria,7,0.28,Escudo de Albedo:6
+voraz,93,victoria,7,0.28,Escudo de Albedo:6
+voraz,94,victoria,7,0.28,Escudo de Albedo:6
+voraz,95,victoria,7,0.28,Escudo de Albedo:6
+voraz,96,victoria,7,0.28,Escudo de Albedo:6
+voraz,97,victoria,7,0.28,Escudo de Albedo:6
+voraz,98,victoria,7,0.28,Escudo de Albedo:6
+voraz,99,victoria,7,0.28,Escudo de Albedo:6
+voraz,100,victoria,7,0.28,Escudo de Albedo:6
+voraz,101,victoria,7,0.28,Escudo de Albedo:6
+voraz,102,victoria,7,0.28,Escudo de Albedo:6
+voraz,103,victoria,8,0.24,Escudo de Albedo:7
+voraz,104,victoria,7,0.28,Escudo de Albedo:6
+voraz,105,victoria,7,0.28,Escudo de Albedo:6
+voraz,106,victoria,7,0.28,Escudo de Albedo:6
+voraz,107,victoria,7,0.28,Escudo de Albedo:6
+voraz,108,victoria,7,0.28,Escudo de Albedo:6
+voraz,109,victoria,7,0.28,Escudo de Albedo:6
+voraz,110,victoria,7,0.28,Escudo de Albedo:6
+voraz,111,victoria,8,0.24,Escudo de Albedo:7
+voraz,112,victoria,7,0.28,Escudo de Albedo:6
+voraz,113,victoria,7,0.28,Escudo de Albedo:6
+voraz,114,victoria,7,0.28,Escudo de Albedo:6
+voraz,115,victoria,8,0.28,Escudo de Albedo:6
+voraz,116,victoria,7,0.28,Escudo de Albedo:6
+voraz,117,victoria,7,0.28,Escudo de Albedo:6
+voraz,118,victoria,7,0.28,Escudo de Albedo:6
+voraz,119,victoria,7,0.28,Escudo de Albedo:6
+voraz,120,victoria,7,0.28,Escudo de Albedo:6
+voraz,121,victoria,7,0.28,Escudo de Albedo:6
+voraz,122,victoria,8,0.28,Escudo de Albedo:6
+voraz,123,victoria,7,0.28,Escudo de Albedo:6
+voraz,124,victoria,7,0.28,Escudo de Albedo:6
+voraz,125,victoria,7,0.28,Escudo de Albedo:6
+voraz,126,victoria,7,0.28,Escudo de Albedo:6
+voraz,127,victoria,7,0.28,Escudo de Albedo:6
+voraz,128,victoria,7,0.28,Escudo de Albedo:6
+voraz,129,victoria,7,0.28,Escudo de Albedo:6
+voraz,130,victoria,7,0.28,Escudo de Albedo:6
+voraz,131,victoria,7,0.28,Escudo de Albedo:6
+voraz,132,victoria,7,0.28,Escudo de Albedo:6
+voraz,133,victoria,7,0.28,Escudo de Albedo:6
+voraz,134,victoria,7,0.28,Escudo de Albedo:6
+voraz,135,victoria,7,0.28,Escudo de Albedo:6
+voraz,136,victoria,7,0.28,Escudo de Albedo:6
+voraz,137,victoria,7,0.28,Escudo de Albedo:6
+voraz,138,victoria,7,0.28,Escudo de Albedo:6
+voraz,139,victoria,7,0.28,Escudo de Albedo:6
+voraz,140,victoria,7,0.28,Escudo de Albedo:6
+voraz,141,victoria,7,0.28,Escudo de Albedo:6
+voraz,142,victoria,7,0.28,Escudo de Albedo:6
+voraz,143,victoria,8,0.28,Escudo de Albedo:6
+voraz,144,victoria,7,0.28,Escudo de Albedo:6
+voraz,145,victoria,7,0.28,Escudo de Albedo:6
+voraz,146,victoria,7,0.28,Escudo de Albedo:6
+voraz,147,victoria,8,0.24,Escudo de Albedo:7
+voraz,148,victoria,7,0.28,Escudo de Albedo:6
+voraz,149,victoria,7,0.28,Escudo de Albedo:6
+voraz,150,victoria,7,0.28,Escudo de Albedo:6
+voraz,151,victoria,7,0.28,Escudo de Albedo:6
+voraz,152,victoria,7,0.28,Escudo de Albedo:6
+voraz,153,victoria,7,0.28,Escudo de Albedo:6
+voraz,154,victoria,7,0.28,Escudo de Albedo:6
+voraz,155,victoria,7,0.28,Escudo de Albedo:6
+voraz,156,victoria,7,0.28,Escudo de Albedo:6
+voraz,157,victoria,7,0.28,Escudo de Albedo:6
+voraz,158,victoria,7,0.28,Escudo de Albedo:6
+voraz,159,victoria,7,0.28,Escudo de Albedo:6
+voraz,160,victoria,7,0.28,Escudo de Albedo:6
+voraz,161,victoria,8,0.28,Escudo de Albedo:6
+voraz,162,victoria,7,0.28,Escudo de Albedo:6
+voraz,163,victoria,7,0.28,Escudo de Albedo:6
+voraz,164,victoria,7,0.28,Escudo de Albedo:6
+voraz,165,victoria,7,0.28,Escudo de Albedo:6
+voraz,166,victoria,7,0.28,Escudo de Albedo:6
+voraz,167,victoria,7,0.28,Escudo de Albedo:6
+voraz,168,victoria,7,0.28,Escudo de Albedo:6
+voraz,169,victoria,7,0.28,Escudo de Albedo:6
+voraz,170,victoria,7,0.28,Escudo de Albedo:6
+voraz,171,victoria,7,0.28,Escudo de Albedo:6
+voraz,172,victoria,7,0.28,Escudo de Albedo:6
+voraz,173,victoria,7,0.28,Escudo de Albedo:6
+voraz,174,victoria,8,0.24,Escudo de Albedo:7
+voraz,175,victoria,8,0.28,Escudo de Albedo:6
+voraz,176,victoria,7,0.28,Escudo de Albedo:6
+voraz,177,victoria,7,0.28,Escudo de Albedo:6
+voraz,178,victoria,7,0.28,Escudo de Albedo:6
+voraz,179,victoria,8,0.24,Escudo de Albedo:7
+voraz,180,victoria,7,0.28,Escudo de Albedo:6
+voraz,181,victoria,7,0.28,Escudo de Albedo:6
+voraz,182,victoria,7,0.28,Escudo de Albedo:6
+voraz,183,victoria,7,0.28,Escudo de Albedo:6
+voraz,184,victoria,7,0.28,Escudo de Albedo:6
+voraz,185,victoria,7,0.28,Escudo de Albedo:6
+voraz,186,victoria,7,0.28,Escudo de Albedo:6
+voraz,187,victoria,7,0.28,Escudo de Albedo:6
+voraz,188,victoria,7,0.28,Escudo de Albedo:6
+voraz,189,victoria,7,0.28,Escudo de Albedo:6
+voraz,190,victoria,8,0.28,Escudo de Albedo:6
+voraz,191,victoria,7,0.28,Escudo de Albedo:6
+voraz,192,victoria,7,0.28,Escudo de Albedo:6
+voraz,193,victoria,7,0.28,Escudo de Albedo:6
+voraz,194,victoria,8,0.24,Escudo de Albedo:7
+voraz,195,victoria,8,0.28,Escudo de Albedo:6
+voraz,196,victoria,7,0.28,Escudo de Albedo:6
+voraz,197,victoria,7,0.28,Escudo de Albedo:6
+voraz,198,victoria,8,0.28,Escudo de Albedo:6
+voraz,199,victoria,7,0.28,Escudo de Albedo:6
+experta,0,victoria,9,0.95,Escudo de Albedo:1
+experta,1,victoria,9,0.95,Escudo de Albedo:1
+experta,2,victoria,9,0.97,Escudo de Albedo:1
+experta,3,victoria,8,0.91,Escudo de Albedo:1
+experta,4,victoria,9,0.97,Escudo de Albedo:1
+experta,5,victoria,9,0.95,Escudo de Albedo:1
+experta,6,victoria,9,0.97,Escudo de Albedo:1
+experta,7,victoria,8,0.91,Escudo de Albedo:1
+experta,8,victoria,9,0.95,Escudo de Albedo:1
+experta,9,victoria,8,0.91,Escudo de Albedo:1
+experta,10,victoria,9,0.97,Escudo de Albedo:1
+experta,11,victoria,9,0.95,Escudo de Albedo:1
+experta,12,victoria,9,0.97,Escudo de Albedo:1
+experta,13,victoria,9,0.95,Escudo de Albedo:1
+experta,14,victoria,8,0.91,Escudo de Albedo:1
+experta,15,victoria,8,0.91,Escudo de Albedo:1
+experta,16,victoria,9,0.95,Escudo de Albedo:1
+experta,17,victoria,9,0.95,Escudo de Albedo:1
+experta,18,victoria,9,0.95,Escudo de Albedo:1
+experta,19,victoria,9,0.95,Escudo de Albedo:1
+experta,20,victoria,9,0.91,Escudo de Albedo:1
+experta,21,victoria,9,0.95,Escudo de Albedo:1
+experta,22,victoria,9,0.95,Escudo de Albedo:1
+experta,23,victoria,9,0.91,Escudo de Albedo:1
+experta,24,victoria,9,0.95,Escudo de Albedo:1
+experta,25,victoria,9,0.97,Escudo de Albedo:1
+experta,26,victoria,9,0.95,Escudo de Albedo:1
+experta,27,victoria,9,0.95,Escudo de Albedo:1
+experta,28,victoria,10,0.95,Escudo de Albedo:1
+experta,29,victoria,9,0.95,Escudo de Albedo:1
+experta,30,victoria,9,0.95,Escudo de Albedo:1
+experta,31,victoria,9,0.91,Escudo de Albedo:1
+experta,32,victoria,9,0.95,Escudo de Albedo:1
+experta,33,victoria,9,0.95,Escudo de Albedo:1
+experta,34,victoria,9,0.97,Escudo de Albedo:1
+experta,35,victoria,8,0.95,Escudo de Albedo:1
+experta,36,victoria,9,0.95,Escudo de Albedo:1
+experta,37,victoria,9,0.95,Escudo de Albedo:1
+experta,38,victoria,9,0.97,Escudo de Albedo:1
+experta,39,victoria,9,0.95,Escudo de Albedo:1
+experta,40,victoria,9,0.91,Escudo de Albedo:1
+experta,41,victoria,9,0.95,Escudo de Albedo:1
+experta,42,victoria,8,0.91,Escudo de Albedo:1
+experta,43,victoria,8,0.95,Escudo de Albedo:1
+experta,44,victoria,9,0.95,Escudo de Albedo:1
+experta,45,victoria,9,0.91,Escudo de Albedo:1
+experta,46,victoria,9,0.95,Escudo de Albedo:1
+experta,47,victoria,10,0.95,Escudo de Albedo:1
+experta,48,victoria,8,0.91,Escudo de Albedo:1
+experta,49,victoria,9,0.95,Escudo de Albedo:1
+experta,50,victoria,9,0.91,Escudo de Albedo:1
+experta,51,victoria,9,0.95,Escudo de Albedo:1
+experta,52,victoria,9,0.91,Escudo de Albedo:1
+experta,53,victoria,9,0.91,Escudo de Albedo:1
+experta,54,victoria,9,0.95,Escudo de Albedo:1
+experta,55,victoria,9,0.95,Escudo de Albedo:1
+experta,56,victoria,9,0.97,Escudo de Albedo:1
+experta,57,victoria,9,0.95,Escudo de Albedo:1
+experta,58,victoria,9,0.91,Escudo de Albedo:1
+experta,59,victoria,9,0.95,Escudo de Albedo:1
+experta,60,victoria,9,0.95,Escudo de Albedo:1
+experta,61,victoria,9,0.95,Escudo de Albedo:1
+experta,62,victoria,9,0.95,Escudo de Albedo:1
+experta,63,victoria,9,0.95,Escudo de Albedo:1
+experta,64,victoria,9,0.91,Escudo de Albedo:1
+experta,65,victoria,9,0.95,Escudo de Albedo:1
+experta,66,victoria,9,0.91,Escudo de Albedo:1
+experta,67,victoria,8,0.91,Escudo de Albedo:1
+experta,68,victoria,9,0.95,Escudo de Albedo:1
+experta,69,victoria,9,0.91,Escudo de Albedo:1
+experta,70,victoria,9,0.95,Escudo de Albedo:1
+experta,71,victoria,9,0.95,Escudo de Albedo:1
+experta,72,victoria,8,0.91,Escudo de Albedo:1
+experta,73,victoria,10,0.95,Escudo de Albedo:1
+experta,74,victoria,9,0.95,Escudo de Albedo:1
+experta,75,victoria,9,0.95,Escudo de Albedo:1
+experta,76,victoria,9,0.91,Escudo de Albedo:1
+experta,77,victoria,9,0.95,Escudo de Albedo:1
+experta,78,victoria,9,0.91,Escudo de Albedo:1
+experta,79,victoria,9,0.95,Escudo de Albedo:1
+experta,80,victoria,10,0.97,Escudo de Albedo:1
+experta,81,victoria,9,0.95,Escudo de Albedo:1
+experta,82,victoria,9,0.95,Escudo de Albedo:1
+experta,83,victoria,9,0.95,Escudo de Albedo:1
+experta,84,victoria,9,0.91,Escudo de Albedo:1
+experta,85,victoria,9,0.95,Escudo de Albedo:1
+experta,86,victoria,9,0.91,Escudo de Albedo:1
+experta,87,victoria,8,0.95,Escudo de Albedo:1
+experta,88,victoria,9,0.97,Escudo de Albedo:1
+experta,89,victoria,8,0.95,Escudo de Albedo:1
+experta,90,victoria,9,0.97,Escudo de Albedo:1
+experta,91,victoria,9,0.95,Escudo de Albedo:1
+experta,92,victoria,9,0.95,Escudo de Albedo:1
+experta,93,victoria,9,0.95,Escudo de Albedo:1
+experta,94,victoria,9,0.95,Escudo de Albedo:1
+experta,95,victoria,9,0.91,Escudo de Albedo:1
+experta,96,victoria,9,0.95,Escudo de Albedo:1
+experta,97,victoria,9,0.91,Escudo de Albedo:1
+experta,98,victoria,9,0.95,Escudo de Albedo:1
+experta,99,victoria,9,0.95,Escudo de Albedo:1
+experta,100,victoria,9,0.95,Escudo de Albedo:1
+experta,101,victoria,9,0.91,Escudo de Albedo:1
+experta,102,victoria,9,0.91,Escudo de Albedo:1
+experta,103,victoria,9,0.91,Escudo de Albedo:1
+experta,104,victoria,9,0.95,Escudo de Albedo:1
+experta,105,victoria,9,0.91,Escudo de Albedo:1
+experta,106,victoria,9,0.97,Escudo de Albedo:1
+experta,107,victoria,9,0.95,Escudo de Albedo:1
+experta,108,victoria,9,0.95,Escudo de Albedo:1
+experta,109,victoria,9,0.95,Escudo de Albedo:1
+experta,110,victoria,8,0.91,Escudo de Albedo:1
+experta,111,victoria,9,0.84,Escudo de Albedo:1
+experta,112,victoria,10,0.97,Escudo de Albedo:1
+experta,113,victoria,9,0.95,Escudo de Albedo:1
+experta,114,victoria,8,0.91,Escudo de Albedo:1
+experta,115,victoria,9,0.95,Escudo de Albedo:1
+experta,116,victoria,9,0.95,Escudo de Albedo:1
+experta,117,victoria,9,0.95,Escudo de Albedo:1
+experta,118,victoria,9,0.95,Escudo de Albedo:1
+experta,119,victoria,9,0.97,Escudo de Albedo:1
+experta,120,victoria,9,0.95,Escudo de Albedo:1
+experta,121,victoria,9,0.97,Escudo de Albedo:1
+experta,122,victoria,9,0.91,Escudo de Albedo:1
+experta,123,victoria,8,0.91,Escudo de Albedo:1
+experta,124,victoria,9,0.95,Escudo de Albedo:1
+experta,125,victoria,8,0.91,Escudo de Albedo:1
+experta,126,victoria,10,0.95,Escudo de Albedo:1
+experta,127,victoria,9,0.95,Escudo de Albedo:1
+experta,128,victoria,9,0.95,Escudo de Albedo:1
+experta,129,victoria,9,0.95,Escudo de Albedo:1
+experta,130,victoria,9,0.95,Escudo de Albedo:1
+experta,131,victoria,8,0.91,Escudo de Albedo:1
+experta,132,victoria,9,0.91,Escudo de Albedo:1
+experta,133,victoria,9,0.95,Escudo de Albedo:1
+experta,134,victoria,9,0.95,Escudo de Albedo:1
+experta,135,victoria,9,0.95,Escudo de Albedo:1
+experta,136,victoria,9,0.97,Escudo de Albedo:1
+experta,137,victoria,10,0.97,Escudo de Albedo:1
+experta,138,victoria,8,0.91,Escudo de Albedo:1
+experta,139,victoria,9,0.95,Escudo de Albedo:1
+experta,140,victoria,9,0.91,Escudo de Albedo:1
+experta,141,victoria,8,0.84,Escudo de Albedo:1
+experta,142,victoria,9,0.91,Escudo de Albedo:1
+experta,143,victoria,9,0.95,Escudo de Albedo:1
+experta,144,victoria,9,0.91,Escudo de Albedo:1
+experta,145,victoria,9,0.95,Escudo de Albedo:1
+experta,146,victoria,9,0.95,Escudo de Albedo:1
+experta,147,victoria,9,0.95,Escudo de Albedo:1
+experta,148,victoria,8,0.91,Escudo de Albedo:1
+experta,149,victoria,9,0.84,Escudo de Albedo:1
+experta,150,victoria,9,0.95,Escudo de Albedo:1
+experta,151,victoria,9,0.95,Escudo de Albedo:1
+experta,152,victoria,9,0.95,Escudo de Albedo:1
+experta,153,victoria,9,0.91,Escudo de Albedo:1
+experta,154,victoria,9,0.97,Escudo de Albedo:1
+experta,155,victoria,9,0.95,Escudo de Albedo:1
+experta,156,victoria,9,0.91,Escudo de Albedo:1
+experta,157,victoria,9,0.95,Escudo de Albedo:1
+experta,158,victoria,9,0.91,Escudo de Albedo:1
+experta,159,victoria,9,0.95,Escudo de Albedo:1
+experta,160,victoria,8,0.91,Escudo de Albedo:1
+experta,161,victoria,9,0.95,Escudo de Albedo:1
+experta,162,victoria,8,0.91,Escudo de Albedo:1
+experta,163,victoria,9,0.91,Escudo de Albedo:1
+experta,164,victoria,9,0.91,Escudo de Albedo:1
+experta,165,victoria,9,0.95,Escudo de Albedo:1
+experta,166,victoria,9,0.95,Escudo de Albedo:1
+experta,167,victoria,9,0.91,Escudo de Albedo:1
+experta,168,victoria,9,0.91,Escudo de Albedo:1
+experta,169,victoria,9,0.95,Escudo de Albedo:1
+experta,170,victoria,9,0.95,Escudo de Albedo:1
+experta,171,victoria,9,0.95,Escudo de Albedo:1
+experta,172,victoria,9,0.91,Escudo de Albedo:1
+experta,173,victoria,8,0.91,Escudo de Albedo:1
+experta,174,victoria,9,0.95,Escudo de Albedo:1
+experta,175,victoria,9,0.95,Escudo de Albedo:1
+experta,176,victoria,9,0.97,Escudo de Albedo:1
+experta,177,victoria,9,0.95,Escudo de Albedo:1
+experta,178,victoria,9,0.95,Escudo de Albedo:1
+experta,179,victoria,9,0.95,Escudo de Albedo:1
+experta,180,victoria,8,0.91,Escudo de Albedo:1
+experta,181,victoria,8,0.95,Escudo de Albedo:1
+experta,182,victoria,9,0.95,Escudo de Albedo:1
+experta,183,victoria,9,0.95,Escudo de Albedo:1
+experta,184,victoria,9,0.95,Escudo de Albedo:1
+experta,185,victoria,9,0.95,Escudo de Albedo:1
+experta,186,victoria,9,0.95,Escudo de Albedo:1
+experta,187,victoria,9,0.91,Escudo de Albedo:1
+experta,188,victoria,9,0.91,Escudo de Albedo:1
+experta,189,victoria,9,0.95,Escudo de Albedo:1
+experta,190,victoria,9,0.95,Escudo de Albedo:1
+experta,191,victoria,8,0.91,Escudo de Albedo:1
+experta,192,victoria,9,0.95,Escudo de Albedo:1
+experta,193,victoria,9,0.95,Escudo de Albedo:1
+experta,194,victoria,9,0.95,Escudo de Albedo:1
+experta,195,victoria,9,0.95,Escudo de Albedo:1
+experta,196,victoria,9,0.95,Escudo de Albedo:1
+experta,197,victoria,9,0.91,Escudo de Albedo:1
+experta,198,victoria,8,0.91,Escudo de Albedo:1
+experta,199,victoria,9,0.95,Escudo de Albedo:1

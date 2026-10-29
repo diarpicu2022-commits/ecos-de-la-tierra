@@ -194,6 +194,21 @@ static func update_sync(sync: float, verdict: int) -> float:
 	return sync
 
 
+## Pesos iniciales aprendidos por IA-4 de la política experta
+## (`tools/balance_bot.gd`). Sin el archivo, pesos al azar con semilla.
+const INIT_PATH := "res://data/balance/party_init.json"
+
+
+## Una mente nueva: parte de los pesos de IA-4 si existen.
+static func initial(seed_value: int) -> PartyMind:
+	var mind := PartyMind.new(seed_value)
+	if FileAccess.file_exists(INIT_PATH):
+		var data = JSON.parse_string(FileAccess.get_file_as_string(INIT_PATH))
+		if data is Dictionary and data.has("weights"):
+			mind.load_dict((data["weights"] as Dictionary).duplicate(true))
+	return mind
+
+
 func to_dict() -> Dictionary:
 	return {"w1": w1, "b1": b1, "w2": w2, "b2": b2}
 
