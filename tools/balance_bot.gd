@@ -10,8 +10,10 @@ extends Node
 ## semilla fija:
 ##
 ## - **aleatoria:** acción de Ilan y orden al azar;
-## - **voraz:** Ilan repite su propia habilidad ecológica y manda «Seguidme»:
-##   el grupo aprende a repetir (la lección de la Sombra);
+## - **voraz** (fuerza bruta): Ilan solo ataca y manda «Seguidme». En el modo
+##   líder, repetir su contramedida no es jugar mal: el grupo aprende «atajar»
+##   y cada uno usa su propio tipo. El mal líder equivalente es el que no ataja
+##   nunca (cambio de criterio, 2026-10-28, se le lleva a Diego);
 ## - **experta:** cura a quien baja del 45 %, usa su contramedida si sirve, y
 ##   manda «Cubríos», «Atajad» o «Seguidme» según haga falta.
 ##
@@ -37,7 +39,7 @@ const RANDOM_MAX := 0.30
 const DATE := "2026-10-28"
 const POLICIES := ["aleatoria", "voraz", "experta"]
 const SLUG := ["bosque", "cuenca", "costa", "llanura", "cumbre", "cripta"]
-const SWEEP := [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5]
+const SWEEP := [1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0]
 const INIT_SAMPLES_PER_REGION := 60
 const INIT_EPOCHS := 6
 
@@ -136,8 +138,9 @@ func _sweep() -> void:
 		var line := PackedStringArray()
 		for mult in SWEEP:
 			var r := _series(index, "aleatoria", mult, {})
+			var g := _series(index, "voraz", mult, {})
 			var e := _series(index, "experta", mult, {})
-			line.append("x%.2f: aleatoria %d, experta %d" % [mult, r["wins"], e["wins"]])
+			line.append("x%.2f: %d/%d/%d" % [mult, r["wins"], g["wins"], e["wins"]])
 			if float(r["wins"]) / COMBATS <= RANDOM_MAX and e["wins"] == COMBATS and found < 0:
 				found = mult
 		print("%s: %s → %s" % [SLUG[index], " · ".join(line),
@@ -207,10 +210,6 @@ func _decide(character: Character) -> void:
 			_submit(_random_action(character, target))
 		"voraz":
 			_manager.order = PartyMind.Order.FOLLOW
-			for skill in character.get_usable_skills():
-				if skill is EcoSkill and (skill as EcoSkill).ally_healing == 0:
-					_submit(BattleAction.use_skill(character, skill, target))
-					return
 			_submit(BattleAction.attack(character, target))
 		"experta", "maestra":
 			var action := _expert_action(character, target)

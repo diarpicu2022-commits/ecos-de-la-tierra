@@ -115,11 +115,12 @@ func preferred(x: PackedFloat32Array, order: Order, allowed: Array) -> int:
 	return maxi(best, Choice.ATTACK)
 
 
-## Decide con la sintonía: sigue su red con probabilidad 0,5 + 0,5 × sync; si
-## no, duda y elige al azar entre lo posible. Devuelve {choice, doubted}.
+## Decide con la sintonía: sigue su red con probabilidad igual a la sintonía
+## (enmienda 2, Diego 2026-10-28: con 0 duda siempre, con 1 nunca); si no,
+## duda y elige al azar entre lo posible. Devuelve {choice, doubted}.
 func choose(x: PackedFloat32Array, order: Order, sync: float, allowed: Array,
 		rng: RandomNumberGenerator) -> Dictionary:
-	if rng.randf() < 0.5 + 0.5 * sync:
+	if rng.randf() < sync:
 		return {"choice": preferred(x, order, allowed), "doubted": false}
 	var options := []
 	for o in DesignTokens.PARTY_OUTPUTS:

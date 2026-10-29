@@ -157,6 +157,9 @@ func _start_round() -> void:
 	participants.append_array(player_party)
 	participants.append_array(enemy_party)
 	_turn_manager.start_round(participants)
+	for enemy in enemy_party:
+		if enemy is AdaptiveBoss:
+			_emit_log((enemy as AdaptiveBoss).begin_round())
 	if _turn_manager.round_number == 1 and opening_team >= 0:
 		_turn_manager.prioritize(opening_team)
 
@@ -391,7 +394,8 @@ func _learn_from_leader(action: BattleAction) -> void:
 		return
 	var x := _situation(leader as Character)
 	for mind in minds.values():
-		(mind as PartyMind).train(x, choice)
+		for _i in DesignTokens.PARTY_STEPS_PER_DECISION:
+			(mind as PartyMind).train(x, choice)
 	var monster := _monster()
 	var cause := monster is Monster and not (monster as Monster).is_purified
 	var repeated := false

@@ -991,6 +991,46 @@ estructura.
    compañero tiene *su* contramedida: si atajan, combinan los cinco tipos
    aunque el líder repita el suyo.
 
+
+**Diego eligió, el 2026-10-28:**
+
+- **Enmienda 2, «la sintonía manda»:**
+  - los compañeros siguen su red con probabilidad igual a la sintonía (con 0
+    dudan siempre, con 1 nunca);
+  - aprenden tres veces más rápido. Se hace con **tres pasos de 0,15 por
+    decisión** (`PARTY_STEPS_PER_DECISION`) y no con un paso de 0,45, que se
+    probó y desestabilizó el descenso: el acierto del estilo sintético cayó
+    del 88 % al 53 %.
+- **«Combinar al mismo tiempo»:** contra la Sombra solo cuentan los tipos
+  aplicados en la misma ronda. Al empezar cada ronda la combinación se
+  deshace (`AdaptiveBoss.begin_round`) y el registro lo dice.
+
+`verify_party_ai` **19/19** con las dos: el líder bueno deja la sintonía en
+0,91 y gana en 6,9 rondas; el malo, 0,00 y 0 de 40.
+
+**Cambio del criterio de prueba, y se le lleva a Diego:** en el modo líder,
+«Ilan repite su contramedida» no es jugar mal. El grupo aprende *atajar* y
+cada uno usa su propio tipo. La «voraz» del bot pasa a ser **fuerza bruta**:
+Ilan solo ataca y manda *Seguidme*.
+
+**Barrido con las enmiendas** (aleatoria / fuerza bruta / experta, de 200):
+
+| Región | ×1,0 | ×2,0 | ×3,0 |
+|---|---|---|---|
+| Bosque | 200/200/200 | 199/133/198 | 108/18/133 |
+| Cuenca | 200/200/200 | 200/200/200 | 200/200/200 |
+| Costa | 200/200/200 | 200/200/200 | 200/200/200 |
+| Llanura | 200/200/200 | 197/196/199 | 156/178/180 |
+| Cumbre | 200/0/200 | 125/0/173 | 22/0/41 |
+| Cripta | 159/0/200 | 134/0/200 | 77/0/175 |
+
+- Contra la Sombra y en la Cumbre, la fuerza bruta pierde siempre y la
+  experta gana siempre. Ahí el líder ya pesa.
+- En las regiones, **el ataque no separa a la aleatoria de la experta.** Una
+  sola contramedida purifica al momento, y un grupo al azar la acierta un 25 %
+  por turno y compañero: purifica en la primera o la segunda ronda. Es la
+  regla de purificación, no los números. **Se para y se pregunta.**
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

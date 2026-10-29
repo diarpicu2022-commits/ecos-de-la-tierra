@@ -398,8 +398,13 @@ const DUR_FLEE_GRACE := 1.0
 const PARTY_INPUTS := 12
 const PARTY_HIDDEN := 16
 const PARTY_OUTPUTS := 4
-## Paso de descenso por gradiente tras cada decisión de Ilan.
+## Paso de descenso por gradiente.
 const PARTY_LEARNING_RATE := 0.15
+## Pasos por cada decisión de Ilan. Enmienda 2 (2026-10-28): aprenden tres
+## veces más rápido para que el líder pese en el mismo combate. Tres pasos de
+## 0,15 y no uno de 0,45: con 0,45 el descenso se desestabiliza (el acierto del
+## estilo sintético cayó del 88 % al 53 %).
+const PARTY_STEPS_PER_DECISION := 3
 ## Decisiones con las que la red debe haber aprendido un estilo (> 80 %).
 const PARTY_LEARN_DECISIONS := 200
 ## Cuánto empuja la orden de grupo la salida que favorece (en logits).

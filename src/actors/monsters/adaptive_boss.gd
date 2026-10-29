@@ -30,7 +30,9 @@ signal combo_progressed(used_types: int, required_types: int)
 ## Tabla Q: tipo de daño ambiental -> peso de resistencia aprendido (0 a 1).
 var q_table: Dictionary = {}
 
-## Tipos de Habilidad Ecológica ya aplicados en este combate.
+## Tipos de Habilidad Ecológica aplicados **en esta ronda**. Enmienda de IA-5
+## (Diego, 2026-10-28): la combinación solo cuenta si el grupo la hace a la
+## vez; al empezar cada ronda se deshace. Coordinar es cosa del líder.
 ## Se tipa Array[int] porque GDScript no admite arrays tipados de enum; los
 ## valores siguen siendo Enums.EcoType.
 var used_eco_types: Array[int] = []
@@ -108,6 +110,16 @@ func receive_eco_skill(skill: EcoSkill) -> Array[String]:
 		is_purified = true
 		purified.emit()
 		log_lines.append("Las contramedidas se combinan y la Sombra de la Avaricia deja de rehacerse.")
+	return log_lines
+
+
+## Al empezar cada ronda, la combinación que no se completó se deshace.
+func begin_round() -> Array[String]:
+	var log_lines: Array[String] = []
+	if not is_purified and not used_eco_types.is_empty():
+		log_lines.append("La combinación se deshace: %d de %d a la vez no bastan." % [
+			used_eco_types.size(), required_combo_size])
+	used_eco_types.clear()
 	return log_lines
 
 
