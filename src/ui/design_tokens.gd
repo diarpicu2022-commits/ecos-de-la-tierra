@@ -415,3 +415,6 @@ const SYNC_UP := 0.25
 const SYNC_DOWN := 0.15
 ## Decisiones buenas seguidas que bastan para salir del mínimo al tramo medio.
 const SYNC_RECOVER := 3
+## Rondas seguidas con la contramedida para atajar la causa de un monstruo
+## regional (Diego, 2026-10-28: «sostener la contramedida»).
+const COUNTER_SUSTAIN_ROUNDS := 2

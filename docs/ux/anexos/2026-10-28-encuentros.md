@@ -1031,6 +1031,54 @@ Ilan solo ataca y manda *Seguidme*.
   por turno y compañero: purifica en la primera o la segunda ronda. Es la
   regla de purificación, no los números. **Se para y se pregunta.**
 
+
+**Diego eligió «sostener la contramedida» el 2026-10-28.**
+
+- En las regiones, la causa se ataja cuando la contramedida se aplica en
+  `COUNTER_SUSTAIN_ROUNDS` (2) rondas seguidas. Una ronda sin ella y el avance
+  se pierde (`Monster.begin_round`, `counter_streak`).
+- El registro lo dice: «… frena a …, pero hay que sostenerla: 1 de 2 rondas.»
+  y «… se rehace: la contramedida no se sostuvo.».
+- La Sombra conserva su propia regla: combinar en la misma ronda.
+- `battle_demo` comprueba la regla 1 con dos rondas.
+
+**Un error mío en las regresiones anteriores, y se dice:** en los pasos 4, 5 y
+en IA-5 reporté «`battle_demo` sin errores» ejecutando
+`src/demo/battle_demo.tscn`, que **no existe**. La demo se lanza con
+`tools/console_demo.tscn`, y ahí se ha comprobado ahora: corre sin errores de
+script con la regla nueva.
+
+**Medido con la regla nueva** (ataque ×1,0; aleatoria / fuerza bruta /
+experta, de 200, y rondas):
+
+| Región | Victorias | Rondas |
+|---|---|---|
+| Bosque | 190 / 108 / 199 | 13,2 · 21,6 · 10,6 |
+| Cuenca | 200 / 199 / 200 | 11,9 · 14,7 · 7,6 |
+| Costa | 200 / 200 / 200 | 9,9 · 8,8 · 9,5 |
+| Llanura | 199 / 200 / 200 | 12,2 · 16,3 · 9,7 |
+| Cumbre | 187 / 0 / 200 | 14,1 · 29,2 · 8,6 |
+| Cripta | 157 / 0 / 200 | 20,7 · 56,6 · 8,8 |
+
+**Barrido del ataque con la regla nueva** (aleatoria / fuerza bruta /
+experta):
+
+| Región | ×1,0 | ×1,5 | ×2,0 | ×2,5 |
+|---|---|---|---|---|
+| Bosque | 197/123/200 | 178/64/200 | 153/17/196 | 105/1/171 |
+| Cuenca | 200/199/200 | 200/200/200 | 200/200/200 | 199/200/200 |
+| Costa | 200/200/200 | 200/200/200 | 200/200/200 | 200/200/200 |
+| Llanura | 198/200/200 | 191/198/200 | 182/193/199 | 158/169/183 |
+| Cumbre | 181/0/200 | 128/0/198 | 66/0/156 | 24/0/88 |
+| Cripta | 156/0/200 | 122/0/200 | 107/0/200 | 82/0/200 |
+
+- Donde el monstruo amenaza (Bosque, Cumbre y Cripta), la experta aguanta
+  mientras la aleatoria cae.
+- **En la Cuenca y la Costa el ataque base no pesa**, ni a ×3. El daño de
+  esos monstruos está en sus habilidades, no en `base_attack`.
+- **El 30 % no se alcanza en ninguna región con la experta al 100 %.** Se
+  para y se pregunta.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

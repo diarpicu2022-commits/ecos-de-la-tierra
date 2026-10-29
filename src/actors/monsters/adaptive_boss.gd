@@ -113,7 +113,8 @@ func receive_eco_skill(skill: EcoSkill) -> Array[String]:
 	return log_lines
 
 
-## Al empezar cada ronda, la combinación que no se completó se deshace.
+## Al empezar cada ronda, la combinación que no se completó se deshace. La
+## Sombra no usa la racha de los monstruos regionales: su regla es combinar.
 func begin_round() -> Array[String]:
 	var log_lines: Array[String] = []
 	if not is_purified and not used_eco_types.is_empty():

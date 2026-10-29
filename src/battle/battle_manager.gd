@@ -158,8 +158,8 @@ func _start_round() -> void:
 	participants.append_array(enemy_party)
 	_turn_manager.start_round(participants)
 	for enemy in enemy_party:
-		if enemy is AdaptiveBoss:
-			_emit_log((enemy as AdaptiveBoss).begin_round())
+		if enemy is Monster:
+			_emit_log((enemy as Monster).begin_round())
 	if _turn_manager.round_number == 1 and opening_team >= 0:
 		_turn_manager.prioritize(opening_team)
 
