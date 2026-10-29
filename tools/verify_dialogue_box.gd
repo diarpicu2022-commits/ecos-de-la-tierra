@@ -135,7 +135,7 @@ func _rhythm() -> void:
 func _contrast() -> void:
 	print("\nContraste medido sobre el render")
 	DesignTokens.reduced_motion = true
-	_box.show_line("Yara", YARA, DialogueBox.Side.LEFT)
+	_box.show_line("Yara", YARA, DialogueBox.Side.LEFT, load("res://assets/sprites/portraits/yara_neutral.png"))
 	var left := await _shot()
 	left.save_png(ProjectSettings.globalize_path(OUT % "izquierda"))
 	var bg := _lum(DesignTokens.PANEL_FILL)
@@ -148,7 +148,8 @@ func _contrast() -> void:
 	var c := o + _box.continue_origin()
 	_check("el ▼ sobre el panel: %.1f:1 (≥ 3)" % _ratio(_brightest(left, Rect2(c, Vector2(7, 12))), bg),
 		_ratio(_brightest(left, Rect2(c, Vector2(7, 12))), bg) >= 3.0)
-	_box.show_line("Rasgo", RASGO, DialogueBox.Side.RIGHT, null, DesignTokens.EMBER_400)
+	_box.show_line("Rasgo", RASGO, DialogueBox.Side.RIGHT, load("res://assets/sprites/portraits/rasgo_neutral.png"),
+		DesignTokens.EMBER_400)
 	var right := await _shot()
 	right.save_png(ProjectSettings.globalize_path(OUT % "derecha-rasgo"))
 	o = _box.position
