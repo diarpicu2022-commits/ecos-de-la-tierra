@@ -9,7 +9,7 @@ func _init() -> void:
 	lore = "Nació del humo de un bosque talado y quemado para abrir terreno."
 	max_hp = 180
 	max_energy = 30
-	base_attack = 16
+	base_attack = 20  # Equilibrado IA-4, 2026-10-28 (antes 16): ver anexo de encuentros.
 	base_defense = 8
 	base_speed = 12
 	required_counter_type = Enums.EcoType.FIRE

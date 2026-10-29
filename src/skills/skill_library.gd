@@ -39,8 +39,10 @@ static func smoke_suffocation() -> AttackSkill:
 static func black_tide() -> AttackSkill:
 	var skill := AttackSkill.new()
 	skill.display_name = "Marea Negra"
-	skill.description = "El crudo cubre todo lo que toca y envenena lentamente."
+	skill.description = "El crudo cubre a todo el grupo y lo envenena lentamente."
 	skill.power = 12
+	# Equilibrado IA-4, 2026-10-28: el crudo se extiende, alcanza a todos.
+	skill.targets_all = true
 	skill.eco_type = Enums.EcoType.OIL
 	skill.inflicted_statuses = [PoisonEffect.new(4, 6.0)]
 	skill.status_chance = 0.75
@@ -63,8 +65,10 @@ static func viscous_trap() -> AttackSkill:
 static func microparticles() -> AttackSkill:
 	var skill := AttackSkill.new()
 	skill.display_name = "Micropartículas"
-	skill.description = "Una nube de microplásticos que se mete en los ojos."
+	skill.description = "Una nube de microplásticos que se mete en los ojos de todos."
 	skill.power = 10
+	# Equilibrado IA-4, 2026-10-28: es una nube, alcanza a todos.
+	skill.targets_all = true
 	skill.eco_type = Enums.EcoType.PLASTIC
 	skill.inflicted_statuses = [BlindEffect.new(4, 0.4)]
 	skill.status_chance = 0.85

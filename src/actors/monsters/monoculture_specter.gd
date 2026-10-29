@@ -24,7 +24,7 @@ func _init() -> void:
 	lore = "Lo que queda de una llanura sembrada mil veces con la misma semilla."
 	max_hp = 200
 	max_energy = 40
-	base_attack = 14
+	base_attack = 18  # Equilibrado IA-4, 2026-10-28 (antes 14): ver anexo de encuentros.
 	base_defense = 10
 	base_speed = 11
 	required_counter_type = Enums.EcoType.MONOCULTURE

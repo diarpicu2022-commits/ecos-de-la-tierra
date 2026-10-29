@@ -43,7 +43,7 @@ func _init() -> void:
 	lore = "No es un monstruo de una región: es lo que las produjo a todas."
 	max_hp = 420
 	max_energy = 60
-	base_attack = 22
+	base_attack = 55  # Equilibrado IA-4, 2026-10-28 (antes 22): ver anexo de encuentros.
 	base_defense = 16
 	base_speed = 13
 	# No tiene una única contramedida: cualquier EcoSkill suma al combo.

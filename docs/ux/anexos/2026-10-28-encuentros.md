@@ -1079,6 +1079,56 @@ experta):
 - **El 30 % no se alcanza en ninguna región con la experta al 100 %.** Se
   para y se pregunta.
 
+
+**Diego eligió «ajuste y criterio real» el 2026-10-28.**
+
+**Criterio nuevo:**
+
+1. la experta gana siempre;
+2. la fuerza bruta gana como mucho el 30 %;
+3. la aleatoria gana menos que la experta.
+
+**Cambios en los monstruos**, cada uno con su comentario en el código:
+
+| Monstruo | Cambio | Motivo |
+|---|---|---|
+| Llama (Bosque) | ataque 16 → **20** (×1,25) | a ×1,5 la experta perdía 2 de 200 |
+| Devorador (Cuenca) | ataque 15 → **38** (×2,5); **Marea Negra alcanza a todos** | un golpe por ronda no presionaba a un grupo de tres |
+| Gólem (Costa) | **Micropartículas alcanzan a todos** | el ataque no pesaba ni a ×3 |
+| Espectro (Llanura) | ataque 14 → **18** (×1,25) | margen sin tocar a la experta |
+| Coloso (Cumbre) | ataque 20 → **25** (×1,25) | ídem |
+| Sombra (Cripta) | ataque 22 → **55** (×2,5) | la experta coordinada sigue al 100 % |
+
+**Medido** (`tools/balance_bot.gd`; 200 combates; aleatoria / fuerza bruta /
+experta, con rondas de media):
+
+| Región | Victorias | Rondas | Criterios |
+|---|---|---|---|
+| Bosque | 182 / 82 / **200** | 13,8 · 22,1 · 10,8 | 1 ✔ · 2 ✘ (41 %) · 3 ✔ |
+| Cuenca | 176 / 127 / **200** | 14,0 · 15,9 · 8,5 | 1 ✔ · 2 ✘ (64 %) · 3 ✔ |
+| Costa | 200 / 200 / **200** | 10,6 · 9,8 · 10,9 | 1 ✔ · **deuda** |
+| Llanura | 199 / 199 / **200** | 12,3 · 16,3 · 10,1 | 1 ✔ · 2 ✘ (100 %) · 3 ✔ |
+| Cumbre | 167 / 0 / **200** | 15,4 · 24,7 · 9,2 | ✔ ✔ ✔ |
+| Cripta | 78 / 0 / **200** | 25,4 · 29,7 · 10,1 | ✔ ✔ ✔ |
+
+- **La experta gana siempre en las seis.**
+- La Cumbre y la Cripta cumplen los tres criterios. En la Cripta, la
+  aleatoria gana 78 de 200 y tarda 25 rondas frente a 10: la Sombra pide
+  liderazgo.
+- **Deudas que quedan, y se dicen:**
+  - **Costa:** el Gólem es lento (velocidad 6) y muy defensivo, y no presiona
+    a un grupo de cuatro, ni con área ni a ×3. Necesita una idea propia (una
+    segunda acción, o una amenaza que crezca con las rondas).
+  - **Llanura:** los clones del Espectro se purifican igual de bien al azar.
+    La fuerza bruta gana el 100 %.
+  - **Bosque y Cuenca:** la fuerza bruta gana el 41 % y el 64 %. Ya pierde
+    mucho más que antes (antes, el 100 %), pero no llega al 30 %.
+- Los pesos iniciales se reentrenaron con las reglas nuevas: 12 980 ejemplos,
+  97 % de acierto.
+- **Regresión en verde:** `verify_party_ai` 19/19, `verify_flow` 23/23,
+  `verify_usability` 16/16, `verify_encounters` 82/82 y `console_demo` sin
+  errores de script.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

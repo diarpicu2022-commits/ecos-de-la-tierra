@@ -9,7 +9,7 @@ func _init() -> void:
 	lore = "Se formó en la desembocadura donde el crudo lleva años acumulándose."
 	max_hp = 210
 	max_energy = 30
-	base_attack = 15
+	base_attack = 38  # Equilibrado IA-4, 2026-10-28 (antes 15): ver anexo de encuentros.
 	base_defense = 11
 	base_speed = 8
 	required_counter_type = Enums.EcoType.OIL
