@@ -139,6 +139,69 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	zone_changed.emit(id)
 
 
+## La ola de purificación desde `origin_cell` (enmienda 3, contrato
+## «Persiana» §5). El suelo purificado se pinta en una capa encima del enfermo
+## y `purify_wave.gdshader` lo descubre píxel a píxel en tramado de Bayer 4x4,
+## en DUR_ZONE_PURIFY. El frente recorre la pantalla visible; lo que queda
+## fuera no se ve y se resuelve al final. Al terminar, la zona queda purificada
+## en `GameState` y se vuelve a montar entera (decorado y fauna incluidos).
+## Con movimiento reducido, de golpe. Devuelve cuando ha terminado.
+signal wave_finished
+
+## Radio del frente de la ola, en píxeles, mientras dura. Lo lee la prueba.
+var wave_radius := -1.0
+var wave_layer: TileMapLayer = null
+
+
+func purify_wave(origin_cell: Vector2i) -> void:
+	var state := get_node_or_null("/root/GameState")
+	var lines := ZoneRules.load_zone(zone_id)
+	var t := DesignTokens.TILE_SIZE
+	var origin := Vector2(origin_cell * t) + Vector2(t / 2, t / 2)
+	var frames := roundi(DesignTokens.duration(DesignTokens.DUR_ZONE_PURIFY)
+		* Engine.physics_ticks_per_second)
+	if frames > 0:
+		body.input_enabled = false
+		wave_layer = TileMapLayer.new()
+		wave_layer.tile_set = _layer.tile_set
+		WorldTiles.paint(wave_layer, WorldTiles.parse(lines), func(_c): return true)
+		var mat := ShaderMaterial.new()
+		mat.shader = load("res://src/world/purify_wave.gdshader")
+		var flat: Array[int] = []
+		for row in DesignTokens.BAYER_4X4:
+			flat.append_array(row)
+		mat.set_shader_parameter("bayer", flat)
+		mat.set_shader_parameter("steps", float(DesignTokens.PURIFY_DITHER_STEPS))
+		mat.set_shader_parameter("origin", origin)
+		# Ocho pasos de un tile: la banda del tramado mide medio tile.
+		var band := float(t) / 2.0
+		mat.set_shader_parameter("band", band)
+		wave_layer.material = mat
+		add_child(wave_layer)
+		move_child(wave_layer, _layer.get_index() + 1)
+		# El frente llega a la esquina visible más lejana, más la banda.
+		var view := Rect2(camera.get_screen_center_position() - get_viewport_rect().size / 2,
+			get_viewport_rect().size)
+		var reach := 0.0
+		for corner in [view.position, view.end, Vector2(view.position.x, view.end.y),
+				Vector2(view.end.x, view.position.y)]:
+			reach = maxf(reach, origin.distance_to(corner))
+		reach += band
+		for f in range(1, frames + 1):
+			wave_radius = reach * float(f) / frames
+			mat.set_shader_parameter("radius", wave_radius)
+			await get_tree().physics_frame
+		wave_layer.queue_free()
+		wave_layer = null
+	wave_radius = -1.0
+	if state != null:
+		state.set_zone_purified(zone_id)
+	var here := MapMonster.cell_of(Vector2i(body.global_position))
+	enter_zone(zone_id, here)
+	body.input_enabled = true
+	wave_finished.emit()
+
+
 ## El monstruo de la capa de decorado, si sigue enfermo, pasa a ser un
 ## `MapMonster` que patrulla: se quitan su sprite fijo, su cuerpo y su casilla
 ## de lo bloqueado, y entra él con su propio cuerpo entre los sólidos.

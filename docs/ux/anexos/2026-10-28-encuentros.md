@@ -588,6 +588,72 @@ seis.
 (tramado 4 × 4 desde el punto del combate, 900 ms, enmienda 3), y un repaso
 de huida, derrota y movimiento reducido con capturas.
 
+Diego aprobó el paso 5 el 2026-10-28.
+
+#### Paso 6 — Estados: la ola de purificación y el repaso · 2026-10-28
+
+**Cláusulas:** contrato §5 (victoria → ola desde el punto del combate) y la
+enmienda 3 del contrato de exploración (tramado 4 × 4, 900 ms, exclusivo).
+
+- **`WorldRoot.purify_wave(celda)`:**
+  - el suelo purificado se pinta en una capa encima del enfermo;
+  - `src/world/purify_wave.gdshader` lo descubre píxel a píxel: cuando el
+    frente toca un píxel, pasa en el paso ⌊Bayer/2⌋ de los ocho
+    (`PURIFY_DITHER_STEPS`) de una banda de medio tile;
+  - la matriz `BAYER_4X4` y los pasos llegan desde `DesignTokens` como
+    uniformes;
+  - el frente recorre la pantalla visible en `DUR_ZONE_PURIFY`;
+  - al terminar, `purified_<zona>` y la zona se monta entera, con decorado y
+    fauna purificados;
+  - con movimiento reducido, de golpe.
+- **`GameFlow`, al ganar:** el monstruo desaparece con el combate, la persiana
+  se abre sobre la zona aún enferma y la ola sale de la casilla donde se le
+  tocó.
+
+**Medido** — `tools/verify_wave.gd`: **6 de 6**.
+
+- Dura **54 cuadros de física** (900 ms).
+- **Ningún píxel mezclado:** en cada cuadro, todo píxel del suelo es el
+  enfermo o el purificado de su sitio (0 fuera).
+- Lo purificado crece y nunca vuelve atrás.
+- A media ola: 100 % purificado cerca del origen y 0 % lejos.
+- Al terminar, la zona queda purificada y montada.
+- Con movimiento reducido, de golpe (0 cuadros).
+
+**Dos fallos de la prueba, y se dicen:**
+
+- contaba cuadros de render, que dependen del refresco de la ventana, y no de
+  física (dio 67);
+- la referencia purificada incluía el decorado purificado, así que bajo cada
+  copa contaba como «mezcla» lo que era suelo correcto (39 528 píxeles). Se
+  mide sin decorado ni agua animada, y la captura se saca aparte, con todo
+  visible.
+
+**Repaso de estados.** Huida (gracia y rendición), derrota (llegada y 1 PV),
+victoria (ola) y movimiento reducido (persiana, parallax y ola) están medidos
+en `verify_flow` (23/23), `battle_bg_sheet` y `verify_wave`.
+
+**Regresión en verde:**
+
+| Prueba | Resultado |
+|---|---|
+| `verify_encounters` | 82/82 |
+| `verify_movement` | 99/99 |
+| `verify_usability` | 16/16 |
+| `verify_camera` | 37/37 |
+| `verify_zone`, siete zonas | 55 · 46 · 45 · 46 · 45 · 45 · 48 |
+
+**Captura:** `docs/ux/capturas/2026-10-28-ola-bosque.png`, a media ola.
+
+**Pendiente, y se dice:**
+
+- **El decorado no cambia con el frente.** Sigue enfermo durante los 900 ms y
+  pasa a purificado de golpe al final. En la captura se ven árboles quemados
+  sobre suelo ya verde. Cambiarlo pieza a pieza al paso del frente es posible.
+  Se pregunta a Diego.
+- **La fauna en bandada al purificar (IA-2)** no está: es de la parte 3
+  según la guía y quedó sin hacer. Se anota como deuda.
+
 ---
 
 ## Lo que queda abierto en esta parte (se decide después de la dirección)

@@ -151,6 +151,10 @@ func _flow() -> void:
 	_check("sin ventaja, manda la velocidad", flow.screen._manager.opening_team == -1)
 	flow.result = Enums.BattleResult.VICTORY
 	await _leave(flow)
+	for _i in 200:
+		if flow.world.wave_radius < 0.0 and state.is_zone_purified("ashen_forest"):
+			break
+		await get_tree().physics_frame
 	_check("victoria: la zona queda purificada y sin monstruo",
 		state.is_zone_purified("ashen_forest") and flow.world.monster == null)
 	state.flags.clear()
@@ -170,5 +174,5 @@ func _leave(flow: GameFlow) -> void:
 	flow.leave_battle()
 	for _i in 120:
 		await get_tree().physics_frame
-		if flow.screen == null and not flow.blinds.running:
+		if flow.screen == null and not flow.blinds.running and flow.world.wave_radius < 0.0:
 			return

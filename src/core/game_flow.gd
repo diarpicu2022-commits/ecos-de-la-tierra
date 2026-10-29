@@ -9,7 +9,8 @@ extends Node
 ## el grupo de `GameState` y el monstruo de la región, y la persiana se abre.
 ## Al terminar y confirmar: la persiana se cierra, vuelve el mundo y se abre.
 ##
-## - Victoria: la zona queda purificada (la ola animada es el paso 6).
+## - Victoria: el monstruo ya no está, la persiana se abre sobre la zona aún
+##   enferma y la ola de purificación sale de la casilla del combate.
 ## - Huida: el monstruo sigue ahí, se rinde, e Ilan tiene DUR_FLEE_GRACE sin
 ##   contacto posible.
 ## - Derrota: vuelta a la casilla de llegada a la zona con el grupo a 1 PV,
@@ -31,6 +32,8 @@ var result: int = -1
 ## Ventaja del último contacto y lado del que se cerró la persiana.
 var advantage := MapMonster.Advantage.NONE
 var awaiting_confirm := false
+## Casilla del monstruo al tocarlo: de ahí sale la ola si se gana.
+var battle_cell := Vector2i.ZERO
 
 var _battle_layer := CanvasLayer.new()
 var _enemy: Monster = null
@@ -51,6 +54,7 @@ func _ready() -> void:
 
 func _on_encounter(adv: MapMonster.Advantage) -> void:
 	advantage = adv
+	battle_cell = world.monster.cell
 	var xf := world.get_viewport().get_canvas_transform()
 	var mon_at := xf * world.monster.position
 	var ilan_x := (xf * world.body.global_position).x
@@ -119,11 +123,15 @@ func leave_battle() -> void:
 	world.process_mode = Node.PROCESS_MODE_INHERIT
 	var state := get_node("/root/GameState")
 	var zone := world.zone_id
-	var here := MapMonster.cell_of(Vector2i(world.body.global_position))
 	match result:
 		Enums.BattleResult.VICTORY:
-			state.set_zone_purified(zone)
-			world.enter_zone(zone, here)
+			# El monstruo se va con el combate; la zona sigue enferma hasta la ola.
+			if world.monster != null:
+				var body_node := world.solids.get_node_or_null("solid_" + world.monster.name)
+				if body_node != null:
+					body_node.queue_free()
+				world.monster.queue_free()
+				world.monster = null
 		Enums.BattleResult.FLED:
 			if world.monster != null:
 				world.monster.force(MapMonster.State.GIVE_UP)
@@ -133,6 +141,8 @@ func leave_battle() -> void:
 			world.enter_zone(zone, world.arrival_cell)
 	blinds.open()
 	await blinds.finished
+	if result == Enums.BattleResult.VICTORY:
+		await world.purify_wave(battle_cell)
 	# Solo con el mundo entero a la vista: la gracia no se gasta tras la persiana.
 	world.body.input_enabled = true
 	if result == Enums.BattleResult.FLED and world.monster != null:
