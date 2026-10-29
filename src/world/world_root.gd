@@ -187,9 +187,28 @@ func purify_wave(origin_cell: Vector2i) -> void:
 				Vector2(view.end.x, view.position.y)]:
 			reach = maxf(reach, origin.distance_to(corner))
 		reach += band
+		# El decorado vuelve pieza a pieza: cada una pasa a purificada (o se va)
+		# en el cuadro en que el frente llega a su pie.
+		var pending: Array[Sprite2D] = []
+		for child in entities.get_children():
+			if child is Sprite2D and child.has_meta("decor_id") and not child.get_meta("pure"):
+				pending.append(child)
 		for f in range(1, frames + 1):
 			wave_radius = reach * float(f) / frames
 			mat.set_shader_parameter("radius", wave_radius)
+			for sprite in pending.duplicate():
+				if origin.distance_to(sprite.position) > wave_radius:
+					continue
+				pending.erase(sprite)
+				var tex := WorldDecor.pure_texture(sprite.get_meta("decor_id"), zone_id)
+				if tex == null:
+					sprite.visible = false
+				else:
+					sprite.texture = tex
+					# Mismo apoyo que en WorldDecor.build: lo pequeño, al centro del tile.
+					var lift := (t - tex.get_height()) / 2 if tex.get_width() < t else 0
+					sprite.offset = Vector2(-tex.get_width() / 2, -tex.get_height() - lift)
+				sprite.set_meta("pure", true)
 			await get_tree().physics_frame
 		wave_layer.queue_free()
 		wave_layer = null

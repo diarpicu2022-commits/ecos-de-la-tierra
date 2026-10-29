@@ -610,7 +610,7 @@ enmienda 3 del contrato de exploración (tramado 4 × 4, 900 ms, exclusivo).
   se abre sobre la zona aún enferma y la ola sale de la casilla donde se le
   tocó.
 
-**Medido** — `tools/verify_wave.gd`: **6 de 6**.
+**Medido** — `tools/verify_wave.gd`: **6 de 6** (7 de 7 con el decorado pieza a pieza, abajo).
 
 - Dura **54 cuadros de física** (900 ms).
 - **Ningún píxel mezclado:** en cada cuadro, todo píxel del suelo es el
@@ -647,10 +647,12 @@ en `verify_flow` (23/23), `battle_bg_sheet` y `verify_wave`.
 
 **Pendiente, y se dice:**
 
-- **El decorado no cambia con el frente.** Sigue enfermo durante los 900 ms y
-  pasa a purificado de golpe al final. En la captura se ven árboles quemados
-  sobre suelo ya verde. Cambiarlo pieza a pieza al paso del frente es posible.
-  Se pregunta a Diego.
+- ~~El decorado no cambia con el frente.~~ **Resuelto el mismo día, a
+  petición de Diego («pieza a pieza»):** cada árbol, mata o roca pasa a
+  purificado (o desaparece, si es daño) en el cuadro en que el frente llega a
+  su pie. `verify_wave` lo mide: **0 desfases en 46 644 comprobaciones**,
+  7 de 7. La captura `2026-10-28-ola-bosque.png` lo muestra a media ola: copas
+  verdes dentro del frente y troncos quemados fuera.
 - **La fauna en bandada al purificar (IA-2)** no está: es de la parte 3
   según la guía y quedó sin hacer. Se anota como deuda.
 

@@ -82,6 +82,9 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		sprite.texture = texture
 		sprite.centered = false
 		sprite.name = "%s_%d_%d" % [entry["id"], at.x, at.y]
+		# La ola de purificación cambia cada pieza al llegarle el frente.
+		sprite.set_meta("decor_id", entry["id"])
+		sprite.set_meta("pure", pure)
 		var feet := Vector2((at.x * t) + size.x * t / 2.0, (at.y + size.y) * t)
 		var lift := 0
 		if texture.get_width() < t:
@@ -179,6 +182,14 @@ static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure
 ## El sprite de una pieza: primero el propio de la región
 ## (`monster_ashen_forest_sick.png`), después el común. Las viñetas se dibujan
 ## con el sprite de su elemento: `v1_stump` usa `stump`.
+## El sprite purificado de una pieza que la ola alcanza, o null si con la ola
+## desaparece (VANISH_WHEN_PURE).
+static func pure_texture(id: String, zone_id: String) -> Texture2D:
+	if id in VANISH_WHEN_PURE:
+		return null
+	return _texture(id, true, zone_id)
+
+
 static func _texture(id: String, pure: bool, zone_id: String) -> Texture2D:
 	var name: String = SPRITE.get(id, id)
 	if name.length() > 3 and name[0] == "v" and name[1].is_valid_int() and name[2] == "_":

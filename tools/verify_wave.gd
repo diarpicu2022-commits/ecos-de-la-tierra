@@ -12,6 +12,8 @@ extends Node
 ##   ni agua animada (la capa de entidades oculta y las referencias quietas):
 ##   el decorado cambia de estado al final de la ola, no con ella;
 ## - lo purificado crece cuadro a cuadro y nunca vuelve atrás;
+## - cada pieza de decorado pasa a purificada en el cuadro en que el frente
+##   llega a su pie, ni antes ni después;
 ## - a media ola, cerca del origen hay más purificado que lejos;
 ## - con movimiento reducido, de golpe.
 ## Captura a media ola: docs/ux/capturas/2026-10-28-ola-bosque.png.
@@ -66,6 +68,8 @@ func _ready() -> void:
 	var first := Engine.get_physics_frames()
 	world.purify_wave(origin)
 	var frames := 0
+	var checked := 0
+	var late := 0
 	var mixed := 0
 	var shrank := false
 	var prev_pure := -1
@@ -77,6 +81,13 @@ func _ready() -> void:
 		frames += 1
 		if world.wave_radius < 0.0:
 			break
+		# Pieza a pieza: purificada si y solo si el frente ya llegó a su pie.
+		var wo := Vector2(origin * DesignTokens.TILE_SIZE + Vector2i(8, 8))
+		for child in world.entities.get_children():
+			if child is Sprite2D and child.has_meta("decor_id"):
+				checked += 1
+				if bool(child.get_meta("pure")) != (wo.distance_to(child.position) <= world.wave_radius):
+					late += 1
 		var count := 0
 		var near := Vector2.ZERO
 		var far := Vector2.ZERO
@@ -107,6 +118,8 @@ func _ready() -> void:
 	_check("ningún píxel mezclado: cada uno es el enfermo o el purificado de su sitio (%d fuera)" % mixed,
 		mixed == 0)
 	_check("lo purificado crece y nunca vuelve atrás", not shrank)
+	_check("el decorado vuelve pieza a pieza al paso del frente (%d desfases en %d comprobaciones)" % [
+		late, checked], late == 0 and checked > 0)
 	_check("a media ola, cerca del origen más purificado que lejos (%.0f %% frente a %.0f %%)" % [
 		near_far.x * 100, near_far.y * 100], near_far.x > near_far.y)
 	_check("al terminar, la zona queda purificada y montada", state.is_zone_purified(ZONE))
