@@ -15,5 +15,3 @@ dest_files=["res://docs/balance/2026-10-28-cumbre.combate.translation", "res://d
 
 compress=1
 delimiter=0
-unescape_keys=false
-unescape_translations=true

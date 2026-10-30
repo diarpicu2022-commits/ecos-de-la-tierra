@@ -16,6 +16,10 @@ significado. Eso no se comprueba mirando una captura: se comprueba aquí.
         tinta de personaje tampoco vale: es la medida del decorado y del
         terreno.
 
+    python tools/verify_palette.py tv-state <png> enfermo|sano
+        Enmienda 13: un render enfermo no lleva ningún color de las rampas
+        TV de solo-purificado, y uno sano ninguno de solo-enfermo.
+
     python tools/verify_palette.py cvd
         Simula deuteranopía, protanopía y tritanopía (Machado et al. 2009,
         severidad 1,0) sobre los pares de acento y dice cuánto se separan.
@@ -138,7 +142,9 @@ CHARACTER_INKS = {"ash_950", "ash_900"}
 def is_accent(name: str) -> bool:
     # Enmienda 6 (2026-10-28): el agua viva y las flores van por encima del
     # techo de saturación, como el verde, porque solo existen en lo purificado.
-    return name.startswith(("ember_", "vital_", "aqua_", "bloom_"))
+    # Enmienda 13 (2026-10-30): las rampas TV de Tierra Viva no tienen techo;
+    # su significado lo mide `tv-state`.
+    return name.startswith(("ember_", "vital_", "aqua_", "bloom_", "tv_"))
 
 
 # --- Órdenes -----------------------------------------------------------------------
@@ -184,6 +190,42 @@ def cmd_image(path: str, world: bool, strict: bool = False) -> bool:
         print(f"  FALLA  {name} supera la saturación 0,22 del mundo en {n} px")
     ok = not loose and not over
     print(f"\n{path}: " + ("todo píxel es un token." if ok else "hay colores fuera del contrato."))
+    return ok
+
+
+def tv_groups() -> tuple[set, set]:
+    """Colores que solo pueden estar en lo purificado y en lo enfermo. Un color
+    compartido con una rampa de otro grupo o neutra cuenta como neutro."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    from pixel import PALETTE, TV_PURIFIED_ONLY, TV_SICK_ONLY  # noqa: E402
+
+    def group(name: str) -> str:
+        ramp = name[3:].rsplit("_", 1)[0]
+        return "pure" if ramp in TV_PURIFIED_ONLY else "sick" if ramp in TV_SICK_ONLY else "neutral"
+
+    by_rgb: dict[tuple[int, int, int], set] = {}
+    for name, v in PALETTE.items():
+        if name.startswith("tv_"):
+            by_rgb.setdefault(v[:3], set()).add(group(name))
+    pure = {c for c, g in by_rgb.items() if g == {"pure"}}
+    sick = {c for c, g in by_rgb.items() if g == {"sick"}}
+    return pure, sick
+
+
+def cmd_tv_state(path: str, state: str) -> bool:
+    """Enmienda 13: en un render enfermo no puede haber color de solo-purificado
+    y en uno purificado no puede haber color de solo-enfermo."""
+    pure, sick = tv_groups()
+    banned = pure if state == "enfermo" else sick
+    img = Image.open(path).convert("RGBA")
+    hits: dict[tuple[int, int, int], int] = {}
+    for r, g, b, a in getattr(img, "get_flattened_data", img.getdata)():
+        if a and (r, g, b) in banned:
+            hits[(r, g, b)] = hits.get((r, g, b), 0) + 1
+    for rgb, n in sorted(hits.items(), key=lambda kv: -kv[1])[:12]:
+        print(f"  FALLA  #{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x} ({'purificado' if state == 'enfermo' else 'enfermo'}) en {n} px")
+    ok = not hits
+    print(f"\n{path} [{state}]: " + ("ningún color del otro estado." if ok else "hay color del otro estado."))
     return ok
 
 
@@ -239,6 +281,8 @@ def main(argv: list[str]) -> int:
         ok = cmd_image(argv[1], "--world" in argv, "--strict" in argv)
     elif cmd == "cvd":
         ok = cmd_cvd()
+    elif cmd == "tv-state" and len(argv) == 3 and argv[2] in ("enfermo", "sano"):
+        ok = cmd_tv_state(argv[1], argv[2])
     elif cmd == "value" and len(argv) == 3:
         ok = cmd_value(argv[1], argv[2])
     else:
