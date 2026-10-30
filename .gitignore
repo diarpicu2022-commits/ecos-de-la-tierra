@@ -30,3 +30,7 @@ desktop.ini
 # Scripts de generación de assets (Python)
 __pycache__/
 *.pyc
+
+# Prototipo Tierra Viva: renders regenerables
+tools/tierra_viva/out2/
+__pycache__/

@@ -58,7 +58,15 @@ válidos:
 >
 > **Pendiente:** `verify_movement` en 95/99. Sus zonas de prueba son menores que la pantalla nueva y se rehacen al empezar el paso 2.
 >
-> **Siguiente:** esperar el visto bueno de Diego al paso 1. Después, el paso 2: el motor de terreno de Tierra Viva en `tools/tierra_viva/`, pintando el Bosque desde su matriz.
+> **Traspaso (2026-10-30):**
+> - `CLAUDE.md` en la raíz tiene el estado y la lista de trabajo en orden (tareas 1 a 10).
+> - `tools/tierra_viva/` es el prototipo de arte aprobado, con su README.
+> - `docs/ux/tierra-viva/` tiene los renders de referencia y el concepto del título y los créditos (partes 10 y 12, pendientes de anexo).
+>
+> **Siguiente:**
+> 1. visto bueno de Diego al paso 1;
+> 2. tarea 1 (`verify_movement` a 99/99);
+> 3. paso 2: motor de terreno, empezando por el Bosque.
 >
 > La parte 5 sigue en espera.
 
