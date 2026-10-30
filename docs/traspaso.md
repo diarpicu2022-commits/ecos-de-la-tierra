@@ -41,7 +41,7 @@ $GODOT --headless --path . res://tools/verify_camera.tscn              # 37/37
 $GODOT --headless --path . res://tools/verify_encounters.tscn          # 82/82
 $GODOT --headless --path . res://tools/verify_flow.tscn                # 23/23
 $GODOT --headless --path . res://tools/verify_party_ai.tscn            # 19/19
-$GODOT --headless --path . res://tools/verify_movement.tscn            # 95/99 ← pendiente conocido (tarea 1)
+$GODOT --headless --path . res://tools/verify_movement.tscn            # 99/99
 for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   $GODOT --headless --path . res://tools/verify_zone.tscn -- $z        # todas en verde
 done
@@ -66,13 +66,14 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Hecho:**
   - paso 1, tokens `TV_*` y viewport;
   - paso 1b, regiones agrandadas con `tools/scale_zone.py`, y `verify_zone` en verde.
-- **Diego todavía no ha dado el visto bueno al paso 1.** Al empezar, enséñale `docs/ux/capturas/2026-10-30-tierra-viva-tokens.png` y `…-bosque-escalado.png` y pregúntaselo.
+- **Visto bueno de Diego al paso 1:** 2026-10-30.
+- **Tarea 1 hecha** (2026-10-30): `verify_movement` 99/99. Falta el visto bueno de Diego.
 
 ## 3. Lista de trabajo, en orden
 
 Cada tarea termina con verificación medida y parada para el visto bueno.
 
-### Tarea 1: `verify_movement` otra vez en 99/99
+### Tarea 1: `verify_movement` otra vez en 99/99 (hecha el 2026-10-30)
 - **Por qué falla:** `prueba_a` (40×20) y `prueba_b` (30×17) se hicieron para la pantalla de 480×270. Con 640×360 la cámara enseña fuera de ellas, y `prueba_a` mete 3 salidas en una pantalla.
 - **Qué hacer:**
   - Rehacer a mano `data/world/zones/prueba_a.txt` (≥ 54×27) y `prueba_b.txt` (≥ 40×23), conservando su intención: salidas este y sur entre a y b, y la salida norte a `prueba_c`.

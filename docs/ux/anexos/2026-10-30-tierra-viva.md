@@ -366,3 +366,40 @@ reescribe sus salidas. El orden importa:
 - Sus zonas de prueba (`prueba_a` 40×20, `prueba_b` 30×17) se hicieron a la medida de 480×270 y ahora son menores que la pantalla.
 - Escalarlas no sirve: la prueba lleva coordenadas fijas de esas zonas y probarlo dio más de 20 fallos.
 - Se rehacen a 54×27 y 40×23 junto con sus coordenadas, en el paso 2, antes de tocar el motor de terreno.
+
+**Visto bueno de Diego al paso 1 y al 1b: 2026-10-30.**
+
+#### Tarea 1 — Las zonas de prueba a la pantalla nueva · 2026-10-30
+
+- **Crecen hacia la derecha y hacia abajo**, sin mover nada de lo que ya
+  había. Así siguen valiendo casi todas las coordenadas fijas de
+  `verify_movement.gd`. A mano, sin `scale_zone.py`.
+  - `prueba_a`: 40×20 → **54×27**. El camino este llega al nuevo borde
+    (53, 9) y el camino sur, a (12, 26). En la parte nueva hay un bloque
+    sólido y un charco, para que no sea un llano vacío.
+  - `prueba_b`: 30×17 → **40×23**. Mide justo una pantalla: así la prueba
+    de «tres salidas en una pantalla» sigue cayendo en una ventana de 40
+    casillas.
+  - `prueba_c`: 20×10, **sin tocar**. Sigue siendo menor que la pantalla
+    para la prueba del centrado.
+- **Ninguna pantalla de 40×23 ve las tres salidas de `prueba_a`:** entre la
+  sur (x = 12) y la este (x = 53) hay 42 casillas, y entre la norte (y = 0)
+  y la sur (y = 26), 27.
+- **`exits.json`:** se mueven las salidas este y sur de `prueba_a` y las
+  llegadas de vuelta desde `prueba_b`, (52, 9) y (12, 25). El `_doc` dice
+  640 px.
+- **`verify_movement.gd`:** solo cambian las coordenadas ligadas a esas dos
+  salidas. Los puntos de partida quedan a la misma distancia de la salida
+  que antes.
+- **Medido:** `verify_movement` **99/99** (antes 95/99). La comprobación
+  inicial entera, en verde: 280 tokens sin deriva, `verify_usability`
+  16/16, `verify_camera` 37/37, `verify_encounters` 82/82, `verify_flow`
+  23/23, `verify_party_ai` 19/19 y `verify_zone` en las siete zonas.
+- **Un fallo mío al capturar, y se dice:** la primera toma de `prueba_b`
+  puso a Ilan sobre el agua, porque elegí a mano una casilla del charco.
+  `enter_zone` no comprueba si se pisa. Se repitió en tierra.
+- **Capturas a 640×360:** `docs/ux/capturas/2026-10-30-tierra-viva-prueba-a.png`
+  y `-prueba-b.png`. El suelo todavía es el plano de antes: el motor de
+  terreno es el paso 2.
+
+**Siguiente:** paso 2, el motor de terreno, empezando solo por el Bosque.
