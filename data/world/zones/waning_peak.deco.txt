@@ -25,55 +25,73 @@
 ; R = decor, rock, sólido                     piedra suelta
 ; @ = spawn, start, pisable                   llegada desde la Llanura
 ---
-BBPPPPPPPPBBBBBB    PPPPPPPPPPBBPP  PP  BBBBBBPPPP      BBPPBBPP  PPBBPP
-BBPPPPPPPPBBBBBB    PPPPPPPPPPBBPP  PP  BBBBBBPPPP  @   BBPPBBPP  PPBBPP
-PP  BBBBPPPPPPBBBBPPBBPP  BBPP  PPBB  PPBBPP  BB   g    q PPPPPPBBBB  PP
-PP  BBBBPPPPPPBBBBPPBBPP  BBPP  PPBB  PPBBPP  BB          PPPPPPBBBB  PP
-PPPP  BB    PPPP  BBPPBB  PPPPBBPPBBPPBBPPPPPP        g     BBPP
-PPPP  BB    PPPP  BBPPBB  PPPPBBPPBBPPBBPPPPPP              BBPP
-PPPPPPPPBBBB    BB    PP  PPBBBBPPPPPPBB          R       BB    BBPPBBBB
-PPPPPPPPBBBB    BB    PP  PPBBBBPPPPPPBB      1       R  qBB    BBPPBBBB
-PPBBBBPPPP                                    a  1        BBPPPP  PPBBPP
-PPBBBBPPPP                                                BBPPPP  PPBBPP
-PPPPBB            PPPPBB    PP  PPBBPP q       aa a   PPPPBBBBPP      PP
-PPPPBB     g q    PPPPBB    PP  PPBBPP         1 g    PPPPBBBBPP      PP
-PP  PP              PPBBPPBBPPPPPPBBBBPPPP R        BBPPBBPPBB  PPBBPPBB
-PP  PP        S     PPBBPPBBPPPPPPBBBBPPPP          BBPPBBPPBB  PPBBPPBB
-PPBB  PP            PPBBPPBBPP  PPPPBBPPBB  PPBBBBBB  PPPPBB    PPPPBBPP
-PPBB  PP           RPPBBPPBBPP  PPPPBBPPBB  PPBBBBBB  PPPPBB    PPPPBBPP
-PPPPPPBB          BBPP  BB  PP  BB  PP  PPPP  PPPPBBPPBBBBBBPPBBPP  PP
-PPPPPPBB          BBPP  BB  PP  BB  PP  PPPP  PPPPBBPPBBBBBBPPBBPP  PP
-  BBBB  PP   g    PPBB  BB  PPPPPPBB  BBPPPP    BB  PPBBPPPPPP  BBPPPP
-  BBBB  PP        PPBB  BB  PPPPPPBB  BBPPPP    BB  PPBBPPPPPP  BBPPPP
-PP  BBPPBB    PPBB  BBPPPPPPPPBBPPPPBB  BB  PPPPPPPPPPPP  BB  PPPPPPBBPP
-PP  BBPPBB    PPBB  BBPPPPPPPPBBPPPPBB  BB  PPPPPPPPPPPP  BB  PPPPPPBBPP
-PPPP     gb   2   PPBBBB  PPPPBBBBBBBBPPPPBB    BB      PP  BBBB  PP  PP
-PPPP       2  2 q PPBBBB  PPPPBBBBBBBBPPPPBB    BB      PP  BBBB  PP  PP
-PPPPPP    R2  kg    PPBB               q        PPPP  PPPP  PPPP  PPBBPP
-PPPPPP   k g g      PPBB R      k   q w kqw    RPPPP  PPPP  PPPP  PPBBPP
-    BB          g             k    g w q q q  gw    BBBBPPBBPPPPBBBB
-    BB        q  g      w  qk  kg kg    k     w  g  BBBBPPBBPPPPBBBB
-  BBBBBB                                                            BBBB
-  BBBBBB                    w qqqg  q k   kkkk k                    BBBB
-  BB  BBPPBBBBPPPPBB  BBPPPPBBPP  PP  PPPPPPPP  PP  PPPPBBPPBB  w     PP
-  BB  BBPPBBBBPPPPBB  BBPPPPBBPP  PP  PPPPPPPP  PP  PPPPBBPPBB        PP
-BBPPPPBBPPPPPPPPBBPPPPBBPPPP      g   q     PPBBBBBB            g     BB
-BBPPPPBBPPPPPPPPBBPPPPBBPPPP  w RwkqYYYY  k PPBBBBBB            wg    BB
-  PPPPBBBBBB  PPPPPPPPPP  PP      wgYYYY    w BBBBPPPPPPBBBB    g
-  PPPPBBBBBB  PPPPPPPPPP  PP     q  YYYY    k BBBBPPPPPPBBBB  R     g
-                            X   w wRYYYY  wk w  BBPP  PPPPBB   g
-                               g    kkM         BBPP  PPPPBB
-BB  BBPPPPBB  BB  PPPPPP      wk   q k  gk    PPPPPP  PPBBPPk  w
-BB  BBPPPPBB  BB  PPPPPP      g k  kkkqqk     PPPPPP  PPBBPP g  kk
-PPBBPPPPPPPPPP      PPPP  BBPP  g   k               PP  PPBB q w q    PP
-PPBBPPPPPPPPPP      PPPP  BBPP                      PP  PPBB       g  PP
-      BBBB                                                     wg     PP
-      BBBB                                               k     k      PP
-                        PP                          c3c3c3         g  BB
-                        PP                     k  kk   qk   g         BB
-BBPPPP  PPPP    PP  PPPPPP  BB  PP  BBPP  BB                        BBPP
-BBPPPP  PPPP    PP  PPPPPP  BB  PP  BBPP  BB                g       BBPP
-PP      BBPPBBBB  PPPPBBBBPPPP  PPPPPPPPPP  PP  k k k           PPBB  PP
-PP      BBPPBBBB  PPPPBBBBPPPP  PPPPPPPPPP  PP        q         PPBB  PP
-BBBBPPBBPPPP  PPBBPPPPPPPP  PPPPBB    BBPP  PPPPPPBBPP  PPPPBB  BBPPBBPP
-BBBBPPBBPPPP  PPBBPPPPPPPP  PPPPBB    BBPP  PPPPPPBBPP  PPPPBB  BBPPBBPP
+BB PPPP PP PPBB BB BB      PPPP PP PPPP BB PP   PP   BB BB BBPP PP         BBPP BB PP   PP BBPP
+BB PPPP PP PPBB BB BB      PPPP PP PPPP BB PP   PP   BB BB BBPP PP    @    BBPP BB PP   PP BBPP
+                                                                             PP
+PP   BB BB PPPP PP BBBB PP BBPP    BBPP    PPBB    PPBB PP   BB      g     q PP PP PPBB BB   PP
+PP   BB BB PPPP PP BBBB PP BBPP    BBPP    PPBB    PPBB PP   BB                 PP PPBB BB   PP
+PP PP   BB      PP PP   BB PPBB    PPPP BB PPBB PP BBPP PP PP           g       BB PP
+PP PP   BB      PP PP   BB PPBB    PPPP BB PPBB PP BBPP PP PP                   BB PP
+
+PP PPPP PP BB                                                       R         BB     BB PP BBBB
+PP PPPP PP BBBB      BB      PP    PPBB BB PPPP PP BB                   R   q BB     BB PP BBBB
+             BB      BB      PP    PPBB BB PPPP PP BB        1
+PP BBBB PP PP                                                a aa1 a         BB PP PP   PP BBPP
+PP BBBB PP PP                                                                BB PP PP   PP BBPP
+PP PPBB                                                                 PP PPBB BB PP        PP
+PP PPBB                 PP PPBB      PP    PPBB PP  q          1        PP PPBB BB PP        PP
+               g  q     PP PPBB      PP    PPBB PP               g
+PP   PP                    PPBB PP BBPP PP PPBB BB PPPP   R          BB PP BBPP BB   PP BB PPBB
+PP   PP            S       PPBB PP BBPP PP PPBB BB PPPP              BB PP BBPP BB   PP BB PPBB
+
+PP BB   PP                 PPBB PP BBPP    PPPP BB PPBB    PPBB BB BB   PP PPBB      PP PP BBPP
+PP BB   PP               R PPBB PP BBPP    PPPP BB PPBB    PPBB BB BB   PP PPBB      PP PP BBPP
+PP PPPP BB                 PP   BB   PP    BB   PP   PP PP   PP PP BBPP BB BBBB PP BBPP    PP
+PP PPPP BB              BB PP   BB   PP    BB   PP   PP PP   PP PP BBPP BB BBBB PP BBPP    PP
+                        BB
+   BBBB    PP     g     PP BB   BB   PP PP PPBB    BBPP PP      BB   PP BB PPPP PP   BB PP PP
+   BBBB    PP           PP BB   BB   PP PP PPBB    BBPP PP      BB   PP BB PPPP PP   BB PP PP
+
+PP   BB PP BB      PPBB    BBPP PP PPPP BB PPPP BB   BB    PPPP PP PPPP PP   BB    PPPP PP BBPP
+PP   BB PP BB      PPBB    BBPP PP PPPP BB PPPP BB   BB    PPPP PP PPPP PP   BB    PPPP PP BBPP
+PP PP                   PP BBBB    PPPP BB BBBB BB PPPP BB      BB         PP   BB BB   PP   PP
+PP PP       g  b   2    PP BBBB    PPPP BB BBBB BB PPPP BB      BB         PP   BB BB   PP   PP
+                  22 q
+PP PPPP       R   2kg      PPBB                     q           PP PP   PP PP   PP PP   PP BBPP
+PP PPPP     k  g  g        PPBB                q     k          PP PP   PP PP   PP PP   PP BBPP
+                                  R        k       w   qw      R
+     BB
+     BB           q  g                  k      g w  q  q q   g w     BB BB PPBB PP PPBB BB
+   BBBB BB             g        w   qk   k g k g     k       w   g   BB BB PPBB PP PPBB BB BBBB
+   BBBB BB                                                                                 BBBB
+                                     w  qq qg   q  k    kk kk  k
+   BB   BB PPBB BB PPPP BB   BB PP PPBB PP   PP    PPPP PP PPBB PP   PP PP BBPP BB   w       PP
+   BB   BB PPBB BB PPPP BB   BB PP PPBB PP   PP    PPPP PP PPBB PP   PP PP BBPP BB           PP
+
+BB PPPP BB PPPP PP PPBB PP PPBB PP PP              q       PPBB BB BB                 g       BB
+BB PPPP BB PPPP PP PPBB PP PPBB PP PP   w  Rwg q        k  PPBB BB BB                 wg      BB
+                                            wk g                BB PPPP PP BBBB       g
+   PPPP BB BBBB    PPPP PP PPPP    PP           YYYY       w    BB PPPP PP BBBB
+   PPPP BB BBBB    PPPP PP PPPP    PP       q   YYYY                               R       g
+                                      X    w w RYYYY       k    BB PP   PP PPBB     g
+                                      X   g    kYYYY    wk  w   BB PP   PP PPBB
+                                                  kM
+BB   BB PP PPBB    BB   PP PPPP         wk     q  k  g k     PP PP PP   PP BBPP k   w
+BB   BB PP PPBB    BB   PP PPPP         g  k   kk kqqk       PP PP PP   PP BBPP  g    kk
+PP BBPP PP PPPP PP         PPPP    BBPP    g    k                    PP    PPBB  q  w  q
+PP BBPP PP PPPP PP         PPPP    BBPP                              PP    PPBB               PP
+                                                                                          g   PP
+        BB BB                                                                       w g       PP
+        BB BB                                                                       k         PP
+                                                                            k
+                                PP                                                        g
+                                PP                                   c 3c3 c3                BB
+BB PPPP              PP    PPPP PP   BB    PP   BB PP    BB    k   kk    q k    g            BB
+BB PPPP    PPPP      PP    PPPP PP   BB    PP   BB PP    BB                                BBPP
+           PPPP                                                                 g          BBPP
+PP         BBPP BB BB   PP PPBB BB PPPP    PPPP PP PPPP    PP   k  k k                PPBB   PP
+PP         BBPP BB BB   PP PPBB BB PPPP    PPPP PP PPPP    PP           q             PPBB   PP
+
+BB BBPP BB PPPP    PPBB PP PPPP PP   PP PP BB      BBPP    PPPP PP BBPP    PPPP BB   BB PP BBPP
+BB BBPP BB PPPP    PPBB PP PPPP PP   PP PP BB      BBPP    PPPP PP BBPP    PPPP BB   BB PP BBPP
+

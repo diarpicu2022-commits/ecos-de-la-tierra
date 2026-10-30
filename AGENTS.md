@@ -32,7 +32,7 @@ Software: **se evalúa el criterio de diseño, no solo que funcione.**
   barras ni botones. Y nunca carga el significado solo: siempre va con valor,
   silueta o fauna (guía §2.3).
 - **Verifica midiendo, no mirando:** `python tools/verify_palette.py ...`,
-  escenas de `tools/verify_*.tscn` y capturas a 480×270. Informa también de lo
+  escenas de `tools/verify_*.tscn` y capturas a 640×360 (contrato «Piel nueva», 2026-10-30). Informa también de lo
   que falla.
 - Código en inglés; textos de jugador y comentarios en español.
 - **Sin firma de herramientas** en commits, PR, código ni documentación: nada de

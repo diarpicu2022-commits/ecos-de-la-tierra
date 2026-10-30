@@ -326,3 +326,43 @@ directa de ver un 78 % más de mapa por pantalla.
 - (c) **Volver a 480×270.**
 
 Recomendado: (a). Conserva el ritmo que se aprobó, que es lo que «Rastro» protege, y la piel nueva gana espacio para el decorado agrupado.
+
+**Decisión de Diego (2026-10-30): (a) agrandar las matrices.**
+
+#### Paso 1b — Las seis regiones a ×4/3 · 2026-10-30
+
+`tools/scale_zone.py` agranda la matriz de una zona y su capa de decorado, y
+reescribe sus salidas. El orden importa:
+
+1. **Terreno:** vecino más próximo.
+2. **Salidas:** cada salida sigue en el borde y sobre el camino. La llegada queda un tile dentro, junto a la salida de vuelta (contrato «Umbral»).
+3. **Borde:** el camino que ganó ancho se cierra en el borde, salvo la casilla de salida.
+4. **Decorado:**
+   - Cada pieza conserva su tamaño y busca, junto a su esquina escalada, el mismo suelo bajo cada casilla.
+   - Las viñetas mantienen, casilla a casilla, su distancia al **camino principal** tal como lo recorre `verify_zone`.
+   - La fuente sigue tocando el camino en cruz.
+   - El hito queda a ≤ 3 tiles de la fuente.
+   - El paso cerrado tapa el camino de lado a lado.
+
+| Zona | Antes | Ahora | `verify_zone` |
+|---|---|---|---|
+| Bosque de las Cenizas | 100×34 | 134×46 | 46/46 |
+| Cuenca de Alquitrán | 80×52 | 107×70 | 45/45 |
+| Costa Quebrada | 96×40 | 128×54 | 47/47 |
+| Llanura Marchita | 90×40 | 120×54 | 45/45 |
+| Cumbre Menguante | 72×52 | 96×70 | 46/46 |
+| Cripta de la Avaricia | 60×66 | 80×88 | 50/50 |
+| Valdehoja (sin tocar; se rehace en el paso 5) | 60×34 | 60×34 | 55/55 |
+
+- **Las cifras cambian de 46 a 47 o de 48 a 50** porque algunas comprobaciones son una por salida o una por paso cerrado. Los pasos cerrados ahora ocupan el camino de lado a lado, así que hay más.
+- **`verify_zone.gd`:** la franja de «pista» mide `ZoneRules.SCREEN_TILES.x`, no 30 fijo.
+- **`AGENTS.md`:** capturas a 640×360.
+- **Captura:** `docs/ux/capturas/2026-10-30-tierra-viva-bosque-escalado.png`.
+  - Arriba, el Bosque aprobado; abajo, el agrandado.
+  - El marco blanco es una pantalla: 30×17 antes, 40×23 ahora.
+  - Colores: viñetas en rojo, hito en amarillo, fuente en blanco, paso cerrado en magenta y llegada en cian.
+
+**Pendiente, medido y no arreglado:** `verify_movement` sigue en **95/99**.
+- Sus zonas de prueba (`prueba_a` 40×20, `prueba_b` 30×17) se hicieron a la medida de 480×270 y ahora son menores que la pantalla.
+- Escalarlas no sirve: la prueba lleva coordenadas fijas de esas zonas y probarlo dio más de 20 fallos.
+- Se rehacen a 54×27 y 40×23 junto con sus coordenadas, en el paso 2, antes de tocar el motor de terreno.

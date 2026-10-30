@@ -25,55 +25,73 @@
 ; u = decor, bush, sólido                     arbusto de la marisma, también sobre el follaje
 ; @ = spawn, start, pisable                   llegada desde el Bosque
 ---
-u TTu  u uUUTTUU uu u  uu  u uu UUu  u uTTUUu u UUTTu UU    TTu UUTTUUTTTTu  uUU
- uTT uu u UUTTUUu  u uu  uu u  uUU uu u TTUU u uUUTT uUU@   TT uUUTTUUTTTT uu UU
-u  uu u  u uTT u uu u u u UU uTTTT uTTu UUu TTTTu  u           uu TTu u UUTTu u
- uu  u uu u TTu u  u u u uUUu TTTTu TT uUU uTTTT uu       g   u  uTT u uUUTT u u
-u TTTTTTu UU uu  u u uUUTTu u  uUUTTTT uTT uu  u u R  g         u u TT uu u TTu
- uTTTTTT uUUu  uu u u UUTT u uu UUTTTTu TTu  uu u                u uTTu  u uTT u
-TT uTTTTu  u uTT u uUUu UUu u TTTTTTu  uUU           g          UUu u UU uUUu u
-TTu TTTT uu u TTu u UU uUU u uTTTTTT uu UU    1     1     R g   UU u uUUu UU u u
-TTu u u u u                                    a 1 a          TT uTTTTu u u u  u
-TT u u u u u                                                  TTu TTTT u u u uu
-TTTT u u              u  uu u TT uu u u u    a  a a         u TTTTu UUu u u u TT
-TTTTu u                uu  u uTTu  u u u u  o                uTTTT uUU u u u uTT
-TTu TT      S          u uUUTT uTTu TTu u TT          u TTu UUUUUUu u u u  uu UU
-TT uTT                u u UUTTu TT uTT u uTT           uTT uUUUUUU u u u uu  uUU
-TTu u             g   TT uTTTTTTu  u uu TTu TTTTTTTT u uu  uTTu TTTTu  uUUTT uTT
-TT u u               RTTu TTTTTT uu u  uTT uTTTTTTTTu u  uu TT uTTTT uu UUTTu TT
-u u  u            g   u TTUUu  u u u u uu UU uTTTT u uTTTT uTTUUu u  uTT u u uTT
- u uu                  uTTUU uu u u u u  uUUu TTTTu u TTTTu TTUU u uu TTu u u TT
-TTu UUu  u          u u  uTTu UU u uTTu u TTTT uUUu  u uu UU uu TTTTu  uu u u u
-TT uUU uu            u uu TT uUUu u TT u uTTTTu UU uu u  uUUu  uTTTT uu  u u u u
-UUu UUTT u  u    uu UU u uTTTTUUTTTTu  u uu TTUUTTTTTTu u  u u uTT uu u u TTTTu
-UU uUUTTu    u  u  uUUu u TTTTUUTTTT uu u  uTTUUTTTTTT u uu u u TTu  u u uTTTT u
-u u u  uUU            UUUUu UUUUTTu TT u uu  uTTUUUUTTu TTUU uu  u uUU u u uUUTT
- u u uu UU       o    UUUU uUUUUTT uTTu u  uu TTUUUUTT uTTUUu  uu u UUu u u UUTT
-TTTTu u         o g      u        UU u uu u UU uTTu u u TTu UU uUUu u UUTTTTUUTT
-TTTT u u    bb      o   u  o      UUu u  u uUUu TT u u uTT uUUu UU u uUUTTTTUUTT
- u u uUU    2            o   o  g       TTTTUUu u TTu TTTTu  uu  uTTu TT u uTTu
-u u u UU     2 2   o          o  o    o TTTTUU u uTT uTTTT uu  uu TT uTTu u TT u
-TT uUUTT    2                                                                  u
-TTu UUTT    r        o  oooo    o    oo                                       u
-u UU uu UU   uR   UUUU o oo    oo o     TTTTu u UUUUu TTTTTTu UUTTu           UU
- uUUu  uUU  u     UUUU                  TTTT u uUUUU uTTTTTT uUUTT u          UU
-UUu UU uTT  UUTTu u u TTTTu TTo  YYY   oo o o u TTu UUu  u uu  uTTu  g        u
-UU uUUu TT  UUTT u u uTTTT uTT   YYY o   o     uTT uUU uu u  uu TT u g         u
-                            X    YYY    o     u  uUUTT uUUTTTTUUu UU
-                                 YYYoM       o uu UUTTu UUTTTTUU uUU
-UUu  uTTUU  u  uTTTT uu TTu  o     ro          uTT uTTu  uTTu  uUUu
-UU uu TTUU   uu TTTTu  uTT u o           ooo  u TTu TT uu TT uu UU u
- uUUTTTTu    uu TTTT                            TTTT u u uu TT u u u           u
-u UUTTTT u  u  uTTTT                            TTTTu u u  uTTu u u          gu
-                                                u  uu u UUUUTTu TT ug        R
-                                                 uu  u uUUUUTT uTTu      o
- uTT          u  uUUu u u  u u                u u TTu UU                       u
-u TT           uu UU u u uu u                  u uTT uUUR                     u
-TTu  u uu u TTTT uu UUTTUU u u uTT u uTT uTT  TTUU   o  kocc   cc   g og      UU
-TT uu u  u uTTTTu  uUUTTUUu u u TTu u TTu TT  TTUU o      oo 3o   3o          UU
-u UUu u TTu TTu  uu  uUUTT uUUu UUu TTTTUUTT                                UUu
- uUU u uTT uTT uu  uu UUTTu UU uUU uTTTTUUTT                                UU u
-u u u TT uUUTT uu TT uTT u uu TT u uTTu u UUu TTTTTT u            g     u TTTTUU
- u u uTTu UUTTu  uTTu TTu u  uTTu u TT u uUU uTTTTTTu                    uTTTTUU
-TT u u uu u u  u u uu u TT u u u uu TTUUUUUU u uu UUu u TT uu u TTu u UUu u u  u
-TTu u u  u u uu u u  u uTTu u u u  uTTUUUUUUu u  uUU u uTTu  u uTT u uUU u u uu
+u  TTu   u  uUU TT UU  uu  u   uu   u  uu  UUu   u  uTT UU u u  UU TTu   UU     TT u UU TT UUTT TT u   uUU
+ u TT  uu  u UU TT UUu   u  uu   u u u   u UU  uu  u TT UU  u  uUU TT  u UU@    TT  uUU TT UUTT TT  uu  UU
+
+u   uu  u   u  uTT  u  uu  u u  u  UU  uTT TT  uTT u UU u  TTTT u   u               uu  TT u u  UU TTu  u
+ u u   u u u u  TT u u   u  u  u u UUu  TT TTu  TT  uUU  u TTTT  u u         g     u   uTT  u  uUU TT  u u
+u  TTTT TT u UU  u u   u u  uUU TT u u   u UUTT TT  uTT  u u   u u       g           u  u  TT  uu  u TT u
+   TTTT TT   UU              UU TT         UUTT TT   TT             R                      TT        TT
+ u          u   u   uu  u  u        u  uu          u    u   uu  u                      u u   u   u  u    u
+TT  uTT TT u   u u     u u   u     u u          u   u                  g             UU u  u UU  u UUu  u
+TT u TT TT  uu     TT      UU   UU      TT TTTT      UU                      R  g    UU  u  uUU u  UU  u u
+                 u TTu  u  UU  uUU  u  uTT TTTT  u u UU      1       1
+TT u u  u  u u                                              a  aa1 aa              TT  uTT TTu  u  u u   u
+TT  u  u u  u  u                                                                   TTu  TT TT  u u  u  uu
+TT TT  u u                                                                         TTTT u  UUu  u  u u  TT
+TT TT                        u   u u u  TT  uu  u  u u                          u  TTTT    UU           TT
+     u  u                      uu   u  uTT u   u u  u  u   o                     u       u     u u  u  u
+TT u TT          S             u u UUTT  u TTu  TT u u  TT              u  TTu  UU UUUU u  u u  u   uu  UU
+TT  uTT                      u  u  UUTT u  TT  uTT  u  uTT               u TT  uUU UUUU  u  u  u u u   uUU
+
+TT u u                  g     TT u TTTT TT u   u u u TT u  TTTT TT TT  u u u   uTT u TT TT u   uUU TT  uTT
+TT  u  u                    R TTu  TTTT TT  uu  u   uTT  u TTTT TT TTu  u   uu  TT  uTT TT  uu  UU TTu  TT
+u  u   u                g     u TT UUu   u  u  u u  uu  UU  uTT TT  u  uTT TT  uTT UUu  u   uTT  u  u  uTT
+                                TT UU                   UU   TT TT      TT TT   TT UU        TT         TT
+ u  uu                         u       uu  u u  u  u   u   u       u u       u         u u u    u  u u
+TT u UU u   u              u u   u TTu  UU  u  uTT u u  TT TT  uUU u   u u u UU  u u TT TT u   uu  u u  u
+TT  uUU  u u                u  uu  TT  uUU u u  TT  u  uTT TTu  UU  uu  u   uUU u   uTT TT  uu   u  u  u u
+
+UU u UU TT  u    u     uu  UU  u u TTTT UU TTTT u   u  uu  TTUU TT TTTT u  u   u u  uTT  u u u  u  TTTT u
+UU  uUU TT u      u  u   u UUu  u  TTTT UU TTTT  u u u   u TTUU TT TTTT  u  uu  u  u TT u   u  u u TTTT  u
+u  u u   u UU                UU UU u UU UU TTu  TT  u  uu   uTT UU UUTT u  TTUU  u u   u u UU  u u  uUU TT
+           UU                UU UU   UU UU TT   TT           TT UU UUTT    TTUU            UU        UU TT
+ u  u  uu              o            u          u   u u   u u             u      u   uu  u    u  u  u
+TT TTu  u            o  g        u           UU  u  uu  u  UU  uTT u u  u  TTu  UU  uUU u  u UU TT TTUU TT
+TT TT  u u       bb        o    u            UU u  u   u u UUu  TT  u  u u TT  uUU u UU  u  uUU TT TTUU TT
+                                    o
+ u  u  uUU       2                                      TT   u  u    u       u   u u   u   u     u  u   u
+u  u u  UU        2 2            o     o   g          TTTT UU      TT   TT TT           TT   TT      TT  u
+TT  uUU TT       2       o              o   o      o  TT   UU  u u TT  uTT TT  uu   uu  TT  uTT u  u TT  u
+TT   UU TT
+   u             r          o   oo oo      o     o o                                                    u
+u  UU  uu  UU    u R    UU UU  o o o    oo o o       TT TT u u  UU UUu  TT TTTT u  UUTT u               UU
+ u UUu   u UU   u       UU UU                        TT TT  u  uUU UU  uTT TTTT  u UUTT  u              UU
+
+                                                YYY oo  o  o u  TT u UU u   u  uu   uTT u   g           u
+UU u UU  u TT   UU TTu  u  u TT TT u TT         YYY            uTT  uUU  u u u   u u TT  u  g            u
+UU  uUU u  TT   UU TT  u u  uTT TT  uTT         YYY    o     u   u UUTT  u UUTT TT UUu  UU
+                                      X         YYY  o             UUTT    UUTT TT UU   UU
+                                                 oM         o  uu       u              u
+UU u   uTT UU   u   uTT TT  uu  TT u   o       r o       o     uTT  uTT u   uTT u   uUU u
+UU  uu  TT UU    u u TT TT u   uTT  u  o         o     oo    u  TT u TT  u u TT  u u UU  u
+
+ u UUTT TT u     u u TT TT                                      TT TT  u u  uu  TT  u  u u               u
+u  UUTT TT  u   u   uTT TT                                      TT TTu  u  u   uTT u u  u              gu
+                                                                u   uu  u  UUUU TT u TT  u             R
+                                                                           UUUU TT   TT    g
+                                                                 u u   u u          u   u         o
+ u TT              u   uUU u u  u   u  u                     u  u  TTu  UU                               u
+u  TT               uu  UU  u  u u u u                         u u TT  uUU                              u
+                                                                           R
+TT u   u u u u  TT TT  uu  UUTT UU  u  u u TT  u u TT  u TT TT                                          UU
+TT  uu  u   u  uTT TTu   u UUTT UU u u  u  TTu  u  TTu   TT TT  UU     o   kocc     cc     g o g        UU
+u  UUu  u  TTu  TT u   uu   uUU TT  uUU u  UUu  TT TTUU  TT     UU  o        o o 3 o    3o          UU  u
+   UU      TT   TT           UU TT   UU    UU   TT TTUU  TT                                         UU
+ u     u u     u    uu   u u       u     u     u                                                         u
+u  u u  TT  uUU TT  uu  TT  uTT  u  uu  TT  u  uTT u u  UU u TT TT TT  u                g       u  TTTT UU
+ u  u  uTT u UU TT u   uTT u TT u  u   uTT u u  TT  u  uUU  uTT TT TTu                           u TTTT UU
+
+TT  u  u u u u  u   u  u u u u  TT  u  u u  uu  TT UUUU UU  u  uu  UUu  u  TT  uu  u TT u  u UU u  u u   u
+TT u u  u   u  u u u u  u   u  uTT u u  u  u   uTT UUUU UU u u   u UU  u u TTu   u  uTT  u  uUU  u  u  uu
+

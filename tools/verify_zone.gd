@@ -17,7 +17,7 @@ extends Node
 ##     entidad es una clase del catálogo de su región o global (`interactables.json`);
 ##   - un hito, de entre 2 × 3 y 4 × 4 tiles, que se alcanza;
 ##   - desde la aparición se alcanza cada salida y cada entidad;
-##   - cada franja vertical de 480 px tiene al menos una pista (camino o hito).
+##   - cada franja vertical de 640 px tiene al menos una pista (camino o hito).
 ##
 ## Valdehoja (adapta los puntos 2 a 4 del contrato):
 ##   - sin monstruos, sin pasos cerrados y sin viñetas;
@@ -45,7 +45,7 @@ extends Node
 ## Se declara pendiente: `verify_palette.py image --world` y la prueba de
 ## entrecerrar, que se miden sobre la captura con `tools/verify_squint.py`.
 
-const SCREEN_COLUMNS := 30  ## 480 px de ancho en tiles de 16.
+const SCREEN_COLUMNS := ZoneRules.SCREEN_TILES.x  ## 640 px de ancho en tiles de 16 («Piel nueva»).
 const LANDMARK_MIN_SIDE := 2
 const LANDMARK_MAX_SIDE := 4
 const LANDMARK_MIN_AREA := 6  ## 2 × 3 tiles.
