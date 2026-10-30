@@ -28,41 +28,55 @@
 ; R = decor, rock, sólido                     roca partida
 ; @ = spawn, start, pisable                   llegada desde la Cuenca
 ---
-    uuuuu uuu uuuuuuuu uuuuuuuuu uuu uuuuuuu uuuuuu uuu u uuuuuu uu uu u    uu uuuuuu  uu uuuuu
-    uuuuuuuuuuu  u  u  uuuuuuu u u   uuuuu uuu u  u   uuuuuuu u uuuuuuuuuuuu  uu   uuuuuu  u uu
-    uuuuu uuuuu          l  ll  l n   uuuuuuu uuu  uuuu  uu uuuuu u uu  uu uu uu u uuuuuuu  uuu
-     u  uuu u uu          R  R  l  Rn uu u uuuuuuuu u u  u uuuuuu uuuuuuuuuuuuuuuuu  uu  uuuuuu
-      uu          k     g   klk n    l  uuuuuuuuuuu uuuu uu uu uu uuuuuuuu uu  u uuuuuu uuuuu uu
-      uu     g            l     n   n   uu u uu uuuuuuuuu  u uu u uuu u u uuuuuuuuuuuuuu uu uu u
-                S        R    l  k  u uu uu uuuu          l           u u uuuuuuuu        uuuuu
-                 n  R  R  l         uuuuuuuu uuull       l  l         uuu  uuuuuuu        uuu u
-         n        Rl R    l     uuuuu uuuuuu       R n         l        uuuuuu   Rn         uuuu
-            k  n         l    l u u u  uu   uu     l    n k    l        u uuu        g       uu
-    uuuu    l    n   ll l                            l   ll   ll                 lR 1   Ra
-    u uu     k  R l                                                                   a
-     uu uuuu  R  n         uuuuuuuuuu  uuuuuu uuuuu  u          l uu uuuuuu        a          @
-    uu uu  u               uuu   u u u uuu  uu uuuuuuu            u uuu u u  R    1  a  1 l
-    uuuuuu            uuu uuuu u u uuuuuuuu uuu uuuu u u uuu uuu  uuuu  uuu
-    u uuuu            u uuu u u u u  u u uuuuuuuu u uuu u  uuu uuu  uuuuu uu   g  n R   l   R
-    uu uuu    u u uuuuu uuuu  uu u        u  uuu u uuuuuuuuuuuu uuuuu uuuuuuu uu            uuuu
-     u uu   uu uuuuuu uuuu uuuuuuu        u uuu uuuuu u u  uu  uuuu uuuu uuuu u             uuu
-        uu     uuuuuu uu  u u  l  YYYY   ln     uuuu  uuuuuu u uuu u uu   u uu uu uuuuu  uuuu uu
-        uu   kuuu uuu uuuuuu u   nYYYY ll  nl   u u uuuu uuuuu uu uuuuu uuuuuuuuuuuuu  u uu uuuu
-        bb      uuu   u uuuu Rn   YYYY    n  l
-   k    R       u u uu uuuuu   n kYYYY n  g                 X
-            lR    uuu uuu uuuuR   l l g M c3c3c u uuuuuuu  uuu uuuu  u u uuuu uuuuuuuu uu  uuuuu
-      k bb l   k  u uuuu uuuuu      l           uu u   u uuuuuuuuuuuuuuuuu  uuuu   uuuuu uuuuuuu
-      R    l  l   uu  u u uuuu  k   nlll      uu uuu uuuuuuu                        uu uuu u uuu
-        2       g uuuu uuuu uu         k l l   uuu uu u u uu    lk                  u uuu u  u
-             l   uuuuu uuuuuu  uuuuu k  uuuu  uuu uuuuuuu      l      g  k         g    u uuuuu
-     R   l   g  uuuu uu uuu u u uuuu     u u  u  uuuuuuuuu R            g    nR         u uuuuuu
-            l                                 uuuuuuuuuuuu  l          lk             u uuuuuu u
-                                              uuuuuuuu u                 k             u u  uuuu
-         u  uu             l                  uuu  u         l k kl                u uuu
-        uuuuu  k  l n  l  llnR         k    uu u uu  Rlg   k  llnl Rn    RR       uuuuuuuu  k
-                Rn       l     l       kg n    l        l   k    lkl RRn   l n      R      R  l
-       l   n  nlR Rll             l l     l     k R k lnnn              lRg    klk   n  k n kl
-       kk   l n                              k ngl ll                           l  l lk nk
+     u uuu u u uu  uuu uuu uu  uuu uuu uuu  uu u u uuu uuu  uu uuu u u uu  u u uuu uu  uu  uu  u     u u u uuu uu   uu  uu uuu
+     u uuu uuu uuu u   u   u   uuu uuu u u  u    u uuu u u uu  u   u    uu uuu uu  u u uuu uuu uuu uu   uu     uuu uuu   u  uu
+
+      uuuu u u uuu u                 l l   l n     uuu uuu u u uu   uu uu   uu  uu uuu  u  uu   uu  uu  uu  u  uuu uuu u   uuu
+       u   uuu  u  uu            l R   R   l   Rn  uu  u u uuu uuu u u  u   u  uuu uuu  uu uuu uuu uuu uuu uuu   u u   uuu uuu
+        uu             k        g    k lk  n     l   u uuu uuu uuu u u uuu  uu  uu  uu  uu uuu uuu  uu   u  uu uuu u u uuu u u u
+
+        uu       g                 l       n    n    u u u  uu  uu uuu uuu u   u u u u  uu u u  u  uuu uuu uuu uuu uu  uu  uu  u
+                     S           R      l   k   u  uu  uu  uuu u              l              u  u  uuu uuu uu           uu uuu
+                       n   R   R   l            uu uuu uuu  uu u           l   l             u uu   uu uuu uu           uu u u
+                                                                ll
+            n           Rl  R      l       uuu uu  uuu uuu          R  n            l           uu uuu u    Rn             uuu u
+                k   n                                                                                            g          uu
+      uuuu      l      n         l      l  u u  u   uu     uu       l      n k      l           u  uuu       R
+                            ll  l                                      l    ll     ll                       l   1    R a
+      u uu       k   R   l                                                                                   1   a a 1
+       uu                           uu uuu uuu uu   uu uuu u u uuu u   u             l  uu  uu uuu u           a              @
+      uu u  uu u   R   n            uu u    u  u u  uu u   uu  uuu uuu u                u  uuu  u  u    R
+            u  u                                                                                                        l
+      uuuu  uu               u uu  uuu u u  u  uuu uuu uu  uuu  uu uu  u u  uu u u uu   uu uu   uu u
+      u uu  uu               u  uu u u  u  u u   u  u  uuu uuu uu  u u uu  u   uuu  uu u   uuu uu  uu     g  n  R    l     R
+      uu u  uu     u u  uu uuu  uu uu   uu  u           u   uu u u  uu uuu uuu uuu u u uuu u u uuu uuu  uu                     u
+            u                                                                                                              uuu
+       u u  u   uu  uu uuu u u uuu  uu uuu uu           u  uuu  uu uuu  u  u   uu   uu uu  uuu u u uuu  u                  uuu
+            uu      uu uuu u u u   u u    l            ln       uu uu   uu uuu u u  uu u u  uu     u u u u u u uuu u   uuu u u u
+            uu     uuu  uu u u uuu uu  u    n  YYYY ll   n
+                 k                             YYYY         l   u  u u uuu  uu uuu  uu  uu uuu  uu uuu uuu uuu uu   u  uu  uuu u
+            bb       u uu    u  uu uu  Rn      YYYY     n    l
+    k       R        u  u  uu  uuu uu    n  k  YYYY                              X
+                lR      uu u u uu  uuu uR    l  l   n   g    c                   X                                             u
+                                                    g   c3 c3   u  uuu uuu u   uuu  uu uu   u  u u uuu  uu uuu uuu  uu   u uuu
+        k   bb l    k   u  uuu u u uuu u        l    M          uu  u    u  uu uuu uuu uuu uuu uuu   u uuu     uuu uu  uuu uuu u
+        R      l   l    uu   u  u  uuu u   k    nl  ll   l   u u u uu  uuu uuu u                                uu  uu u u  uu u
+            2        g  uu uu  uuu u u u            k  l       uuu  uu  u  u u u                                u  uuu  u   u
+                                                 k                                   l k
+                 l     uuu uu  uuu uuu   u uuu u       u uu  u uu  uuu uuu u        l        g   k             g     u  uu uuu
+       R     l  g                                    u    u  u   u uuu uuu uu  R                g      nR            u  uu uuu u
+               l     u uuu  uu  uu u u  u  uuu u       u     u uuu uuu uuu uu   l              lk                    u uuu uu  u
+                  lk                                                                                               u
+                                                             u uuu uuu u u                       k                  u  u   uuu u
+            uu  uu              l   l                        u uu   u             l k  kl                      u u uu
+            uu uu               n  lln R                   uu  u u u               lln l R n     R R         u uuu uuu u
+                                                    k                  Rlg     k                                           k
+                     R n         l       l   l      kg  n      l           l    k      lkl  RR n    l  n        R        R   l
+         l     n   nlR  Rl l                    l       l       k  R k  ln nn                   lR g     k lk    n   k  n  kl
+         k k    l  n                                        k  ngl  ll                                     l   l l k n k
+
+
+
 
 
 

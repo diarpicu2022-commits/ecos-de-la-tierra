@@ -25,37 +25,49 @@
 ; R = decor, rock, sólido                     roca partida
 ; @ = spawn, start, pisable                   llegada desde Valdehoja
 ---
-TTTTUUTTUUUUUUTTTTUUUUTTUUUUTTUUTTTT  UUUUUUTTUUTTTTUUTTTTTTTTTTTTTTUUTTUUTTUUTTTTTTTTTTUUUUTTTTTTTT
-TTTTUUTTUUUUUUTTTTUUUUTTUUUUTTUUTTTT  UUUUUUTTUUTTTTUUTTTTTTTTTTTTTTUUTTUUTTUUTTTTTTTTTTUUUUTTTTTTTT
-TTTTUUTTUUTTTTTTTTTTTTUUTTTTUUUUTTTT    TTTTTTccccccUUccccTTccUUccTTTTTTTTTTUU              TTTTTTTT
-TTTTUUTTUUTTTTTTTTTTTTUUTTTTUUUUTTTT    TTTTTTccccccUUccccTTccUUccTTTTTTTTTTUU       g      TTTTTTTT
-TTTTUUTTTTUUUUUUTTTTTTUU        UUTT    ccccUUTTccccccTTTTTTUUccTTTTccTTUUTTTT    bb bb 2   TTUUUUTT
-TTTTUUTTTTUUUUUUTTTTTTUU    S   UUTT    ccccUUTTccccccTTTTTTUUccTTTTccTTUUTTTT    bb bb     TTUUUUTT
-TTTTUU  TT  UUTTUUUUUU         g  cc    TTccTTTTccccccTTccTTccccccTTTTccccTT                UUUUTTTT
-TTTTUU  TT  UUTTUUUUUU            cc    TTccTTTTccccccTTccTTccccccTTTTccccTT     2  2  2    UUUUTTTT
-UU e          R TTTTTT          UUcc    cc          TT  ccTTccccTTTTccTTccTTccUU     R  UU  TTTTUUTT
-UU              TTTTTT       g  UUcc    cc    e     TTt ccTTccccTTTTccTTccTTccUU        UU  TTTTUUTT
-    aag  1  1     UU                      eee                                     ccccTTTT  TTTTTTTT
- e                UU                                                              ccccTTTT  TTTTTTTT
- @                    TTUUUUccTTUUTT  cc    e e  e      ccccccccccUUTTccTTccTTTTTTTTUUUUTT  TTTTTTUU
-       1              TTUUUUccTTUUTT  cc    e    e e    ccccccccccUUTTccTTccTTTTTTTTUUUUTT  TTTTTTUU
-TTUUUU     1  1 TTUUTTTTTTccUUUUTTUU  TTTTTTccccccccccccccccccccccccccccTTccTTcccccccccc      UUTTTT
-TTUUUU          TTUUTTTTTTccUUUUTTUU  TTTTTTccccccccccccccccccccccccccccTTccTTcccccccccc      UUTTTT
-TTTTTTUUTTUUUUUUUUTTTTUUTTccUUcccc    TTcccccccccccc      cc  ccccccccccccTTccUUTTTTUU        TTTTTT
-TTTTTTUUTTUUUUUUUUTTTTUUTTccUUcccc    TTcccccccccccc   e  cc  ccccccccccccTTccUUTTTTUU        TTTTTT
-TTTTUUUUTTUUTTTTTTUUTTTTTTTTUUTTcc    cccccccccc  e   eYYYe  e  ccccccccccccTTccUUTTcc e        TTTT
-TTTTUUUUTTUUTTTTTTUUTTTTTTTTUUTTcc    cccccccccc       YYY     eccccccccccccTTccUUTTcc          TTTT
-TTUUTTUUTTTTTTTTUUTTTTUUTTccccTTcc    cccccccc  e e e  YYY R  e e ccccccccTTTTccTTTTTT        TTUUUU
-TTUUTTUUTTTTTTTTUUTTTTUUTTccccTTcc    cccccccc  e   e  YYY e      ccccccccTTTTccTTTTTT        TTUUUU
-TTTTTTUUTTTTTTTTTTTTTTUUTTUUccccTT    cccccccccceee  e  M           ccccccccTTcccccccccccc    UUTTUU
-TTTTTTUUTTTTTTTTTTTTTTUUTTUUccccTT    cccccccccc eee  e        e    ccccccccTTcccccccccccc    UUTTUU
-TTUUUUTTTTTTTTTTTTTTUUUUccUUccccccTT  cccccccccc   ee    e e                      TTcccccc  UUTTUUTT
-TTUUUUTTTTTTTTTTTTTTUUUUccUUccccccTT  cccccccccc    e e               e  g    e  eTTcccccc  UUTTUUTT
-UUTTTTUUTTTTUUUUTTTTTTUUTTTTUUccTTTT  cccccccccccc       e           e333 e qq      UUUUUU  UUTTTTTT
-UUTTTTUUTTTTUUUUTTTTTTUUTTTTUUccTTTT  cccccccccccc        e          3   33 qq      UUUUUU  UUTTTTTT
-TTTTTTTTTTTTTTUUUUTTUUTTccUUTTccccUU    cccccccccccccccc  cccccccc                          TTTTTTTT
-TTTTTTTTTTTTTTUUUUTTUUTTccUUTTccccUU    cccccccccccccccc  cccccccc            e             TTTTTTTT
-TTTTTTTTTTTTUUUUTTTTUUTTUUccUUTTTTUU    TTTTccccccccccccX cccccccccccc    cc  ccTTccccccUUTTTTUUTTTT
-TTTTTTTTTTTTUUUUTTTTUUTTUUccUUTTTTUU    TTTTcccccccccccc  cccccccccccc    cc  ccTTccccccUUTTTTUUTTTT
-TTUUTTTTUUTTUUUUTTTTTTTTTTTTUUUUccTT    ccTTccUUcccccccc  ccccccccccccccccTTTTccTTTTTTUUTTTTUUUUTTTT
-TTUUTTTTUUTTUUUUTTTTTTTTTTTTUUUUccTT    ccTTccUUcccccccc  ccccccccccccccccTTTTccTTTTTTUUTTTTUUUUTTTT
+TT TTUU TT UUUU UU TTTT UU UUTT UU UUTT UU TTTT    UUUU UU TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
+TT TTUU TT UUUU UU TTTT UU UUTT UU UUTT UU TTTT    UUUU UU TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
+
+TT TTUU TT UUTT TT TTTT TT TTUU TT TTUU UU TTTT      TT TT TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU                    TTTT TT TT
+TT TTUU TT UUTT TT TTTT TT TTUU TT TTUU UU TTTT      TT TT TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU          g         TTTT TT TT
+TT TTUU TT TTUU UU UUTT TT TT              UUTT      cc cc UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
+TT TTUU TT TTUU UU UUTT TT TT UU           UUTT      cc cc UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
+                              UU     S                                                                   bb          2
+TT TTUU    TT   UU TTUU UU UU            g   cc      TT cc TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT    bb                UUUU TT TT
+TT TTUU    TT   UU TTUU UU UU                cc      TT cc TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT                      UUUU TT TT
+                                                                                                            2   2bb 2
+UU  e              R                   g                                                                 UU     Rbb   UU   TTTT UU TT
+UU                   TT TT TT              UUcc      cc               TT   ccTT cc ccTT TT ccTT cc TTcc  UU           UU   TTTT UU TT
+                     TT TT TT              UUcc      cc      e        TTt  ccTT cc ccTT TT ccTT cc TTcc      cc cc TT TT   TTTT TT TT
+     aa g   1   1       UU                              ee e                                                 cc cc TT TT   TTTT TT TT
+  e      1              UU
+ @                           TT UU UUcc TT UUTT    cc      e e   e         cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
+                             TT UU UUcc TT UUTT    cc      e     e  e      cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
+               1   1                                                                                                         UU
+TT UUUU               TTUU TTTT TT ccUU UU TTUU    TTTT TT cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc        UU TT TT
+TT UUUU               TTUU TTTT TT ccUU UU TTUU    TTTT TT cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc           TT TT
+TT TTTT UU TTUU UU UUUU TT TTUU TT ccUU cc cc      TTcc cc cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
+TT TTTT UU TTUU UU UUUU TT TTUU TT ccUU cc cc      TTcc cc cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
+
+TT TTUU UU TTUU TT TTTT UU TTTT TT TTUU TT cc      cccc cc cccc    e    ee   e   e   cc cc cccc cc ccTT cc UUTT cc  e           TT TT
+TT TTUU UU TTUU TT TTTT UU TTTT TT TTUU TT cc      cccc cc cccc                      cc cc cccc cc ccTT cc UUTT cc              TT TT
+                                                                         YYY        e
+TT UUTT UU TTTT TT TTUU TT TTUU TT cccc TT cc      cccc cc cc   e  e e   YYY               cccc cc TTTT cc TTTT TT              UU UU
+TT UUTT UU TTTT TT TTUU TT TTUU TT cccc TT cc      cccc cc cc   e    e   YYY   R   e e  cc cccc cc TTTT cc TTTT TT           TT UU UU
+TT TTTT UU TTTT TT TTTT TT TTUU TT UUcc cc TT      cccc cc cccc ee e   e YYY   e        cc cccc cc ccTT cc cccc cccc         TT TT UU
+TT TTTT UU TTTT TT TTTT TT TTUU TT UUcc cc TT      cccc cc cccc  e         M               cccc cc ccTT cc cccc cccc  cc     UU TT UU
+                                                                   ee    e          e                                 cc     UU
+TT UUUU TT TTTT TT TTTT TT UUUU cc UUcc cc ccTT    cccc cc cccc     ee      e  e                             TT cc cc cc   UUTT UU TT
+TT UUUU TT TTTT TT TTTT TT UUUU cc UUcc cc ccTT    cccc cc cccc      e   e                       g           TT cc cc cc   UUTT UU TT
+                                                                                             e          e   e
+UU TTTT UU TTTT UU UUTT TT TTUU TT TTUU cc TTTT    cccc cc cccc cc          ee             e                               UUTT TT TT
+UU TTTT UU TTTT UU UUTT TT TTUU TT TTUU cc TTTT    cccc cc cccc cc                           3 33  e qq         UU UUUU    UUTT TT TT
+TT TTTT TT TTTT TT UUUU TT UUTT cc UUTT cc ccUU      cc cc cccc cc cc    cc cc  cc cc       3    3 3 qq         UU UUUU    TTTT TT TT
+TT TTTT TT TTTT TT UUUU TT UUTT cc UUTT cc ccUU      cc cc cccc cc cccc  cc cc  cc cc cc                                   TTTT TT TT
+                                                                     cc               cc                e
+TT TTTT TT TTTT UU UUTT TT UUTT UU ccUU TT TTUU      TT TT cccc cc cccc  cc  cc cc cccc cc cc      cc   cc TTcc cc ccUU TT TTUU TT TT
+TT TTTT TT TTTT UU UUTT TT UUTT UU ccUU TT TTUU      TT TT cccc cc cccc  ccX cc cc cccc cc cc      cc   cc TTcc cc ccUU TT TTUU TT TT
+
+TT UUTT TT UUTT UU UUTT TT TTTT TT TTUU UU ccTT      cc TT ccUU cc cccc  cc  cc cc cccc cc cccc cc TTTT cc TTTT TT UUTT TT UUUU TT TT
+TT UUTT TT UUTT UU UUTT TT TTTT TT TTUU UU ccTT      cc TT ccUU cc cccc  cc  cc cc cccc cc cccc cc TTTT cc TTTT TT UUTT TT UUUU TT TT
+

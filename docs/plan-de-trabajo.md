@@ -42,16 +42,25 @@ válidos:
 
 ## Punto de retome
 
-> **Rediseño «Tierra Viva» — ANEXO ABIERTO el 2026-10-30, pendiente de elección.**
-> Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`:
-> fases 1 a 4 con siete fuentes y los choques medidos (en lo enfermo, la
-> saturación mediana es 0,40–0,50 frente al techo de 0,22; la luz de la
-> Cripta suma 6 076 colores). Tres direcciones: A «Trasplante», B «Piel
-> nueva, mismo mundo» (recomendada) y C «Vitrina». **No se ha tocado código.**
-> Al volver: leer la elección de Diego y las cuatro preguntas del final del
-> anexo, escribir el contrato bloqueado y empezar por los tokens. La parte 5
-> queda en espera hasta que se decida el rediseño, porque el combate y el
-> HUD cambian.
+> **Rediseño «Tierra Viva» — contrato «Piel nueva» BLOQUEADO el 2026-10-30.**
+> Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
+>
+> **Decisiones de Diego:**
+> - dirección B (piel nueva sobre los mapas aprobados);
+> - viewport 640×360;
+> - la matriz de Valdehoja se enmienda a la trama orgánica;
+> - el combate de acción sustituye a «Persiana» (R2, anexo propio);
+> - las regiones se agrandan ×4/3.
+>
+> **Hecho:**
+> - paso 1: 39 rampas `TV_*` sin deriva, `tv-state` en `verify_palette` y viewport 640×360;
+> - paso 1b: las seis regiones agrandadas con `tools/scale_zone.py`; las siete zonas, en verde en `verify_zone`.
+>
+> **Pendiente:** `verify_movement` en 95/99. Sus zonas de prueba son menores que la pantalla nueva y se rehacen al empezar el paso 2.
+>
+> **Siguiente:** esperar el visto bueno de Diego al paso 1. Después, el paso 2: el motor de terreno de Tierra Viva en `tools/tierra_viva/`, pintando el Bosque desde su matriz.
+>
+> La parte 5 sigue en espera.
 
 > **Parte 4 — Encuentros y paso mundo ↔ combate. CERRADA el 2026-10-28.**
 > Anexo `docs/ux/anexos/2026-10-28-encuentros.md`. Lo siguiente es abrir la

@@ -30,68 +30,90 @@
 ; @ = spawn, start, pisable                   llegada desde la Cumbre
 ---
 
-                 G  G  G  G
-                                 X
-                    G    G
 
-            C               q B     B     B
-        q o q        b 2 b              qk     o   q
-      k  q        qq     q         k       q          q
-
-          o       q             k  q  o
-      q               2                  q
-     B     BC     B     B     B  X  r     B      C     C
-
-                                                   q
-
-       k  o
+                       G   G   G   G
+                                            XX
+                           G     G
 
 
-     B     C                                     C     C
-                                                      k
-                                                  q
+                C                    q  B       B       B
+
+         k q o  q           b  2 b                   q k       o    q   q
+            q           qq       q             k         q
+
+             o          q                  k   q   o
+         q                   2                         q
+
+       B       BC       B       B       B   XX  r       B        C        C
+
+                                                                     q
 
 
-          q
-                                                          k
-     C   q C                                     r   q  q
-                                                  q     G
-          k                                           q
-  G oq                                               LL
-       o                                          o  LL
- G        3                                       q    q
- k    co                                              1
-          qC                                     C    o  q
- o    3           C   C         C   C
-       c                      o     o                    oq
-  k             o o  o     o oq oo
-  o                     oo kq  qo   o                     @
-      q          k C    Co oo o oC oo
-       k  q     o  o    q   oq o  o o             o
-     B     C     ooo o oo oo   o oo o
-       q       Coqoqo    oo   oo  oo C
-                oo   o o k YY    o oo
-                  oCo o oooYY o  q
-      o  k      ooo     qo YYoo    oq
-                  oo q  ok oo Mok  qoC
-                 qo o  o o  oq   oo o
-     r     r   C  o      o o   o       oo   q    C
-          q     oo C    Cooo    o      oq   o
-                o o   o oo o o
-       o           ooo  oo   oooo  q o oo
-     q q q        o  o  oo o oo   o     o  o
-  G      q            o o o  oo o   o   Go
- o    d   q      q    o  oo q  o  k    oo       o
-          4B                            ko  e    C
-      4                                     oo k5
-      oq  o                            qoo q5
-      qd                               o
-       o                                     e
-          q                             q    o  q
-            C     B     B     r     r     r    o
-     B     o       q  k   q      o   q qo o ok  oC
-            o k  o    okkq             k
-      q
-          q  k     k k  o    k         o oq
-          k       q             oo
-            B     r     B     r     C     B
+          k  o
+
+
+
+       B       C                                                 C        C
+                                                                        k
+
+                                                                    q
+
+
+
+             q
+                                                                             k
+       C    q  C                                                 r     q   q
+
+                                                                    q      G
+             k                                                          q
+                                                                       LL
+   G o q                                                               LL
+          o                                                         o
+  G          3                                                      q    q
+  k      co                                                             1
+
+             q C                                                 C      o   q
+  o      3              C    C             C    C
+          c
+                                        o       o                           oq
+   k                  o o   o       o  oq  oo
+   o                            oo  kq   q o    o                             @
+         q             k C      Co  oo  o  oC  oo
+
+          k  q        o  o      q    o q o   o  o                   o
+       B       C       ooo  o  oo  oo    o  oo  o
+          q         C oqoq o     o o    oo   o o  C
+
+                      oo    o  o k          o  oo
+                        oC o o  oo o YY o   q
+         o  k         ooo       qo   YY        oq
+                                     YYoo
+                        oo  q   ok  o o Mo k   qo C
+                       qo  o   o o    oq    oo  o
+       r       r    C   o        o  o     o                      C
+                                                    oo     q
+             q        oo C      Co oo      o        oq     o
+                      o o    o  oo  o  o
+          o              o oo   oo     o
+                                        oo o   q o  oo
+       q  q q           o   o   oo  o  oo    o       o   o
+   G        q                o  o  o   oo  o    o    G o
+  o      d   q         q     o   o o q   o   k      oo          o
+
+             4 B                                     k o    e     C
+         4                                                  oo k5
+         oq  o                                      qo o q  5
+
+         qd                                         o
+          o                                                  e
+             q                                       q       o  q
+
+                C       B       B       r       r       r      o
+       B                                                     k  o C
+               o         q   k     q        o    q  qo  o  o
+                o  k   o     o kkq                  k
+         q
+             q   k       k  k   o      k            o  oq
+             k          q                  oo
+
+                B       r       B       r       C       B
