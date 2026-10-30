@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-28 (sesión 8; cierre de la parte 4)
+Última actualización: 2026-10-30 (sesión 9; anexo del rediseño «Tierra Viva»)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -41,6 +41,17 @@ válidos:
 ---
 
 ## Punto de retome
+
+> **Rediseño «Tierra Viva» — ANEXO ABIERTO el 2026-10-30, pendiente de elección.**
+> Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`:
+> fases 1 a 4 con siete fuentes y los choques medidos (en lo enfermo, la
+> saturación mediana es 0,40–0,50 frente al techo de 0,22; la luz de la
+> Cripta suma 6 076 colores). Tres direcciones: A «Trasplante», B «Piel
+> nueva, mismo mundo» (recomendada) y C «Vitrina». **No se ha tocado código.**
+> Al volver: leer la elección de Diego y las cuatro preguntas del final del
+> anexo, escribir el contrato bloqueado y empezar por los tokens. La parte 5
+> queda en espera hasta que se decida el rediseño, porque el combate y el
+> HUD cambian.
 
 > **Parte 4 — Encuentros y paso mundo ↔ combate. CERRADA el 2026-10-28.**
 > Anexo `docs/ux/anexos/2026-10-28-encuentros.md`. Lo siguiente es abrir la
