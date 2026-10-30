@@ -6,7 +6,7 @@ extends RefCounted
 ##
 ## 1. Una salida solo existe donde el camino pisado cruza el borde del mapa.
 ## 2. Ningún borde de mapa pisable que no sea salida (arquitectura prohibida).
-## 3. Como mucho `MAX_EXITS_PER_SCREEN` salidas en cualquier pantalla de 480 px.
+## 3. Como mucho `MAX_EXITS_PER_SCREEN` salidas en cualquier pantalla de 640 px.
 ## 4. Cada salida lleva a una casilla pisable, un tile dentro de la zona de
 ##    destino, junto a una salida que devuelve a la zona de origen: siempre se
 ##    puede volver por donde se vino.
@@ -18,9 +18,10 @@ const ZONES_DIR := "res://data/world/zones/"
 const EXITS_PATH := "res://data/world/exits.json"
 const NAMES_PATH := "res://data/world/zones.json"
 
-## Pantalla en tiles: 480 x 270 px con tiles de 16 px. La última fila visible
-## queda cortada a 14 px, así que una pantalla abarca hasta 17 filas.
-const SCREEN_TILES := Vector2i(30, 17)
+## Pantalla en tiles: 640 x 360 px con tiles de 16 px (contrato «Piel nueva»,
+## 2026-10-30). La última fila visible queda cortada a 8 px, así que una
+## pantalla abarca hasta 23 filas.
+const SCREEN_TILES := Vector2i(40, 23)
 
 
 ## Líneas del mapa de texto de una zona, sin líneas vacías.

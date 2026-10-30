@@ -1,7 +1,7 @@
 # Anexo de diseño — Rediseño «Tierra Viva»: arte del mundo y combate en el mapa
 
-Fecha: 2026-10-30 · Rama: `rediseno/tierra-viva` · Estado: **fases 1 a 4 escritas;
-pendiente de la elección de Diego.** No se ha tocado código ni assets del juego.
+Fecha: 2026-10-30 · Rama: `rediseno/tierra-viva` · Estado: **dirección B elegida;
+contrato «Piel nueva» bloqueado el 2026-10-30.** Paso 1 (tokens) en curso.
 
 ## Por qué existe este anexo
 
@@ -133,7 +133,7 @@ Lectura:
 | Verde `VITAL_*` solo en lo purificado | Guía §2.1 y §3.1 | **Cumple**: lo sano es lo purificado y en lo enfermo no hay verde |
 | Fauna solo en lo purificado | Enmienda 7 | **Cumple** |
 
-## Fase 4 — Direcciones (pendiente de elección de Diego)
+## Fase 4 — Direcciones (Diego eligió B el 2026-10-30)
 
 ### A · «Trasplante» — todo de una vez
 
@@ -201,4 +201,128 @@ Es la única que cambia lo que Diego pidió sin perder lo aprobado:
 3. **Valdehoja:** con B, ¿se conserva la matriz aprobada del pueblo o se enmienda para adoptar la trama orgánica nueva?
 4. **Combate:** confirmar que el contrato nuevo de R2 sustituye a «Persiana» y adapta «Orden de líder» (postura del grupo en vez de orden por ronda).
 
-Hasta tener respuesta no se escribe contrato ni código.
+**Respuestas de Diego (2026-10-30):** B · 640×360 · enmendar la matriz de
+Valdehoja · el combate de acción sustituye a «Persiana» y la orden de líder
+pasa a postura del grupo.
+
+### Medición previa al contrato: valor enfermo frente a purificado
+
+`python tools/verify_palette.py value <enfermo> <sano>` sobre los renders de Tierra Viva (2026-10-30):
+
+| Zona | Normal | Deuteranopía | Protanopía | Tritanopía |
+|---|---|---|---|---|
+| Valdehoja | 2,09 | 2,03 | 2,17 | 2,07 |
+| Cuenca | 1,96 | 1,91 | 2,04 | 1,95 |
+| Llanura | 1,91 | 1,87 | 1,97 | 1,89 |
+| Cumbre | 1,74 | 1,69 | 1,81 | 1,74 |
+| Costa | 1,59 | 1,53 | 1,69 | 1,59 |
+| **Cripta** | **1,27 FALLA** | **1,25** | **1,30** | **1,27** |
+
+La regla del entorno («enfermo = valor bajo») se cumple en cinco de seis zonas
+con la paleta nueva. **Excepciones:**
+- **Cripta (falla):** el oro enfermo brilla. Hay que corregirla antes de aprobar su zona.
+- **Costa (al límite):** queda a 0,03 del piso en deuteranopía.
+
+## Contrato «Piel nueva» — BLOQUEADO 2026-10-30
+
+Alcance: **R1, el mundo.** R2 (combate en el mapa) y R3 (HUD, interiores y
+NPC) abren su propio anexo.
+
+### 1. Resolución
+- Viewport **640×360**; estiramiento `viewport`, escalado `integer`, filtro `Nearest`, ajuste a píxel.
+- Ventana por defecto **1280×720** (×2). 1440×810 deja de ser entero.
+- La casilla sigue en **16 px**. Una pantalla muestra 40×22,5 casillas.
+- `MAX_EXITS_PER_SCREEN` se mide sobre 640 px.
+
+### 2. Paleta (enmienda 13)
+- **Rampas `TV_*`.** Se añaden a `design_tokens.gd` y `tools/pixel.py`, generadas por `tools/gen_tierra_viva_tokens.py` desde una tabla única. Son las del arte aprobado: tierra, piedra, hierba, hoja, arena, agua, madera, tejados, muro, flor, hierba seca, hoja muerta, ceniza, crudo, lodo, plástico, óxido, oro, hielo, fuego y las variantes regionales.
+- **El techo de 0,22 deja de aplicarse a las rampas `TV_*`.** La paleta pasa a regirse por el significado:
+  - **Solo en celdas purificadas:** `TV_GRASS`, `TV_LEAF`, `TV_FLOWER` y `TV_WATER` (agua viva).
+  - **Solo en celdas enfermas:** `TV_DRYGRASS`, `TV_DEADLEAF`, `TV_OIL*`, `TV_SLUDGE*`, `TV_PLASTIC*`, `TV_TURBID`, `TV_SMOG`.
+  - **Neutras:** el resto.
+- **Se conserva.** `VITAL_*` sigue con su único significado en la interfaz. `EMBER_*` sigue siendo la causa activa y el aviso. La UI sigue en `ASH_*`.
+- **Valor:** `verify_palette.py value` ≥ 1,5 en las cuatro visiones para cada zona. La Cripta se corrige antes de aprobar su zona.
+- **Cero colores sueltos.** El terreno y el decorado generados pasan un **cuantizado final a los tokens `TV_*`**. La luz se hace en bandas de la rampa, nunca en degradado continuo.
+
+### 3. Contorno
+- **El contorno de 1 px en `ASH_050` sigue reservado a lo que responde.**
+- El decorado lleva un contorno **de su propia rampa**, el tono más oscuro (índice 0 o 1), nunca `ASH_050`.
+- La regla de negación de la guía §2.2 no cambia.
+
+### 4. Assets externos
+- **Edificios y personajes de PixelLab.** Entran como fuente versionada en `assets/source/pixellab/` con su README (nombre y uso).
+- **Su paleta no se cuantiza.** Se registra como «tinta de personaje o edificio», igual que `CHARACTER_INKS`, y `verify_palette.py` acepta sus colores solo dentro de esos sprites.
+
+### 5. Pipeline
+- **Ubicación.** El generador de Tierra Viva entra en `tools/tierra_viva/` (código en inglés y comentarios en español), con semilla fija.
+- **Pinta las matrices de `data/world/zones/*.txt`.** Los caracteres del repo se traducen a los materiales del motor: suelo, camino, agua, puente, escalera, cota, arena, muro y losa.
+- **Salida:** un atlas por zona y estado, más las capas de decorado que `WorldDecor` ya sabe colocar.
+
+### 6. Valdehoja (enmienda de la matriz)
+- **Trazado nuevo.** Se adopta el pueblo orgánico de Tierra Viva: calles en curva, casas a distinta altura y plazas ovaladas.
+- **Lo que se conserva** se marca en la matriz nueva antes de pintar: la plaza del Árbol del Vínculo, la bocamina tapiada de 2×2 (enmienda 12), las salidas a las regiones y las partes de purificación (`valdehoja.parts.txt`).
+- `verify_zone` se adapta a la matriz nueva y sigue en verde.
+
+### 7. Lo que no cambia
+- **Movimiento y cámara:** el movimiento («Umbral», «Vereda»), la cámara con zona muerta y la diagonal sin normalizar.
+- **Purificación de zona:** la ola de 900 ms con tramado Bayer 4×4.
+- **Fauna:** la fauna solo en lo purificado y los animales domésticos siempre.
+- **Interfaz:** el radio 0, el borde de 1 px y la tipografía de mapa de bits.
+
+### Orden de implementación
+1. **Tokens:** rampas `TV_*`, viewport y ventana.
+2. **Componente clave:** el motor de terreno en `tools/tierra_viva/`, pintando el Bosque desde su matriz.
+3. **Esqueleto:** las siete zonas pintadas desde sus matrices, con verify_zone en verde.
+4. **Resto:** el decorado y los edificios de PixelLab colocados por `WorldDecor`.
+5. **Pantalla completa:** Valdehoja con su matriz enmendada.
+6. **Estados:** enfermo y sano con la ola de purificación por partes.
+
+Al final de cada paso: captura, cláusula y espera del visto bueno de Diego.
+
+### Registro
+
+#### Paso 1 — Tokens y viewport · 2026-10-30
+
+**Hecho:**
+- `tools/gen_tierra_viva_tokens.py` escribe las **39 rampas `TV_*`** (233 tokens) desde una sola tabla en los bloques marcados de `design_tokens.gd` y `pixel.py`.
+  - Es idempotente: ejecutarlo dos veces no duplica nada.
+  - También escribe `TV_PURIFIED_ONLY` y `TV_SICK_ONLY` (cláusula 2).
+- `verify_palette.py`:
+  - las rampas `tv_` quedan fuera del techo de 0,22 (cláusula 2);
+  - orden nueva `tv-state <png> enfermo|sano`. Un color compartido entre una rampa de solo-purificado y otra de otro grupo cuenta como neutro; por ejemplo, el blanco de nieve, flor y plástico.
+- `project.godot`: viewport 640×360 y ventana 1280×720 (cláusula 1).
+- `zone_rules.gd`: `SCREEN_TILES` pasa a 40×23.
+- Lámina: `docs/ux/capturas/2026-10-30-tierra-viva-tokens.png`. «+» marca solo-purificado (texto en verde); «−», solo-enfermo (texto en brasa).
+
+**Medido:**
+
+```
+python tools/verify_palette.py tokens        → 280 tokens coinciden. Sin deriva.
+verify_usability    16/16     (antes 16/16)
+verify_camera       37/37     (antes 37/37)
+verify_encounters   82/82     verify_flow 23/23     verify_party_ai 19/19
+verify_movement     95/99     (antes 99/99)
+verify_zone         valdehoja 55/55 · ashen_forest 44/46 · tar_basin 44/45
+                    broken_coast 44/46 · withered_plain 43/45
+                    waning_peak 43/45 · greed_crypt 46/48   (antes, todas en verde)
+```
+
+**Lo que falla y por qué.** No son errores de código: son consecuencia
+directa de ver un 78 % más de mapa por pantalla.
+
+1. **`verify_movement`: 4 fallos de las zonas de prueba.**
+   - `prueba_b` (30×17) y `prueba_c` (20×10) son más pequeñas que la pantalla nueva, así que la cámara enseña fuera de la zona.
+   - `prueba_a` mete 3 salidas en una pantalla de 640 px.
+   - Son zonas de prueba hechas a la medida de 480×270. Se arreglan agrandándolas, sin tocar el contrato «Umbral».
+2. **`verify_zone`: el ritmo del contrato «Rastro».**
+   - **Viñetas:** con 40 casillas de ancho, dos viñetas caben en la misma pantalla en cinco de las siete zonas.
+   - **Hito:** el hito asoma antes del 25 % del camino en el Bosque, la Llanura y la Cripta.
+   - **Follaje:** en la Costa, la Llanura y la Cumbre el follaje ya no tapa la fuente antes de llegar.
+   - Las matrices aprobadas se diseñaron para enseñar 30×17 casillas.
+
+**Decisión que hace falta (se para aquí):**
+- (a) **Agrandar las matrices** de las seis regiones en proporción (~×1,33), conservando el orden de viñetas, hito y fuente. Es coherente con Tierra Viva, cuyas zonas ya son mayores.
+- (b) **Mantener las matrices** y enmendar las reglas de ritmo de «Rastro» a la pantalla nueva.
+- (c) **Volver a 480×270.**
+
+Recomendado: (a). Conserva el ritmo que se aprobó, que es lo que «Rastro» protege, y la piel nueva gana espacio para el decorado agrupado.
