@@ -5,12 +5,14 @@ Software: **se evalúa el criterio de diseño, no solo que funcione.**
 
 ## Antes de tocar nada, en este orden
 
-1. Lee `docs/plan-de-trabajo.md`. Dice qué parte está en curso y cuál es el
+1. Lee `docs/traspaso.md`: el estado exacto y la lista de trabajo en orden
+   (rediseño «Tierra Viva», tareas 1 a 10).
+2. Lee `docs/plan-de-trabajo.md`. Dice qué parte está en curso y cuál es el
    siguiente paso exacto. **No explores el repositorio entero.**
-2. Lee `docs/guia-de-continuacion.md`: §1 (protocolo), §2 (identidad), §3
+3. Lee `docs/guia-de-continuacion.md`: §1 (protocolo), §2 (identidad), §3
    (repertorio y propuestas pendientes) y la sección de §5 de la parte que
    toca. Ahí está todo el método de diseño; no necesitas ninguna skill externa.
-3. Del anexo de la pantalla en curso (`docs/ux/anexos/`), lee solo la sección
+4. Del anexo de la pantalla en curso (`docs/ux/anexos/`), lee solo la sección
    que necesites.
 
 ## Reglas que no se saltan
