@@ -42,6 +42,7 @@ $GODOT --headless --path . res://tools/verify_encounters.tscn          # 82/82
 $GODOT --headless --path . res://tools/verify_flow.tscn                # 23/23
 $GODOT --headless --path . res://tools/verify_party_ai.tscn            # 19/19
 $GODOT --headless --path . res://tools/verify_movement.tscn            # 99/99
+$GODOT --path . res://tools/verify_terrain.tscn                        # 7/7 (con ventana)
 for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   $GODOT --headless --path . res://tools/verify_zone.tscn -- $z        # todas en verde
 done
@@ -67,7 +68,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
   - paso 1, tokens `TV_*` y viewport;
   - paso 1b, regiones agrandadas con `tools/scale_zone.py`, y `verify_zone` en verde.
 - **Visto bueno de Diego al paso 1:** 2026-10-30.
-- **Tarea 1 hecha** (2026-10-30): `verify_movement` 99/99. Falta el visto bueno de Diego.
+- **Tarea 1 hecha** (2026-10-30), con el visto bueno de Diego. Entra en el PR #20.
+- **Tarea 2 hecha en el Bosque** (2026-10-31, rama `rediseno/terreno`): `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn` (7/7). Falta el visto bueno de Diego.
 
 ## 3. Lista de trabajo, en orden
 
@@ -81,7 +83,7 @@ Cada tarea termina con verificación medida y parada para el visto bueno.
   - Actualizar sus salidas en `data/world/exits.json` y las coordenadas fijas de `tools/verify_movement.gd`, que usa celdas como `(5, 8)`, `(10, 9)`, `(1, 8)` y `(15, 1)`.
   - **No escales con `scale_zone.py`:** se probó y da más de 20 fallos por esas coordenadas.
 
-### Tarea 2: contrato, paso 2, el motor de terreno
+### Tarea 2: contrato, paso 2, el motor de terreno (Bosque hecho el 2026-10-31)
 - **Portar** `tools/tierra_viva/map2.py`, con lo que necesita de `px.py`, `pal.py` y `scene2.py` (tufos, agua viva y puentes), a `tools/gen_tierra_viva_terrain.py`: código en inglés, comentarios en español y semilla fija.
 - **Entrada:** una matriz del repo. Su leyenda está en `src/world/world_tiles.gd` (`LEGEND`), y no es la del prototipo:
 

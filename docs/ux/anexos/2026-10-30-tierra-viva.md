@@ -403,3 +403,91 @@ reescribe sus salidas. El orden importa:
   terreno es el paso 2.
 
 **Siguiente:** paso 2, el motor de terreno, empezando solo por el Bosque.
+
+**Visto bueno de Diego a la tarea 1: 2026-10-31.** Entra en el PR #20 con el
+paso 1 y el 1b.
+
+#### Paso 2 — Componente clave: el motor de terreno, en el Bosque · 2026-10-31
+
+**Generador:** `tools/gen_tierra_viva_terrain.py` (cláusula 5). Es el port de
+`tools/tierra_viva/map2.py` y de lo que hace falta de `scene2.py`. Código en
+inglés, comentarios en español y semilla fija: dos ejecuciones dan los mismos
+bytes (comprobado con `md5sum`).
+
+- **Entrada:** la matriz aprobada de `data/world/zones/ashen_forest.txt`, con
+  la leyenda del repo.
+  - `.` → hierba con matas en V sobre rejilla con desfase.
+  - `=` → camino con rodadas, centro gastado, bordillo de piedrecitas y
+    briznas en el borde. El alisado del camino bajó de 9 a 5: con 9, un
+    camino de una casilla quedaba en 10 px y no cubría su casilla.
+  - `~` → agua hundida: profundidad por distancia a la orilla, cara de tierra
+    al norte, talud en los lados y destellos en el agua abierta.
+  - `=` con agua a los dos lados → puente de tablas con barandillas.
+  - `#` → **masa de copas por racimos** (`flora.clumps_canopy`), recortada a
+    sus casillas. Los racimos asoman como mucho 4 px (`OVERHANG`, menos de un
+    cuarto de casilla), en festón. Con el borde recortado en recto se leía
+    como un muro, así que se cambió. Contorno del tono más oscuro de su rampa
+    (cláusula 3) y sombra al sur.
+  - Vida del agua (de `scene2.py`): juncos y nenúfares solo en lo sano;
+    piedras que asoman en los dos estados.
+- **Mismo dibujo, otro material:** los dos estados usan la misma semilla y
+  los mismos índices de rampa, y solo cambia la rampa.
+  - Hierba → `TV_DRY_GRASS`.
+  - Copas → `TV_DEAD_LEAF`.
+  - Agua → `TV_TURBID`.
+  - Tierra → `TV_SICK_SOIL`.
+  - Así la ola descubre el mismo dibujo, que pasa de enfermo a sano.
+- **Cuantizado final** (cláusula 2): todo píxel pasa al token `TV_*`
+  permitido más cercano de su estado. Hoy no mueve ninguno, porque todo sale
+  ya de las rampas; queda como garantía.
+- **Salida:** `assets/world/tierra_viva/ashen_forest_{enfermo,sano}.png`,
+  de 2144 × 736 (134 × 46 casillas).
+
+**En el motor** (`src/world/world_root.gd`):
+
+- Si la zona tiene su par enfermo y sano, `_mount_terrain` pone dos `Sprite2D`
+  en el origen, el enfermo debajo y el sano encima. El sano solo se ve si la
+  zona está purificada.
+- **La capa de tiles queda oculta** y solo da la colisión, que sigue saliendo
+  de la matriz (`WorldTiles.SOLID`).
+- **La ola usa el mismo shader** (`purify_wave.gdshader`) sobre una copia del
+  sprite sano. Sin el par, todo sigue como antes: Valdehoja y las otras cinco
+  zonas no cambian.
+
+**Medido:**
+
+```
+verify_palette image  ashen_forest_enfermo.png   todo píxel es un token
+verify_palette image  ashen_forest_sano.png      todo píxel es un token
+verify_palette tv-state enfermo / sano           ningún color del otro estado
+verify_palette value  purificado / enfermo       1,71 normal · 1,61 deuteranopía
+                                                 1,85 protanopía · 1,69 tritanopía (piso 1,5)
+verify_terrain (nuevo, 640×360)                  7/7
+```
+
+- `tools/verify_terrain.tscn` comprueba:
+  - los dos sprites miden la zona, están en el origen y la capa de tiles está
+    oculta;
+  - empujando contra el follaje 60 cuadros, Ilan no pisa ninguna casilla
+    sólida;
+  - **con el decorado e Ilan ocultos, el 100 % de la pantalla es exactamente
+    el píxel del PNG** en esa posición del mundo: sin filtro, escala ni
+    desfase. Pasa enferma, purificada y a mitad de la ola, donde cada píxel
+    es enfermo o sano (125 443 sano y 103 411 enfermo) y nunca mezcla.
+- **Un fallo mío en la prueba, y se dice:** la primera versión pedía un 90 %
+  con todo visible y falló (83 %). El decorado viejo tapa el 17 % de la
+  pantalla. Era un mal umbral, no un fallo del motor, y se pasó a medir el
+  suelo solo.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-10-31-terreno-ashen_forest-enfermo.png`, `-ola.png`
+  y `-sano.png`.
+
+**Lo que se ve y todavía no es de este paso:** los árboles sueltos, la fuente
+y los pasos cerrados son el decorado viejo de «Rastro»; se rehacen en el paso
+4. El agua no se anima: con la capa de tiles oculta, el segundo cuadro del
+agua viva (enmienda 8) no se ve, y vuelve en el paso 6, el de los estados.
+
+**Siguiente:** paso 3, el esqueleto: las otras cinco regiones pintadas
+desde sus matrices (Cuenca, Costa, Llanura, Cumbre y Cripta). La Cripta
+necesita antes su luz por bandas (cociente 1,27 < 1,5) y la Costa está al
+límite (1,53).

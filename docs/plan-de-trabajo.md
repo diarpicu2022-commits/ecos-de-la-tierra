@@ -65,8 +65,12 @@ válidos:
 > - `docs/ux/tierra-viva/` tiene los renders de referencia y el concepto del título y los créditos (partes 10 y 12, pendientes de anexo).
 >
 > **Siguiente:**
-> 1. visto bueno de Diego a la tarea 1;
-> 2. paso 2: motor de terreno, empezando por el Bosque.
+> - tarea 1 aprobada (PR #20);
+> - paso 2 en el Bosque (rama `rediseno/terreno`): generador `tools/gen_tierra_viva_terrain.py`,
+>   dos sprites de suelo en `WorldRoot` y `verify_terrain` 7/7; `value` 1,61–1,85.
+>
+> 1. visto bueno de Diego al paso 2;
+> 2. paso 3: las otras cinco regiones desde sus matrices (la Cripta, antes, con luz por bandas).
 >
 > **Para jugar:** F5 abre `scenes/game.tscn` (el mundo con `GameFlow`). La
 > parte 5 (diálogos) está en la rama `parte-5/anexo`, subida como respaldo y

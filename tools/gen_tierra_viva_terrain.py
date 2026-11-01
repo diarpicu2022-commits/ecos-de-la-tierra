@@ -1,0 +1,485 @@
+"""Motor de terreno «Tierra Viva» (contrato «Piel nueva», paso 2).
+
+    python tools/gen_tierra_viva_terrain.py ashen_forest
+
+Pinta el suelo de una zona **desde su matriz aprobada** de
+`data/world/zones/<zona>.txt`, en sus dos estados, y escribe
+`assets/world/tierra_viva/<zona>_enfermo.png` y `<zona>_sano.png`, a tamaño de
+la zona (casillas × 16 px).
+
+Es el port de `tools/tierra_viva/map2.py` y de lo que necesita de `scene2.py`
+(matas, vida del agua y puentes), con estas diferencias:
+
+- **Leyenda del repo** (`src/world/world_tiles.gd`, `LEGEND`): `.` suelo,
+  `=` camino, `~` agua, `#` follaje sólido. Un `=` con agua a los dos lados
+  es un puente. El repo no tiene cotas, así que no hay caras de roca.
+- **El follaje sólido** se pinta como una masa de copas por racimos
+  (`flora.clumps_canopy`), recortada a la máscara redondeada de sus casillas.
+  Lleva el contorno del tono más oscuro de su propia rampa, nunca `ASH_050`
+  (cláusula 3), y proyecta sombra al sur sobre el suelo.
+- **La paleta sale de los tokens `TV_*`** de `tools/pixel.py`, no de
+  `pal.py`, y la región sale de la zona.
+- **Cuantizado final** (cláusula 2): todo píxel pasa al token `TV_*` más
+  cercano de los permitidos en su estado. El enfermo no puede usar rampas de
+  solo-purificado ni el sano, rampas de solo-enfermo.
+- **Semilla fija:** dos ejecuciones dan los mismos bytes.
+
+El decorado (árboles sueltos, viñetas, hito, fuente) no va aquí: es el paso 4.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import numpy as np
+from PIL import Image
+from scipy import ndimage as ndi
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pixel import PALETTE, TV_PURIFIED_ONLY, TV_SICK_ONLY  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[1]
+ZONES = ROOT / "data" / "world" / "zones"
+OUT = ROOT / "assets" / "world" / "tierra_viva"
+T = 16
+SEED = 1
+
+## Píxeles que los racimos del follaje asoman fuera de sus casillas. Menos de
+## un cuarto de casilla: no tapan a quien anda junto al borde.
+OVERHANG = 4
+
+## Región de la paleta por zona. Por ahora solo el Bosque (paso 2).
+REGION = {"ashen_forest": "bosque"}
+
+
+# --- paleta --------------------------------------------------------------------
+
+def ramp(name: str) -> list[np.ndarray]:
+    out, i = [], 0
+    while f"tv_{name}_{i}" in PALETTE:
+        out.append(np.array(PALETTE[f"tv_{name}_{i}"], np.uint8))
+        i += 1
+    if not out:
+        raise KeyError(f"no hay rampa tv_{name}")
+    return out
+
+
+def palette(state: str, region: str) -> dict[str, list[np.ndarray]]:
+    """Rampas de cada material en un estado. Mismos índices en los dos estados:
+    el dibujo es el mismo y solo cambia el material."""
+    p = {k: ramp(k) for k in ("grass", "leaf", "dirt", "sand", "water", "stone", "wood", "flower", "ash")}
+    if state == "enfermo" and region == "bosque":
+        dg = ramp("dry_grass")
+        p["grass"] = [dg[0], dg[0], dg[1], dg[2], dg[2], dg[3], dg[4]]
+        dl = ramp("dead_leaf")
+        p["leaf"] = [dl[0], dl[1], dl[2], dl[3], dl[4], dl[5], dl[5]]
+        p["water"] = ramp("turbid")
+        p["dirt"] = ramp("sick_soil")
+        p["sand"] = ramp("grey_sand")
+    return p
+
+
+def allowed_colors(state: str) -> np.ndarray:
+    """Tokens `TV_*` que puede usar un render en `state` (cláusula 2)."""
+    banned = TV_PURIFIED_ONLY if state == "enfermo" else TV_SICK_ONLY
+    keep = []
+    for name, v in PALETTE.items():
+        if not name.startswith("tv_"):
+            continue
+        r = name[3:].rsplit("_", 1)[0]
+        if r not in banned:
+            keep.append(v[:3])
+    return np.unique(np.array(keep, np.int32), axis=0)
+
+
+def quantize(img: np.ndarray, colors: np.ndarray) -> int:
+    """Lleva cada píxel opaco a su token permitido más cercano. Devuelve
+    cuántos píxeles cambió."""
+    flat = img[..., :3].reshape(-1, 3).astype(np.int32)
+    uniq, inv = np.unique(flat, axis=0, return_inverse=True)
+    d = ((uniq[:, None, :] - colors[None, :, :]) ** 2).sum(-1)
+    near = colors[d.argmin(1)]
+    changed = (near != uniq).any(1)
+    out = near[inv.reshape(-1)].reshape(img.shape[0], img.shape[1], 3)
+    moved = int(changed[inv.reshape(-1)].sum())
+    img[..., :3] = out.astype(np.uint8)
+    img[..., 3] = 255
+    return moved
+
+
+# --- máscaras (de map2.py) -------------------------------------------------------
+
+def disk(r: int) -> np.ndarray:
+    y, x = np.mgrid[-r:r + 1, -r:r + 1]
+    return x * x + y * y <= r * r + r * 0.8
+
+
+def up(tiles: np.ndarray) -> np.ndarray:
+    return np.kron(np.asarray(tiles, bool), np.ones((T, T), bool))
+
+
+def rounded(tiles: np.ndarray, r: int, sigma: float = 0) -> np.ndarray:
+    """Casillas -> máscara de píxeles con esquinas redondeadas de radio r; con
+    sigma, además alisada (desenfoque y umbral): curva orgánica de borde limpio."""
+    m = up(tiles)
+    if sigma:
+        pad = int(3 * sigma) + 2
+        mm = np.pad(m.astype(float), pad, mode="edge")
+        m = (ndi.gaussian_filter(mm, sigma) > 0.5)[pad:-pad, pad:-pad]
+    pad = r + 2
+    m = np.pad(m, pad, mode="edge")
+    m = ndi.binary_closing(ndi.binary_opening(m, disk(r)), disk(r))
+    return m[pad:-pad, pad:-pad]
+
+
+def shift(m: np.ndarray, dy: int, dx: int, fill: bool = False) -> np.ndarray:
+    out = np.full_like(m, fill)
+    H, W = m.shape
+    ys, yd = (slice(0, H - dy), slice(dy, H)) if dy >= 0 else (slice(-dy, H), slice(0, H + dy))
+    xs, xd = (slice(0, W - dx), slice(dx, W)) if dx >= 0 else (slice(-dx, W), slice(0, W + dx))
+    out[yd, xd] = m[ys, xs]
+    return out
+
+
+def edge(m: np.ndarray, n: int = 1) -> np.ndarray:
+    """Píxeles de m a distancia <= n de fuera."""
+    return m & ~ndi.binary_erosion(m, iterations=n, border_value=1)
+
+
+def tile_tex(h: int, w: int, tex: np.ndarray) -> np.ndarray:
+    th, tw = tex.shape[:2]
+    return np.tile(tex, (h // th + 1, w // tw + 1, 1))[:h, :w]
+
+
+def blit(dst: np.ndarray, src: np.ndarray, x: int, y: int) -> None:
+    sh, sw = src.shape[:2]
+    H, W = dst.shape[:2]
+    x0, y0, x1, y1 = max(0, x), max(0, y), min(W, x + sw), min(H, y + sh)
+    if x0 >= x1 or y0 >= y1:
+        return
+    s = src[y0 - y:y1 - y, x0 - x:x1 - x]
+    m = s[..., 3] > 0
+    dst[y0:y1, x0:x1][m] = s[m]
+
+
+def sprite(rows: list[str], cmap: dict) -> np.ndarray:
+    a = np.zeros((len(rows), max(len(r) for r in rows), 4), np.uint8)
+    for y, r in enumerate(rows):
+        for x, ch in enumerate(r):
+            if ch in cmap:
+                a[y, x] = cmap[ch]
+    return a
+
+
+# --- texturas (de map2.py) -------------------------------------------------------
+
+def grass_tex(g: list[np.ndarray]) -> np.ndarray:
+    """32x32: base media con matas en V sobre rejilla con desfase."""
+    t = np.zeros((32, 32, 4), np.uint8)
+    t[:] = g[4]
+    v1 = [(0, 0, 3), (2, 0, 3), (1, 1, 2), (0, -1, 5), (2, -1, 5)]
+    v2 = [(0, 0, 3), (1, 1, 3), (2, 0, 3), (3, 1, 3), (4, 0, 3), (1, -1, 5), (3, -1, 5)]
+    for sx, sy, motif in [(3, 4, v1), (19, 2, v2), (11, 12, v1), (27, 13, v1), (5, 20, v2),
+                          (21, 22, v1), (14, 28, v1), (29, 29, v2)]:
+        for dx, dy, k in motif:
+            t[(sy + dy) % 32, (sx + dx) % 32] = g[k]
+    for x, y in [(9, 6), (25, 8), (2, 14), (17, 17), (30, 21), (9, 25), (24, 30)]:
+        t[y, x] = g[5]
+    for x, y in [(15, 5), (7, 16), (26, 25), (1, 29)]:
+        t[y, x] = g[3]
+    return t
+
+
+def dirt_tex(d: list[np.ndarray]) -> np.ndarray:
+    t = np.zeros((32, 32, 4), np.uint8)
+    t[:] = d[4]
+    rng = np.random.default_rng(11)
+    for _ in range(26):
+        x, y = rng.integers(0, 32, 2)
+        t[y, x] = d[3]
+    for x, y in [(5, 6), (20, 3), (13, 17), (27, 22), (8, 27), (24, 12)]:   # guijarros
+        t[y, x] = d[5]; t[y, (x + 1) % 32] = d[5]
+        t[(y + 1) % 32, x] = d[3]; t[(y + 1) % 32, (x + 1) % 32] = d[3]
+    return t
+
+
+# --- capas -------------------------------------------------------------------------
+
+def paint_path(img, path, P, rng):
+    """Camino de tierra: rodadas, centro gastado, bordillo de piedrecitas,
+    piedras sueltas y briznas que pisan el borde (map2.render)."""
+    H, W = path.shape
+    yy, xx = np.indices(path.shape)
+    chk = (xx + yy) % 2 == 0
+    d = ndi.distance_transform_edt(path)
+    img[path] = tile_tex(H, W, dirt_tex(P["dirt"]))[path]
+    img[path & (d > 6.5) & (d <= 8) & chk] = P["dirt"][3]
+    img[path & (d > 11)] = P["dirt"][5]
+    img[path & (d > 10) & (d <= 11) & chk] = P["dirt"][5]
+    img[edge(path, 1)] = P["dirt"][2]
+    img[edge(path, 2) & ~edge(path, 1)] = P["dirt"][3]
+    img[path & shift(~path, 2, 0, True) & ~edge(path, 1)] = P["dirt"][3]
+    nz = ndi.gaussian_filter(rng.random((H // 4 + 2, W // 4 + 2)), 2.0)
+    nz = ndi.zoom(nz, 4, order=1)[:H, :W]
+    hi = np.quantile(nz, 0.82)
+    img[path & (d > 3) & (nz > hi)] = P["dirt"][5]
+    ring = path & (d > 1.5) & (d <= 3.2)
+    for y, x in zip(*np.where(ring & ((xx * 5 + yy * 3) % 23 == 0) & (yy < H - 2) & (xx < W - 3))):
+        img[y, x:x + 2] = P["stone"][4]
+        img[y + 1, x:x + 2] = P["stone"][2]
+    ys, xs = np.where(path & (d > 3) & (yy < H - 3) & (xx < W - 4))
+    for k in rng.choice(len(ys), size=len(ys) // 260, replace=False) if len(ys) else []:
+        y, x = ys[k], xs[k]
+        w = 2 + (k % 2)
+        img[y, x:x + w] = P["stone"][4]
+        img[y + 1, x:x + w] = P["stone"][2]
+        img[y + 1, x + w] = P["dirt"][2]
+    ey, ex = np.where(edge(path, 1) & shift(~path, -1, 0))
+    for k in rng.choice(len(ey), size=min(len(ey) // 14, 400), replace=False) if len(ey) else []:
+        y, x = ey[k], ex[k]
+        for dx, dy, kk in [(0, 0, 3), (1, -1, 4), (2, 0, 3), (1, 1, 2)]:
+            if 0 <= y + dy < H and 0 <= x + dx < W:
+                img[y + dy, x + dx] = P["grass"][kk]
+
+
+def paint_water(img, wat, land, P, rng):
+    """Agua hundida: profundidad por distancia a la orilla, cara de tierra de
+    6 px al norte, talud de 1 px en los lados, destellos en el agua abierta."""
+    w = P["water"]
+    d = ndi.distance_transform_edt(wat)
+    yy, xx = np.indices(wat.shape)
+    chk = (xx + yy) % 2 == 0
+    img[wat] = w[2]
+    img[wat & (d <= 9)] = w[3]
+    img[wat & (d > 9) & (d <= 10) & chk] = w[3]
+    img[wat & (d <= 4)] = w[4]
+    img[wat & (d > 4) & (d <= 5) & chk] = w[4]
+    img[wat & (d <= 1.5)] = w[1]
+    open_ = wat & (d > 5)
+    ys, xs = np.where(open_)
+    for k in rng.choice(len(ys), size=max(1, len(ys) // 90), replace=False) if len(ys) else []:
+        y, x = ys[k], xs[k]
+        for i in range(2 + k % 3):
+            if x + i < wat.shape[1] and open_[y, x + i]:
+                img[y, x + i] = w[5]
+    bank = np.zeros_like(wat)
+    for k in range(1, 7):
+        bank |= wat & shift(land, k, 0)
+    face = np.zeros_like(wat)
+    for k in range(1, 3):
+        face |= wat & shift(land, k, 0)
+    img[bank] = P["dirt"][2]
+    img[bank & ~face & (((xx * 3) // 4) % 4 == 0)] = P["dirt"][1]
+    img[face] = P["dirt"][3]
+    img[bank & shift(land, 1, 0) & (xx % 6 < 2)] = P["grass"][3]
+    under = wat & ~bank & shift(bank, 1, 0)
+    img[under] = w[0]
+    img[wat & ~bank & shift(bank, 2, 0) & ~under] = w[1]
+    shore = land & ndi.binary_dilation(wat) & ~shift(wat, -1, 0)
+    img[shore] = P["dirt"][2]
+    img[land & shift(wat, -1, 0) & ~shift(wat, -2, 0)] = P["grass"][2]
+    return bank
+
+
+def paint_canopy(img, canopy, P, rng):
+    """Masa de copas por racimos (flora.clumps_canopy), recortada a su máscara.
+    Cada racimo es una esfera de 3-4 tonos de la rampa, de atrás adelante;
+    contorno del tono más oscuro de la rampa y sombra al sur sobre el suelo."""
+    H, W = canopy.shape
+    leaf = P["leaf"]
+    lx, ly = -0.6, -0.8
+    layer = np.zeros_like(img)
+    circles = []
+    for y in range(-6, H + 8, 9):
+        for x in range(-6 + (5 if (y // 9) % 2 else 0), W + 8, 11):
+            cx, cy = x + rng.integers(-3, 4), y + rng.integers(-2, 3)
+            if canopy[min(max(cy, 0), H - 1), min(max(cx, 0), W - 1)] or \
+                    canopy[min(max(cy + 6, 0), H - 1), min(max(cx, 0), W - 1)]:
+                circles.append((cx, cy, int(rng.integers(7, 11))))
+    circles.sort(key=lambda c: c[1])
+    for cx, cy, r in circles:
+        x0, x1 = max(0, cx - r - 1), min(W, cx + r + 2)
+        y0, y1 = max(0, cy - r - 1), min(H, cy + r + 2)
+        if x0 >= x1 or y0 >= y1:
+            continue
+        yy, xx = np.mgrid[y0:y1, x0:x1]
+        dx = (xx + 0.5 - cx) / r
+        dy = (yy + 0.5 - cy) / (r * 0.9)
+        d2 = dx * dx + dy * dy
+        inside = d2 <= 1.0
+        nz = np.sqrt(np.clip(1 - d2, 0, 1))
+        v = np.clip(-(dx * lx + dy * ly) * 0.8 + nz * 0.5, 0, 1) - 0.08
+        idx = np.where(v > 0.78, 5, np.where(v > 0.52, 4, np.where(v > 0.28, 3, 2)))
+        win = layer[y0:y1, x0:x1]
+        for k in (2, 3, 4, 5):
+            win[inside & (idx == k)] = leaf[k]
+        win[inside & (d2 > 0.72) & ((dy > 0.1) | (dx > 0.55))] = leaf[1]
+        if r > 8:
+            hx, hy = int(cx - r * 0.4), int(cy - r * 0.45)
+            if 0 <= hy < H and 0 <= hx < W - 1:
+                layer[hy, hx:hx + 2] = leaf[6]
+    # El borde de la masa es el de los racimos: asoman hasta OVERHANG px
+    # fuera de sus casillas, en festón, y no en una línea recta recortada.
+    reach = ndi.binary_dilation(canopy, disk(OVERHANG))
+    shape = (canopy | (layer[..., 3] > 0)) & reach
+    shape = ndi.binary_opening(shape, disk(1)) | canopy
+    # sombra de la masa sobre el suelo, al sur y un poco a la derecha
+    shadow = shift(shape, 4, 2) & ~shape
+    img[shadow] = darker(img[shadow], P)
+    filled = shape & (layer[..., 3] > 0)
+    img[filled] = layer[filled]
+    img[shape & ~filled] = leaf[1]
+    img[ndi.binary_dilation(shape) & ~shape] = leaf[0]
+    return shape
+
+
+def darker(px: np.ndarray, P: dict) -> np.ndarray:
+    """Baja un tono cada píxel dentro de la rampa del estado a la que pertenece."""
+    lut = {}
+    for r in P.values():
+        for i, c in enumerate(r):
+            lut.setdefault(tuple(c[:3]), r[max(0, i - 1)])
+    out = px.copy()
+    for i, c in enumerate(px):
+        out[i] = lut.get(tuple(c[:3]), c)
+    return out
+
+
+def paint_bridges(img, G, P):
+    """Puente: casillas de camino con agua a los dos lados. Si el agua está
+    arriba y abajo, el puente cruza en horizontal: tablas y barandillas."""
+    w = P["wood"]
+    H, W = img.shape[:2]
+    water = G == "~"
+    br = (G == "=") & ((np.roll(water, 1, 0) & np.roll(water, -1, 0)) |
+                       (np.roll(water, 1, 1) & np.roll(water, -1, 1)))
+    lab, n = ndi.label(br)
+    for k in range(1, n + 1):
+        ys, xs = np.where(lab == k)
+        horiz = water[max(ys.min() - 1, 0), xs.min()]
+        if horiz:
+            y0, y1 = ys.min() * T, (ys.max() + 1) * T
+            x0, x1 = max(0, xs.min() * T - 6), min(W, (xs.max() + 1) * T + 6)
+            deck = img[y0:y1, x0:x1]
+            deck[:] = w[3]
+            for i in range(0, x1 - x0, 5):
+                deck[:, i] = w[1]
+                deck[:, i + 1] = w[4] if i + 1 < x1 - x0 else deck[:, i]
+            deck[:2] = w[1]
+            deck[-2:] = w[1]
+            for yy in (y0 - 3, y1 - 1):
+                img[yy:yy + 2, x0:x1] = w[4]
+                img[yy + 2, x0:x1] = w[1]
+                for x in range(x0, x1, 12):
+                    img[yy - 2:yy + 4, x:x + 3] = w[2]
+                    img[yy - 2, x:x + 3] = w[5]
+        else:
+            x0, x1 = xs.min() * T, (xs.max() + 1) * T
+            y0, y1 = max(0, ys.min() * T - 6), min(H, (ys.max() + 1) * T + 6)
+            deck = img[y0:y1, x0:x1]
+            deck[:] = w[3]
+            for i in range(0, y1 - y0, 5):
+                deck[i, :] = w[1]
+            deck[:, :2] = w[1]
+            deck[:, -2:] = w[1]
+    return br
+
+
+TUFT = [".l.l.", "ldldl", ".ddd."]
+CLUMP = ["..h...h.", ".hlh.hl.", ".lml.lmh", "dmmdlmml", ".dd.dd.d"]
+REED = [".h..h", ".l.hl", "lm.lm", "mm.mm", "dd.dd"]
+
+
+def paint_tufts(img, free, P, rng):
+    """Matas sueltas en rejilla con desfase (scene2.tufts): detalle sin manchas."""
+    g = P["grass"]
+    H, W = free.shape
+    small = sprite(TUFT, {"l": g[5], "d": g[3]})
+    for y in range(6, H - 6, 22):
+        for x in range(4 + (y // 22 % 2) * 11, W - 6, 22):
+            jx, jy = x + rng.integers(-5, 6), y + rng.integers(-4, 5)
+            if rng.random() < 0.55 and free[jy, jx]:
+                blit(img, small, jx, jy)
+    big = sprite(CLUMP, {"h": g[6], "l": g[5], "m": g[3], "d": g[2]})
+    for y in range(14, H - 8, 38):
+        for x in range(10 + (y // 38 % 2) * 19, W - 10, 38):
+            jx, jy = x + rng.integers(-8, 9), y + rng.integers(-6, 7)
+            if rng.random() < 0.6 and free[jy, jx] and free[min(jy + 4, H - 1), min(jx + 7, W - 1)]:
+                blit(img, big, jx, jy)
+
+
+def paint_water_life(img, wat, bank, state, P, rng):
+    """Vida del agua (scene2.water_life): juncos y nenúfares solo en lo sano;
+    piedras que asoman en los dos estados."""
+    d = ndi.distance_transform_edt(wat)
+    g = P["grass"]
+    if state == "sano":
+        reed = sprite(REED, {"h": g[6], "l": g[5], "m": g[3], "d": g[1]})
+        ys, xs = np.where((d >= 1) & (d <= 2) & ~bank)
+        for k in rng.choice(len(ys), size=min(len(ys) // 120, 40), replace=False) if len(ys) else []:
+            blit(img, reed, xs[k] - 2, ys[k] - 4)
+        lily = sprite([".gg.g", "gllgg", ".ggg."], {"g": g[3], "l": g[5]})
+        ys, xs = np.where(d > 5)
+        for k in rng.choice(len(ys), size=min(len(ys) // 300, 20), replace=False) if len(ys) else []:
+            blit(img, lily, xs[k] - 2, ys[k] - 1)
+            if k % 3 == 0:
+                img[ys[k] - 1, xs[k]] = P["flower"][2]
+    s = P["stone"]
+    rock = sprite([".abb.", "abbbc", "ccccc", ".www."], {"a": s[5], "b": s[3], "c": s[1], "w": P["water"][5]})
+    ys, xs = np.where(d > 5)
+    for k in rng.choice(len(ys), size=min(len(ys) // 600, 8), replace=False) if len(ys) else []:
+        blit(img, rock, xs[k] - 2, ys[k] - 2)
+
+
+# --- render --------------------------------------------------------------------------
+
+def render(lines: list[str], state: str, region: str) -> np.ndarray:
+    """La zona entera en un estado. Misma semilla en los dos estados: el
+    dibujo coincide píxel a píxel y solo cambia el material."""
+    rng = np.random.default_rng(SEED)
+    P = palette(state, region)
+    G = np.array([list(r) for r in lines])
+    H, W = G.shape[0] * T, G.shape[1] * T
+    img = tile_tex(H, W, grass_tex(P["grass"])).copy()
+
+    water_t = G == "~"
+    bridge_t = (G == "=") & ((np.roll(water_t, 1, 0) & np.roll(water_t, -1, 0)) |
+                             (np.roll(water_t, 1, 1) & np.roll(water_t, -1, 1)))
+    path = rounded((G == "=") & ~bridge_t, 4, sigma=5)
+    path = ndi.binary_opening(path, disk(1))
+    paint_path(img, path, P, rng)
+
+    wat = rounded(water_t | bridge_t, 8, sigma=12)
+    canopy = rounded(G == "#", 5, sigma=6) & ~wat
+    land = ~wat & ~canopy
+    bank = paint_water(img, wat, ~wat, P, rng)
+    paint_water_life(img, wat, bank, state, P, rng)
+    paint_bridges(img, G, P)
+
+    free = ~ndi.binary_dilation(path | wat | canopy, iterations=4)
+    paint_tufts(img, free, P, rng)
+    paint_canopy(img, canopy, P, rng)
+    return img
+
+
+def main(argv: list[str]) -> int:
+    zones = argv or list(REGION)
+    OUT.mkdir(parents=True, exist_ok=True)
+    for zone in zones:
+        if zone not in REGION:
+            print(f"  FALLA {zone}: sin región de paleta (solo {', '.join(REGION)} en el paso 2)")
+            return 1
+        lines = (ZONES / f"{zone}.txt").read_text(encoding="utf8").split()
+        for state in ("enfermo", "sano"):
+            img = render(lines, state, REGION[zone])
+            moved = quantize(img, allowed_colors(state))
+            path = OUT / f"{zone}_{state}.png"
+            Image.fromarray(img, "RGBA").save(path)
+            print(f"  {path.relative_to(ROOT)}: {img.shape[1]}×{img.shape[0]}, "
+                  f"{moved} px llevados a su token")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
