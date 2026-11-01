@@ -49,8 +49,9 @@ SEED = 1
 ## un cuarto de casilla: no tapan a quien anda junto al borde.
 OVERHANG = 4
 
-## Región de la paleta por zona. Por ahora solo el Bosque (paso 2).
-REGION = {"ashen_forest": "bosque"}
+## Región de la paleta por zona (cláusula 2). Valdehoja va aparte: paso 5.
+REGION = {"ashen_forest": "bosque", "tar_basin": "cuenca", "broken_coast": "costa",
+          "withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta"}
 
 
 # --- paleta --------------------------------------------------------------------
@@ -65,15 +66,51 @@ def ramp(name: str) -> list[np.ndarray]:
     return out
 
 
+def seven(r: list[np.ndarray], idx: list[int]) -> list[np.ndarray]:
+    """Rampa de 7 tonos a partir de otra, por índices: así toda rampa entra en
+    los mismos huecos del dibujo aunque tenga 5 o 6 tonos."""
+    return [r[i] for i in idx]
+
+
 def palette(state: str, region: str) -> dict[str, list[np.ndarray]]:
     """Rampas de cada material en un estado. Mismos índices en los dos estados:
-    el dibujo es el mismo y solo cambia el material."""
-    p = {k: ramp(k) for k in ("grass", "leaf", "dirt", "sand", "water", "stone", "wood", "flower", "ash")}
-    if state == "enfermo" and region == "bosque":
-        dg = ramp("dry_grass")
-        p["grass"] = [dg[0], dg[0], dg[1], dg[2], dg[2], dg[3], dg[4]]
-        dl = ramp("dead_leaf")
-        p["leaf"] = [dl[0], dl[1], dl[2], dl[3], dl[4], dl[5], dl[5]]
+    el dibujo es el mismo y solo cambia el material. Las variantes de región
+    son las de `tools/tierra_viva/map2.py` (`palette`), ya como tokens."""
+    p = {k: ramp(k) for k in ("grass", "leaf", "dirt", "sand", "water", "stone", "wood", "flower",
+                              "ash", "gold", "roof_red", "ink")}
+    dead = seven(ramp("dead_leaf"), [0, 1, 2, 3, 4, 5, 5])
+    if region == "cumbre":
+        # páramo: pajonal y nieve en lo sano; pajonal seco y pedregal del
+        # glaciar derretido en lo enfermo. Las matas son puyas.
+        if state == "sano":
+            p["grass"] = ramp("paramo")
+            p["sand"] = ramp("snow")
+            p["leaf"] = seven(ramp("puya"), [0, 0, 1, 2, 3, 4, 4])
+        else:
+            p["grass"] = ramp("paramo_dry")
+            p["sand"] = ramp("scree")
+            p["leaf"] = dead
+            p["water"] = ramp("turbid")
+            p["dirt"] = ramp("sick_soil")
+        return p
+    if state == "sano":
+        return p
+    p["leaf"] = dead
+    if region == "cuenca":
+        p["water"] = ramp("oil_water")
+        p["grass"] = ramp("sludge_grass")
+        p["dirt"] = ramp("ash")
+        p["sand"] = ramp("ash")[2:7]
+    elif region == "costa":
+        p["water"] = ramp("plastic_water")
+        p["grass"] = seven(ramp("dry_grass"), [0, 0, 1, 2, 3, 4, 5])
+        # Dos tonos más oscura que la sana: con la arena gris en su sitio, la
+        # playa pesaba casi igual sana que enferma y la Costa no llegaba al
+        # piso de valor (1,34; con un tono, 1,50 en deuteranopía).
+        gs = ramp("grey_sand")
+        p["sand"] = [gs[0], gs[0], gs[0], gs[1], gs[2]]
+    else:   # bosque y llanura
+        p["grass"] = seven(ramp("dry_grass"), [0, 0, 1, 2, 2, 3, 4])
         p["water"] = ramp("turbid")
         p["dirt"] = ramp("sick_soil")
         p["sand"] = ramp("grey_sand")
@@ -241,6 +278,30 @@ def paint_path(img, path, P, rng):
         for dx, dy, kk in [(0, 0, 3), (1, -1, 4), (2, 0, 3), (1, 1, 2)]:
             if 0 <= y + dy < H and 0 <= x + dx < W:
                 img[y + dy, x + dx] = P["grass"][kk]
+
+
+def paint_sand(img, sand, P, rng):
+    """Arena de playa (map2.render): tono medio con grano, borde oscuro de 1 px
+    y franja de 3 px un tono más oscura."""
+    sd = P["sand"]
+    yy, xx = np.indices(sand.shape)
+    img[sand] = sd[3]
+    rr = rng.random(sand.shape)
+    img[sand & (rr < 0.05)] = sd[2]
+    img[sand & (rr > 0.97)] = sd[4]
+    img[sand & ((xx * 3 + yy * 7) % 41 == 0)] = sd[1]
+    img[edge(sand, 1)] = sd[1]
+    img[edge(sand, 3) & ~edge(sand, 1)] = sd[2]
+
+
+def paint_beach_water(img, wat, beach, P):
+    """Donde el agua toca la playa no hay talud: bajío claro y espuma en ondas."""
+    bw = wat & ndi.binary_dilation(beach, iterations=10)
+    yy, xx = np.indices(wat.shape)
+    dd = ndi.distance_transform_edt(wat)
+    img[bw & (dd <= 3)] = P["water"][5]
+    img[bw & (dd > 3) & (dd <= 6) & (((xx // 3 + yy) % 4) != 0)] = P["water"][4]
+    img[bw & (dd > 8) & (dd <= 9) & (xx % 7 < 4)] = P["water"][5]
 
 
 def paint_water(img, wat, land, P, rng):
@@ -434,9 +495,121 @@ def paint_water_life(img, wat, bank, state, P, rng):
 
 # --- render --------------------------------------------------------------------------
 
+## Luz de la Cripta por bandas (cláusula 2: «la luz se hace en bandas de la
+## rampa, nunca en degradado continuo»). Haces diagonales que entran por las
+## grietas del techo: cada banda sube un tono la piedra que toca.
+CRYPT_BEAM_PERIOD = 224
+CRYPT_BEAMS = ((0, 26, 2), (26, 40, 1))   # (desde, hasta, tonos que sube)
+
+
+def crypt_light(H: int, W: int) -> np.ndarray:
+    """Tonos que sube cada píxel con la luz: 0, 1 o 2, en bandas con borde
+    tramado de 2 px. Solo en lo sano: en la enferma el oro tapa las grietas."""
+    yy, xx = np.indices((H, W))
+    u = (xx + yy * 0.6) % CRYPT_BEAM_PERIOD
+    chk = (xx + yy) % 2 == 0
+    lift = np.zeros((H, W), np.int8)
+    for a, b, k in CRYPT_BEAMS:
+        lift[(u >= a) & (u < b)] = np.maximum(lift[(u >= a) & (u < b)], k)
+        lift[(u >= b) & (u < b + 2) & chk] = np.maximum(lift[(u >= b) & (u < b + 2) & chk], k)
+    return lift
+
+
+def render_crypt(lines: list[str], state: str) -> np.ndarray:
+    """Cripta de la Avaricia (cripta.py, a la matriz del repo): `%` muro,
+    `,` losa, `=` alfombra. Lo sano es piedra con musgo y luz por bandas; lo
+    enfermo, ceniza en penumbra con el oro derramado. El dibujo es el mismo:
+    solo cambian la rampa de la piedra, la luz y lo que cubre el suelo."""
+    rng = np.random.default_rng(SEED)
+    P = palette(state, "cripta")
+    G = np.array([list(r) for r in lines])
+    H, W = G.shape[0] * T, G.shape[1] * T
+    sick = state == "enfermo"
+    stone = P["ash"] if sick else P["stone"]
+    yy, xx = np.indices((H, W))
+    wall = up(G == "%")
+    floor = ~wall
+    carpet = up(G == "=")
+    img = np.zeros((H, W, 4), np.uint8)
+
+    # losas de 32 x 24 en hileras desplazadas, con bisel y junta
+    tone = np.zeros((H, W), np.int8)
+    for r, y in enumerate(range(0, H, 24)):
+        off = int(rng.integers(0, 32))
+        for x in range(-off, W, 32):
+            t = 3 + int(rng.random() < 0.35) - int(rng.random() < 0.25)
+            m = (yy >= y) & (yy < y + 24) & (xx >= x) & (xx < x + 32)
+            tone[m] = t
+            tone[m & ((yy == y) | (xx == x))] = t + 1
+            tone[m & ((yy == y + 23) | (xx == x + 31))] = 1
+    # Penumbra: la enferma baja un tono toda la losa; la sana sube con la luz.
+    # Con la piedra en su sitio en los dos estados, el valor se quedaba en 1,42.
+    tone = tone + crypt_light(H, W) if not sick else tone - 1
+    tone = np.clip(tone, 0, len(stone) - 1)
+    for k in range(len(stone)):
+        img[floor & (tone == k)] = stone[k]
+    # grietas
+    for _ in range(W * H // 2600):
+        cx, cy, ang = rng.uniform(0, W), rng.uniform(0, H), rng.uniform(0, np.pi)
+        for t in range(int(rng.integers(5, 12))):
+            xi, yi = int(cx + np.cos(ang) * t), int(cy + np.sin(ang) * t * 0.6)
+            if 0 <= xi < W and 0 <= yi < H and floor[yi, xi]:
+                img[yi, xi] = stone[1]
+            ang += rng.uniform(-0.5, 0.5)
+
+    # alfombra: ajedrezado de la rampa roja con ribete de oro
+    rr = P["roof_red"]
+    img[carpet] = rr[2]
+    img[carpet & (((xx // 4) + (yy // 4)) % 2 == 0)] = rr[1]
+    img[edge(carpet, 1)] = P["gold"][2]
+    img[edge(carpet, 2) & ~edge(carpet, 1)] = rr[3]
+
+    # muro visto desde arriba: corona de sillares y, donde da al suelo, su
+    # cara de 8 px con hiladas y labio de luz
+    face = np.zeros_like(wall)
+    for k in range(1, 9):
+        face |= wall & shift(floor, -k, 0)
+    top = wall & ~face
+    img[top] = stone[1]
+    img[top & (yy % 8 == 0)] = stone[0]
+    img[top & ((xx + (yy // 8 % 2) * 8) % 16 == 0)] = stone[0]
+    img[face] = stone[3]
+    img[face & (yy % 4 == 0)] = stone[2]
+    img[face & ((xx + (yy // 4 % 2) * 6) % 12 == 0)] = stone[2]
+    img[face & ~shift(face, 1, 0)] = stone[4]
+    img[face & shift(floor, -1, 0)] = stone[1]
+    img[edge(wall, 1) & ~face & ~shift(face, -1, 0)] = P["ink"][0]
+    # sombra al pie del muro
+    for k in range(1, 4):
+        sel = floor & shift(wall, k, 0) & ~carpet
+        img[sel] = darker(img[sel], P)
+
+    # lo que cubre el suelo: musgo en lo sano, oro derramado en lo enfermo
+    spots = floor & ~carpet & ndi.binary_dilation(shift(wall, 3, 0), iterations=2)
+    ys, xs = np.where(spots)
+    picks = rng.choice(len(ys), size=len(ys) // 70, replace=False) if len(ys) else []
+    moss = sprite(["..l.l", ".lml.", "dmmmd"], {"l": P["leaf"][4], "m": P["leaf"][3], "d": P["leaf"][1]})
+    for k in picks:
+        if not sick:
+            blit(img, moss, xs[k] - 2, ys[k] - 2)
+    ys, xs = np.where(floor & ~wall)
+    picks = rng.choice(len(ys), size=len(ys) // 280, replace=False) if len(ys) else []
+    g = P["gold"]
+    for k in picks:
+        if sick:
+            y, x = ys[k], xs[k]
+            if x < W - 3 and y < H - 1:
+                img[y, x:x + 3] = g[4]
+                img[y + 1, x:x + 3] = g[2]
+                img[y, x] = g[5]
+    return img
+
+
 def render(lines: list[str], state: str, region: str) -> np.ndarray:
     """La zona entera en un estado. Misma semilla en los dos estados: el
     dibujo coincide píxel a píxel y solo cambia el material."""
+    if region == "cripta":
+        return render_crypt(lines, state)
     rng = np.random.default_rng(SEED)
     P = palette(state, region)
     G = np.array([list(r) for r in lines])
@@ -450,14 +623,21 @@ def render(lines: list[str], state: str, region: str) -> np.ndarray:
     path = ndi.binary_opening(path, disk(1))
     paint_path(img, path, P, rng)
 
+    sand_t = G == ":"
+    sand = rounded(sand_t, 6, sigma=10) if sand_t.any() else np.zeros(path.shape, bool)
+    if sand.any():
+        paint_sand(img, sand & ~path, P, rng)
     wat = rounded(water_t | bridge_t, 8, sigma=12)
     canopy = rounded(G == "#", 5, sigma=6) & ~wat
-    land = ~wat & ~canopy
-    bank = paint_water(img, wat, ~wat, P, rng)
+    beach = ndi.binary_dilation(sand, iterations=3) if sand.any() else sand
+    # orilla con talud solo donde el agua no da a la playa
+    bank = paint_water(img, wat, ~wat & ~beach, P, rng)
+    if beach.any():
+        paint_beach_water(img, wat, beach, P)
     paint_water_life(img, wat, bank, state, P, rng)
     paint_bridges(img, G, P)
 
-    free = ~ndi.binary_dilation(path | wat | canopy, iterations=4)
+    free = ~ndi.binary_dilation(path | wat | canopy | sand, iterations=4)
     paint_tufts(img, free, P, rng)
     paint_canopy(img, canopy, P, rng)
     return img
@@ -468,7 +648,7 @@ def main(argv: list[str]) -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     for zone in zones:
         if zone not in REGION:
-            print(f"  FALLA {zone}: sin región de paleta (solo {', '.join(REGION)} en el paso 2)")
+            print(f"  FALLA {zone}: sin región de paleta ({', '.join(REGION)})")
             return 1
         lines = (ZONES / f"{zone}.txt").read_text(encoding="utf8").split()
         for state in ("enfermo", "sano"):

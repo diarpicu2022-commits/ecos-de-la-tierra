@@ -5,10 +5,12 @@ extends Node
 ##
 ##   godot --path . res://tools/verify_terrain.tscn -- [zona]
 ##
-## Sin argumento, el Bosque (`ashen_forest`).
+## Sin argumento, el Bosque (`ashen_forest`). Vale para las seis regiones
+## (paso 3): se mira desde la casilla de llegada y se empuja contra la
+## primera casilla de follaje o muro con suelo debajo.
 ## - **Montaje:** existen los dos sprites del suelo, miden la zona (casillas ×
 ##   16) y están en el origen; la capa de tiles queda oculta.
-## - **Colisión desde la matriz:** empujando contra el follaje durante 60
+## - **Colisión desde la matriz:** empujando contra follaje o muro durante 60
 ##   cuadros, Ilan no entra en ninguna casilla sólida.
 ## - **Se ve lo que se generó:** con el decorado e Ilan ocultos,
 ##   cada píxel de la pantalla es exactamente el píxel del PNG en esa posición
@@ -23,9 +25,9 @@ extends Node
 const OUT := "res://docs/ux/capturas/2026-10-31-terreno-%s-%s.png"
 const MATCH_MIN := 1.0
 
-## Casilla de cada zona desde la que se mira (junto al puente en el Bosque) y
-## casilla de suelo con follaje al norte para la prueba de colisión.
-const SPOT := {"ashen_forest": [Vector2i(44, 15), Vector2i(20, 11)]}
+## Casilla desde la que se mira, si no es la de llegada: en el Bosque, junto
+## al puente.
+const VIEW := {"ashen_forest": Vector2i(44, 15)}
 
 var _pass := 0
 var _fail := 0
@@ -38,9 +40,12 @@ func _ready() -> void:
 	state.flags.clear()
 	state.set_zone_purified(zone, false)
 	DesignTokens.reduced_motion = false
+	var lines := ZoneRules.load_zone(zone)
+	var view_cell: Vector2i = VIEW.get(zone, _arrival(zone))
+	var wall_cell := _against_wall(lines)
 	var world := WorldRoot.new()
 	world.start_zone = zone
-	world.start_cell = SPOT[zone][0]
+	world.start_cell = view_cell
 	add_child(world)
 	await get_tree().physics_frame
 	world.label.visible = false
@@ -62,9 +67,8 @@ func _ready() -> void:
 	var pure_img := pure.texture.get_image()
 
 	print("\nColisión desde la matriz")
-	world.enter_zone(zone, SPOT[zone][1])
+	world.enter_zone(zone, wall_cell)
 	await get_tree().physics_frame
-	var lines := ZoneRules.load_zone(zone)
 	var entered := 0
 	for i in 60:
 		world.body.step(Vector2i.UP, false)
@@ -72,10 +76,11 @@ func _ready() -> void:
 		var c := MapMonster.cell_of(Vector2i(world.body.global_position))
 		if not ZoneRules.walkable(lines[c.y][c.x]):
 			entered += 1
-	_check("empujando al follaje 60 cuadros, ninguna casilla sólida pisada (%d)" % entered, entered == 0)
+	_check("empujando al norte desde %s («%s» encima) 60 cuadros, ninguna casilla sólida pisada (%d)" % [
+		wall_cell, lines[wall_cell.y - 1][wall_cell.x], entered], entered == 0)
 
 	print("\nEstado")
-	world.enter_zone(zone, SPOT[zone][0])
+	world.enter_zone(zone, view_cell)
 	world.label.visible = false
 	await _settle()
 	var shot := await _bare(world)
@@ -85,7 +90,7 @@ func _ready() -> void:
 	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [zone, "enfermo"]))
 
 	print("\nOla")
-	var origin: Vector2i = SPOT[zone][0] + Vector2i(2, 0)
+	var origin: Vector2i = view_cell
 	world.purify_wave(origin)
 	var frames := roundi(DesignTokens.DUR_ZONE_PURIFY * Engine.physics_ticks_per_second)
 	for i in frames / 2:
@@ -108,6 +113,24 @@ func _ready() -> void:
 	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [zone, "sano"]))
 	state.set_zone_purified(zone, false)
 	_end()
+
+
+## Casilla de llegada de la primera salida que entra en la zona.
+func _arrival(zone: String) -> Vector2i:
+	for e in ZoneRules.load_exits():
+		if e["to"] == zone:
+			return ZoneRules.cell_of(e, "to_cell")
+	return Vector2i(1, 1)
+
+
+## Primera casilla pisable, con pisable a los lados, bajo una sólida que no es
+## agua (follaje o muro): empujando al norte se choca contra ella.
+func _against_wall(lines: PackedStringArray) -> Vector2i:
+	for y in range(2, lines.size() - 1):
+		for x in range(2, lines[y].length() - 2):
+			if ZoneRules.walkable(lines[y][x]) and ZoneRules.walkable(lines[y][x - 1]) 					and ZoneRules.walkable(lines[y][x + 1]) and not ZoneRules.walkable(lines[y - 1][x]) 					and lines[y - 1][x] != "~":
+				return Vector2i(x, y)
+	return Vector2i(-1, -1)
 
 
 func _end() -> void:

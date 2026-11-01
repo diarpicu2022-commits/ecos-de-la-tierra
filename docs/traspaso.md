@@ -69,7 +69,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
   - paso 1b, regiones agrandadas con `tools/scale_zone.py`, y `verify_zone` en verde.
 - **Visto bueno de Diego al paso 1:** 2026-10-30.
 - **Tarea 1 hecha** (2026-10-30), con el visto bueno de Diego. Entra en el PR #20.
-- **Tarea 2 hecha en el Bosque** (2026-10-31, rama `rediseno/terreno`): `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn` (7/7). Falta el visto bueno de Diego.
+- **Tarea 2 hecha** (2026-10-31, rama `rediseno/terreno`), con el visto bueno de Diego: `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn`.
+- **Tarea 3 hecha** (2026-10-31): las seis regiones pintadas; `verify_terrain` 7/7 en cada una y `value` ≥ 1,61 en las cuatro visiones. La Cripta tiene luz por bandas. Falta el visto bueno de Diego.
 
 ## 3. Lista de trabajo, en orden
 

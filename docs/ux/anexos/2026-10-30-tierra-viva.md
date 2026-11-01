@@ -491,3 +491,81 @@ agua viva (enmienda 8) no se ve, y vuelve en el paso 6, el de los estados.
 desde sus matrices (Cuenca, Costa, Llanura, Cumbre y Cripta). La Cripta
 necesita antes su luz por bandas (cociente 1,27 < 1,5) y la Costa está al
 límite (1,53).
+
+**Visto bueno de Diego al paso 2: 2026-10-31.**
+
+#### Paso 3 — Esqueleto: las seis regiones desde sus matrices · 2026-10-31
+
+El mismo generador pinta ya las seis regiones (`REGION` en
+`tools/gen_tierra_viva_terrain.py`). El motor no cambia: `_mount_terrain`
+monta cualquier zona que tenga su par enfermo y sano. Valdehoja sigue con
+los tiles hasta el paso 5.
+
+- **Paletas de región** (las de `map2.palette`, ya como tokens):
+
+  | Región | Sano | Enfermo |
+  |---|---|---|
+  | Bosque y Llanura | hierba, hoja, agua | hierba seca, hoja muerta, agua turbia, tierra enferma |
+  | Cuenca | ídem | **agua de crudo**, hierba de lodo, ceniza en el camino |
+  | Costa | ídem, con arena | **agua con plástico**, hierba seca, arena gris |
+  | Cumbre | **páramo, nieve, puyas** | páramo seco, pedregal, hoja muerta |
+  | Cripta | piedra con musgo y **luz por bandas** | ceniza en penumbra, oro derramado |
+
+- **Arena** (`:`, la Costa): portada de `map2.render`, con grano, borde de
+  1 px y franja oscura. Donde el agua toca la playa no hay talud, sino bajío
+  claro y espuma en ondas.
+- **La Cripta tiene pintor propio** (`render_crypt`, de `cripta.py`, a la
+  matriz del repo):
+  - losas de 32 × 24 en hileras desplazadas, con bisel y junta;
+  - el muro visto desde arriba: corona de sillares y, donde da al suelo, su
+    cara de 8 px con hiladas;
+  - la alfombra en ajedrezado rojo con ribete de oro.
+- **La luz de la Cripta, por bandas** (cláusula 2, pendiente desde el
+  anexo): haces diagonales que suben uno o dos tonos de la rampa, con borde
+  tramado de 2 px, nunca en degradado. Solo en lo sano.
+
+**El valor, medido, y lo que se tuvo que cambiar para llegar al piso.** Se
+dice entero, porque son tres ajustes de paleta sobre el prototipo:
+
+1. **Costa, 1,34 → 1,75.** Con la arena gris en su sitio, la playa pesaba
+   casi igual sana que enferma, y la arena es un tercio de la zona.
+   - Bajar la arena un tono la dejó en 1,50 en deuteranopía, por debajo del
+     piso.
+   - Igualar la hierba seca a la del Bosque no movió nada: en la Costa casi
+     no hay hierba suelta.
+   - **Quedó la arena dos tonos más oscura que la sana.**
+2. **Cripta, 1,42 → 1,77.** Con la piedra en el mismo tono en los dos
+   estados, la luz sola no llegaba. **La enferma baja un tono toda la losa**
+   (penumbra), y así lo pide su descripción: el oro tapa las grietas del
+   techo.
+3. **Cripta, el oro:** con una pieza cada 140 px de suelo parecía confeti.
+   Se dejó en una cada 280.
+
+```
+value purificado / enfermo   normal  deuter.  protan.  tritan.   (piso 1,5)
+Bosque de las Cenizas         1,71    1,61     1,85     1,69
+Cuenca de Alquitrán           1,71    1,62     1,85     1,69
+Costa Quebrada                1,75    1,72     1,80     1,75
+Llanura Marchita              2,03    1,92     2,22     2,02
+Cumbre Menguante              1,83    1,75     1,94     1,82
+Cripta de la Avaricia         1,77    1,76     1,78     1,77
+```
+
+- **En las doce imágenes:** `verify_palette image` dice que todo píxel es un
+  token, y `tv-state` no encuentra ningún color del otro estado.
+- **`verify_terrain`, ahora genérico:** mira desde la casilla de llegada y
+  empuja contra la primera casilla de follaje o muro con suelo debajo. Da
+  **7/7 en las seis regiones**; en cada una, el 100 % de la pantalla es el
+  PNG enfermo, el sano o, a mitad de la ola, uno de los dos sin mezcla.
+- **Reproducible:** dos ejecuciones dan los mismos 12 archivos, byte a byte.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-10-31-terreno-<zona>-{enfermo,ola,sano}.png`, 18
+  en total.
+
+**Sigue sin ser de este paso:** el decorado (árboles sueltos, rocas, pinos,
+fuente, columnas de la Cripta) es el viejo y se rehace en el paso 4.
+
+**Siguiente:** paso 4, el decorado:
+- los sprites del catálogo de cada `*.deco.txt`, con el estilo del
+  prototipo y el contorno de su rampa;
+- los edificios y vecinos de PixelLab, a `assets/source/pixellab/`.

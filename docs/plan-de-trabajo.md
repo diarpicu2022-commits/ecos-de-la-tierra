@@ -69,8 +69,10 @@ válidos:
 > - paso 2 en el Bosque (rama `rediseno/terreno`): generador `tools/gen_tierra_viva_terrain.py`,
 >   dos sprites de suelo en `WorldRoot` y `verify_terrain` 7/7; `value` 1,61–1,85.
 >
-> 1. visto bueno de Diego al paso 2;
-> 2. paso 3: las otras cinco regiones desde sus matrices (la Cripta, antes, con luz por bandas).
+> - paso 2 aprobado; paso 3: las seis regiones pintadas, `verify_terrain` 7/7 en cada una.
+>
+> 1. paso 4a: el relleno dentro del follaje deja de montarse y cada región gana su masa (enmienda 14, aprobada);
+> 2. paso 4b: los sprites del catálogo, empezando por el Bosque.
 >
 > **Para jugar:** F5 abre `scenes/game.tscn` (el mundo con `GameFlow`). La
 > parte 5 (diálogos) está en la rama `parte-5/anexo`, subida como respaldo y
