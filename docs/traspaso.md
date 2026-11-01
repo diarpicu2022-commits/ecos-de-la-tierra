@@ -6,6 +6,11 @@ el estado exacto y la lista de trabajo en orden.
 
 ## 0. Antes de nada
 
+**La guía completa para el equipo, de aquí al juego terminado, es
+`docs/guia-del-equipo.md`.** Todo lo visual sigue el sistema de diseño de
+`docs/ux/sistema-de-diseno/`.
+
+
 1. Lee `AGENTS.md` entero; es corto.
 2. Lee `docs/plan-de-trabajo.md`: solo el «Punto de retome».
 3. Lee `docs/ux/anexos/2026-10-30-tierra-viva.md`. Es el anexo en curso y su contrato «Piel nueva» manda en todo lo visual del mundo.

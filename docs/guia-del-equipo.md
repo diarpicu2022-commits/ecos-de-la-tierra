@@ -1,0 +1,446 @@
+# Guía del equipo: de aquí hasta el juego terminado
+
+Para **Diego y su compañero**. Dice cómo preparar el equipo, cómo se trabaja,
+en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
+entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
+hecha.
+
+> **Regla número uno, para los dos: todo lo visual se hace con el sistema de
+> diseño «Tierra Viva».** Está en `docs/ux/sistema-de-diseno/`. Abre
+> `index.html` en el navegador y lee `project/README.md` antes de tocar nada
+> que se vea. Cada componente tiene su README en `project/components/`. Si
+> algo que vas a hacer no está en el sistema, o lo contradice, **se para y se
+> le pregunta a Diego**: no se inventa.
+
+Última actualización: 2026-11-01.
+
+---
+
+## 1. Preparar el equipo (una vez)
+
+1. **Git** y acceso al repo `diarpicu2022-commits/ecos-de-la-tierra`.
+2. **Godot 4.7.2 estándar**, no la .NET: <https://godotengine.org/download/archive/4.7.2-stable/>.
+   En Windows, descomprime el zip; usa `Godot_v4.7.2-stable_win64.exe` para el
+   editor y `Godot_v4.7.2-stable_win64_console.exe` para las pruebas, porque
+   esta escribe la salida en la terminal.
+3. **Python 3.11 o superior** con `pip install numpy pillow scipy`. Lo usan
+   los generadores de arte y las comprobaciones.
+4. Clona y cámbiate a la rama de trabajo:
+
+   ```bash
+   git clone https://github.com/diarpicu2022-commits/ecos-de-la-tierra.git
+   cd ecos-de-la-tierra
+   git checkout rediseno/terreno
+   ```
+
+5. Primera importación (crea `.godot/`, que no se versiona):
+
+   ```bash
+   GODOT="<ruta>/Godot_v4.7.2-stable_win64_console.exe"   # Windows (Git Bash)
+   "$GODOT" --headless --path . --import
+   ```
+
+6. Abre el proyecto en el editor (*Importar* → `project.godot`) y pulsa
+   **F5**: el juego arranca en Valdehoja (`scenes/game.tscn`). La demo de
+   combates sueltos está en `scenes/main.tscn` (ábrela y pulsa F6).
+
+### Trucos que ahorran horas
+
+- **Las pruebas que hacen capturas necesitan ventana**: sin `--headless`, o
+  se quedan colgadas esperando el dibujo. En Linux, `xvfb-run -a "$GODOT" ...`.
+- En Windows, a los scripts de Python que imprimen tildes o `≥` ponles
+  `PYTHONIOENCODING=utf-8` delante; si no, la consola cp1252 los corta.
+- Después de crear o cambiar un PNG: `"$GODOT" --headless --path . --import`.
+- Si el editor reescribe `project.godot` o los `.import` de `docs/balance/`
+  sin que hayas cambiado nada, descarta esos cambios
+  (`git checkout -- project.godot docs/balance`).
+- Si el equipo va justo de memoria, corre las pruebas de una en una.
+
+---
+
+## 2. Cómo se trabaja (no se salta)
+
+Las reglas completas están en `AGENTS.md` y en `docs/guia-de-continuacion.md`
+§1. Lo esencial:
+
+1. **El sistema de diseño manda en lo visual** (ver arriba). Los colores salen
+   de `src/ui/design_tokens.gd` (rampas `TV_*`, que son las del sistema) y
+   los sprites, de generadores `tools/gen_*.py` con semilla fija. Nunca se
+   escribe un color, medida o duración suelto en el código.
+2. **Diseño antes que código.** Cada pantalla o sistema nuevo abre su anexo en
+   `docs/ux/anexos/AAAA-MM-DD-<tema>.md` con cuatro fases:
+   - usuarios;
+   - comunicación;
+   - investigación: al menos 6 fuentes reales con URL y lo que se saca de
+     cada una, y la que no abra se registra, no se inventa;
+   - 2 o 3 direcciones, con una recomendada.
+
+   **Se le pregunta a Diego y se espera su elección.** La elegida se escribe
+   como **contrato bloqueado**, y desde ahí se cumple. Cambiarlo exige su
+   permiso y queda fechado como «Enmienda N». La última usada es la **14**.
+3. **Paso a paso:** tokens → componente clave → esqueleto → resto →
+   pantalla completa → estados. Al terminar **cada** paso hay que:
+   - hacer la captura a 640 × 360;
+   - citar la cláusula del contrato que lo respalda;
+   - decir cuál es el siguiente;
+   - **parar hasta el visto bueno de Diego**.
+4. **Se verifica midiendo, no mirando:** scripts `tools/verify_*` que dan OK o
+   FALLA. Se informa de lo que falla, también de los fallos propios.
+5. **Git:**
+   - nunca se sube directo a `master`;
+   - una rama por tarea (`rediseno/...`, `parte-N/...`, `fix/...`), creada
+     desde la rama de trabajo vigente;
+   - commits con *Conventional Commits* en español (`feat(terreno): ...`,
+     `fix(...)`, `docs(...)`, `test(...)`);
+   - **sin firma de herramientas**: nada de `Co-Authored-By`, «Generated
+     with…» ni enlaces a asistentes, en commits, PR, código ni documentación;
+   - cada uno hace commits desde su propia cuenta.
+6. **PR** con esta plantilla y capturas reales:
+
+   ```markdown
+   ## <Título del trabajo>
+   📑 **Feature:** <qué se hizo, en una línea>
+
+   ## Desarrollador
+   👷 **Dev:** <tu nombre completo>
+
+   ## Cambios (clases,archivos,etc)
+   <archivos tocados y qué cambió>
+
+   ## Pantallazos funcionalidades
+   <capturas del antes y después>
+   ```
+
+7. **Al cerrar cada sesión:**
+   - actualizar el «Punto de retome» de `docs/plan-de-trabajo.md` y el
+     estado de `docs/traspaso.md`;
+   - hacer commit y push.
+
+   Así el otro sabe exactamente dónde seguir.
+8. **Código en inglés; textos del jugador y comentarios, en español.**
+
+### Comprobación general (antes de empezar y antes de cada PR)
+
+```bash
+PYTHONIOENCODING=utf-8 python tools/verify_palette.py tokens        # 280 tokens, sin deriva
+"$GODOT" --headless --path . res://tools/verify_usability.tscn     # 16/16
+"$GODOT" --headless --path . res://tools/verify_camera.tscn        # 37/37
+"$GODOT" --headless --path . res://tools/verify_encounters.tscn    # 82/82
+"$GODOT" --headless --path . res://tools/verify_flow.tscn          # 23/23
+"$GODOT" --headless --path . res://tools/verify_party_ai.tscn      # 19/19
+"$GODOT" --headless --path . res://tools/verify_movement.tscn      # 99/99
+for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
+  "$GODOT" --headless --path . res://tools/verify_zone.tscn -- $z  # todas en verde
+done
+for z in ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
+  "$GODOT" --path . res://tools/verify_terrain.tscn -- $z          # 7/7, con ventana
+done
+```
+
+---
+
+## 3. Dónde está el juego hoy (2026-11-01)
+
+| Rama | Qué tiene | Estado |
+|---|---|---|
+| `master` | Partes 1 a 4: mundo en estilo plano, combate por turnos con persiana | Estable |
+| `rediseno/tierra-viva` | Contrato «Piel nueva», paso 1: rampas `TV_*`, pantalla de 640 × 360, regiones ×4/3; el juego arranca en el mundo | **PR #20 abierto**, sin fusionar |
+| `rediseno/terreno` | Lo anterior, más los pasos 2 y 3 (suelo Tierra Viva de las seis regiones), el sistema de diseño en `docs/ux/sistema-de-diseno/` y el **paso 4a a medias** | **Rama de trabajo** |
+| `parte-5/anexo` | Parte 5 (diálogos y retratos), pasos 1 a 5, hecha para 480 × 270 | Respaldo, sin PR; en espera |
+
+**Decisiones de Diego que ya no se discuten:**
+- el arte es Tierra Viva;
+- el combate pasa a ser **de acción en el mismo mapa**, como en Minish Cap
+  (no por turnos): manejas a un héroe, Q/E cambian de héroe, Z ataca,
+  X esquiva, C usa la habilidad eco y V el objeto;
+- pantalla de 640 × 360;
+- las regiones van agrandadas ×4/3;
+- Valdehoja pasa a la trama orgánica;
+- **enmienda 14:** las masas de cada región sustituyen al relleno de árboles.
+
+**Documentos que manda leer cada tarea:**
+- `docs/traspaso.md`: estado y tareas del rediseño;
+- `docs/ux/anexos/2026-10-30-tierra-viva.md`: anexo y contrato «Piel
+  nueva», con el registro de cada paso;
+- `docs/guia-de-continuacion.md`: protocolo, identidad, IA y una sección
+  por parte;
+- `docs/plan-de-trabajo.md`: punto de retome y decisiones cerradas;
+- `docs/ux/sistema-de-diseno/`: **el sistema de diseño**.
+
+---
+
+## 4. Todo lo que falta, en orden
+
+Cada bloque termina con su verificación y con la parada para el visto bueno
+de Diego. **Con cada uno se abre el README del sistema de diseño que se
+indica.**
+
+### 4.1 Terminar el paso 4a: masas de región
+
+Sistema de diseño: `project/README.md` §Mundo, `components/Regiones/README.md`
+y `components/Terrain/README.md`.
+
+1. Corre `verify_zone` en Cuenca, Costa, Llanura, Cumbre y Cripta. Es lo
+   único sin medir del 4a, porque la pasada se cortó por falta de memoria.
+2. En `tools/gen_tierra_viva_terrain.py`, añadir lo que pide el sistema por
+   región, en lo enfermo:
+   - **Llanura:** manchas de `sludge` (lodo) sobre la hierba seca. Calcula el
+     ruido siempre y píntalo solo en lo enfermo, para no desalinear la
+     semilla entre estados.
+   - **Cumbre:** «hollín sobre `ice`», manchas de ceniza tramadas en lo
+     enfermo.
+   - **Cripta:** `smog`, jirones finos y tramados en lo enfermo. Poco: es una
+     rampa clara y baja el valor.
+3. `python tools/gen_tierra_viva_terrain.py` (unos 2 minutos), importa y
+   mide:
+   - `verify_palette.py image` y `tv-state` en cada PNG;
+   - `verify_palette.py value <enfermo> <sano>` **≥ 1,5 en las cuatro
+     visiones**;
+   - `verify_terrain` y `verify_zone` en las seis.
+4. Capturas a 640 × 360. `verify_terrain` las escribe en
+   `docs/ux/capturas/2026-10-31-terreno-<zona>-*.png`; cambia la fecha en
+   `OUT` si regeneras.
+5. Registra el resultado en el anexo, para y pide el visto bueno.
+
+### 4.2 Paso 4b: el decorado del catálogo
+
+Sistema de diseño: `project/README.md` §Mundo y §Activos,
+`assets/Mundo/README.md` y las imágenes de `project/assets/img/`
+(`arbol@2x`, `arbol_quemado@2x`, `burnt_tree_*`, `log_pile_*`, `grass_*`,
+`flower_*`, `crop_row_*`, `ghost_net_*`, `boat_*`, `casa@2x`).
+
+1. Nuevo `tools/gen_tierra_viva_decor.py` que genere, con el estilo del
+   prototipo (`tools/tierra_viva/flora.py`, `burnt.py`, `zones.py` y
+   `cripta.py`), los sprites de cada id del catálogo de los `*.deco.txt`:
+   - viñetas, hitos, pasos cerrados y monstruos de mapa;
+   - lo que hay en el suelo: ceniza, crudo, basura, rocas, hierba alta,
+     surcos, sal, grietas, monedas;
+   - fauna y animales.
+
+   La lista de ids actual está en `assets/sprites/world/decor/`, que es el
+   estilo viejo (`tools/gen_world_decor.py`). **Mismos ids y nombres de
+   archivo** (`<id>_pure.png`, `<id>_sick.png`, `<id>_<zona>_*.png`), para
+   que `src/world/world_decor.gd` los cargue sin cambios. Empieza **solo por
+   el Bosque** y para.
+2. Reglas del sistema:
+   - contorno del tono más oscuro de **su propia rampa** (`ASH_050` solo en
+     lo que responde al jugador);
+   - el árbol quemado es el mismo árbol sin copa, con hollín al pie;
+   - en lo enfermo todo se asienta en el daño: la madera, carbonizada; casas
+     y vallas, hacia la ceniza;
+   - las piezas van agrupadas por uso, nunca repartidas al azar.
+3. **PixelLab** (edificios y vecinos):
+   - se mueven de `tools/tierra_viva/pl/` a `assets/source/pixellab/`, con un
+     README (nombre y uso de cada uno);
+   - en `tools/verify_palette.py` se añade la excepción «tinta de personaje o
+     edificio» (como `CHARACTER_INKS`), aceptada solo dentro de esos sprites.
+4. Verificación: `verify_palette.py image` en cada sprite nuevo,
+   `verify_zone` de la zona y capturas.
+
+### 4.3 Paso 5: Valdehoja orgánica
+
+Sistema de diseño: `components/Overworld/README.md` (está entera la Valdehoja
+de 90 × 60) y `referencias/valdehoja_*.png`, `v_*.png`.
+
+1. Escribir la matriz nueva `data/world/zones/valdehoja.txt` (y su `.deco.txt`
+   y `.parts.txt`) desde `tools/tierra_viva/village5.py`.
+2. Se conservan:
+   - la plaza del Árbol del Vínculo (hito);
+   - la bocamina tapiada 2 × 2 (enmienda 12);
+   - las cinco salidas a las regiones;
+   - las seis partes de purificación;
+   - el jardín de Yara.
+3. Valdehoja va **por partes** (cada parte sigue a su región). El suelo
+   necesita un sprite por parte, o una máscara por parte para el shader de
+   la ola. Hoy `WorldRoot._mount_terrain` solo sabe de zonas enteras.
+4. Verificación: `verify_zone valdehoja` en verde (adaptado a la matriz
+   nueva) y capturas.
+
+### 4.4 Paso 6: los estados, que cierran R1
+
+1. Enfermo y sano por partes en Valdehoja, con la ola de 900 ms en Bayer
+   4 × 4 (ya existe: `src/world/purify_wave.gdshader`).
+2. **Agua viva:** con el suelo en sprite, el segundo cuadro del agua
+   (enmienda 8) ya no se ve. Genera un segundo PNG sano con el agua en
+   `frame = 1` y alterna los dos cada `DUR_AMBIENT_WATER` (`WorldAmbient`).
+3. Fauna solo en lo purificado y animales siempre (enmienda 8). Hoy funciona;
+   comprueba que siga.
+4. Abrir el **PR de R1** (rediseño del mundo) contra `master`.
+
+### 4.5 R2: el combate de acción en el mapa (anexo nuevo)
+
+Sistema de diseño: `components/ActionHUD/README.md`,
+`components/EnemyPlate/README.md`, `components/TypeBadge/README.md`,
+`components/BattleScreen/README.md`, `assets/Monstruos/README.md` (dos formas
+por monstruo) y `referencias/combate_accion.png` y `combate_purifica.png`.
+Prototipo: `tools/tierra_viva/combat_mock.py` y `hud.py`.
+
+1. Anexo nuevo con las cuatro fases y 2 o 3 direcciones; **preguntar a
+   Diego**.
+2. Ideas ya argumentadas en el anexo de Tierra Viva (fuentes 4 a 7):
+   - la contramedida de 2 rondas pasa a ser una ventana de aturdimiento;
+   - la orden de líder (IA-5) pasa a ser la postura del grupo;
+   - el cambio con Q/E es instantáneo;
+   - cada héroe se distingue por lo que hace.
+3. Reglas del sistema:
+   - golpear sin la causa correcta hace que el monstruo **se rehaga** (aviso
+     en papel: «La llama se rehace. Su causa es FUEGO»);
+   - la habilidad eco del héroe adecuado lo purifica: cambian forma, paleta
+     y expresión, y sale la ola.
+4. Al implementar:
+   - se sustituye la persiana (`src/world/battle_blinds.gd`) y la pantalla
+     de batalla (`src/ui/battle/`), esta solo cuando el combate nuevo pase
+     sus pruebas;
+   - se reescriben `verify_flow` y `verify_encounters` para el combate en el
+     mapa;
+   - se vuelve a pasar `tools/balance_bot.tscn`.
+5. **Deudas de equilibrado que hay que cerrar aquí:**
+   - el Gólem de la Costa no presiona;
+   - la fuerza bruta gana demasiado en la Llanura (100 %), la Cuenca (64 %)
+     y el Bosque (41 %).
+
+### 4.6 R3: HUD siempre visible, interiores, vecinos y personajes
+
+Sistema de diseño: `components/ActionHUD`, `PartyRow`, `LocationSign`,
+`Interiores`, `Cast` y `assets/Personajes/README.md`.
+
+1. **HUD de acción** siempre a la vista y sin pausar:
+   - tarjeta del héroe arriba a la izquierda, con el relevo debajo;
+   - bolsa abajo a la izquierda, con teclas 1–4;
+   - mandos en rombo abajo a la derecha;
+   - pizarra `slate`;
+   - tipografía **Brote**: `project/fonts/Brote.woff2` (pásala a TTF o BMFont
+     para Godot; `tools/tierra_viva/font.py` la genera).
+2. **Cartel de lugar** de madera con clavos (sustituye a `PlaceLabel`).
+3. **Personajes de 48 px en 8 direcciones**, con caminata de 4 cuadros a
+   200 ms. Los sprites de Ilan, Bruma, Coral, Nix y Suri están en
+   `tools/tierra_viva/pl/` y en el sistema (`*_8dir@2x.png`). Hoy Ilan es el
+   sprite viejo.
+4. **Interiores** (posada, tienda, casa): `referencias/int_*.png` y
+   `tools/tierra_viva/interiors.py`.
+5. **Vecinos:** 6 con nombre y variantes por región (`ZONE_NPC` en
+   `tools/tierra_viva/zones.py`).
+6. Los mínimos de accesibilidad: contraste ≥ 4,5:1 en el texto (se mide
+   sobre el render), foco visible y teclado completo.
+
+### 4.7 Parte 5: diálogos y retratos
+
+Rama `parte-5/anexo`: caja de diálogo, retratos de las siete voces,
+conversación con Yara, Rasgo en brasa o ceniza y Yara por el ave. **Antes de
+seguir hay que resolver un choque con el sistema de diseño:**
+
+- el sistema pide la caja `DialogBox`: papel con marco de madera, hoja `eco`,
+  chapa con el nombre y fuente Brote (`components/DialogBox/README.md`);
+- la parte 5 hizo el contrato «Columna»: panel de ceniza a 480 × 270.
+
+**Se le pregunta a Diego cuál manda.** Lo esperable es que mande el sistema:
+se enmienda «Columna», se remide a 640 × 360 y se conserva lo que no choca
+(textos en datos, máquina de escribir, retratos, lado de quien habla). Luego:
+
+- **IA-3:** pistas de Yara por el ave, con modelo del jugador por monstruo y
+  tres niveles; prueba `tools/verify_hints.gd`.
+- **IA-6:** memoria de Rasgo, con cinco actos, 32 combinaciones y tres
+  desenlaces; prueba `tools/verify_rasgo.gd`. Detalle en
+  `docs/guia-de-continuacion.md` §3.3.
+
+### 4.8 Parte 6: progresión
+
+Guía de continuación, parte 6.
+- Los compañeros se unen tras su región: Bruma (Bosque), Coral (Cuenca),
+  Nix (Costa) y Suri (Llanura).
+- Las banderas de `GameState` son la única fuente de verdad: región
+  purificada, compañero unido y habilidades.
+- Sin barras de experiencia en el mundo.
+
+### 4.9 Parte 7: puzzles ambientales, uno por región
+
+Guía de continuación, parte 7. **El puzzle es el ensayo de la contramedida**:
+- Bosque: cortafuegos;
+- Cuenca: barreras absorbentes;
+- Costa: fardos al contenedor;
+- Llanura: rotar cultivos;
+- Cumbre: manto sobre la roca.
+
+Sin textos de instrucción. Si el jugador falla tres veces, la pista llega
+**en diálogo**.
+
+### 4.10 Parte 8: menú fuera de combate («cuaderno de campo»)
+
+Pestañas Grupo · Bolsa · Habilidades · Ecos. En el sistema de diseño, la
+pizarra y el papel (`project/README.md` §Interfaz). Cada estado con su vista
+propia: bolsa vacía, sin energía y región no visitada.
+
+### 4.11 Parte 9: guardado
+
+- Se guarda en un **brote** (punto purificado; el primero, en el jardín de
+  Yara).
+- JSON en `user://save.json` con versión del formato, y autoguardado al
+  cambiar de zona.
+- Archivo corrupto: aviso y partida nueva, **nunca** un cierre.
+- Prueba: guardar → cargar → comparar `GameState` campo a campo.
+
+### 4.12 Parte 10: título y opciones
+
+Concepto: `docs/ux/tierra-viva/titulo-y-creditos.md` y `referencias/titulo_*`.
+Es la dirección A del anexo.
+- El título es **Valdehoja real en el estado de la partida**, y
+  `scenes/main.tscn` pasa a abrirlo.
+- Opciones obligatorias: movimiento reducido, velocidad del texto, volumen
+  por bus, reasignación de teclas y escala de ventana entera.
+- La demo de combates queda como herramienta de depuración.
+
+### 4.13 Parte 11: audio
+
+- Lo enfermo suena apagado (bus Ambiente con filtro de paso bajo) y se abre
+  al ritmo de la ola.
+- Buses: Música, Ambiente, Efectos, Interfaz.
+- **Solo audio con licencia libre registrada** en `docs/licencias-audio.md`.
+- Ningún sonido lleva información que no tenga también una señal visual.
+
+### 4.14 Parte 12: final y créditos
+
+Concepto en `titulo-y-creditos.md` y `referencias/creditos_*`:
+- tras purificar la Sombra, una última ola por el mundo;
+- los créditos son un recorrido por las siete zonas sanas.
+
+**Pendiente de Diego:** los nombres completos del equipo y `LICENCIAS.md`
+(fuentes, audio y PixelLab).
+
+### 4.15 Entrega
+
+1. Exportar el `.exe`: en Godot, *Editor → Administrar plantillas de
+   exportación* (descarga de unos 1 GB), luego *Proyecto → Exportar →
+   Windows Desktop*.
+2. **Privacidad**, desde el diseño (regla de Diego): el juego no recoge
+   datos de nadie y solo guarda la partida en el equipo (`user://`). Se dice
+   así en un aviso breve, en `docs/legal/` y en los créditos u opciones. Si
+   algún día hay red, cuentas o analítica, entra la política completa.
+3. Fusionar los PR pendientes cuando Diego lo diga, empezando por el #20.
+
+### Deudas que no se olvidan
+
+- **Prueba con personas** de «¿Por qué pierdo?» (hoja lista en
+  `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`). Con el combate nuevo
+  (R2) hay que rehacerla.
+- **IA-2:** la fauna en bandada (*boids*), con su prueba `verify_fauna.gd`.
+- **Mobbin y Pinterest** sin consultar en el anexo de exploración.
+- **Aviso de anclajes** de `src/world/battle_blinds.gd` al arrancar. Se va
+  sola cuando R2 retire la persiana.
+
+---
+
+## 5. Dónde está cada cosa
+
+| Qué | Dónde |
+|---|---|
+| **Sistema de diseño** (manda en lo visual) | `docs/ux/sistema-de-diseno/` (`index.html`, `project/README.md`) |
+| Reglas del repo | `AGENTS.md` |
+| Estado y tareas del rediseño | `docs/traspaso.md` |
+| Punto de retome | `docs/plan-de-trabajo.md` |
+| Protocolo, identidad, IA e instrucciones por parte | `docs/guia-de-continuacion.md` |
+| Anexo y contrato en curso | `docs/ux/anexos/2026-10-30-tierra-viva.md` |
+| Prototipo de arte aprobado | `tools/tierra_viva/` (con su README) |
+| Generador del suelo | `tools/gen_tierra_viva_terrain.py` |
+| Tokens | `src/ui/design_tokens.gd` y `tools/pixel.py` (las rampas `TV_*` se regeneran con `tools/gen_tierra_viva_tokens.py`) |
+| Comprobaciones | `tools/verify_*.py`, `tools/verify_*.tscn` |
+| Capturas | `docs/ux/capturas/` |

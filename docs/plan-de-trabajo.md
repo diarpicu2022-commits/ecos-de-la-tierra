@@ -42,6 +42,12 @@ válidos:
 
 ## Punto de retome
 
+> **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
+> Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
+> está a medias; su siguiente acción es la §4.1 de la guía. **Todo lo visual
+> sigue el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
+
+
 > **Rediseño «Tierra Viva» — contrato «Piel nueva» BLOQUEADO el 2026-10-30.**
 > Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
 >

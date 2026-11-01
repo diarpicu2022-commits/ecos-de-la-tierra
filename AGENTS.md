@@ -5,6 +5,12 @@ Software: **se evalúa el criterio de diseño, no solo que funcione.**
 
 ## Antes de tocar nada, en este orden
 
+**Si eres del equipo (Diego o su compañero), empieza por
+`docs/guia-del-equipo.md`:** cómo preparar el equipo, cómo se trabaja, dónde
+está el juego y todo lo que falta hasta terminarlo, en orden. **Todo lo
+visual se hace con el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
+
+
 1. Lee `docs/traspaso.md`: el estado exacto y la lista de trabajo en orden
    (rediseño «Tierra Viva», tareas 1 a 10).
    **El sistema de diseño «Tierra Viva» manda en todo lo visual:** está en

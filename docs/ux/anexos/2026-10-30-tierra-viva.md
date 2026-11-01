@@ -626,6 +626,8 @@ diferencias, y Diego aprobó corregirlas (2026-10-31):
 - **Falta:**
   - el `sludge` de la Llanura, el hollín sobre `ice` de la Cumbre y el
     `smog` de la Cripta;
-  - capturas a 640 × 360 de las seis regiones;
+  - repasar las capturas a 640 × 360: `verify_terrain` ya las regeneró con
+    las masas nuevas (`2026-10-31-terreno-<zona>-*.png`), pero falta
+    rehacerlas con los rasgos de región;
   - el visto bueno de Diego.
 - **El paso a paso desde aquí** está en `docs/guia-del-equipo.md`.
