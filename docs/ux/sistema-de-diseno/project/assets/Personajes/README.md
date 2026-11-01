@@ -1,0 +1,1 @@
+El grupo en 8 direcciones (sur, sureste, este, noreste, norte, noroeste, oeste, suroeste), lienzo de 48 px, aquí al doble. Ilan tiene caminata de 4 cuadros a 200 ms en cuatro direcciones; el oeste es el este en espejo. Generados con PixelLab.

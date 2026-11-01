@@ -1,0 +1,1 @@
+Objetos del mapa: árbol sano, árbol quemado (de PixelLab, sin la base isométrica que traían) y casa de adobe de Valdehoja; y la hoja de losetas de terreno de 16 px, sanas y enfermas (hechas en código).

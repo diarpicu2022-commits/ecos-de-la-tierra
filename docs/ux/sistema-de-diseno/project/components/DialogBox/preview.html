@@ -1,0 +1,12 @@
+<!-- @dsCard group="Mundo" height=230 width=1300 subtitle="Papel con marco de madera, chapa con el nombre y retrato" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>DialogBox</title><link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="../bundle.css"></head>
+<body>
+<div class="tv" style="padding:24px 12px 12px">
+<div class="tv-frame f-textbox dialog"><span class="leaf"></span>
+<div class="tv-frame f-portrait" style="padding:0"><img src="../../assets/img/portrait_coral.png" width="40" height="44" alt="Coral"></div>
+<div class="lines t-paper" id="t"></div><span class="more">▼</span>
+<div class="tv-frame f-tag tagname" style="border-width:8px;padding:0 2px;height:1px;line-height:1px"><span style="position:relative;top:-6px">Coral</span></div></div></div>
+<script>(function(){var L=['¡Ilan! El arroyo ya corre limpio.','Mira, volvieron las libélulas.'],t=document.getElementById('t');var all=L.join('\n');
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){t.innerHTML=L.join('<br>');return;}var i=0;(function tick(){t.innerHTML=all.slice(0,i).replace('\n','<br>');if(i++<all.length)setTimeout(tick,25);else setTimeout(function(){i=0;tick();},2500);})();})();</script>
+</body></html>

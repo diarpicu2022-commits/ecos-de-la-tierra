@@ -1,0 +1,9 @@
+<!-- @dsCard group="Combate" height=170 subtitle="Los cuatro mandos de 2×2; ↑ ↓ ← → mueven el anillo" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>CommandMenu</title><link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="../bundle.css"></head>
+<body>
+<div class="tv tv-wrap" style="background:var(--ui-2)"><div class="cmds" id="m"><div class="tv-frame f-luchar cmd">LUCHAR</div><div class="tv-frame f-selected cmd-sel"><div class="tv-frame f-eco cmd">ECO</div></div><div class="tv-frame f-bolsa cmd">BOLSA</div><div class="tv-frame f-huir cmd">HUIR</div></div></div>
+<script>(function(){var m=document.getElementById('m');var labels=[['LUCHAR','luchar'],['ECO','eco'],['BOLSA','bolsa'],['HUIR','huir']];var f=1;
+function draw(){m.innerHTML=labels.map(function(l,i){var b='<div class="tv-frame f-'+l[1]+' cmd">'+l[0]+'</div>';return i===f?'<div class="tv-frame f-selected cmd-sel">'+b+'</div>':b;}).join('');}
+document.addEventListener('keydown',function(e){var k=e.key;if(k==='ArrowRight'||k==='ArrowLeft'){f^=1;}else if(k==='ArrowDown'||k==='ArrowUp'){f^=2;}else return;e.preventDefault();draw();});})();</script>
+</body></html>

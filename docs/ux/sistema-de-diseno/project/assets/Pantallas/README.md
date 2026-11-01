@@ -1,0 +1,1 @@
+Pantallas completas a 640×360, aquí al doble: combate enfermo y purificado en el Bosque de las Cenizas, el mismo bosque en el mapa, y Valdehoja con y sin diálogo. Son la referencia de composición para el juego.

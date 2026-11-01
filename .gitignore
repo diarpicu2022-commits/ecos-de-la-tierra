@@ -37,3 +37,6 @@ __pycache__/
 
 # Lanzador local (lleva la ruta de Godot de esta maquina)
 /Jugar.bat
+
+# Paquete descargado del sistema de diseño (ya extraído en docs/ux/sistema-de-diseno/)
+/ecos-sistema-de-diseno.zip

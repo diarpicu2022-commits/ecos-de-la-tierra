@@ -58,7 +58,7 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
   - El combate actual sigue en el código hasta R2.
 - **Arte del mundo.**
   - Diego rechazó los materiales planos y aprobó el arte de **Tierra Viva**: `tools/tierra_viva/` (prototipo en Python) y `docs/ux/tierra-viva/referencias/` (renders aprobados).
-  - El Design System con todo está en la página «Ecos de la Tierra» de Diego (tarjetas Overworld, Regiones, Interiores y ActionHUD).
+  - El sistema de diseño con todo está en `docs/ux/sistema-de-diseno/` (abre `index.html`; tarjetas Overworld, Regiones, Interiores, ActionHUD y el resto de componentes).
 - **Contrato «Piel nueva» (bloqueado el 2026-10-30), dirección B.**
   - El arte nuevo se pinta **sobre las matrices aprobadas** de `data/world/zones/`.
   - Viewport 640×360; las regiones están agrandadas ×4/3.

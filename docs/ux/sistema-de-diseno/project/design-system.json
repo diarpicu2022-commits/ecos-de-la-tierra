@@ -1,0 +1,400 @@
+{
+ "v": 3,
+ "assetGroups": {
+  "Pantallas": {
+   "name": "Pantallas",
+   "tile": "l",
+   "order": [
+    "valdehoja_plaza.png",
+    "valdehoja_terraza_norte.png",
+    "valdehoja_calle_sur.png",
+    "valdehoja_lago.png",
+    "valdehoja_grande_sano.png",
+    "valdehoja_grande_enfermo.png",
+    "combate_accion.png",
+    "combate_purifica.png",
+    "mapa_bosque_enfermo.png",
+    "mapa_bosque_sano.png"
+   ],
+   "files": {
+    "valdehoja_plaza.png": {
+     "name": "valdehoja_plaza.png",
+     "blob": "87d97b5758a0bf80d6704dda4d46aa22",
+     "size": 112601,
+     "type": "image/png"
+    },
+    "combate_accion.png": {
+     "name": "combate_accion.png",
+     "blob": "d1edfe7e89458330532a5008848ae444",
+     "size": 79613,
+     "type": "image/png"
+    },
+    "combate_purifica.png": {
+     "name": "combate_purifica.png",
+     "blob": "8f7731b869b5c8291b29b4801685efbf",
+     "size": 83099,
+     "type": "image/png"
+    },
+    "mapa_bosque_enfermo.png": {
+     "name": "mapa_bosque_enfermo.png",
+     "blob": "040bd8370735dec4797113baa76ecad4",
+     "size": 60495,
+     "type": "image/png"
+    },
+    "mapa_bosque_sano.png": {
+     "name": "mapa_bosque_sano.png",
+     "blob": "a2483a0d81d8119ad274bbde380fa02e",
+     "size": 108176,
+     "type": "image/png"
+    },
+    "valdehoja_terraza_norte.png": {
+     "name": "valdehoja_terraza_norte.png",
+     "blob": "acf07d4beb6e32118dd81ca43f61437c",
+     "size": 119169,
+     "type": "image/png"
+    },
+    "valdehoja_calle_sur.png": {
+     "name": "valdehoja_calle_sur.png",
+     "blob": "7c1981511cd6fc4668007629780fc93a",
+     "size": 119276,
+     "type": "image/png"
+    },
+    "valdehoja_lago.png": {
+     "name": "valdehoja_lago.png",
+     "blob": "035e7578d44daedae51e7988b6b0708f",
+     "size": 101529,
+     "type": "image/png"
+    },
+    "valdehoja_grande_sano.png": {
+     "name": "valdehoja_grande_sano.png",
+     "blob": "dca72ec2ae1ad59b6b1afba9ce6714cc",
+     "size": 718117,
+     "type": "image/png"
+    },
+    "valdehoja_grande_enfermo.png": {
+     "name": "valdehoja_grande_enfermo.png",
+     "blob": "13f6c687f44f96043daea7e45644ab14",
+     "size": 568962,
+     "type": "image/png"
+    }
+   }
+  },
+  "Personajes": {
+   "name": "Personajes",
+   "tile": "m",
+   "order": [
+    "ilan_8dir@2x.png",
+    "bruma_8dir@2x.png",
+    "coral_8dir@2x.png",
+    "nix_8dir@2x.png",
+    "suri_8dir@2x.png",
+    "ilan_camina_south@2x.gif",
+    "ilan_camina_east@2x.gif",
+    "ilan_camina_north@2x.gif",
+    "ilan_camina_west@2x.gif"
+   ],
+   "files": {
+    "ilan_8dir~402x.png": {
+     "name": "ilan_8dir@2x.png",
+     "blob": "2886809025680fdebd901022fec33c8a",
+     "size": 14176,
+     "type": "image/png"
+    },
+    "bruma_8dir~402x.png": {
+     "name": "bruma_8dir@2x.png",
+     "blob": "895528a14c899cb301f0eeb986500a72",
+     "size": 11598,
+     "type": "image/png"
+    },
+    "coral_8dir~402x.png": {
+     "name": "coral_8dir@2x.png",
+     "blob": "02449d615fc05e0714ac64e441639969",
+     "size": 13682,
+     "type": "image/png"
+    },
+    "nix_8dir~402x.png": {
+     "name": "nix_8dir@2x.png",
+     "blob": "3e6d0dc0fcb80cb04efee1cd1874c47c",
+     "size": 13800,
+     "type": "image/png"
+    },
+    "suri_8dir~402x.png": {
+     "name": "suri_8dir@2x.png",
+     "blob": "533163a90c36081009a59af0c92511c7",
+     "size": 12876,
+     "type": "image/png"
+    },
+    "ilan_camina_south~402x.gif": {
+     "name": "ilan_camina_south@2x.gif",
+     "blob": "533e1a6775ea5320bdd7b99a0c61e0e8",
+     "size": 8296,
+     "type": "image/gif"
+    },
+    "ilan_camina_east~402x.gif": {
+     "name": "ilan_camina_east@2x.gif",
+     "blob": "8460b4332b9351888359d770d66d0b92",
+     "size": 7711,
+     "type": "image/gif"
+    },
+    "ilan_camina_north~402x.gif": {
+     "name": "ilan_camina_north@2x.gif",
+     "blob": "321918b2233ae717f9eb2ef4b04d0e51",
+     "size": 7182,
+     "type": "image/gif"
+    },
+    "ilan_camina_west~402x.gif": {
+     "name": "ilan_camina_west@2x.gif",
+     "blob": "e1fc57c5208e0233f7da43516a312a86",
+     "size": 7715,
+     "type": "image/gif"
+    }
+   }
+  },
+  "Monstruos": {
+   "name": "Monstruos",
+   "tile": "m",
+   "order": [
+    "llama_corrupto@2x.png",
+    "llama_purificado@2x.png",
+    "devorador_corrupto@2x.png",
+    "devorador_purificado@2x.png",
+    "golem_corrupto@2x.png",
+    "golem_purificado@2x.png",
+    "espectro_corrupto@2x.png",
+    "espectro_purificado@2x.png",
+    "coloso_corrupto@2x.png",
+    "coloso_purificado@2x.png",
+    "sombra_corrupto@2x.png",
+    "sombra_purificado@2x.png"
+   ],
+   "files": {
+    "llama_corrupto~402x.png": {
+     "name": "llama_corrupto@2x.png",
+     "blob": "5af676ae740527703bf1c6563585538a",
+     "size": 13684,
+     "type": "image/png"
+    },
+    "llama_purificado~402x.png": {
+     "name": "llama_purificado@2x.png",
+     "blob": "7a213e1d34bbad27d8d8507f15878ae7",
+     "size": 9479,
+     "type": "image/png"
+    },
+    "devorador_corrupto~402x.png": {
+     "name": "devorador_corrupto@2x.png",
+     "blob": "9d2a8d8bdb2f711012a81f9e63875372",
+     "size": 14605,
+     "type": "image/png"
+    },
+    "devorador_purificado~402x.png": {
+     "name": "devorador_purificado@2x.png",
+     "blob": "9b8af3fe1f4177828c9688e8f2b5e950",
+     "size": 15987,
+     "type": "image/png"
+    },
+    "golem_corrupto~402x.png": {
+     "name": "golem_corrupto@2x.png",
+     "blob": "e7abcc93a8710574940f373c5fb429fc",
+     "size": 16642,
+     "type": "image/png"
+    },
+    "golem_purificado~402x.png": {
+     "name": "golem_purificado@2x.png",
+     "blob": "e9cde68694a7b58adf72c92a81811142",
+     "size": 14713,
+     "type": "image/png"
+    },
+    "espectro_corrupto~402x.png": {
+     "name": "espectro_corrupto@2x.png",
+     "blob": "960904f869242c945ce421073557a441",
+     "size": 12890,
+     "type": "image/png"
+    },
+    "espectro_purificado~402x.png": {
+     "name": "espectro_purificado@2x.png",
+     "blob": "e2c6ea6270d785db33ca867902546213",
+     "size": 10622,
+     "type": "image/png"
+    },
+    "coloso_corrupto~402x.png": {
+     "name": "coloso_corrupto@2x.png",
+     "blob": "e0de5afeff2a3f6817aaff103703f623",
+     "size": 14615,
+     "type": "image/png"
+    },
+    "coloso_purificado~402x.png": {
+     "name": "coloso_purificado@2x.png",
+     "blob": "58acc35760a92833660f98e14ab3867f",
+     "size": 18857,
+     "type": "image/png"
+    },
+    "sombra_corrupto~402x.png": {
+     "name": "sombra_corrupto@2x.png",
+     "blob": "7f9b0314dc20076cb64cc6588ec42a3d",
+     "size": 14128,
+     "type": "image/png"
+    },
+    "sombra_purificado~402x.png": {
+     "name": "sombra_purificado@2x.png",
+     "blob": "0d5eb294d8cc6e3bb46837a1562a94e6",
+     "size": 15099,
+     "type": "image/png"
+    }
+   }
+  },
+  "Mundo": {
+   "name": "Mundo",
+   "tile": "m",
+   "order": [
+    "arbol@2x.png",
+    "arbol_quemado@2x.png",
+    "casa@2x.png",
+    "losetas@3x.png"
+   ],
+   "files": {
+    "arbol~402x.png": {
+     "name": "arbol@2x.png",
+     "blob": "12696a381f9c1409a3041d8511f2b275",
+     "size": 16245,
+     "type": "image/png"
+    },
+    "arbol_quemado~402x.png": {
+     "name": "arbol_quemado@2x.png",
+     "blob": "e2c2d8abf40812acf3225107c0f7c30e",
+     "size": 14130,
+     "type": "image/png"
+    },
+    "casa~402x.png": {
+     "name": "casa@2x.png",
+     "blob": "444a3e56e3ae4b88cd34a6713b0c19ee",
+     "size": 16482,
+     "type": "image/png"
+    },
+    "losetas~403x.png": {
+     "name": "losetas@3x.png",
+     "blob": "7e60c6a6100c43c0990e44ae985a88af",
+     "size": 2834,
+     "type": "image/png"
+    }
+   }
+  },
+  "Marcos": {
+   "name": "Marcos",
+   "tile": "xs",
+   "order": [
+    "textbox.png",
+    "plate.png",
+    "plate-active.png",
+    "row.png",
+    "sign.png",
+    "portrait.png",
+    "tag.png",
+    "cmd-luchar.png",
+    "cmd-eco.png",
+    "cmd-bolsa.png",
+    "cmd-huir.png",
+    "cmd-selected.png"
+   ],
+   "files": {
+    "textbox.png": {
+     "name": "textbox.png",
+     "blob": "e218b49c6683804e1931bde105f4ad56",
+     "size": 220,
+     "type": "image/png"
+    },
+    "plate.png": {
+     "name": "plate.png",
+     "blob": "b504810353d5fe9f8d9507f930bbba49",
+     "size": 222,
+     "type": "image/png"
+    },
+    "plate-active.png": {
+     "name": "plate-active.png",
+     "blob": "c5b80176b06a9983d89cb2a4f81fd197",
+     "size": 188,
+     "type": "image/png"
+    },
+    "row.png": {
+     "name": "row.png",
+     "blob": "84335b59ed5991ba063a451b1e0f8a09",
+     "size": 189,
+     "type": "image/png"
+    },
+    "sign.png": {
+     "name": "sign.png",
+     "blob": "2ea7b659faf06e13c94e7df6162fc2ec",
+     "size": 210,
+     "type": "image/png"
+    },
+    "portrait.png": {
+     "name": "portrait.png",
+     "blob": "11822ddb5b4616ed0410603d30f38d45",
+     "size": 188,
+     "type": "image/png"
+    },
+    "tag.png": {
+     "name": "tag.png",
+     "blob": "768e3a58424c2205cd6f6fd77a968b30",
+     "size": 209,
+     "type": "image/png"
+    },
+    "cmd-luchar.png": {
+     "name": "cmd-luchar.png",
+     "blob": "f119e14cfc0afb0cfa24551ae96018ed",
+     "size": 240,
+     "type": "image/png"
+    },
+    "cmd-eco.png": {
+     "name": "cmd-eco.png",
+     "blob": "947d6568462353b81111d92d7478919d",
+     "size": 244,
+     "type": "image/png"
+    },
+    "cmd-bolsa.png": {
+     "name": "cmd-bolsa.png",
+     "blob": "935e50d971fa8e3ddfc77b16efb34872",
+     "size": 245,
+     "type": "image/png"
+    },
+    "cmd-huir.png": {
+     "name": "cmd-huir.png",
+     "blob": "6d87d1b49e7e3300403730633f3e3560",
+     "size": 240,
+     "type": "image/png"
+    },
+    "cmd-selected.png": {
+     "name": "cmd-selected.png",
+     "blob": "1e12da64ecff212bdd9184ce9a77b8e8",
+     "size": 184,
+     "type": "image/png"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "createdOnFiles": {
+  "at": "2026-10-29T14:44:00Z",
+  "v": 1
+ },
+ "docs": {
+  "sections": []
+ },
+ "groups": [
+  "Pantallas",
+  "Personajes",
+  "Monstruos",
+  "Mundo",
+  "Marcos"
+ ],
+ "lastChange": {
+  "by": "Diego",
+  "at": "2026-10-30T02:50:00Z",
+  "via": "código",
+  "note": "Tejados completados, plazas ovaladas y elevadas, caminos con más detalle."
+ },
+ "layout": "files",
+ "libraries": [],
+ "namespace": "EcosDeLaTierra",
+ "sections": {},
+ "title": "Ecos de la Tierra"
+}

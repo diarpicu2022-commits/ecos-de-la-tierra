@@ -1,0 +1,22 @@
+ECOS DE LA TIERRA — SISTEMA DE DISEÑO «TIERRA VIVA» (paquete sin conexión, 2026-10-31)
+
+Abre index.html en el navegador (doble clic). Funciona sin internet.
+
+Contenido
+- index.html ............ visor: fundamentos (color, tipografía, medidas), los 15 componentes,
+                          activos, referencias y documentos.
+- project/ .............. el sistema de diseño tal cual está publicado:
+    tokens.json            colores, tipografía, espaciado, esquinas, bordes, rejilla y duraciones
+    design-system.json     estructura y grupos de activos
+    README.md              reglas del sistema (léelo primero)
+    components/<Nombre>/   preview.html + README.md de cada componente
+    components/bundle.css  estilos de las piezas;  tokens.css  variables CSS generadas de tokens.json
+    fonts/Brote.woff2      fuente del juego
+    assets/img/            todas las imágenes (marcos de 9 cortes, personajes, monstruos, pantallas)
+- referencias/ .......... renders aprobados: Valdehoja, las cinco regiones enfermas y sanas, cripta,
+                          interiores, título, créditos, combate, vecinos y capturas del motor.
+- documentos/ ........... anexo y contrato «Piel nueva», traspaso para seguir programando, concepto de
+                          título y créditos, mapa del prototipo de arte.
+
+El código del juego y el prototipo de arte están en el repo (rama rediseno/tierra-viva) y en
+ecos-de-la-tierra_rediseno-tierra-viva.zip.
