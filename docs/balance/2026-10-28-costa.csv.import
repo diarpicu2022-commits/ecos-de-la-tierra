@@ -6,14 +6,12 @@ uid="uid://bb3s8fk3qttgm"
 
 [deps]
 
-files=["res://docs/balance/2026-10-28-costa.combate.translation", "res://docs/balance/2026-10-28-costa.resultado.translation", "res://docs/balance/2026-10-28-costa.rondas.translation", "res://docs/balance/2026-10-28-costa.sintonia.translation"]
+files=["res://docs/balance/2026-10-28-costa.combate.translation", "res://docs/balance/2026-10-28-costa.resultado.translation", "res://docs/balance/2026-10-28-costa.rondas.translation", "res://docs/balance/2026-10-28-costa.sintonia.translation", "res://docs/balance/2026-10-28-costa.habilidades.translation"]
 
 source_file="res://docs/balance/2026-10-28-costa.csv"
-dest_files=["res://docs/balance/2026-10-28-costa.combate.translation", "res://docs/balance/2026-10-28-costa.resultado.translation", "res://docs/balance/2026-10-28-costa.rondas.translation", "res://docs/balance/2026-10-28-costa.sintonia.translation"]
+dest_files=["res://docs/balance/2026-10-28-costa.combate.translation", "res://docs/balance/2026-10-28-costa.resultado.translation", "res://docs/balance/2026-10-28-costa.rondas.translation", "res://docs/balance/2026-10-28-costa.sintonia.translation", "res://docs/balance/2026-10-28-costa.habilidades.translation"]
 
 [params]
 
 compress=1
 delimiter=0
-unescape_keys=false
-unescape_translations=true

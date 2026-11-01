@@ -226,6 +226,288 @@ const VITAL_600 := Color("#54b250")  ## Prado, tono base.
 const VITAL_400 := Color("#86d66b")  ## Prado, brizna al sol.
 
 
+# --- TIERRA VIVA: BEGIN (enmienda 13, contrato «Piel nueva», 2026-10-30) ---
+## Generado por tools/gen_tierra_viva_tokens.py: no se edita a mano.
+## Rampas del mundo de Tierra Viva, de la sombra (0) a la luz. El techo
+## de saturación no se aplica a estas rampas: su significado lo fijan
+## TV_PURIFIED_ONLY y TV_SICK_ONLY, medidos con verify_palette.py tv-state.
+## Tinta: contorno del decorado más oscuro.
+const TV_INK_0 := Color("#14101c")
+const TV_INK_1 := Color("#231c2e")
+const TV_INK_2 := Color("#372b42")
+## Piedra: cotas, muros, rocas.
+const TV_STONE_0 := Color("#2a2434")
+const TV_STONE_1 := Color("#40384d")
+const TV_STONE_2 := Color("#5c5268")
+const TV_STONE_3 := Color("#7d7387")
+const TV_STONE_4 := Color("#a198a8")
+const TV_STONE_5 := Color("#c9c1cc")
+const TV_STONE_6 := Color("#ece6ec")
+## Hierba viva.
+const TV_GRASS_0 := Color("#123a2e")
+const TV_GRASS_1 := Color("#1a5234")
+const TV_GRASS_2 := Color("#256e3a")
+const TV_GRASS_3 := Color("#358c3e")
+const TV_GRASS_4 := Color("#4fa645")
+const TV_GRASS_5 := Color("#7cc456")
+const TV_GRASS_6 := Color("#b5e073")
+## Copa y arbusto vivos.
+const TV_LEAF_0 := Color("#0f2b26")
+const TV_LEAF_1 := Color("#174232")
+const TV_LEAF_2 := Color("#215c38")
+const TV_LEAF_3 := Color("#2f7a3c")
+const TV_LEAF_4 := Color("#48983f")
+const TV_LEAF_5 := Color("#74b84a")
+const TV_LEAF_6 := Color("#aad65e")
+## Tierra y camino.
+const TV_DIRT_0 := Color("#3b2226")
+const TV_DIRT_1 := Color("#5a332c")
+const TV_DIRT_2 := Color("#7d4b35")
+const TV_DIRT_3 := Color("#a06741")
+const TV_DIRT_4 := Color("#c48a52")
+const TV_DIRT_5 := Color("#e0b070")
+const TV_DIRT_6 := Color("#f4d699")
+## Arena limpia.
+const TV_SAND_0 := Color("#8a6a4a")
+const TV_SAND_1 := Color("#b08d5e")
+const TV_SAND_2 := Color("#d1b077")
+const TV_SAND_3 := Color("#e8cf98")
+const TV_SAND_4 := Color("#f7ebc4")
+## Agua viva.
+const TV_WATER_0 := Color("#16244f")
+const TV_WATER_1 := Color("#1b3c7a")
+const TV_WATER_2 := Color("#2360a8")
+const TV_WATER_3 := Color("#3489cc")
+const TV_WATER_4 := Color("#56b3e6")
+const TV_WATER_5 := Color("#92d9f4")
+const TV_WATER_6 := Color("#dff7ff")
+## Madera.
+const TV_WOOD_0 := Color("#2e1a1e")
+const TV_WOOD_1 := Color("#4a2a26")
+const TV_WOOD_2 := Color("#6b3f2e")
+const TV_WOOD_3 := Color("#8f5a3a")
+const TV_WOOD_4 := Color("#b27a4c")
+const TV_WOOD_5 := Color("#d1a068")
+## Teja roja.
+const TV_ROOF_RED_0 := Color("#3a1426")
+const TV_ROOF_RED_1 := Color("#5e1f30")
+const TV_ROOF_RED_2 := Color("#8c2c3a")
+const TV_ROOF_RED_3 := Color("#b8443f")
+const TV_ROOF_RED_4 := Color("#dc6a4c")
+const TV_ROOF_RED_5 := Color("#f29c6e")
+## Teja azul.
+const TV_ROOF_BLUE_0 := Color("#1a1d40")
+const TV_ROOF_BLUE_1 := Color("#253366")
+const TV_ROOF_BLUE_2 := Color("#2f4f94")
+const TV_ROOF_BLUE_3 := Color("#3f75be")
+const TV_ROOF_BLUE_4 := Color("#62a2dc")
+const TV_ROOF_BLUE_5 := Color("#9ccdf0")
+## Muro encalado.
+const TV_WALL_0 := Color("#6b5a66")
+const TV_WALL_1 := Color("#8f7d82")
+const TV_WALL_2 := Color("#b5a598")
+const TV_WALL_3 := Color("#d8cbb4")
+const TV_WALL_4 := Color("#f2e8d2")
+## Flores (tonos sueltos, no rampa).
+const TV_FLOWER_0 := Color("#b0304f")
+const TV_FLOWER_1 := Color("#e8566b")
+const TV_FLOWER_2 := Color("#ff8fa3")
+const TV_FLOWER_3 := Color("#ffd34e")
+const TV_FLOWER_4 := Color("#fff3b0")
+const TV_FLOWER_5 := Color("#8a6bd9")
+const TV_FLOWER_6 := Color("#c3a8ff")
+const TV_FLOWER_7 := Color("#ffffff")
+## Hierba seca.
+const TV_DRY_GRASS_0 := Color("#2a1f2a")
+const TV_DRY_GRASS_1 := Color("#3d2e2e")
+const TV_DRY_GRASS_2 := Color("#56432f")
+const TV_DRY_GRASS_3 := Color("#735c37")
+const TV_DRY_GRASS_4 := Color("#94783f")
+const TV_DRY_GRASS_5 := Color("#b39a52")
+const TV_DRY_GRASS_6 := Color("#cfbd70")
+## Hoja muerta.
+const TV_DEAD_LEAF_0 := Color("#1e1622")
+const TV_DEAD_LEAF_1 := Color("#2f2229")
+const TV_DEAD_LEAF_2 := Color("#46332e")
+const TV_DEAD_LEAF_3 := Color("#61483a")
+const TV_DEAD_LEAF_4 := Color("#7f6146")
+const TV_DEAD_LEAF_5 := Color("#9c7d55")
+## Ceniza del mundo y arena enferma.
+const TV_ASH_0 := Color("#221d29")
+const TV_ASH_1 := Color("#342d3b")
+const TV_ASH_2 := Color("#4a4252")
+const TV_ASH_3 := Color("#645c6b")
+const TV_ASH_4 := Color("#827a88")
+const TV_ASH_5 := Color("#a39ca6")
+const TV_ASH_6 := Color("#c7c1c6")
+## Crudo.
+const TV_OIL_0 := Color("#0b0812")
+const TV_OIL_1 := Color("#15111f")
+const TV_OIL_2 := Color("#221b30")
+const TV_OIL_3 := Color("#302744")
+const TV_OIL_4 := Color("#433757")
+## Irisado del crudo.
+const TV_SHEEN_0 := Color("#5a3f8c")
+const TV_SHEEN_1 := Color("#3f7f86")
+const TV_SHEEN_2 := Color("#a3963f")
+const TV_SHEEN_3 := Color("#c0577a")
+## Lodo tóxico.
+const TV_SLUDGE_0 := Color("#2f3a12")
+const TV_SLUDGE_1 := Color("#4f6418")
+const TV_SLUDGE_2 := Color("#77921f")
+const TV_SLUDGE_3 := Color("#a4c42c")
+const TV_SLUDGE_4 := Color("#d2ef5a")
+## Humo y neblina.
+const TV_SMOG_0 := Color("#4b3f4a")
+const TV_SMOG_1 := Color("#6e5d62")
+const TV_SMOG_2 := Color("#93807a")
+const TV_SMOG_3 := Color("#b8a594")
+## Óxido y metal.
+const TV_RUST_0 := Color("#3a1a16")
+const TV_RUST_1 := Color("#5e2a1e")
+const TV_RUST_2 := Color("#8a4126")
+const TV_RUST_3 := Color("#b5602f")
+const TV_RUST_4 := Color("#d68a45")
+## Plástico (tonos sueltos).
+const TV_PLASTIC_0 := Color("#2a4f6e")
+const TV_PLASTIC_1 := Color("#3f7fa8")
+const TV_PLASTIC_2 := Color("#7cc0e0")
+const TV_PLASTIC_3 := Color("#c9ecf7")
+const TV_PLASTIC_4 := Color("#e25a6a")
+const TV_PLASTIC_5 := Color("#f2c94c")
+const TV_PLASTIC_6 := Color("#ffffff")
+## Fuego de antorcha.
+const TV_FIRE_0 := Color("#3d0f14")
+const TV_FIRE_1 := Color("#7a1a16")
+const TV_FIRE_2 := Color("#c13a1c")
+const TV_FIRE_3 := Color("#ec6a24")
+const TV_FIRE_4 := Color("#ffa83a")
+const TV_FIRE_5 := Color("#ffe07a")
+const TV_FIRE_6 := Color("#fffbe0")
+## Hielo.
+const TV_ICE_0 := Color("#1d2c52")
+const TV_ICE_1 := Color("#2c4c80")
+const TV_ICE_2 := Color("#4a7fb4")
+const TV_ICE_3 := Color("#7ab6df")
+const TV_ICE_4 := Color("#b0e0f4")
+const TV_ICE_5 := Color("#e4f8ff")
+## Oro y paja.
+const TV_GOLD_0 := Color("#3a2412")
+const TV_GOLD_1 := Color("#6b4316")
+const TV_GOLD_2 := Color("#a6701c")
+const TV_GOLD_3 := Color("#d9a52a")
+const TV_GOLD_4 := Color("#f5d24a")
+const TV_GOLD_5 := Color("#fff1a0")
+## Turquesa de detalle.
+const TV_ECO_0 := Color("#0f3b3f")
+const TV_ECO_1 := Color("#14706a")
+const TV_ECO_2 := Color("#20a88f")
+const TV_ECO_3 := Color("#4fd8b0")
+const TV_ECO_4 := Color("#9cf5d4")
+const TV_ECO_5 := Color("#e2fff3")
+## Agua turbia.
+const TV_TURBID_0 := Color("#1f2a2c")
+const TV_TURBID_1 := Color("#2c3a3a")
+const TV_TURBID_2 := Color("#3b4a48")
+const TV_TURBID_3 := Color("#4b5a55")
+const TV_TURBID_4 := Color("#5f6d66")
+const TV_TURBID_5 := Color("#7d877c")
+const TV_TURBID_6 := Color("#a3a898")
+## Ciénaga de crudo.
+const TV_OIL_WATER_0 := Color("#07050c")
+const TV_OIL_WATER_1 := Color("#110c1a")
+const TV_OIL_WATER_2 := Color("#1b1428")
+const TV_OIL_WATER_3 := Color("#261d36")
+const TV_OIL_WATER_4 := Color("#3a2c4c")
+const TV_OIL_WATER_5 := Color("#5a3f8c")
+const TV_OIL_WATER_6 := Color("#3f7f86")
+## Mar con plástico.
+const TV_PLASTIC_WATER_0 := Color("#1d2a33")
+const TV_PLASTIC_WATER_1 := Color("#2a3b45")
+const TV_PLASTIC_WATER_2 := Color("#3a4d57")
+const TV_PLASTIC_WATER_3 := Color("#4b5f68")
+const TV_PLASTIC_WATER_4 := Color("#61757b")
+const TV_PLASTIC_WATER_5 := Color("#839393")
+const TV_PLASTIC_WATER_6 := Color("#b5bfbb")
+## Pasto manchado de crudo.
+const TV_SLUDGE_GRASS_0 := Color("#1f1d14")
+const TV_SLUDGE_GRASS_1 := Color("#2b2a19")
+const TV_SLUDGE_GRASS_2 := Color("#3a3820")
+const TV_SLUDGE_GRASS_3 := Color("#4b4826")
+const TV_SLUDGE_GRASS_4 := Color("#5d592d")
+const TV_SLUDGE_GRASS_5 := Color("#77713a")
+const TV_SLUDGE_GRASS_6 := Color("#938b4c")
+## Arena gris de la costa enferma.
+const TV_GREY_SAND_0 := Color("#7d7466")
+const TV_GREY_SAND_1 := Color("#988e7d")
+const TV_GREY_SAND_2 := Color("#b0a690")
+const TV_GREY_SAND_3 := Color("#c4baa2")
+const TV_GREY_SAND_4 := Color("#d6cdb6")
+## Pajonal de páramo vivo.
+const TV_PARAMO_0 := Color("#1c2f2a")
+const TV_PARAMO_1 := Color("#2a4434")
+const TV_PARAMO_2 := Color("#3d5c3a")
+const TV_PARAMO_3 := Color("#587a42")
+const TV_PARAMO_4 := Color("#7a954c")
+const TV_PARAMO_5 := Color("#a3b45e")
+const TV_PARAMO_6 := Color("#cdd17c")
+## Nieve del glaciar.
+const TV_SNOW_0 := Color("#7d8fb8")
+const TV_SNOW_1 := Color("#a9bbd9")
+const TV_SNOW_2 := Color("#cfdcef")
+const TV_SNOW_3 := Color("#e9f1fa")
+const TV_SNOW_4 := Color("#ffffff")
+## Páramo seco.
+const TV_PARAMO_DRY_0 := Color("#2a2226")
+const TV_PARAMO_DRY_1 := Color("#3d302c")
+const TV_PARAMO_DRY_2 := Color("#56432f")
+const TV_PARAMO_DRY_3 := Color("#6e5838")
+const TV_PARAMO_DRY_4 := Color("#8a7044")
+const TV_PARAMO_DRY_5 := Color("#a58a55")
+const TV_PARAMO_DRY_6 := Color("#bea56a")
+## Pedregal del glaciar derretido.
+const TV_SCREE_0 := Color("#3e3943")
+const TV_SCREE_1 := Color("#57505a")
+const TV_SCREE_2 := Color("#726a72")
+const TV_SCREE_3 := Color("#8f878c")
+const TV_SCREE_4 := Color("#aca4a6")
+## Tierra enferma.
+const TV_SICK_SOIL_0 := Color("#2a2226")
+const TV_SICK_SOIL_1 := Color("#3d322f")
+const TV_SICK_SOIL_2 := Color("#54463d")
+const TV_SICK_SOIL_3 := Color("#6f5f50")
+const TV_SICK_SOIL_4 := Color("#8c7a64")
+const TV_SICK_SOIL_5 := Color("#a8957a")
+const TV_SICK_SOIL_6 := Color("#c2b092")
+## Roseta del frailejón.
+const TV_FRAILEJON_0 := Color("#4d6a4a")
+const TV_FRAILEJON_1 := Color("#7b9670")
+const TV_FRAILEJON_2 := Color("#a7bc9a")
+const TV_FRAILEJON_3 := Color("#cfdcc4")
+const TV_FRAILEJON_4 := Color("#eef4e6")
+## Puya.
+const TV_PUYA_0 := Color("#2d4a3c")
+const TV_PUYA_1 := Color("#466b4c")
+const TV_PUYA_2 := Color("#6a8f62")
+const TV_PUYA_3 := Color("#94b183")
+const TV_PUYA_4 := Color("#c3d6ae")
+## Paja de páramo.
+const TV_STRAW_0 := Color("#56502e")
+const TV_STRAW_1 := Color("#7d7238")
+const TV_STRAW_2 := Color("#a6984a")
+const TV_STRAW_3 := Color("#cdbd66")
+const TV_STRAW_4 := Color("#e6d98a")
+## Fuego maldito de la Cripta.
+const TV_CURSE_FIRE_0 := Color("#2a1d3a")
+const TV_CURSE_FIRE_1 := Color("#5a2d6b")
+const TV_CURSE_FIRE_2 := Color("#8f4fb0")
+const TV_CURSE_FIRE_3 := Color("#c98ae0")
+const TV_CURSE_FIRE_4 := Color("#f2d1ff")
+const TV_PURIFIED_ONLY := ["grass", "leaf", "flower", "water", "eco", "paramo", "snow", "frailejon", "puya"]
+const TV_SICK_ONLY := ["dry_grass", "dead_leaf", "oil", "sheen", "sludge", "smog", "plastic", "turbid", "oil_water", "plastic_water", "sludge_grass", "grey_sand", "paramo_dry", "scree", "sick_soil", "curse_fire"]
+# --- TIERRA VIVA: END ---
+
+
 # --- Lenguaje del entorno --------------------------------------------------
 # Se declara una vez y no se contradice. Lo que responde lleva contorno sólido
 # y es más claro que su fondo; el decorado no lleva contorno y es más oscuro.
@@ -259,7 +541,7 @@ const PLAYER_HITBOX := Vector2i(12, 8)
 const CORNER_SLIP := 4
 
 ## Salidas: solo donde el camino pisado cruza el borde del mapa, y como mucho
-## dos en cualquier pantalla de 480 px.
+## dos en cualquier pantalla de 640 px (contrato «Piel nueva», 2026-10-30).
 const MAX_EXITS_PER_SCREEN := 2
 
 

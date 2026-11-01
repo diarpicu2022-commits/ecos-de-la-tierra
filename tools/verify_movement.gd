@@ -275,13 +275,13 @@ func _test_exit_rules() -> void:
 	_expect_problem("un borde pisable que no es salida se detecta",
 		ZoneRules.check("prueba_a", open_border, exits), "borde pisable")
 	var not_path := zones.duplicate()
-	not_path["prueba_a"] = _edit(zones["prueba_a"], Vector2i(39, 9), ".")
+	not_path["prueba_a"] = _edit(zones["prueba_a"], Vector2i(53, 9), ".")
 	_expect_problem("una salida que no es camino se detecta",
 		ZoneRules.check("prueba_a", not_path, exits), "no es camino")
 	var crowded := exits.duplicate()
-	crowded.append({"from": "prueba_b", "cell": [29, 9], "to": "prueba_a", "to_cell": [38, 9]})
+	crowded.append({"from": "prueba_b", "cell": [39, 9], "to": "prueba_a", "to_cell": [52, 9]})
 	var crowded_zones := zones.duplicate()
-	crowded_zones["prueba_b"] = _edit(zones["prueba_b"], Vector2i(29, 9), "=")
+	crowded_zones["prueba_b"] = _edit(zones["prueba_b"], Vector2i(39, 9), "=")
 	_expect_problem("tres salidas en una pantalla se detectan",
 		ZoneRules.check("prueba_b", crowded_zones, crowded), "salidas en la pantalla")
 	var into_water := exits.duplicate(true)
@@ -298,14 +298,14 @@ func _test_crossings() -> void:
 	add_child(world)
 	await get_tree().physics_frame
 	var cases := [
-		["este: prueba_a -> prueba_b", "prueba_a", Vector2i(36, 9), "move_right",
+		["este: prueba_a -> prueba_b", "prueba_a", Vector2i(50, 9), "move_right",
 			"prueba_b", Vector2i(1, 8), Vector2i.RIGHT],
-		["sur: prueba_a -> prueba_b", "prueba_a", Vector2i(12, 16), "move_down",
+		["sur: prueba_a -> prueba_b", "prueba_a", Vector2i(12, 23), "move_down",
 			"prueba_b", Vector2i(15, 1), Vector2i.DOWN],
 		["oeste: prueba_b -> prueba_a", "prueba_b", Vector2i(3, 8), "move_left",
-			"prueba_a", Vector2i(38, 9), Vector2i.LEFT],
+			"prueba_a", Vector2i(52, 9), Vector2i.LEFT],
 		["norte: prueba_b -> prueba_a", "prueba_b", Vector2i(15, 3), "move_up",
-			"prueba_a", Vector2i(12, 18), Vector2i.UP],
+			"prueba_a", Vector2i(12, 25), Vector2i.UP],
 		["norte: prueba_a -> prueba_c (menor que la pantalla)", "prueba_a", Vector2i(25, 4), "move_up",
 			"prueba_c", Vector2i(10, 8), Vector2i.UP],
 		["sur: prueba_c -> prueba_a", "prueba_c", Vector2i(10, 6), "move_down",
@@ -410,7 +410,7 @@ func _test_fade() -> void:
 
 	for reduced in [false, true]:
 		DesignTokens.reduced_motion = reduced
-		world.enter_zone("prueba_a", Vector2i(37, 9))
+		world.enter_zone("prueba_a", Vector2i(51, 9))
 		await get_tree().physics_frame
 		await get_tree().physics_frame
 		Input.action_press("move_right")

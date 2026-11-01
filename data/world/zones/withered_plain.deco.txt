@@ -26,43 +26,57 @@
 ; R = decor, rock, sólido                     piedra del campo
 ; @ = spawn, start, pisable                   llegada desde la Costa
 ---
-UUuuuuu   uuuuuuuuuuu TTu u u u UUuuuuuuuuUUu uuu uuuu  uuuu uu uuuuuuuuuuuu uuu uTT  uuuu
-UUu uu uuu uuuuuuuuuuuTT u uuu uUUuuuu uuuUU uu uu u  uu uuuuu uu   uuuuuuuuu uuuuTTuu uuu
-                                                                            g        r  r
-        g   w gg  w  r   Rg   grr   rrr r            r  r rR    rr r R r r  rr rb b  2 R
- R       r        w         r S     r    rr  g        rr  r g rr  grg   rr       2r2 wb
-   w     g                g          r  rrr wr  rr  R   gR   r r r      r r
- gw   r  R                r r r r   r rg rr rg r grr  r  rrr  R   grr  r  g g  r  rr  2
-    R R   R         r   grR  r  rr r r  rrg    rR  g  rr rr r    r r r  rr  r   gr r  rr
- w     R   R      r          r     rrr r  r  r   R Rr r           r  wr r r gr r r r   rw
-         1  1aa       r     r rrr    r  r rrrr   rrr    rw rg   rrr r  rr r        R   r
-  r            a1     r  r  R g   r w r     r r       grg  r rrw rr  r    w       g
- @                                                                              r r    rr
-            1aag   w  w r       rr   rrr rr rr rrrrzwr r rr zrr  r gRg r rr uu u     rrr
-                                                                             uu r  r r g
- u uUU  TT uuuu  uu UUu uu u  uuUUUUuuu uu  u uu uuuu TTuuuu uUUu u u UU uu u uu      rr
-u u UUuuTT u  uuuuuuUU uuu uuuuuUUUUuuuuuuuuuuuu u u uTT u u uUUuuuuuuUU u uuu ur r
-uuuu uuuTTuu uUUTTTTuuuuuuUUu UUuuTTUU uuuUUuuu uu          uuuuuu uTTTTuu uuuuur  g    r
-u uu uuuTTu uuUUTTTTuuu uuUUuuUUuuTTUUuu  UUuuu uu rrz r   ruuu uuu TTTT uuuu  u      r
-uuu  uuuuuuu  u uuu  u uu  uuuu u UUuu u  uuuu    r rrr YYY z   u u UU  u  uTT uRr w g r
-uuu u uu  u uuu uuu uu uu  u uuuu UUuuu uuuu u  zzr  R  YYYrzrr  u uUUuuuu uTTuu r r r rr
-uuuuuuUUu   UUuuTTu  uu   uuTTu u uuuuuuuu u   z  rrr zgYYYrrrrg  uuuu u  u uuuu rr   r g
-uuuuuuUUuuuuUUuuTT uuuuuuuu TT uu uuu uuuuu  z  grrrz  RYYYr  rr   uuu uuu uuuu r gr
-UU   u uUU uTTuu uuuuu  TTuu uuuTTu uuuuuuuuz r z rzzz   Mrrrrrrrruu uuuuuuu  uu r r
-UUuu uu UUuuTTuuuuuuuuuuTTuuu uuTTuu u u u       w      r   rrzrz uuuuuuuu uuuuu  g    rr
- uuuuuu u uuTTuuuuu u uu uUU uu u  uuuuuuuuu rrrRrgz rrrg           UUu UUUU uuu   R   wr
- uuu uu  uuuTTuuu u u uuuuUUu uu u uuu uuu u       r   rrrr   grrr  UUu UUUUuuu    w
-UUuuu TTuuTTuu uu u uu  UUuuu  u uuuUU uUUuuUUTTrzz   r  Rgg R  rr  uuuu uuu uTTr    rgrr
-UUuuuuTTuuTTuuuu uuu uuuUU   uuuu uuUUuuUUuuUUTT      zz  z r       uuuuuuuuuuTTrr r  r r
-u TT uTTUU uu uuuuUUuuu uuTTuuuuUUTTTTuu u uuuuuu uu  TTUU   rrrzr gz R   g    r rg   r
-u TTuuTTUU uuuuuuuUU uuuuuTTuuuuUUTTTTuuu  uuu uu uu  TTUUr  rzrrr  z rrwRrgrr r rr  rR r
-TTUUuuu uuuuuuUU uUU uuuUUuuuuuuuuUUu uuTTuu uu UUuu  UUTTrz rz  z r Rccr g     r  R r  r
-TTUU uuuuu uuuUUuuUU uuuUUuuu  uuuUUuuuuTTuu u uUUuuX UUTT    rrrR r 3r 333r  r g    rr r
-u uu uuuuuu  uTTuuuuuuTTuu uuu uuuuuTTuuuu uUU uu     u  uuurzrzrw                   r  r
- uuuuu  uuuuuuTT uuuuuTTuu u uuuuu  TTuu uuuUUu u uu  u uuuur r rrrr     rw r      rr  rr
-uuuuuuUUu UUuuuu uuuuuuuuuUU   uTTu u u u TTuuuuu uu  uuuu   r r   w g       rwr   rr   r
- uu   UUuuUU uuu uuuuu u uUUuuuuTTuuuuu  uTTuuu  uuu  uuuuuuRr rr rr r   rr   rrr r  r g
- uu u  uuuuuu uuu uuTTuuTTuuuuuuu u  uuuUUuuuuuuuuuu  uuTTUU    rrr w   w  w  r  r r r  r
- uuuuu uu uuuu  u uuTTuuTT   uuuuu uuuuuUUuuuuuuu uu  uuTTUU
-   uTTuuTTuuUUuuuuu uuuu uUUuuuuuuu uu uu uuTTuuuuuu  uuuu uTTuuTT u uuuuuuuTT uuu uuuTTuu
-uuuuTTuuTTuuUUuuu  u  u  uUUuuuuuuuuu u uuuuTTuuuuu   uuuu uTT  TTu u u u  uTTu uuu uuTTu
+UU uuu uu    u uuu uuu uuu u TT u  u u  u  UUu uuu uuu uUU u u uu  uuu u   uuu u u u u uuu uuu uuu uu  uuu  uTT    uuu u
+UU u u u u uu  uuu uuu uuu uuTT  u  uu u u UUu uuu  uu uUU  uu  uu  u   uu  uu uuu  uu     uuu uuu uuu  uu uuTT uu  uu u
+
+                                                                                                      g          r   r
+           g    w  gg   w   r    R g    gr r    rr r r                 r   r r R     r r r  R  r r                  R
+  R         r           w            r  S       r      rr   g           rr   r  g  rr   gr g    rr    rr r b b   2b
+                                                                                                            2r 2 w
+    w       g                      g             r   r rr  wr   rr   R     gR    r  r  r        r  r
+  gw    r   R                      r r  r  r    r  rg  rr  rg  r g rr   r   rr r   R    gr r   r   g  g   r  r r  2
+     R  R    R            r     gr R   r   rr  r r   r rg      rR   g   rr  rr  r      r r  r   rr    r    gr  r   rr
+
+  w      R     R        r              r       rrr  r   r   r    R  Rr  r               r   wr  r  r  gr  r r  r    rw
+                                                                                                               R    r
+            1   1a a         r       r  rr r     r   r  rr rr    r rr      rw  rg    r rr  r   rr  r          g
+   r                a1       r   r   R  g    r  w  r       r r          gr g   r r rw  rr   r      w
+ @                                                                                                         r  r     rr
+                1a ag    w   w  r          rr    r rr  rr  rr  rrr rzw r r  rr  zr r   r g Rg  r r r u u u        rrr
+                                                                                                       uu  r   r  r g
+
+ u  uUU    TT  uuu u   uu  UUu  uu  u   uu UUUU uu u u u   u u u u uuu  TT uuu u u UUu  u  u UU  u u u  uu         rr
+u  u UU uu TT  u   uuu uuu UU  uuu  uu uuu UUUU uu uuu uuu uuu u u  u  uTT  u  u u UUu uuu uuUU  u  uu u u r  r
+uu uu  uuu TTu u u UUTT TT uuu uuu UUu  UU uuTT UU  uu uUU uuu  uu              uu uuu u u TTTT uu  uu uuu r   g     r
+           TT      UUTT TT         UU   UU   TT UU      UU                                 TTTT
+u  uu  uuu   u  uu         uuu  uu   u u   uu      uu      uuu  uu  rr z       ruu u u uu        u uuu   u         r
+uu u   uuu uuu u   u u uu   u  uu   uu uu  u UU uu  u   uu uu      r r rrr      z    u  u  UU   u   uTT  u Rr  w  g r
+uu u u  uu   u  uu u u uu  uu  uu   u  uuu u UU uu u u uuu  u  z   r   R      r zr     u u UUu uuu  uTT uu  r  r  r rr
+                                                                 z         YYY     r
+uu uuu uUU u    UU uuTT u   uu     uuTT u  u u uuu uuu u u     z   rrr  zg YYY rrr rg   uu uu  u   u u uuu  r r    r g
+uu uuu uUU uuu uUU uuTT  u uuu uuu u TT  u u u uu  uuu uu   z   gr rrz     YYY     rr    u uu  uuu  uu uu  r  gr
+UU     u u UU  uTT uu  uuu uu   TT uu  uuu TTu  uu uuu uuu   r  z         RYYYrr            uu uuu uu   uu  r  r
+UU         UU   TT              TT         TT              z        rz z    Mr  rr rrr ruu
+   uu  uu    u u   uuu uuu uuu u   uuu  uu   u u u  u  u         w  z      r    rr zrz  uu uuu uuu  uu uuu    g     rr
+ u uuu uu  u u uTT uuu uu  u u u u UU  uu  u   uuu uuu uuu  rr rRr  gz rr rg               UUu  UU UU  uuu     R    wr
+ u uu  uu   uu uTT uuu  u  u u uuu UUu  uu  u  uuu  uu u u           r  r  r               UUu  UU UUu uu      w
+                                                                    z       rr     grr r
+UU uuu  TT uuTT uu  uu  u  uu   UU uuu   u  uu uUU  uUU uu UUTT rz      r   Rg g R   r r   uuu u u uu  uTT r      rgrr
+UU uuu uTT uuTT uu uu  uuu  uu uUU     uuu u u uUU uuUU uu UUTT         zz    z r          uuu uuu uuu uTT rr  r   r r
+u  TT  uTT UU  uu  uuu uUU uuu  uu TTu uuu UUTT TT uu  u u uuu uu   uu     UU    r rr zr                    r g    r
+   TT   TT UU           UU         TT      UUTT TT                      TT UU             gz R     g     r
+u    u u       uuu uuu u    uu uuu   u uuu         uuu   u uu  uu   uu  TT    r  r zr rr   z r rwR rgr r r  r r   rR r
+TT UUu uu  uuu uuu UU  uUU  uu uUU uuu uuu uuUU u  uuTT uu  uu  UU  uu  UU TT rz r z   z  rR                   R  r  r
+TT UU  uuu uu  uuu UUu uUU  uu uUU uuu   u uuUU uu uuTT uu  u  uUU  uu  UU TT      rr rR  r  cc r  g       r      rr r
+                                                                      X                     3r  33 3r   r  g
+u  uu  uuu uuu   u TTu uuu uuTT uu  uu u u uuu uTT uuu u u UU  uu       u   uu urz rz rw                             r
+ u uuu u   uuu uuu TT  uuu uuTT uu  u  uuu uu   TT uu  uuu UUu  u   uu  u  uuu ur  r  rrrr       r w r         rrr  rr
+uu uuu uUU u UU uu uu  uuu uuu uuu UU    u TTu  u  u u  TT uuu uu   uu  uu uu    r  r    w  g          rwr     rr    r
+        UU   UU                    UU      TT           TT
+ u u       uu    u uu  uuu uu  u u   u uuu   u uuu u   u   uuu   u  uu  uu uuu uRr  rr  rr  r    r r    rr r r   r  g
+ u u u   u uuu uu  uuu  uu TTu uTT uuu uuu u u   u uuUU uu uuu uuu  uu  uu TTUU      r rr  w    w   w   r   r  r r   r
+ u uuu u u u u uuu   u  uu TTu uTT     uuu uu  uuu uuUU uu uuu uu   uu  uu TTUU
+
+    uTT uu TTu uUU uuu uu  uuu u u UUu uuu uuu  uu  uu  uu TTu uuu  uu  uu uu  uTT uuTT  u  uu uuu uuTT  u uu  uuu TTu u
+uu uuTT uu TTu uUU uuu   u   u   u UUu uuu uuu uu  u u uuu TTu uuu  u   uu uu  uTT   TT u  u u  u   uTT u  uuu  uu TTu
+

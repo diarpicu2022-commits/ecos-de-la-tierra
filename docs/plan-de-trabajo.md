@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-28 (sesión 8; cierre de la parte 4)
+Última actualización: 2026-10-30 (sesión 9; anexo del rediseño «Tierra Viva»)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -41,6 +41,38 @@ válidos:
 ---
 
 ## Punto de retome
+
+> **Rediseño «Tierra Viva» — contrato «Piel nueva» BLOQUEADO el 2026-10-30.**
+> Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
+>
+> **Decisiones de Diego:**
+> - dirección B (piel nueva sobre los mapas aprobados);
+> - viewport 640×360;
+> - la matriz de Valdehoja se enmienda a la trama orgánica;
+> - el combate de acción sustituye a «Persiana» (R2, anexo propio);
+> - las regiones se agrandan ×4/3.
+>
+> **Hecho:**
+> - paso 1: 39 rampas `TV_*` sin deriva, `tv-state` en `verify_palette` y viewport 640×360;
+> - paso 1b: las seis regiones agrandadas con `tools/scale_zone.py`; las siete zonas, en verde en `verify_zone`.
+>
+> - visto bueno de Diego al paso 1 (2026-10-30);
+> - tarea 1: `prueba_a` 54×27 y `prueba_b` 40×23; `verify_movement` otra vez en 99/99.
+>
+> **Traspaso (2026-10-30):**
+> - `docs/traspaso.md` tiene el estado y la lista de trabajo en orden (tareas 1 a 10).
+> - `tools/tierra_viva/` es el prototipo de arte aprobado, con su README.
+> - `docs/ux/tierra-viva/` tiene los renders de referencia y el concepto del título y los créditos (partes 10 y 12, pendientes de anexo).
+>
+> **Siguiente:**
+> 1. visto bueno de Diego a la tarea 1;
+> 2. paso 2: motor de terreno, empezando por el Bosque.
+>
+> **Para jugar:** F5 abre `scenes/game.tscn` (el mundo con `GameFlow`). La
+> parte 5 (diálogos) está en la rama `parte-5/anexo`, subida como respaldo y
+> sin PR; su caja se diseñó para 480×270 y hay que remedirla al retomarla.
+>
+> La parte 5 sigue en espera.
 
 > **Parte 4 — Encuentros y paso mundo ↔ combate. CERRADA el 2026-10-28.**
 > Anexo `docs/ux/anexos/2026-10-28-encuentros.md`. Lo siguiente es abrir la

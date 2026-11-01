@@ -4,7 +4,7 @@ extends Node2D
 ## rótulo de lugar, a 480x270.
 ##
 ## Cuatro momentos:
-##   antes     a 4 tiles de la salida este de `prueba_a`: la cámara topa con el
+##   antes     a 4 tiles de la salida este de `prueba_a` (columna 53 desde el 2026-10-31): la cámara topa con el
 ##             borde de la zona y ya no enseña el vacío.
 ##   fundido   el cuarto de los siete cuadros del fundido de salida (4/7). Es
 ##             la única captura con colores fuera de la paleta: la cortina
@@ -16,14 +16,14 @@ extends Node2D
 ##   godot --path . res://tools/umbral_sheet.tscn
 
 const OUT_DIR := "res://docs/ux/capturas/"
-const DATE := "2026-10-01"
+const DATE := "2026-10-31"
 
 var _world := WorldRoot.new()
 
 
 func _ready() -> void:
 	_world.start_zone = "prueba_a"
-	_world.start_cell = Vector2i(32, 9)
+	_world.start_cell = Vector2i(46, 9)
 	add_child(_world)
 	DesignTokens.reduced_motion = false
 	await get_tree().physics_frame
@@ -32,7 +32,7 @@ func _ready() -> void:
 	var fade_done := false
 	while _world.zone_id == "prueba_a":
 		await get_tree().physics_frame
-		if not before_done and int(_world.body.global_position.x) >= 36 * DesignTokens.TILE_SIZE:
+		if not before_done and int(_world.body.global_position.x) >= 50 * DesignTokens.TILE_SIZE:
 			before_done = true
 			await _capture("antes")
 		if not fade_done and _world.fade == WorldRoot.Fade.OUT and _world.curtain.modulate.a >= 4.0 / 7.0 - 0.001:
