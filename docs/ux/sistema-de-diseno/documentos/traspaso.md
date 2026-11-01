@@ -75,7 +75,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Visto bueno de Diego al paso 1:** 2026-10-30.
 - **Tarea 1 hecha** (2026-10-30), con el visto bueno de Diego. Entra en el PR #20.
 - **Tarea 2 hecha** (2026-10-31, rama `rediseno/terreno`), con el visto bueno de Diego: `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn`.
-- **Tarea 3 hecha** (2026-10-31): las seis regiones pintadas; `verify_terrain` 7/7 en cada una y `value` ≥ 1,61 en las cuatro visiones. La Cripta tiene luz por bandas. Falta el visto bueno de Diego.
+- **Tarea 3 hecha** (2026-10-31), con el visto bueno de Diego.
+- **Paso 4a hecho** (2026-11-01): masas de región según el sistema de diseño (enmienda 14) y rasgos de región; `verify_terrain` 7/7 y `verify_zone` en verde en las seis. Falta el visto bueno de Diego. Siguiente: §4.2 de `docs/guia-del-equipo.md`.
 
 ## 3. Lista de trabajo, en orden
 

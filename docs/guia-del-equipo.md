@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b).** Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -55,6 +55,9 @@ hecha.
   sin que hayas cambiado nada, descarta esos cambios
   (`git checkout -- project.godot docs/balance`).
 - Si el equipo va justo de memoria, corre las pruebas de una en una.
+- `--import` puede terminar con «Segmentation fault» al cerrarse. Las
+  texturas quedan importadas igual: lo confirma `verify_terrain`, que compara
+  la pantalla con el PNG píxel a píxel.
 
 ---
 
@@ -175,7 +178,7 @@ Cada bloque termina con su verificación y con la parada para el visto bueno
 de Diego. **Con cada uno se abre el README del sistema de diseño que se
 indica.**
 
-### 4.1 Terminar el paso 4a: masas de región
+### 4.1 Paso 4a: masas de región · HECHO el 2026-11-01 (falta el visto bueno de Diego)
 
 Sistema de diseño: `project/README.md` §Mundo, `components/Regiones/README.md`
 y `components/Terrain/README.md`.

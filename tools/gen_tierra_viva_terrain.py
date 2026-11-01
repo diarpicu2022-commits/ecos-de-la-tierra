@@ -80,6 +80,8 @@ def palette(state: str, region: str) -> dict[str, list[np.ndarray]]:
                               "ash", "gold", "roof_red", "ink")}
     dead = seven(ramp("dead_leaf"), [0, 1, 2, 3, 4, 5, 5])
     p["dead"] = dead
+    p["sludge"] = ramp("sludge")
+    p["smog"] = ramp("smog")
     p["fire"] = ramp("fire")
     p["frailejon"] = seven(ramp("frailejon"), [0, 0, 1, 2, 3, 4, 4])
     if region == "cumbre":
@@ -482,8 +484,10 @@ def piece(kind, P, rs):
         W, H = 14, 26
         img = np.zeros((H, W, 4), np.uint8)
         dry = kind == "frailejon_dry"
-        skirt = P["dead"]
-        # tronco cubierto de hojas secas, como el frailejón de verdad
+        # tronco cubierto de hojas secas, como el frailejón de verdad. En lo
+        # sano, madera (neutra): `dead_leaf` es solo de lo enfermo y el
+        # cuantizado la tapaba (111 494 px movidos en la Cumbre sana).
+        skirt = P["dead"] if dry else P["wood"]
         img[9:H, 5:9] = skirt[2]
         img[9:H, 5:6] = skirt[3]
         img[9:H:3, 5:9] = skirt[1]
@@ -756,7 +760,41 @@ def render_crypt(lines: list[str], state: str) -> np.ndarray:
                 img[y, x:x + 3] = g[4]
                 img[y + 1, x:x + 3] = g[2]
                 img[y, x] = g[5]
+    if sick:
+        # smog: donde en lo sano entra la luz, en lo enfermo flotan jirones
+        # finos de humo, tramados y escasos (es una rampa clara y baja el valor)
+        wisp = floor & ~carpet & (crypt_light(H, W) > 0) & ((xx + yy * 3) % 5 == 0) & ((xx // 3 + yy) % 4 == 0)
+        img[wisp] = P["smog"][0]
     return img
+
+
+def paint_blight(img, ground, region: str, state: str, P: dict, rng) -> None:
+    """El daño propio de cada región sobre el suelo libre (sistema de diseño,
+    «Mundo enfermo, uno por región»): lodo de monocultivo en la Llanura y
+    hollín en la Cumbre. El ruido se calcula en los dos estados para que la
+    semilla no se desalinee; solo se pinta en lo enfermo."""
+    H, W = ground.shape
+    nz = ndi.gaussian_filter(rng.random((H // 8 + 2, W // 8 + 2)), 1.6)
+    nz = ndi.zoom(nz, 8, order=1)[:H, :W]
+    if state == "sano" or region not in ("llanura", "cumbre"):
+        return
+    yy, xx = np.indices(ground.shape)
+    chk = (xx + yy) % 2 == 0
+    if region == "llanura":
+        # charcos de lodo en el tono más bajo de su rampa, con grumos sueltos
+        # un tono arriba y borde de hierba seca oscura. Con el tono medio
+        # salían verde lima, y en este juego el verde dice «purificado».
+        blob = ground & (nz > np.quantile(nz, 0.93))
+        blob = ndi.binary_opening(blob, disk(2))
+        sl = P["sludge"]
+        img[blob] = sl[0]
+        img[blob & chk & ((xx * 3 + yy) % 7 == 0)] = sl[1]
+        img[edge(blob, 1)] = P["grass"][1]
+    else:
+        # hollín tramado: manchas de ceniza sobre el pajonal seco
+        blob = ground & (nz > np.quantile(nz, 0.80))
+        img[blob & chk] = P["ash"][0]
+        img[blob & ~chk & ((xx + 2 * yy) % 3 == 0)] = P["ash"][1]
 
 
 def render(lines: list[str], state: str, region: str) -> np.ndarray:
@@ -793,6 +831,7 @@ def render(lines: list[str], state: str, region: str) -> np.ndarray:
 
     free = ~ndi.binary_dilation(path | wat | foliage | sand, iterations=4)
     paint_tufts(img, free, P, rng)
+    paint_blight(img, free, region, state, P, rng)
     paint_mass(img, foliage, region, state, P, rng)
     return img
 

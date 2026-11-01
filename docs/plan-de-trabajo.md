@@ -44,7 +44,7 @@ válidos:
 
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
 > Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
-> está a medias; su siguiente acción es la §4.1 de la guía. **Todo lo visual
+> está hecho (falta el visto bueno de Diego); lo siguiente es la §4.2 de la guía, el paso 4b. **Todo lo visual
 > sigue el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
 
 

@@ -631,3 +631,36 @@ diferencias, y Diego aprobó corregirlas (2026-10-31):
     rehacerlas con los rasgos de región;
   - el visto bueno de Diego.
 - **El paso a paso desde aquí** está en `docs/guia-del-equipo.md`.
+
+#### Paso 4a — Cierre: rasgos de región · 2026-11-01
+
+- **`verify_zone` en las cinco zonas que faltaban, en verde:** Cuenca 45/45,
+  Costa 47/47, Llanura 45/45, Cumbre 46/46 y Cripta 50/50.
+- **`paint_blight`**, el daño propio de cada región sobre el suelo libre.
+  El ruido se calcula en los dos estados, para que la semilla no se
+  desalinee, y solo se pinta en lo enfermo:
+  - **Llanura:** charcos de lodo (`sludge`) en el tono más bajo de la
+    rampa, con grumos y borde de hierba seca.
+  - **Cumbre:** hollín tramado en los dos tonos más oscuros de la ceniza.
+- **Cripta:** jirones de `smog` finos y escasos donde en lo sano entra la
+  luz.
+- **Dos fallos propios, y se dicen:**
+  1. **El lodo salió verde lima** con el tono medio de su rampa. En este
+     juego el verde dice «purificado», así que se bajó al tono más oscuro y
+     a manchas más pequeñas. El hollín se leía como charcos azulados: se
+     oscureció igual.
+  2. **El frailejón sano llevaba la falda en `dead_leaf`,** que es solo de
+     lo enfermo. El cuantizado lo tapaba moviendo 111 494 px en la Cumbre
+     sana, y se vio por su contador. Ahora la falda es madera (neutra) y
+     **las doce imágenes salen con 0 píxeles movidos**: todo nace en su
+     token.
+- **Medido:**
+  - `verify_palette image` y `tv-state` en verde;
+  - `value`: Llanura 1,84–2,10, Cumbre 2,42–2,61 y Cripta 1,76–1,78; las
+    demás, como en la entrada anterior;
+  - `verify_terrain` 7/7 en las seis regiones.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-10-31-terreno-<zona>-{enfermo,ola,sano}.png`.
+
+**Siguiente:** paso 4b, los sprites del catálogo, empezando por el Bosque
+(guía del equipo, §4.2).
