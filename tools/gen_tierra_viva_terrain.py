@@ -79,6 +79,9 @@ def palette(state: str, region: str) -> dict[str, list[np.ndarray]]:
     p = {k: ramp(k) for k in ("grass", "leaf", "dirt", "sand", "water", "stone", "wood", "flower",
                               "ash", "gold", "roof_red", "ink")}
     dead = seven(ramp("dead_leaf"), [0, 1, 2, 3, 4, 5, 5])
+    p["dead"] = dead
+    p["fire"] = ramp("fire")
+    p["frailejon"] = seven(ramp("frailejon"), [0, 0, 1, 2, 3, 4, 4])
     if region == "cumbre":
         # páramo: pajonal y nieve en lo sano; pajonal seco y pedregal del
         # glaciar derretido en lo enfermo. Las matas son puyas.
@@ -343,68 +346,219 @@ def paint_water(img, wat, land, P, rng):
     return bank
 
 
-def paint_canopy(img, canopy, P, rng):
-    """Masa de copas por racimos (flora.clumps_canopy), recortada a su máscara.
-    Cada racimo es una esfera de 3-4 tonos de la rampa, de atrás adelante;
-    contorno del tono más oscuro de la rampa y sombra al sur sobre el suelo."""
-    H, W = canopy.shape
-    leaf = P["leaf"]
-    lx, ly = -0.6, -0.8
-    layer = np.zeros_like(img)
-    circles = []
-    for y in range(-6, H + 8, 9):
-        for x in range(-6 + (5 if (y // 9) % 2 else 0), W + 8, 11):
-            cx, cy = x + rng.integers(-3, 4), y + rng.integers(-2, 3)
-            if canopy[min(max(cy, 0), H - 1), min(max(cx, 0), W - 1)] or \
-                    canopy[min(max(cy + 6, 0), H - 1), min(max(cx, 0), W - 1)]:
-                circles.append((cx, cy, int(rng.integers(7, 11))))
-    circles.sort(key=lambda c: c[1])
-    for cx, cy, r in circles:
-        x0, x1 = max(0, cx - r - 1), min(W, cx + r + 2)
-        y0, y1 = max(0, cy - r - 1), min(H, cy + r + 2)
-        if x0 >= x1 or y0 >= y1:
-            continue
-        yy, xx = np.mgrid[y0:y1, x0:x1]
+# --- masas del follaje (enmienda 14 y sistema de diseño) -------------------------
+#
+# «Los bosques se cierran con filas de árboles solapados (muro de árboles)»;
+# «el árbol quemado es el mismo árbol sin copa, con hollín al pie»; «en lo
+# enfermo los arbustos son ramitas secas, no manchas oscuras» (README del
+# sistema de diseño «Tierra Viva» y sus tarjetas Overworld y Regiones).
+# Cada región tiene su pieza en sano y en enfermo, y las dos se colocan en los
+# mismos sitios: la ola descubre cada árbol sobre su versión quemada.
+
+## (pieza sana, pieza enferma, paso horizontal, paso vertical) por región.
+MASS = {
+    "bosque": ("tree", "burnt_embers", 14, 10),
+    "cuenca": ("tree", "burnt", 14, 10),
+    "costa": ("bush", "twigs", 11, 8),
+    "llanura": ("bush", "twigs", 11, 8),
+    "cumbre": ("frailejon", "frailejon_dry", 10, 9),
+}
+
+## Píxeles que una pieza del borde norte de la masa puede asomar por encima
+## de sus casillas: la copa sube, no se corta en recto.
+RISE = 8
+
+
+def clumps(W, H, circles, ramp, light=(-0.6, -0.8)):
+    """Racimos de copa (flora.clumps_canopy): cada racimo es una esfera de 3-4
+    tonos de la rampa, de atrás adelante, con su borde inferior separado."""
+    img = np.zeros((H, W, 4), np.uint8)
+    m = np.zeros((H, W), bool)
+    yy, xx = np.mgrid[0:H, 0:W]
+    lx, ly = light
+    y0, y1 = min(c[1] for c in circles), max(c[1] for c in circles)
+    for cx, cy, r in sorted(circles, key=lambda c: c[1]):
         dx = (xx + 0.5 - cx) / r
         dy = (yy + 0.5 - cy) / (r * 0.9)
         d2 = dx * dx + dy * dy
         inside = d2 <= 1.0
         nz = np.sqrt(np.clip(1 - d2, 0, 1))
-        v = np.clip(-(dx * lx + dy * ly) * 0.8 + nz * 0.5, 0, 1) - 0.08
+        occl = 0.25 * (cy - y0) / max(1, y1 - y0)
+        v = np.clip(-(dx * lx + dy * ly) * 0.8 + nz * 0.5, 0, 1) - occl
         idx = np.where(v > 0.78, 5, np.where(v > 0.52, 4, np.where(v > 0.28, 3, 2)))
-        win = layer[y0:y1, x0:x1]
+        layer = np.zeros_like(img)
         for k in (2, 3, 4, 5):
-            win[inside & (idx == k)] = leaf[k]
-        win[inside & (d2 > 0.72) & ((dy > 0.1) | (dx > 0.55))] = leaf[1]
-        if r > 8:
-            hx, hy = int(cx - r * 0.4), int(cy - r * 0.45)
-            if 0 <= hy < H and 0 <= hx < W - 1:
-                layer[hy, hx:hx + 2] = leaf[6]
-    # El borde de la masa es el de los racimos: asoman hasta OVERHANG px
-    # fuera de sus casillas, en festón, y no en una línea recta recortada.
-    reach = ndi.binary_dilation(canopy, disk(OVERHANG))
-    shape = (canopy | (layer[..., 3] > 0)) & reach
-    shape = ndi.binary_opening(shape, disk(1)) | canopy
-    # sombra de la masa sobre el suelo, al sur y un poco a la derecha
+            layer[inside & (idx == k)] = ramp[k]
+        layer[inside & (d2 > 0.72) & ((dy > 0.1) | (dx > 0.55))] = ramp[1]
+        img[inside] = layer[inside]
+        m |= inside
+    for cx, cy, r in circles:
+        if cy - y0 <= (y1 - y0) * 0.5 and r > 5:
+            x, y = int(cx - r * 0.4), int(cy - r * 0.45)
+            if 0 <= y < H and 0 <= x < W - 1 and m[y, x]:
+                img[y, x:x + 2] = ramp[6]
+    return img, m
+
+
+def outlined(img, color):
+    """Contorno exterior de 1 px (cláusula 3: el tono más oscuro de la rampa
+    de la propia pieza)."""
+    m = img[..., 3] > 0
+    ring = ndi.binary_dilation(m) & ~m
+    out = img.copy()
+    out[ring] = color
+    return out
+
+
+def line(img, x0, y0, x1, y1, color, width=1):
+    H, W = img.shape[:2]
+    n = int(max(abs(x1 - x0), abs(y1 - y0))) + 1
+    for t in np.linspace(0, 1, n):
+        x, y = int(round(x0 + (x1 - x0) * t)), int(round(y0 + (y1 - y0) * t))
+        if 0 <= y < H:
+            img[y, max(0, x):max(0, min(W, x + width))] = color
+
+
+def trunk(img, cx, top, bottom, ramp):
+    """Tronco de 6 px con luz a la izquierda y raíces abiertas al pie."""
+    img[top:bottom, cx - 3:cx + 3] = ramp[2]
+    img[top:bottom, cx - 3:cx - 1] = ramp[3]
+    img[top:bottom, cx + 2:cx + 3] = ramp[1]
+    img[bottom - 2:bottom, cx - 5:cx + 5] = ramp[2]
+    img[bottom - 1, cx - 5:cx - 3] = ramp[1]
+    img[bottom - 1, cx + 3:cx + 5] = ramp[1]
+
+
+def piece(kind, P, rs):
+    """Una pieza de masa. El pie es el centro de su fila de abajo."""
+    leaf, wood, ash = P["leaf"], P["wood"], P["ash"]
+    if kind == "tree":
+        W, H = 28, 38
+        img = np.zeros((H, W, 4), np.uint8)
+        trunk(img, 14, 22, H, wood)
+        circles = [(14 + int(rs.integers(-1, 2)), 11, 10), (7, 15, 7), (21, 15, 7), (10, 7, 6), (19, 7, 6)]
+        top, _ = clumps(W, 27, circles, leaf)
+        top = outlined(top, leaf[0])
+        blit(img, top, 0, 0)
+        return img
+    if kind in ("burnt", "burnt_embers"):
+        # el mismo árbol sin copa: tronco y ramas carbonizados en ceniza
+        W, H = 28, 38
+        img = np.zeros((H, W, 4), np.uint8)
+        trunk(img, 14, 14, H, ash)
+        tips = []
+        for a in (-2.3, -1.9, -1.4, -1.0, -0.6):
+            a += rs.uniform(-0.15, 0.15)
+            ln = rs.uniform(9, 13)
+            x1, y1 = 14 + np.cos(a) * ln, 15 + np.sin(a) * ln
+            line(img, 14, 16, x1, y1, ash[1], 2)
+            tx, ty = x1 + np.cos(a - 0.5) * 4, y1 + np.sin(a - 0.5) * 4
+            line(img, x1, y1, tx, ty, ash[2])
+            tips.append((int(x1), int(y1)))
+        img = outlined(img, ash[0])
+        if kind == "burnt_embers" and rs.random() < 0.25:
+            # brasas de `fire` en las ramas: la causa sigue activa
+            fire = P["fire"]
+            for k, (x, y) in enumerate(tips):
+                if 0 <= y < H and 0 <= x < W:
+                    img[y, x] = fire[4 if k % 2 else 3]
+            img[16, 13:15] = fire[2]
+        return img
+    if kind == "bush":
+        circles = [(9, 7, 6), (5, 9, 4), (13, 9, 4)]
+        img, _ = clumps(18, 14, circles, leaf)
+        return outlined(img, leaf[0])
+    if kind == "twigs":
+        W, H = 16, 12
+        img = np.zeros((H, W, 4), np.uint8)
+        dl = P["dead"]
+        for k in range(7):
+            a = -np.pi / 2 + rs.uniform(-1.0, 1.0)
+            ln = rs.uniform(5, 10)
+            line(img, 8, 11, 8 + np.cos(a) * ln, 11 + np.sin(a) * ln, dl[2 + k % 3])
+        img[10:12, 6:10] = dl[1]
+        return img
+    if kind in ("frailejon", "frailejon_dry"):
+        W, H = 14, 26
+        img = np.zeros((H, W, 4), np.uint8)
+        dry = kind == "frailejon_dry"
+        skirt = P["dead"]
+        # tronco cubierto de hojas secas, como el frailejón de verdad
+        img[9:H, 5:9] = skirt[2]
+        img[9:H, 5:6] = skirt[3]
+        img[9:H:3, 5:9] = skirt[1]
+        ros = P["dead"] if dry else P["frailejon"]
+        yy, xx = np.mgrid[0:11, 0:W]
+        e = ((xx + 0.5 - 7) / 7) ** 2 + ((yy + 0.5 - 5) / 4.5) ** 2 <= 1
+        top = np.zeros((11, W, 4), np.uint8)
+        top[e] = ros[2]
+        top[e & (yy < 5)] = ros[3]
+        top[e & (yy < 3) & (xx < 8)] = ros[4]
+        for x in range(1, W - 1, 3):
+            top[e & (xx == x) & (yy > 1)] = ros[1]
+        if not dry:
+            top[1, 6:8] = P["gold"][4]
+        img[:11][e] = top[e]
+        return outlined(img, ros[0])
+    raise KeyError(kind)
+
+
+def paint_mass(img, mask, region, state, P, rng):
+    """Muro de piezas sobre la máscara del follaje, ordenadas por el pie.
+    Devuelve la silueta de la masa."""
+    H, W = mask.shape
+    pure_kind, sick_kind, sx, sy = MASS[region]
+    kind = pure_kind if state == "sano" else sick_kind
+    feet = []
+    for y in range(sy, H + sy, sy):
+        for x in range((y // sy % 2) * (sx // 2), W, sx):
+            fx, fy = x + int(rng.integers(-3, 4)), y + int(rng.integers(-2, 3))
+            if 0 <= fy < H and 0 <= fx < W and mask[fy, fx]:
+                feet.append((fy, fx, int(rng.integers(0, 1 << 30))))
+    feet.sort()
+    reach = ndi.binary_dilation(mask, disk(OVERHANG))
+    for k in range(1, RISE + 1):
+        reach |= shift(mask, -k, 0)
+    sick = state != "sano"
+    yy, xx = np.indices(mask.shape)
+    if sick:
+        # hollín bajo lo muerto: el suelo de la masa se oscurece, tramado
+        soot = mask & ((xx + yy) % 2 == 0)
+        img[soot] = darker(img[soot], P)
+        img[mask & ((xx * 3 + yy * 5) % 7 == 0)] = P["ash"][1]
+    elif kind == "frailejon":
+        img[mask] = P["grass"][2]
+    else:
+        img[mask] = P["leaf"][1]
+    layer = np.zeros_like(img)
+    for n, (fy, fx, seed) in enumerate(feet):
+        if sick and kind.startswith("burnt") and n % 3 and mask[min(fy + 10, H - 1), fx]:
+            # Lo quemado no es una espesura: queda el borde de la masa entero
+            # y uno de cada tres árboles dentro, con el suelo en hollín a la
+            # vista entre ellos (sistema de diseño, mapa del Bosque enfermo).
+            continue
+        spr = piece(kind, P, np.random.default_rng(seed))
+        h, w = spr.shape[:2]
+        blit(layer, spr, fx - w // 2, fy - h + 1)
+    on = (layer[..., 3] > 0) & reach
+    shape = on | mask
     shadow = shift(shape, 4, 2) & ~shape
     img[shadow] = darker(img[shadow], P)
-    filled = shape & (layer[..., 3] > 0)
-    img[filled] = layer[filled]
-    img[shape & ~filled] = leaf[1]
-    img[ndi.binary_dilation(shape) & ~shape] = leaf[0]
+    img[on] = layer[on]
     return shape
 
 
-def darker(px: np.ndarray, P: dict) -> np.ndarray:
+def darker(px, P):
     """Baja un tono cada píxel dentro de la rampa del estado a la que pertenece."""
+    if len(px) == 0:
+        return px
     lut = {}
     for r in P.values():
         for i, c in enumerate(r):
-            lut.setdefault(tuple(c[:3]), r[max(0, i - 1)])
-    out = px.copy()
-    for i, c in enumerate(px):
-        out[i] = lut.get(tuple(c[:3]), c)
-    return out
+            lut.setdefault(tuple(int(v) for v in c[:3]), r[max(0, i - 1)])
+    uniq, inv = np.unique(px.reshape(-1, 4), axis=0, return_inverse=True)
+    mapped = np.array([lut.get(tuple(int(v) for v in u[:3]), u) for u in uniq], np.uint8)
+    return mapped[inv.reshape(-1)].reshape(px.shape)
 
 
 def paint_bridges(img, G, P):
@@ -628,7 +782,7 @@ def render(lines: list[str], state: str, region: str) -> np.ndarray:
     if sand.any():
         paint_sand(img, sand & ~path, P, rng)
     wat = rounded(water_t | bridge_t, 8, sigma=12)
-    canopy = rounded(G == "#", 5, sigma=6) & ~wat
+    foliage = rounded(G == "#", 5, sigma=6) & ~wat
     beach = ndi.binary_dilation(sand, iterations=3) if sand.any() else sand
     # orilla con talud solo donde el agua no da a la playa
     bank = paint_water(img, wat, ~wat & ~beach, P, rng)
@@ -637,9 +791,9 @@ def render(lines: list[str], state: str, region: str) -> np.ndarray:
     paint_water_life(img, wat, bank, state, P, rng)
     paint_bridges(img, G, P)
 
-    free = ~ndi.binary_dilation(path | wat | canopy | sand, iterations=4)
+    free = ~ndi.binary_dilation(path | wat | foliage | sand, iterations=4)
     paint_tufts(img, free, P, rng)
-    paint_canopy(img, canopy, P, rng)
+    paint_mass(img, foliage, region, state, P, rng)
     return img
 
 

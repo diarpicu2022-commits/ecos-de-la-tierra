@@ -569,3 +569,63 @@ fuente, columnas de la Cripta) es el viejo y se rehace en el paso 4.
 - los sprites del catálogo de cada `*.deco.txt`, con el estilo del
   prototipo y el contorno de su rampa;
 - los edificios y vecinos de PixelLab, a `assets/source/pixellab/`.
+
+**Visto bueno de Diego al paso 3: 2026-10-31.**
+
+#### Corrección contra el sistema de diseño · 2026-11-01
+
+Diego descargó el sistema de diseño «Tierra Viva» y ahora está en el repo, en
+`docs/ux/sistema-de-diseno/`. Al cotejar los pasos 2 y 3 con él salieron
+diferencias, y Diego aprobó corregirlas (2026-10-31):
+
+- **Bosque enfermo = incendio** (`ash` + `fire`): árboles quemados sin copa,
+  con hollín al pie y brasas. Antes eran copas de hoja muerta.
+- **Los bosques se cierran con muros de árboles solapados**, con troncos;
+  antes eran una alfombra de copas.
+- **Arbustos enfermos = ramitas secas**, no manchas oscuras.
+- **Rasgos de región pendientes:** `sludge` en la Llanura enferma, hollín
+  sobre `ice` en la Cumbre y `smog` en la Cripta.
+- **Para otras partes:** la caja de diálogo (papel con marco de madera)
+  choca con el contrato «Columna» de la parte 5; el cartel de lugar, el HUD
+  de acción y los personajes de 48 px son de R2 y R3.
+
+#### Enmienda 14 — La masa sustituye al relleno · autorizada por Diego el 2026-10-31
+
+- En una zona con suelo de Tierra Viva, las piezas `tree`, `tree_b`,
+  `burnt_tree`, `bush`, `pine` y `boulder` que caen **enteras dentro del
+  follaje sólido** no se montan: ni sprite ni cuerpo. La colisión ya sale de
+  la matriz. Antes eran unas 4.400 piezas en las seis regiones.
+  - `WorldDecor.FILL`, `has_terrain()` e `is_fill()`.
+  - `verify_zone` cuenta con la misma regla.
+  - El Bosque pasa de unos 680 sprites de decorado a 82.
+- **Cada región tiene su masa** en el generador (`MASS` en
+  `gen_tierra_viva_terrain.py`), colocada en los mismos sitios en los dos
+  estados:
+
+  | Región | Sano | Enfermo |
+  |---|---|---|
+  | Bosque | muro de árboles solapados | árboles quemados con brasas; el borde entero y uno de cada tres dentro |
+  | Cuenca | muro de árboles | árboles quemados sin brasas |
+  | Costa y Llanura | arbustos | ramitas secas |
+  | Cumbre | frailejones | frailejones secos |
+
+**Paso 4a, estado al 2026-11-01 (parcial, subido para que el equipo siga):**
+
+- **Medido en verde:**
+  - `verify_palette image` y `tv-state` en las doce imágenes;
+  - `value`: Bosque 1,63–1,79, Cuenca 1,54–1,67, Costa 1,54–1,60,
+    Llanura 1,83–2,09 y Cumbre 2,35–2,53;
+  - `verify_terrain` 7/7 en las seis regiones;
+  - `verify_usability` 16/16, `verify_camera` 37/37, `verify_encounters`
+    82/82, `verify_flow` 23/23, `verify_party_ai` 19/19 y
+    `verify_movement` 99/99;
+  - `verify_zone`: Bosque 46/46 y Valdehoja 55/55.
+- **Sin medir:** `verify_zone` en Cuenca, Costa, Llanura, Cumbre y Cripta.
+  La pasada se cortó porque el equipo se quedó sin memoria, no por un
+  fallo. Es lo primero que hay que correr.
+- **Falta:**
+  - el `sludge` de la Llanura, el hollín sobre `ice` de la Cumbre y el
+    `smog` de la Cripta;
+  - capturas a 640 × 360 de las seis regiones;
+  - el visto bueno de Diego.
+- **El paso a paso desde aquí** está en `docs/guia-del-equipo.md`.

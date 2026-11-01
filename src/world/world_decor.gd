@@ -34,6 +34,13 @@ const SWAYS := ["grass", "flower", "weed", "crop_row", "reeds"]
 const JITTER := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
 const JITTER_PX := 3
 
+## Relleno del follaje (enmienda 14, 2026-10-31): en una zona con suelo de
+## Tierra Viva, la masa del generador ya pinta el bosque como un muro de
+## árboles. Estas piezas, cuando caen enteras dentro del follaje sólido (`#`),
+## no se montan: ni sprite ni cuerpo, porque la colisión ya sale de la matriz.
+const FILL := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
+
+
 ## Lo que desaparece con la ola de purificación: el paso cerrado y el
 ## monstruo (catálogo 2a) y el daño que se limpia (crudo, barriles, basura y,
 ## en la Cripta, el oro).
@@ -60,10 +67,13 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 	var rows: PackedStringArray = deco["rows"]
 	var t := DesignTokens.TILE_SIZE
 	var spawn := Vector2i(-1, -1)
+	var lines := ZoneRules.load_zone(zone_id) if has_terrain(zone_id) else PackedStringArray()
 	for piece in pieces(rows, legend):
 		var entry: Dictionary = legend[piece["ch"]]
 		var at: Vector2i = piece["at"]
 		var size: Vector2i = entry["size"]
+		if is_fill(entry, at, lines):
+			continue
 		if entry["kind"] == "spawn":
 			spawn = at
 			continue
@@ -113,6 +123,25 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 			body.add_child(collider)
 			solids.add_child(body)
 	return spawn
+
+
+## La zona tiene su suelo de Tierra Viva (los dos PNG del generador).
+static func has_terrain(zone_id: String) -> bool:
+	return ResourceLoader.exists(WorldRoot.TERRAIN_DIR + zone_id + "_enfermo.png") 		and ResourceLoader.exists(WorldRoot.TERRAIN_DIR + zone_id + "_sano.png")
+
+
+## Pieza de relleno que la masa ya pinta (FILL). `lines` es la matriz de la
+## zona si tiene suelo de Tierra Viva, o vacía si no: entonces nada es relleno.
+static func is_fill(entry: Dictionary, at: Vector2i, lines: PackedStringArray) -> bool:
+	if lines.is_empty() or not (entry["id"] in FILL):
+		return false
+	var size: Vector2i = entry["size"]
+	for j in size.y:
+		for i in size.x:
+			var c := at + Vector2i(i, j)
+			if c.y >= lines.size() or c.x >= lines[c.y].length() or lines[c.y][c.x] != "#":
+				return false
+	return true
 
 
 ## Las piezas por su esquina superior izquierda: `[{ch, at}]`. Una pieza de
