@@ -4,8 +4,8 @@ from PIL import Image
 import maps, world, flora, scene, ui, px, terrain
 from pal import P
 
-TREE = scene.trim(np.array(Image.open('pl/obj2/tree_clean.png')))
-BURNT = scene.trim(np.array(Image.open('pl/obj/burnt_clean.png')))
+TREE = scene.trim(np.array(Image.open('../../assets/source/pixellab/obj2/tree_clean.png')))
+BURNT = scene.trim(np.array(Image.open('../../assets/source/pixellab/obj/burnt_clean.png')))
 
 # bases (x de la esquina izquierda, y de la base) de los árboles: muros arriba, abajo y a los lados
 TREES = [(-40, 70), (40, 58), (120, 74), (190, 52), (240, 78), (420, 60), (500, 50), (570, 72),

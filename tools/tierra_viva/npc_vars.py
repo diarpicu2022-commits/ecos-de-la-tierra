@@ -11,7 +11,7 @@ DIRS = ['south', 'south-east', 'east', 'north-east', 'north', 'north-west', 'wes
 
 def skin_colors(base):
     """Colores de piel: tonos cálidos de la cara en la vista sur."""
-    a = np.array(Image.open(f'pl/npc/{base}/south.png').convert('RGBA'))
+    a = np.array(Image.open(f'../../assets/source/pixellab/npc/{base}/south.png').convert('RGBA'))
     out = set()
     for y in range(14, 22):
         for x in range(19, 29):
@@ -25,7 +25,7 @@ def skin_colors(base):
     seeds = np.array(sorted(out), float)
     allc = set()
     for d in DIRS:
-        b_ = np.array(Image.open(f'pl/npc/{base}/{d}.png').convert('RGBA'))
+        b_ = np.array(Image.open(f'../../assets/source/pixellab/npc/{base}/{d}.png').convert('RGBA'))
         for c in b_[b_[..., 3] > 0][:, :3]:
             allc.add(tuple(int(v) for v in c))
     for c in allc:
@@ -76,14 +76,14 @@ VARIANTS = {
 def build(name):
     base, hue, sat, val, sk, hr = VARIANTS[name]
     skin = skin_colors(base)
-    os.makedirs(f'pl/npc_var/{name}', exist_ok=True)
+    os.makedirs(f'../../assets/source/pixellab/npc_var/{name}', exist_ok=True)
     for d in DIRS:
-        a = np.array(Image.open(f'pl/npc/{base}/{d}.png').convert('RGBA'))
-        Image.fromarray(recolor(a, skin, hue, sat, val, sk, hr)).save(f'pl/npc_var/{name}/{d}.png')
+        a = np.array(Image.open(f'../../assets/source/pixellab/npc/{base}/{d}.png').convert('RGBA'))
+        Image.fromarray(recolor(a, skin, hue, sat, val, sk, hr)).save(f'../../assets/source/pixellab/npc_var/{name}/{d}.png')
 
 
 def sprite(name, d='south'):
-    p = f'pl/npc_var/{name}/{d}.png' if name in VARIANTS else f'pl/npc/{name}/{d}.png'
+    p = f'../../assets/source/pixellab/npc_var/{name}/{d}.png' if name in VARIANTS else f'../../assets/source/pixellab/npc/{name}/{d}.png'
     return np.array(Image.open(p).convert('RGBA'))
 
 

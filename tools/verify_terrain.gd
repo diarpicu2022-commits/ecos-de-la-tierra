@@ -3,9 +3,11 @@ extends Node
 ## El suelo de Tierra Viva en el motor (contrato «Piel nueva», paso 2), a
 ## 640 × 360 y con ventana:
 ##
-##   godot --path . res://tools/verify_terrain.tscn -- [zona]
+##   godot --path . res://tools/verify_terrain.tscn -- [zona] [etiqueta] [x y]
 ##
-## Sin argumento, el Bosque (`ashen_forest`). Vale para las seis regiones
+## Sin argumento, el Bosque (`ashen_forest`). La etiqueta (por defecto
+## «terreno») va en el nombre de las capturas, y `x y` cambia la casilla desde
+## la que se mira, para encuadrar el decorado (paso 4b: «decorado» y el hito). Vale para las seis regiones
 ## (paso 3): se mira desde la casilla de llegada y se empuja contra la
 ## primera casilla de follaje o muro con suelo debajo.
 ## - **Montaje:** existen los dos sprites del suelo, miden la zona (casillas ×
@@ -15,14 +17,15 @@ extends Node
 ## - **Se ve lo que se generó:** con el decorado e Ilan ocultos,
 ##   cada píxel de la pantalla es exactamente el píxel del PNG en esa posición
 ##   del mundo: sin filtro, sin escala y sin desfase. Las capturas se hacen
-##   después, con todo visible (el decorado todavía es el viejo: paso 4).
+##   después, con todo visible.
 ## - **Estado:** enferma, se ve el enfermo; purificada, el sano.
 ## - **Ola:** a mitad de la ola, cada píxel visible del suelo es enfermo o
 ##   sano, nunca una mezcla, y hay de los dos.
-## Capturas: docs/ux/capturas/2026-10-31-terreno-<zona>-{enfermo,ola,sano}.png.
+## Capturas: docs/ux/capturas/<fecha>-<etiqueta>-<zona>-{enfermo,ola,sano}.png,
+## con la fecha del día.
 ## Sale con código 1 si algo falla.
 
-const OUT := "res://docs/ux/capturas/2026-10-31-terreno-%s-%s.png"
+const OUT := "res://docs/ux/capturas/%s-%s-%s-%s.png"
 const MATCH_MIN := 1.0
 
 ## Casilla desde la que se mira, si no es la de llegada: en el Bosque, junto
@@ -36,12 +39,16 @@ var _fail := 0
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	var zone: String = args[0] if args.size() > 0 else "ashen_forest"
+	var tag: String = args[1] if args.size() > 1 else "terreno"
+	var day := Time.get_date_string_from_system()
 	var state := get_node("/root/GameState")
 	state.flags.clear()
 	state.set_zone_purified(zone, false)
 	DesignTokens.reduced_motion = false
 	var lines := ZoneRules.load_zone(zone)
 	var view_cell: Vector2i = VIEW.get(zone, _arrival(zone))
+	if args.size() > 3:
+		view_cell = Vector2i(int(args[2]), int(args[3]))
 	var wall_cell := _against_wall(lines)
 	var world := WorldRoot.new()
 	world.start_zone = zone
@@ -87,7 +94,7 @@ func _ready() -> void:
 	var m := _match(shot, world, sick_img)
 	_check("enferma: se ve el enfermo en el %.0f %% de la pantalla (≥ %.0f %%)" % [m * 100, MATCH_MIN * 100],
 		m >= MATCH_MIN and not world.terrain_pure.visible)
-	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [zone, "enfermo"]))
+	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "enfermo"]))
 
 	print("\nOla")
 	var origin: Vector2i = view_cell
@@ -100,7 +107,7 @@ func _ready() -> void:
 	var both := _mix(shot, world, sick_img, pure_img)
 	_check("a mitad: %.0f %% del suelo es enfermo o sano y nunca mezcla (%d sano, %d enfermo)" % [
 		both[0] * 100, both[1], both[2]], both[0] >= MATCH_MIN and both[1] > 0 and both[2] > 0)
-	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [zone, "ola"]))
+	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "ola"]))
 	await world.wave_finished
 	world.label.visible = false
 	if world.monster != null:
@@ -110,7 +117,7 @@ func _ready() -> void:
 	m = _match(shot, world, pure_img)
 	_check("purificada: se ve el sano en el %.0f %% de la pantalla" % [m * 100],
 		m >= MATCH_MIN and world.terrain_pure.visible)
-	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [zone, "sano"]))
+	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "sano"]))
 	state.set_zone_purified(zone, false)
 	_end()
 

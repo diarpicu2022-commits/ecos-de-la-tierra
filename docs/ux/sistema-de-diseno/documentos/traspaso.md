@@ -127,7 +127,7 @@ Las siete zonas pintadas desde sus matrices, con sus `verify_zone` y `value`.
 ### Tarea 4: paso 4, el decorado
 - **Sprites:** los del catálogo de cada `*.deco.txt` (árboles, viñetas, hitos, pasos cerrados, fauna) se generan con el estilo del prototipo en `tools/gen_tierra_viva_decor.py`. Lo carga `src/world/world_decor.gd`, mismo `id` y sprite nuevo, desde `assets/sprites/world/decor/`.
 - **Contorno:** el decorado lleva el contorno de su rampa. `ASH_050` solo va en lo que responde (cláusula 3).
-- **PixelLab:** los edificios y vecinos se mueven de `tools/tierra_viva/pl/` a `assets/source/pixellab/` con un README (cláusula 4). Hay que añadir a `verify_palette.py` la excepción de «tinta de personaje o edificio».
+- **PixelLab (hecho, 2026-11-01):** los originales están en `assets/source/pixellab/` con su README (cláusula 4), y `verify_palette.py image <png> --source <original>` acepta su «tinta de personaje o edificio».
 
 ### Tarea 5: paso 5, Valdehoja
 - **Matriz nueva:** se escribe la de `data/world/zones/valdehoja.txt` (y `.deco` y `.parts`) desde `tools/tierra_viva/village5.py`.

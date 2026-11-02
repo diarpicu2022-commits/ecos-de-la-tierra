@@ -20,9 +20,9 @@ def npc_actors(names=None):
     for n, d, x, y in NPCS:
         if names and n not in names:
             continue
-        p = f'pl/npc/{n}/{d}.png'
+        p = f'../../assets/source/pixellab/npc/{n}/{d}.png'
         if not os.path.exists(p):
-            p = f'pl/npc/{n}/south.png'
+            p = f'../../assets/source/pixellab/npc/{n}/south.png'
         if not os.path.exists(p):
             continue
         s = scene.trim(np.array(Image.open(p)))

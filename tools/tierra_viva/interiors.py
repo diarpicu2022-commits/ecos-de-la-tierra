@@ -355,9 +355,9 @@ def stairs_up():
 
 def npc(name, d='south'):
     import os
-    p = f'pl/npc/{name}/{d}.png'
+    p = f'../../assets/source/pixellab/npc/{name}/{d}.png'
     if not os.path.exists(p):
-        p = f'pl/npc/{name}/south.png'
+        p = f'../../assets/source/pixellab/npc/{name}/south.png'
     return scene.trim(np.array(Image.open(p)))
 
 

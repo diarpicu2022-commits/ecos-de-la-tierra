@@ -16,6 +16,13 @@ significado. Eso no se comprueba mirando una captura: se comprueba aquí.
         tinta de personaje tampoco vale: es la medida del decorado y del
         terreno.
 
+    python tools/verify_palette.py image <png> --source <original>
+        Tinta de personaje o edificio (paso 4b, guía del equipo §4.2): un
+        sprite que sale de PixelLab trae colores propios que no son tokens.
+        Se aceptan solo si `<original>` (un archivo o una carpeta) está dentro
+        de `assets/source/pixellab/` y el color aparece en él. Cualquier otro
+        color suelto sigue siendo falla.
+
     python tools/verify_palette.py tv-state <png> enfermo|sano
         Enmienda 13: un render enfermo no lleva ningún color de las rampas
         TV de solo-purificado, y uno sano ninguno de solo-enfermo.
@@ -167,7 +174,34 @@ def cmd_tokens() -> bool:
     return ok
 
 
-def cmd_image(path: str, world: bool, strict: bool = False) -> bool:
+PIXELLAB = ROOT / "assets" / "source" / "pixellab"
+
+
+def source_inks(source: str) -> set[tuple[int, int, int]] | None:
+    """Colores opacos de un original de PixelLab (archivo o carpeta), o None
+    si la ruta no está dentro de `assets/source/pixellab/`."""
+    src = Path(source).resolve()
+    if not src.is_relative_to(PIXELLAB.resolve()) or not src.exists():
+        return None
+    files = [src] if src.is_file() else sorted(src.rglob("*.png"))
+    inks: set[tuple[int, int, int]] = set()
+    for f in files:
+        im = Image.open(f).convert("RGBA")
+        for r, g, b, a in getattr(im, "get_flattened_data", im.getdata)():
+            if a:
+                inks.add((r, g, b))
+    return inks
+
+
+def cmd_image(path: str, world: bool, strict: bool = False, source: str | None = None) -> bool:
+    inks: set[tuple[int, int, int]] = set()
+    if source is not None:
+        found = source_inks(source)
+        if found is None:
+            print(f"  FALLA  {source} no está dentro de assets/source/pixellab/: no hay tinta que aceptar")
+            return False
+        inks = found
+    inked = 0
     tokens = {**py_tokens(), **gd_tokens()}
     by_rgb = {v: k for k, v in tokens.items()}
     img = Image.open(path).convert("RGBA")
@@ -178,7 +212,10 @@ def cmd_image(path: str, world: bool, strict: bool = False) -> bool:
             continue
         name = by_rgb.get((r, g, b))
         if name is None:
-            loose[(r, g, b)] = loose.get((r, g, b), 0) + 1
+            if (r, g, b) in inks:
+                inked += 1
+            else:
+                loose[(r, g, b)] = loose.get((r, g, b), 0) + 1
             continue
         if world and not is_accent(name) and (strict or name not in CHARACTER_INKS):
             s = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[1]
@@ -189,7 +226,10 @@ def cmd_image(path: str, world: bool, strict: bool = False) -> bool:
     for name, n in over.items():
         print(f"  FALLA  {name} supera la saturación 0,22 del mundo en {n} px")
     ok = not loose and not over
-    print(f"\n{path}: " + ("todo píxel es un token." if ok else "hay colores fuera del contrato."))
+    if inked:
+        print(f"  tinta de personaje o edificio de {source}: {inked} px")
+    done = "todo píxel es un token o tinta de su original." if inked else "todo píxel es un token."
+    print(f"\n{path}: " + (done if ok else "hay colores fuera del contrato."))
     return ok
 
 
@@ -278,7 +318,8 @@ def main(argv: list[str]) -> int:
     if cmd == "tokens":
         ok = cmd_tokens()
     elif cmd == "image" and len(argv) >= 2:
-        ok = cmd_image(argv[1], "--world" in argv, "--strict" in argv)
+        source = argv[argv.index("--source") + 1] if "--source" in argv[:-1] else None
+        ok = cmd_image(argv[1], "--world" in argv, "--strict" in argv, source)
     elif cmd == "cvd":
         ok = cmd_cvd()
     elif cmd == "tv-state" and len(argv) == 3 and argv[2] in ("enfermo", "sano"):

@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b).** Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque ya está.** Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -11,6 +11,12 @@ hecha.
 > que se vea. Cada componente tiene su README en `project/components/`. Si
 > algo que vas a hacer no está en el sistema, o lo contradice, **se para y se
 > le pregunta a Diego**: no se inventa.
+>
+> **Esto incluye a los personajes** (decisión de Diego, 2026-11-01): Ilan, el
+> grupo, los vecinos y los monstruos se hacen con el diseño del sistema
+> (componentes `Cast`, `MonsterRoster` y `Overworld`; originales de PixelLab
+> en `assets/source/pixellab/`). No se dibuja ningún personaje nuevo con el
+> estilo viejo de `tools/gen_world_sprites.py` ni de `gen_world_decor.py`.
 
 Última actualización: 2026-11-01.
 
@@ -138,6 +144,8 @@ done
 for z in ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   "$GODOT" --path . res://tools/verify_terrain.tscn -- $z          # 7/7, con ventana
 done
+# capturas con otra etiqueta y otra casilla de vista (el decorado, el hito…):
+"$GODOT" --path . res://tools/verify_terrain.tscn -- ashen_forest decorado 72 30
 ```
 
 ---
@@ -201,11 +209,22 @@ y `components/Terrain/README.md`.
      visiones**;
    - `verify_terrain` y `verify_zone` en las seis.
 4. Capturas a 640 × 360. `verify_terrain` las escribe en
-   `docs/ux/capturas/2026-10-31-terreno-<zona>-*.png`; cambia la fecha en
-   `OUT` si regeneras.
+   `docs/ux/capturas/<fecha del día>-terreno-<zona>-*.png`.
 5. Registra el resultado en el anexo, para y pide el visto bueno.
 
 ### 4.2 Paso 4b: el decorado del catálogo
+
+**Estado (2026-11-01):**
+- **Bosque hecho:** `tools/gen_tierra_viva_decor.py ashen_forest` escribe 23
+  sprites en `assets/sprites/world/tierra_viva/` (`<id>_<zona>_<estado>.png`)
+  y `WorldDecor` los busca ahí antes que en el decorado viejo.
+- **PixelLab movido** a `assets/source/pixellab/` (con README) y excepción de
+  paleta hecha: `verify_palette.py image <png> --source <original>`.
+- **Falta:**
+  - las otras cinco regiones y Valdehoja, una por una: se añade su función
+    al `CATALOG` del generador, igual que `forest()`;
+  - el monstruo de mapa de cada región, que va con los personajes a 48 px
+    (ver el punto 5).
 
 Sistema de diseño: `project/README.md` §Mundo y §Activos,
 `assets/Mundo/README.md` y las imágenes de `project/assets/img/`
@@ -237,8 +256,14 @@ Sistema de diseño: `project/README.md` §Mundo y §Activos,
      README (nombre y uso de cada uno);
    - en `tools/verify_palette.py` se añade la excepción «tinta de personaje o
      edificio» (como `CHARACTER_INKS`), aceptada solo dentro de esos sprites.
-4. Verificación: `verify_palette.py image` en cada sprite nuevo,
-   `verify_zone` de la zona y capturas.
+4. Verificación: `verify_palette.py image` y `tv-state` en cada sprite
+   nuevo, `verify_zone` de la zona y capturas con `verify_terrain` (etiqueta
+   `decorado` y una casilla que encuadre el hito).
+5. **Monstruos de mapa:** en el sistema son personajes de 48 px (componente
+   `Cast`, `assets/source/pixellab/monsters/`), como el grupo. Ilan sigue a
+   16 × 24, así que un monstruo a 48 px junto a él rompería la escala.
+   Entran los dos juntos: o al final del 4b, o en R3 (§4.6). Lo decide
+   Diego.
 
 ### 4.3 Paso 5: Valdehoja orgánica
 
@@ -317,8 +342,9 @@ Sistema de diseño: `components/ActionHUD`, `PartyRow`, `LocationSign`,
 2. **Cartel de lugar** de madera con clavos (sustituye a `PlaceLabel`).
 3. **Personajes de 48 px en 8 direcciones**, con caminata de 4 cuadros a
    200 ms. Los sprites de Ilan, Bruma, Coral, Nix y Suri están en
-   `tools/tierra_viva/pl/` y en el sistema (`*_8dir@2x.png`). Hoy Ilan es el
-   sprite viejo.
+   `assets/source/pixellab/` y en el sistema (`*_8dir@2x.png`). Hoy Ilan es el
+   sprite viejo. Al pasarlos al juego se mide con
+   `verify_palette.py image <png> --source assets/source/pixellab/<nombre>`.
 4. **Interiores** (posada, tienda, casa): `referencias/int_*.png` y
    `tools/tierra_viva/interiors.py`.
 5. **Vecinos:** 6 con nombre y variantes por región (`ZONE_NPC` en

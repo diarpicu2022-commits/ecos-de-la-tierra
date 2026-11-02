@@ -76,7 +76,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Tarea 1 hecha** (2026-10-30), con el visto bueno de Diego. Entra en el PR #20.
 - **Tarea 2 hecha** (2026-10-31, rama `rediseno/terreno`), con el visto bueno de Diego: `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn`.
 - **Tarea 3 hecha** (2026-10-31), con el visto bueno de Diego.
-- **Paso 4a hecho** (2026-11-01): masas de región según el sistema de diseño (enmienda 14) y rasgos de región; `verify_terrain` 7/7 y `verify_zone` en verde en las seis. Falta el visto bueno de Diego. Siguiente: §4.2 de `docs/guia-del-equipo.md`.
+- **Paso 4a hecho** (2026-11-01): masas de región según el sistema de diseño (enmienda 14) y rasgos de región; `verify_terrain` 7/7 y `verify_zone` en verde en las seis. Visto bueno de Diego el 2026-11-01.
+- **Paso 4b, Bosque hecho** (2026-11-01): decorado del sistema con `tools/gen_tierra_viva_decor.py`, PixelLab en `assets/source/pixellab/` y excepción `--source` en `verify_palette.py`. Falta el visto bueno de Diego. Siguiente: las otras regiones (§4.2 de `docs/guia-del-equipo.md`). **Todo, personajes incluidos, con el sistema de diseño.**
 
 ## 3. Lista de trabajo, en orden
 
@@ -127,7 +128,7 @@ Las siete zonas pintadas desde sus matrices, con sus `verify_zone` y `value`.
 ### Tarea 4: paso 4, el decorado
 - **Sprites:** los del catálogo de cada `*.deco.txt` (árboles, viñetas, hitos, pasos cerrados, fauna) se generan con el estilo del prototipo en `tools/gen_tierra_viva_decor.py`. Lo carga `src/world/world_decor.gd`, mismo `id` y sprite nuevo, desde `assets/sprites/world/decor/`.
 - **Contorno:** el decorado lleva el contorno de su rampa. `ASH_050` solo va en lo que responde (cláusula 3).
-- **PixelLab:** los edificios y vecinos se mueven de `tools/tierra_viva/pl/` a `assets/source/pixellab/` con un README (cláusula 4). Hay que añadir a `verify_palette.py` la excepción de «tinta de personaje o edificio».
+- **PixelLab (hecho, 2026-11-01):** los originales están en `assets/source/pixellab/` con su README (cláusula 4), y `verify_palette.py image <png> --source <original>` acepta su «tinta de personaje o edificio».
 
 ### Tarea 5: paso 5, Valdehoja
 - **Matriz nueva:** se escribe la de `data/world/zones/valdehoja.txt` (y `.deco` y `.parts`) desde `tools/tierra_viva/village5.py`.

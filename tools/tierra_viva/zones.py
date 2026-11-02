@@ -577,7 +577,7 @@ def hero(x, y, d='south'):
 
 
 def monster(name, x, yb):
-    s = scene.trim(np.array(Image.open(f'pl/monsters/{name}.png')))
+    s = scene.trim(np.array(Image.open(f'../../assets/source/pixellab/monsters/{name}.png')))
     return (s, x - s.shape[1] // 2, yb, 60)
 
 

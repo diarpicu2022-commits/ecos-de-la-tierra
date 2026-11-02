@@ -16,9 +16,12 @@ extends RefCounted
 ## su fila de abajo. La fauna silvestre solo se monta donde está purificado
 ## (enmienda 7). La aparición no se dibuja: solo dice dónde empieza Ilan.
 ##
-## Los sprites salen de `tools/gen_world_decor.py`.
+## Los sprites salen de `tools/gen_tierra_viva_decor.py` (estilo del sistema
+## de diseño, por zona: `<id>_<zona>_<estado>.png`) y, en las zonas que aún no
+## lo tienen, de `tools/gen_world_decor.py` (paso 4b, guía del equipo §4.2).
 
 const DECOR_DIR := "res://assets/sprites/world/decor/"
+const TIERRA_VIVA_DIR := "res://assets/sprites/world/tierra_viva/"
 
 ## Sprite de cada id de la leyenda cuando no se llama igual.
 const SPRITE := {"person": "yara", "chicken": "chicken_0", "bird": "bird_0",
@@ -108,7 +111,7 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		sprite.position = feet
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
-		_mark_motion(sprite, entry, at, pure)
+		_mark_motion(sprite, entry, at, pure, zone_id)
 		if entry["solid"]:
 			for j in size.y:
 				for i in size.x:
@@ -185,14 +188,17 @@ static func purified_lookup(zone_id: String, state: Node) -> Callable:
 ## Cuadros y fase de lo que se mueve. Lo enfermo no lleva cuadros: no se
 ## mueve. Los animales sí los llevan siempre; `WorldAmbient` solo los deja
 ## andar por lo purificado.
-static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure: bool) -> void:
+static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure: bool,
+		zone_id: String) -> void:
 	var id: String = entry["id"]
 	var kind: String = entry["kind"]
 	var frames: Array[Texture2D] = []
 	if kind == "decor" and pure and id in SWAYS:
-		var alt := "%s%s_pure_1.png" % [DECOR_DIR, id]
-		if ResourceLoader.exists(alt):
-			frames = [sprite.texture, load(alt)]
+		for alt in ["%s%s_%s_pure_1.png" % [TIERRA_VIVA_DIR, id, zone_id],
+				"%s%s_pure_1.png" % [DECOR_DIR, id]]:
+			if ResourceLoader.exists(alt):
+				frames = [sprite.texture, load(alt)]
+				break
 	elif kind == "fauna" or kind == "animal":
 		var base: String = SPRITE.get(id, id)
 		frames = [sprite.texture]
@@ -223,6 +229,10 @@ static func _texture(id: String, pure: bool, zone_id: String) -> Texture2D:
 	var name: String = SPRITE.get(id, id)
 	if name.length() > 3 and name[0] == "v" and name[1].is_valid_int() and name[2] == "_":
 		name = name.substr(3)
+	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
+		var path := "%s%s_%s_%s.png" % [TIERRA_VIVA_DIR, name, zone_id, state]
+		if ResourceLoader.exists(path):
+			return load(path)
 	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
 		for base in ["%s_%s" % [name, zone_id], name]:
 			var path := "%s%s_%s.png" % [DECOR_DIR, base, state]

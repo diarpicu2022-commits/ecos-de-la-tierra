@@ -664,3 +664,62 @@ diferencias, y Diego aprobó corregirlas (2026-10-31):
 
 **Siguiente:** paso 4b, los sprites del catálogo, empezando por el Bosque
 (guía del equipo, §4.2).
+
+#### Paso 4b — El decorado del Bosque · 2026-11-01
+
+**Decisión de Diego (2026-11-01):** «ya todo debe regirse al nuevo sistema de
+diseño, en lo que se refiere en diseño de personajes y todo lo demás». Queda
+escrito en la regla número uno de la guía del equipo. No es una enmienda,
+porque el contrato ya decía que el sistema manda en lo visual: es la
+confirmación de que los personajes también entran.
+
+- **`tools/gen_tierra_viva_decor.py`** dibuja el catálogo del Bosque con el
+  vocabulario de la masa del suelo, `piece`, `clumps` y `outlined` de
+  `gen_tierra_viva_terrain.py`. Así un árbol suelto del borde se lee igual
+  que los del muro. Hace 23 sprites:
+  - árbol, segunda copa y árbol del gradiente;
+  - el roble del hito;
+  - tocón, tronco talado y troncos apilados;
+  - ceniza, hierba alta (con su cuadro de mecerse), roca, semillero y paso
+    cerrado.
+- **Reglas del sistema que cumple:**
+  - el árbol quemado es el mismo árbol sin copa, en la misma posición;
+  - en lo enfermo, cerco de ceniza al pie y madera carbonizada; en lo sano,
+    sombra sobre hierba y un brote en el tocón;
+  - contorno del tono más oscuro de la rampa de cada pieza, salvo el
+    semillero, que responde al jugador y lleva `ash_050`;
+  - la ceniza purificada da flores.
+- **Carga:**
+  - los sprites van en `assets/sprites/world/tierra_viva/<id>_<zona>_<estado>.png`;
+  - `WorldDecor._texture` y el segundo cuadro de lo que se mece miran ahí
+    primero, y después el decorado viejo;
+  - así las regiones que faltan siguen como estaban hasta que les toque.
+- **Fallos propios, vistos en las capturas y corregidos:**
+  1. La ceniza enferma, con núcleo claro, se leía como guijarros blancos.
+     Ahora es una mancha tramada que deja ver el suelo.
+  2. La hierba alta y la ceniza enfermas casi no se veían: subieron un tono.
+  3. El roble del hito, a 48 × 64, se perdía en el muro de árboles. Ahora
+     mide 64 × 80 y desborda su huella de 3 × 4 casillas, que sigue siendo
+     la de la colisión.
+- **PixelLab:**
+  - `tools/tierra_viva/pl/` pasó a `assets/source/pixellab/` con su README
+    (qué es y quién usa cada carpeta);
+  - lleva `.gdignore` en `assets/source/` para que Godot no lo importe;
+  - los scripts del prototipo apuntan a la ruta nueva.
+- **Excepción de paleta** «tinta de personaje o edificio»:
+  - se usa como `verify_palette.py image <png> --source <original>`;
+  - un color suelto vale solo si está en ese original;
+  - el original tiene que estar dentro de `assets/source/pixellab/`.
+  - Probado: Ilan contra su original pasa, contra el de Coral falla, y una
+    ruta fuera de `pixellab/` se rechaza.
+- **Medido:**
+  - los 23 sprites pasan `image` y `tv-state` sin un píxel movido;
+  - `verify_zone ashen_forest` da 46/46;
+  - `verify_terrain` da 7/7 con las vistas nuevas (`72 30` para el hito,
+    `8 14` para la tala).
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-01-decorado{,-puente,-tala}-ashen_forest-{enfermo,ola,sano}.png`.
+- **Pendiente:**
+  - las otras regiones;
+  - el monstruo de mapa. En el sistema es un personaje de 48 px y Ilan
+    sigue a 16 × 24, así que entran juntos. Lo decide Diego.
