@@ -51,8 +51,8 @@ importe esta carpeta.
 
 ## Recursos
 
-- `pl/`: sprites de PixelLab.
+- `assets/source/pixellab/` (antes `pl/`): sprites de PixelLab.
   - Edificios (`bld/`), Ilan y el grupo (`ilan/`, `suri/`, `nix/`, `bruma/`, `coral/`), vecinos (`npc/`, 8 direcciones), variantes (`npc_var/`), monstruos y objetos.
-  - Al portar se mueven a `assets/source/pixellab/` (cláusula 4).
+  - Ya movidos a `assets/source/pixellab/` (cláusula 4, 2026-11-01).
 - `final/`: personajes y monstruos recortados, marcos de interfaz, fuente Brote y pantallas de combate.
 - `final7/`: Valdehoja entera sana y enferma, más cinco vistas. El título las usa.

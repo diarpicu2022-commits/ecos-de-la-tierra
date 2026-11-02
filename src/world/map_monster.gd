@@ -23,6 +23,10 @@ enum State { PATROL, ALERT, CHASE, GIVE_UP }
 enum Advantage { NONE, PLAYER, MONSTER }
 
 const DECOR := "res://assets/sprites/world/decor/"
+## Monstruo del sistema de diseño (`tools/gen_tierra_viva_cast.py`): el de
+## PixelLab a su tamaño, que mira a la izquierda. Si la región lo tiene, vale
+## para las tres posturas; la alerta la siguen diciendo las bandas.
+const CAST := "res://assets/sprites/world/cast/"
 
 var state := State.PATROL
 var cell := Vector2i.ZERO          ## Casilla de los pies.
@@ -48,6 +52,8 @@ var _route_index := 0
 var _sprite := Sprite2D.new()
 var _bands: Array[Sprite2D] = []
 var _textures := {}
+## El sprite mira a la izquierda (los de PixelLab) en vez de a la derecha.
+var _faces_left := false
 var _body := StaticBody2D.new()
 
 
@@ -61,10 +67,12 @@ func setup(zone_id: String, post: Vector2i, lines: PackedStringArray, blocked: D
 	_lines = lines
 	_blocked = blocked
 	name = "monster_%d_%d" % [post.x, post.y]
+	var cast := "%smonster_%s_sick.png" % [CAST, zone_id]
+	_faces_left = ResourceLoader.exists(cast)
 	for pose in ["rest", "alert", "chase"]:
 		var file := "monster_%s_sick.png" % zone_id if pose == "rest" \
 			else "monster_%s_%s_sick.png" % [zone_id, pose]
-		_textures[pose] = load(DECOR + file)
+		_textures[pose] = load(cast) if _faces_left else load(DECOR + file)
 	_sprite.centered = false
 	add_child(_sprite)
 	_build_territory()
@@ -314,7 +322,7 @@ func _sync() -> void:
 	_sprite.texture = tex
 	_sprite.offset = Vector2(-tex.get_width() / 2, -tex.get_height())
 	if facing.x != 0:
-		_sprite.flip_h = facing.x < 0
+		_sprite.flip_h = (facing.x > 0) if _faces_left else (facing.x < 0)
 	_body.position = position
 	var steps := alert_steps if state == State.ALERT else 0
 	while _bands.size() > steps:

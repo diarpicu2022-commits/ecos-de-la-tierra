@@ -723,3 +723,48 @@ confirmación de que los personajes también entran.
   - las otras regiones;
   - el monstruo de mapa. En el sistema es un personaje de 48 px y Ilan
     sigue a 16 × 24, así que entran juntos. Lo decide Diego.
+
+#### Personajes del sistema en el mapa: Ilan y los monstruos · 2026-11-01
+
+Diego, a mitad del 4b: «sigues corriendo con los diseños viejos, ya necesito
+los nuevos». Se adelanta lo que más se ve, que son los personajes.
+
+- **Hallazgo:** las tarjetas `*@4x` de monstruos y de decorado del sistema
+  (`deforestation_flame@4x`, `burnt_tree_*@4x`, `log_pile_*@4x`…) son los
+  sprites **viejos** del juego ampliados: coinciden píxel a píxel. El diseño
+  de verdad del sistema está en `arbol@2x`, `arbol_quemado@2x`, en los
+  personajes y monstruos de PixelLab y en las referencias. Esas tarjetas no
+  sirven de modelo.
+- **`tools/gen_tierra_viva_cast.py`:**
+  - copia sin repintar los originales de `assets/source/pixellab/` en
+    `assets/sprites/world/cast/`;
+  - hace las hojas de Ilan, Bruma, Coral, Nix y Suri (celdas de 48 px, de
+    pie más 4 cuadros de caminata por orientación);
+  - recorta los seis monstruos de historia en sus dos formas.
+- **Ilan:**
+  - `PlayerBody` usa la hoja nueva;
+  - el cuadro cambia por distancia, cada 12 px: andando a 60 px/s son los
+    200 ms de `dur-walk-frame`, y la regla «para justo cuando el cuerpo se
+    para» se mantiene;
+  - `verify_movement` da 100/100, con la comprobación nueva de que la
+    caminata pasa por sus 4 cuadros.
+- **Monstruo de mapa:**
+  - el de PixelLab a su tamaño (unos 110 px), como en
+    `referencias/combate_accion.png`;
+  - mira a la izquierda, así que el volteo va al revés que con el viejo;
+  - `verify_encounters` da 82/82.
+- **Paleta:**
+  - cada hoja pasa `verify_palette.py image <png> --source assets/source/pixellab/<nombre>`;
+  - `source_inks` lee también los cuadros de los GIF.
+- **Batería:**
+  - `verify_zone` en verde en las siete zonas;
+  - usability 16, camera 37, flow 23, party_ai 19.
+- **Captura:** `docs/ux/capturas/2026-11-01-personajes-ashen_forest-enfermo.png`.
+- **Sigue viejo:**
+  - el decorado de las otras cinco regiones y de Valdehoja;
+  - la pantalla de combate, que usa los monstruos viejos de 48 px y los
+    retratos del grupo;
+  - el HUD, el diálogo y el título;
+  - la caminata de Bruma, Coral, Nix y Suri, que PixelLab solo dio para
+    Ilan;
+  - las diagonales.

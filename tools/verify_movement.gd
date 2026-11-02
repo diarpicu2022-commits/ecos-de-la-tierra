@@ -556,32 +556,36 @@ func _test_sprite() -> void:
 	_check("el sprite mira hacia donde se anda, en las 4 orientaciones y en diagonal",
 		rows_ok, "falla en %s" % [bad])
 
-	# Andando: la pose cambia exactamente a los 8, 16 y 24 px recorridos,
-	# echando a andar desde parado.
+	# Andando: echa a andar en el primer cuadro y después cambia cada STRIDE
+	# px (12: 200 ms andando, la duración del sistema de diseño).
 	world.enter_zone("prueba_a", Vector2i(5, 9))
 	b.step(Vector2i.ZERO, false)
 	var changes := []
 	var last := b.pose
-	for f in range(1, 33):
+	var seen := {}
+	for f in range(1, 49):
 		b.step(Vector2i.RIGHT, false)
+		seen[b.pose] = true
 		if b.pose != last:
 			changes.append(f)
 			last = b.pose
-	_check("andando, la pose cambia cada %d px (a los 8, 16, 24 y 32)" % PlayerBody.STRIDE,
-		changes == [8, 16, 24, 32], "cambia en los cuadros %s" % [changes])
+	_check("andando, echa a andar en el primer cuadro y cambia cada %d px (12, 24, 36, 48)" % PlayerBody.STRIDE,
+		changes == [1, 12, 24, 36, 48], "cambia en los cuadros %s" % [changes])
+	_check("la caminata pasa por sus %d cuadros" % PlayerBody.WALK_FRAMES,
+		seen.keys().filter(func(p): return p > 0).size() == PlayerBody.WALK_FRAMES, "poses %s" % [seen.keys()])
 
 	# Corriendo: la misma distancia en la mitad de cuadros.
 	world.enter_zone("prueba_a", Vector2i(5, 9))
 	b.step(Vector2i.ZERO, false)
 	changes = []
 	last = b.pose
-	for f in range(1, 17):
+	for f in range(1, 25):
 		b.step(Vector2i.RIGHT, true)
 		if b.pose != last:
 			changes.append(f)
 			last = b.pose
-	_check("corriendo, cambia cada 4 cuadros (la misma distancia)",
-		changes == [4, 8, 12, 16], "cambia en los cuadros %s" % [changes])
+	_check("corriendo, cambia cada 6 cuadros (la misma distancia)",
+		changes == [1, 6, 12, 18, 24], "cambia en los cuadros %s" % [changes])
 
 	# Al parar, de pie en ese mismo cuadro.
 	for _i in 9:

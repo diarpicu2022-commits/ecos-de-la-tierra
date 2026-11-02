@@ -39,21 +39,27 @@ var last_step := Vector2i.ZERO
 ## después el píxel entero, así que la posición sigue siendo entera.
 const PROBE := 0.99
 
-## Hoja del sprite (`tools/gen_world_sprites.py`): 2 poses por 4 orientaciones
-## de 16x24, con los pies en la última fila.
-const SPRITE_PATH := "res://assets/sprites/world/ilan.png"
-const SPRITE_SIZE := Vector2i(16, 24)
+## Hoja del sprite (`tools/gen_tierra_viva_cast.py`, sistema de diseño,
+## componente `Cast`): celdas de 48 × 48 con los pies en la última fila; por
+## orientación, de pie y los 4 cuadros de la caminata de PixelLab.
+const SPRITE_PATH := "res://assets/sprites/world/cast/ilan.png"
+const SPRITE_SIZE := Vector2i(48, 48)
+## Cuadros de la caminata («caminata de 4 cuadros», sistema de diseño).
+const WALK_FRAMES := 4
 ## Fila de la hoja por orientación.
 const ROW_DOWN := 0
 const ROW_UP := 1
 const ROW_LEFT := 2
 const ROW_RIGHT := 3
-## La pose cambia cada medio tile recorrido. Va por distancia y no por
-## tiempo: se para justo cuando el cuerpo se para y no añade ninguna duración
-## (aclaración de «caminar no se anima», anexo de la parte 2, paso 5).
-const STRIDE := 8
+## El cuadro de la caminata cambia cada STRIDE px recorridos. Va por
+## distancia y no por tiempo: se para justo cuando el cuerpo se para
+## (aclaración de «caminar no se anima», anexo de la parte 2, paso 5). Andando
+## a WALK_SPEED (60 px/s), 12 px son los 200 ms de `dur-walk-frame` del
+## sistema de diseño; corriendo, la mitad.
+const STRIDE := 12
 
-## Pose y fila que enseña el sprite. Las leen las pruebas.
+## Pose (0 de pie, 1 a WALK_FRAMES andando) y fila que enseña el sprite. Las
+## leen las pruebas.
 var pose := 0
 var sprite_row := ROW_DOWN
 
@@ -133,7 +139,7 @@ func _update_sprite() -> void:
 		pose = 0
 	else:
 		_travelled += maxi(absi(last_step.x), absi(last_step.y))
-		pose = (_travelled / STRIDE) % 2
+		pose = 1 + (_travelled / STRIDE) % WALK_FRAMES
 	_sprite.region_rect = Rect2(Vector2(pose * SPRITE_SIZE.x, sprite_row * SPRITE_SIZE.y),
 		Vector2(SPRITE_SIZE))
 

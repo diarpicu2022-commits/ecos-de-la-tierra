@@ -49,7 +49,7 @@ import re
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageSequence
 
 ROOT = Path(__file__).resolve().parent.parent
 TOKENS_GD = ROOT / "src" / "ui" / "design_tokens.gd"
@@ -183,13 +183,15 @@ def source_inks(source: str) -> set[tuple[int, int, int]] | None:
     src = Path(source).resolve()
     if not src.is_relative_to(PIXELLAB.resolve()) or not src.exists():
         return None
-    files = [src] if src.is_file() else sorted(src.rglob("*.png"))
+    files = [src] if src.is_file() else sorted([*src.rglob("*.png"), *src.rglob("*.gif")])
     inks: set[tuple[int, int, int]] = set()
     for f in files:
-        im = Image.open(f).convert("RGBA")
-        for r, g, b, a in getattr(im, "get_flattened_data", im.getdata)():
-            if a:
-                inks.add((r, g, b))
+        # un GIF de caminata aporta los colores de todos sus cuadros
+        for frame in ImageSequence.Iterator(Image.open(f)):
+            im = frame.convert("RGBA")
+            for r, g, b, a in getattr(im, "get_flattened_data", im.getdata)():
+                if a:
+                    inks.add((r, g, b))
     return inks
 
 

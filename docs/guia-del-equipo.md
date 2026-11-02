@@ -223,8 +223,7 @@ y `components/Terrain/README.md`.
 - **Falta:**
   - las otras cinco regiones y Valdehoja, una por una: se añade su función
     al `CATALOG` del generador, igual que `forest()`;
-  - el monstruo de mapa de cada región, que va con los personajes a 48 px
-    (ver el punto 5).
+  - ~~el monstruo de mapa~~: hecho el 2026-11-01 (punto 5).
 
 Sistema de diseño: `project/README.md` §Mundo y §Activos,
 `assets/Mundo/README.md` y las imágenes de `project/assets/img/`
@@ -259,11 +258,12 @@ Sistema de diseño: `project/README.md` §Mundo y §Activos,
 4. Verificación: `verify_palette.py image` y `tv-state` en cada sprite
    nuevo, `verify_zone` de la zona y capturas con `verify_terrain` (etiqueta
    `decorado` y una casilla que encuadre el hito).
-5. **Monstruos de mapa:** en el sistema son personajes de 48 px (componente
-   `Cast`, `assets/source/pixellab/monsters/`), como el grupo. Ilan sigue a
-   16 × 24, así que un monstruo a 48 px junto a él rompería la escala.
-   Entran los dos juntos: o al final del 4b, o en R3 (§4.6). Lo decide
-   Diego.
+5. **Monstruos de mapa (hecho, 2026-11-01):** `tools/gen_tierra_viva_cast.py`
+   recorta los seis de PixelLab (`assets/source/pixellab/monsters/`) y los
+   escribe en `assets/sprites/world/cast/monster_<zona>_{sick,pure}.png`.
+   Van a su tamaño, unos 110 px, como en la maqueta del sistema
+   `referencias/combate_accion.png`. `MapMonster` los usa en las tres
+   posturas, y la alerta la dicen las bandas.
 
 ### 4.3 Paso 5: Valdehoja orgánica
 
@@ -341,9 +341,13 @@ Sistema de diseño: `components/ActionHUD`, `PartyRow`, `LocationSign`,
      para Godot; `tools/tierra_viva/font.py` la genera).
 2. **Cartel de lugar** de madera con clavos (sustituye a `PlaceLabel`).
 3. **Personajes de 48 px en 8 direcciones**, con caminata de 4 cuadros a
-   200 ms. Los sprites de Ilan, Bruma, Coral, Nix y Suri están en
-   `assets/source/pixellab/` y en el sistema (`*_8dir@2x.png`). Hoy Ilan es el
-   sprite viejo. Al pasarlos al juego se mide con
+   200 ms. **Ilan hecho (2026-11-01):** `tools/gen_tierra_viva_cast.py` saca
+   de PixelLab la hoja `assets/sprites/world/cast/ilan.png`, con celdas de
+   48 px, de pie más 4 cuadros por orientación, y `PlayerBody` cambia de
+   cuadro cada 12 px (200 ms andando). Bruma, Coral, Nix y Suri ya tienen su
+   hoja, pero **sin caminata**: PixelLab solo dio la de Ilan, así que hay que
+   generar `walk_<dir>.gif` de cada uno y volver a correr el script. Faltan
+   las 4 diagonales del sistema (8 rotaciones). Al pasarlos al juego se mide con
    `verify_palette.py image <png> --source assets/source/pixellab/<nombre>`.
 4. **Interiores** (posada, tienda, casa): `referencias/int_*.png` y
    `tools/tierra_viva/interiors.py`.
