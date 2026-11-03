@@ -69,8 +69,12 @@ const ENEMY_STEP := Vector2(-96, -14)
 # --- Interfaz (paso 2 del rediseño del combate: sus marcos) --------------------
 const MENU_RECT := Rect2(Vector2(432, 284), Vector2(204, 66))
 const MESSAGE_RECT := Rect2(Vector2(6, 282), Vector2(420, 72))
-const PARTY_WINDOW := Rect2(Vector2(456, 192), Vector2(176, 84))
-const PARTY_ROW_INSET := Vector2(8, 2)
+## Filas del grupo (`PartyRow`): desde (456, 196), una cada 27 px. Se ven tres
+## como en el sistema; con más miembros, las tres que rodean a quien tiene el
+## turno.
+const PARTY_WINDOW := Rect2(Vector2(456, 196), Vector2(176, 78))
+const PARTY_ROW_STEP := 27.0
+const PARTY_ROWS_SHOWN := 3
 
 ## Ficha del enemigo enfocado, arriba a la izquierda (`EnemyPlate`, 10, 10).
 const ENEMY_PANEL := Vector2(10, 10)
@@ -218,7 +222,16 @@ static func enemy_anchor(index: int, total: int) -> Vector2:
 
 ## Fila `index` dentro de la ventana del grupo.
 static func hud_row_position(index: int) -> Vector2:
-	return PARTY_WINDOW.position + PARTY_ROW_INSET 			+ Vector2(0, index * PartyMemberHud.ROW.y)
+	return PARTY_WINDOW.position + Vector2(0, index * PARTY_ROW_STEP)
+
+
+## Enseña las filas que caben, alrededor de quien tiene el turno.
+func _layout_huds(active: int = 0) -> void:
+	var n := _huds.size()
+	var start := clampi(active - 1, 0, maxi(0, n - PARTY_ROWS_SHOWN))
+	for i in n:
+		_huds[i].visible = i >= start and i < start + PARTY_ROWS_SHOWN
+		_huds[i].position = hud_row_position(i - start)
 
 
 static func message_rect() -> Rect2:
@@ -281,6 +294,7 @@ func _build_party_huds(players: Array) -> void:
 		hud.set_paused(true)
 		_huds.append(hud)
 		_watch_numbers(players[i] as Combatant)
+	_layout_huds()
 
 
 func _build_monster_views(enemies: Array) -> void:
@@ -517,6 +531,8 @@ func _begin_choice(character: Character) -> void:
 	_pending_item = null
 	for i in range(_huds.size()):
 		_huds[i].set_active_turn(_huds[i].character == character)
+		if _huds[i].character == character:
+			_layout_huds(i)
 	_open_root_menu()
 
 
@@ -903,11 +919,9 @@ func _draw_party() -> void:
 
 
 func _draw_bands() -> void:
-	# Sin banda inferior: el campo llega al borde y los marcos flotan encima
-	# (sistema de diseño). Ventana del grupo, abajo a la derecha: la esquina contraria a sus sprites.
-	draw_rect(PARTY_WINDOW, DesignTokens.PANEL_FILL_DEEP)
-	draw_rect(PARTY_WINDOW, DesignTokens.BORDER_IDLE, false,
-			DesignTokens.BORDER_WIDTH)
+	# Sin banda ni ventana: el campo llega al borde y cada fila del grupo
+	# lleva su propio marco (sistema de diseño).
+	pass
 
 
 ## Mitad central de la banda: descripción de la opción enfocada mientras el
