@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado de las regiones (§4.2) ya están el Bosque, la Cuenca, la Costa y la Llanura; faltan la Cumbre, la Cripta y Valdehoja. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado de las regiones (§4.2) ya están el Bosque, la Cuenca, la Costa, la Llanura y la Cumbre; faltan la Cripta y Valdehoja. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -207,7 +207,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | §4.6 (R3) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
-| 17 | Decorado de Cumbre, Cripta y Valdehoja (Cuenca, Costa y Llanura: HECHO 2026-11-02, PR #21, #22 y #23) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
+| 17 | Decorado de Cripta y Valdehoja (Cuenca, Costa, Llanura y Cumbre: HECHO 2026-11-02, PR #21, #22, #23 y el de la Cumbre) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
 | 18 | Fauna y animales | `tools/gen_world_decor.py` | sistema: «aparecen flores y fauna» | §4.2 |
 | 19 | Valdehoja orgánica, edificios de PixelLab y vecinos | `data/world/zones/valdehoja.*` | `components/Overworld`, `assets/source/pixellab/bld`, `npc` | §4.3 y §4.6 |
 | 20 | Caminata de Bruma, Coral, Nix y Suri, y las diagonales | `assets/source/pixellab/<nombre>/` (solo rotaciones) | `Cast`: 8 rotaciones y 4 cuadros | generar en PixelLab y correr `gen_tierra_viva_cast.py` |
@@ -318,8 +318,10 @@ y `components/Terrain/README.md`.
 - **Llanura hecha (2026-11-02):** `plain()` escribe 28 sprites. El
   monstruo de mapa tapa el silo del hito; pasa también, en parte, en la
   Cuenca y la Costa (anexo de Tierra Viva).
+- **Cumbre hecha (2026-11-02):** `peak()` escribe 22 sprites. El Coloso
+  de mapa tapa el glaciar.
 - **Falta:**
-  - la Cumbre, la Cripta y Valdehoja, una por una: se añade su función
+  - la Cripta y Valdehoja, una por una: se añade su función
     al `CATALOG` del generador, igual que `forest()`;
   - ~~el monstruo de mapa~~: hecho el 2026-11-01 (punto 5).
 
