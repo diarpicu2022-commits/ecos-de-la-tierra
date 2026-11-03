@@ -564,9 +564,14 @@ Concepto en `titulo-y-creditos.md` y `referencias/creditos_*`:
    exportación* (descarga de unos 1 GB), luego *Proyecto → Exportar →
    Windows Desktop*.
 2. **Privacidad**, desde el diseño (regla de Diego): el juego no recoge
-   datos de nadie y solo guarda la partida en el equipo (`user://`). Se dice
-   así en un aviso breve, en `docs/legal/` y en los créditos u opciones. Si
-   algún día hay red, cuentas o analítica, entra la política completa.
+   datos de nadie.
+   - **Hecho el 2026-11-03:** el aviso breve está en
+     `docs/legal/privacidad.md`. Se comprobó en `src/` que no hay red ni
+     escritura de archivos; hoy solo escribe el motor (registros en `user://`).
+   - **Falta:** enseñarlo dentro del juego, en las opciones (§4.12) o en los
+     créditos (§4.14), y actualizar su apartado de la partida con el guardado
+     (§4.11). Si algún día hay red, cuentas o analítica, entra la política
+     completa.
 3. Fusionar los PR pendientes cuando Diego lo diga, empezando por el #20.
 
 ### Deudas que no se olvidan
