@@ -1004,3 +1004,39 @@ una lona doblada (`waning_peak.deco.txt`). Fusión con el permiso de Diego del
 - **Para Diego:** el Coloso de mapa (en `(51, 50)`) tapa el glaciar entero
   en lo enfermo, como el Espectro tapa el silo en la Llanura.
 - **Siguiente:** la Cripta (`greed_crypt`).
+
+#### Paso 4b — El decorado de la Cripta · 2026-11-02
+
+Cláusulas: 2, 3 y la regla del sistema para la Cripta (README §Mundo:
+«`gold` + `smog`»; `components/Regiones/README.md`: «oro fundido, monedas
+regadas, telarañas, fuego morado» / «agua limpia, musgo, raíces»). Las cinco
+bóvedas (Diego, 2026-10-28) reutilizan las piezas de su región. Fusión con
+el permiso de Diego del 2026-11-02.
+
+- **`crypt()` en `tools/gen_tierra_viva_decor.py`**, 20 sprites:
+  - el hito, la estatua del Barón Cendral (40 × 60, desborda su huella de
+    2 × 3): figura de pie con chistera y bastón sobre un pedestal. Enferma,
+    toda de oro y con los ojos de fuego maldito; purificada, el oro se ha
+    ido y queda la piedra, con musgo y flores;
+  - las bóvedas: troncos apilados (Bosque), barril de crudo (Cuenca),
+    botella (Costa), saco de grano (Llanura; purificado, abierto y con
+    brotes) y bloque de hielo (Cumbre), cada una con su oro amontonado;
+  - columna (enferma, con telaraña y tizne; purificada, con musgo), raíces
+    (secas o vivas), estandarte rasgado de la Compañía, monedas, cascotes,
+    grieta y la reja de oro del paso cerrado.
+- **El pie** se asienta en el humo (`smog`).
+- **Lo que desaparece con la ola** (oro, monedas, estandarte, grieta,
+  barril, botella, bloque y reja) solo tiene sprite enfermo.
+- **Medido:** los 20 sprites pasan `image` y `tv-state`; `verify_zone
+  greed_crypt` 50/50; `verify_terrain greed_crypt` 7/7 en las cuatro vistas
+  (hito `38 57`; bóvedas 1, 3 y 5: `72 39`, `11 42` y `62 73`). Las otras
+  regiones, regeneradas, dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v3,-v5}-greed_crypt-{enfermo,ola,sano}.png`.
+- **Para Diego:**
+  - la Sombra de mapa (en `(40, 59)`) tapa la estatua en lo enfermo, como
+    pasa con los otros hitos;
+  - purificada, la estatua se ve pequeña a 640 × 360: la figura mide unos
+    12 px de ancho. Si hace falta, se agranda en una pasada aparte.
+- **Siguiente:** Valdehoja, que es el paso 5 (matriz orgánica nueva) y lleva
+  su decorado con él.

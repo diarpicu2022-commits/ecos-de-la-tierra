@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-11-02 (decorado de la Cuenca, la Costa, la Llanura y la Cumbre, paso 4b)
+Última actualización: 2026-11-02 (decorado de las seis regiones, paso 4b)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -44,7 +44,7 @@ válidos:
 
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
 > Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
-> está hecho y aprobado; del paso 4b (§4.2 de la guía) están hechos el Bosque, la Cuenca, la Costa, la Llanura y la Cumbre (2026-11-02) y faltan la Cripta y Valdehoja. Diego dio permiso (2026-11-02) para fusionar lo necesario de cara a la presentación del miércoles 2026-11-04. **Todo lo visual
+> está hecho y aprobado; del paso 4b (§4.2 de la guía) están hechas las seis regiones (2026-11-02) y falta Valdehoja, que va con el paso 5. Diego dio permiso (2026-11-02) para fusionar lo necesario de cara a la presentación del miércoles 2026-11-04. **Todo lo visual
 > sigue el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
 
 
