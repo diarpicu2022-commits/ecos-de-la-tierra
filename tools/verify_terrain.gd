@@ -23,6 +23,8 @@ extends Node
 ##   su parte.
 ## - **Ola:** a mitad de la ola, cada píxel visible del suelo es enfermo o
 ##   sano, nunca una mezcla, y hay de los dos.
+## - **Agua viva:** si la zona tiene `<zona>_sano_1.png`, purificada, el suelo
+##   sano pasa por sus dos cuadros cada `DUR_AMBIENT_WATER`.
 ## Capturas: docs/ux/capturas/<fecha>-<etiqueta>-<zona>-{enfermo,ola,sano}.png,
 ## con la fecha del día.
 ## Sale con código 1 si algo falla.
@@ -128,6 +130,19 @@ func _ready() -> void:
 	_check("purificada: se ve el sano en el %.0f %% de la pantalla" % [m * 100],
 		m >= MATCH_MIN and world.terrain_pure.visible)
 	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "sano"]))
+	if not world.terrain_pure_frames.is_empty():
+		# Agua viva (paso 6, enmienda 8): el sano alterna sus dos cuadros cada
+		# DUR_AMBIENT_WATER, y solo cambia el agua.
+		var n := roundi(DesignTokens.DUR_AMBIENT_WATER * Engine.physics_ticks_per_second)
+		var water: Array[Texture2D] = world.terrain_pure_frames
+		var seen: Array[Texture2D] = []
+		for k in 2:
+			var start := world.ambient.tick
+			while world.ambient.tick < start + n or world.ambient.tick % n != 0:
+				world.ambient.advance()
+			seen.append(world.terrain_pure.texture)
+		_check("agua viva: el sano pasa por sus dos cuadros cada %.2f s" % DesignTokens.DUR_AMBIENT_WATER,
+			seen.has(water[0]) and seen.has(water[1]) and water[0] != water[1])
 	state.set_zone_purified(zone, false)
 	_end()
 

@@ -398,6 +398,11 @@ de 90 × 60) y `referencias/valdehoja_*.png`, `v_*.png`.
 
 ### 4.4 Paso 6: los estados, que cierran R1
 
+**Estado (2026-11-03):** hechos los puntos 1 a 3. El agua viva alterna
+`<zona>_sano.png` y `_sano_1.png` (`WorldAmbient.set_terrain`), las partes de
+Valdehoja se ven por casilla y la fauna sigue solo en lo purificado. Falta el
+punto 4, el PR de R1.
+
 1. Enfermo y sano por partes en Valdehoja, con la ola de 900 ms en Bayer
    4 × 4 (ya existe: `src/world/purify_wave.gdshader`).
 2. **Agua viva:** con el suelo en sprite, el segundo cuadro del agua

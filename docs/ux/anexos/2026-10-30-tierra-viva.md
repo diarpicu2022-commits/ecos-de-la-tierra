@@ -1094,3 +1094,43 @@ presentación. No es una enmienda aprobada; **falta que Diego lo confirme**.
   `docs/ux/capturas/2026-11-03-decorado{,-jardin,-bocamina,-pozo}-valdehoja-{enfermo,ola,sano}.png`.
 - **Siguiente:** el paso 6 (los estados, con el agua viva) o, tras la
   presentación y con el visto bueno de Diego, la matriz orgánica.
+
+#### Paso 6 — Los estados: agua viva y partes · 2026-11-03
+
+Cláusulas: 7 («Lo que no cambia»: la ola de 900 ms en Bayer 4 × 4 y la fauna
+solo en lo purificado) y enmienda 8 (solo se mueve lo purificado). Guía del
+equipo §4.4.
+
+- **Agua viva** (punto 2): con el suelo en sprite, el segundo cuadro del agua
+  ya no se veía.
+  - `tools/gen_tierra_viva_terrain.py` escribe `<zona>_sano_1.png` en las
+    cinco zonas con agua (Bosque, Cuenca, Costa, Cumbre y Valdehoja; la
+    Llanura y la Cripta no tienen). En el segundo cuadro los destellos del
+    agua se corren `SPARKLE_SHIFT` = 2 px, y la semilla se gasta igual: el
+    primer cuadro sale idéntico byte a byte al de antes, y en el segundo solo
+    cambian tonos de `water` (medido: 0 colores fuera del agua).
+  - `WorldRoot` guarda los dos cuadros en `terrain_pure_frames`, y
+    `WorldAmbient.set_terrain` alterna la textura de la capa sana cada
+    `DUR_AMBIENT_WATER`, al mismo tiempo que los tiles. La enferma no se
+    mueve; con movimiento reducido, nada.
+- **Partes de Valdehoja** (punto 1): el paso 5 ya las enseña por casilla
+  (`part_mask.gdshader`). `verify_zone valdehoja` sigue midiendo que la
+  arboleda está enferma al empezar y vuelve, con su fauna, al purificar el
+  Bosque.
+- **Fauna y animales** (punto 3): siguen como estaban. `verify_zone` mide
+  que la fauna está dentro de una parte, que un animal en lo purificado anda
+  y que uno en lo enfermo se queda quieto.
+- **`verify_terrain`** gana la comprobación del agua viva: purificada, la capa
+  sana pasa por sus dos cuadros cada 0,50 s.
+- **Medido:**
+  - los cinco `_sano_1.png` pasan `image` y `tv-state`;
+  - `verify_terrain`: 8/8 en Bosque, Cuenca, Costa y Cumbre, y en dos vistas
+    de Valdehoja; 7/7 en Llanura y Cripta, que no tienen agua;
+  - `verify_zone` en verde en las siete zonas; usability 16, camera 37,
+    encounters 82, flow 23, party_ai 19 y movement 100/100.
+- **Fallo propio, dicho:** la primera versión de la comprobación repetía el
+  nombre de una variable (`frames`). Godot no cargó el script, la escena se
+  quedó abierta sin terminar y hubo que parar los procesos a mano. Corregido.
+- **Con esto R1 queda completo salvo la matriz orgánica de Valdehoja**
+  (cláusula 6, aplazada; falta que Diego lo confirme). Siguiente: el PR de R1
+  contra `master` (guía §4.4, punto 4).
