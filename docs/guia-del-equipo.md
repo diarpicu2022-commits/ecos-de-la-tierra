@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque, la Cuenca, la Costa y la Llanura ya están.** Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Reparto desde el 2026-11-02, para no pisarse:** el compañero sigue con el decorado de las regiones (§4.2: el Bosque, la Cuenca, la Costa y la Llanura ya están; faltan Cumbre, Cripta y Valdehoja) y Diego, con el combate y la tipografía (§4.0). La lista de todo lo que sigue viejo está en §3.1. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -150,13 +150,13 @@ done
 
 ---
 
-## 3. Dónde está el juego hoy (2026-11-01)
+## 3. Dónde está el juego hoy (2026-11-02)
 
 | Rama | Qué tiene | Estado |
 |---|---|---|
 | `master` | Partes 1 a 4: mundo en estilo plano, combate por turnos con persiana | Estable |
 | `rediseno/tierra-viva` | Contrato «Piel nueva», paso 1: rampas `TV_*`, pantalla de 640 × 360, regiones ×4/3; el juego arranca en el mundo | **PR #20 abierto**, sin fusionar |
-| `rediseno/terreno` | Lo anterior, más los pasos 2 y 3 (suelo Tierra Viva de las seis regiones), el sistema de diseño en `docs/ux/sistema-de-diseno/` y el **paso 4a a medias** | **Rama de trabajo** |
+| `rediseno/terreno` | Lo anterior, más el suelo Tierra Viva de las seis regiones, el sistema de diseño en `docs/ux/sistema-de-diseno/`, el decorado del Bosque, Ilan y los monstruos de PixelLab y la escena del combate a 640 × 360 (ver el inventario §3.1) | **Rama de trabajo** |
 | `parte-5/anexo` | Parte 5 (diálogos y retratos), pasos 1 a 5, hecha para 480 × 270 | Respaldo, sin PR; en espera |
 
 **Decisiones de Diego que ya no se discuten:**
@@ -178,6 +178,47 @@ done
 - `docs/plan-de-trabajo.md`: punto de retome y decisiones cerradas;
 - `docs/ux/sistema-de-diseno/`: **el sistema de diseño**.
 
+### 3.1 Inventario: lo que todavía se ve con el diseño viejo (2026-11-02)
+
+Diego, 2026-11-02: «ya debes empezar a cambiar todo como en el sistema de
+diseño, que el viejo diseño aún está y se ve horrible». **La prioridad es que
+no quede nada viejo a la vista.** Esta tabla es la lista de trabajo. Al
+terminar una fila, se marca HECHO con la fecha y el commit.
+
+| # | Pieza | Código de hoy | Qué pide el sistema (`docs/ux/sistema-de-diseno/project/`) | Estado |
+|---|---|---|---|---|
+| 1 | Suelo de las seis regiones | `tools/gen_tierra_viva_terrain.py` | `components/Terrain`, `Regiones` | HECHO 2026-11-01 |
+| 2 | Ilan en el mapa (48 px, caminata de 4 cuadros) | `src/world/player_body.gd`, `tools/gen_tierra_viva_cast.py` | `components/Cast` | HECHO 2026-11-01 |
+| 3 | Monstruos de mapa | `src/world/map_monster.gd` | `MonsterRoster`, `referencias/combate_accion.png` | HECHO 2026-11-01 |
+| 4 | Decorado del Bosque | `tools/gen_tierra_viva_decor.py` | README §Mundo, `Overworld` | HECHO 2026-11-01 |
+| 5 | Escena del combate (fondo, monstruo, grupo de espaldas) | `src/ui/battle/battle_screen.gd`, `tools/gen_tierra_viva_battle.py` | `assets/img/combate_enfermo.png`, `combate_purificado.png` | HECHO 2026-11-02 |
+| 6 | **Tipografía**: el juego usa «ceniza» | `DesignTokens.FONT_PATH` | README §Tipografía: **Brote**, 11 px y 22 px | ver §4.0 |
+| 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | ver §4.0 |
+| 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | ver §4.0 |
+| 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
+| 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | ver §4.0 |
+| 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
+| 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
+| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
+| 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
+| 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | §4.6 (R3) |
+| 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
+| 17 | Decorado de Cumbre, Cripta y Valdehoja (Cuenca, Costa y Llanura: HECHO 2026-11-02, PR #21, #22 y #23) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
+| 18 | Fauna y animales | `tools/gen_world_decor.py` | sistema: «aparecen flores y fauna» | §4.2 |
+| 19 | Valdehoja orgánica, edificios de PixelLab y vecinos | `data/world/zones/valdehoja.*` | `components/Overworld`, `assets/source/pixellab/bld`, `npc` | §4.3 y §4.6 |
+| 20 | Caminata de Bruma, Coral, Nix y Suri, y las diagonales | `assets/source/pixellab/<nombre>/` (solo rotaciones) | `Cast`: 8 rotaciones y 4 cuadros | generar en PixelLab y correr `gen_tierra_viva_cast.py` |
+| 21 | HUD del mapa | (no existe) | `components/ActionHUD` | §4.6 (R3) |
+| 22 | Diálogos y retratos | rama `parte-5/anexo` | `components/DialogBox`; manda el sistema, no el contrato «Columna» | §4.7 |
+| 23 | Interiores | (no existen) | `components/Interiores`, `referencias/int_*.png` | §4.6 |
+| 24 | Título y créditos | (no existen) | `referencias/titulo_*.png`, `creditos_*.png` | §4.12 y §4.14 |
+
+**Regla para cerrar una fila:**
+- se mide con la herramienta que corresponda: `verify_palette.py`, la
+  prueba del paso y una captura a 640 × 360 con `tools/battle_capture.tscn`
+  o `tools/verify_terrain.tscn`;
+- la captura se compara con la referencia del sistema;
+- se anota en el anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
+
 ---
 
 ## 4. Todo lo que falta, en orden
@@ -185,6 +226,22 @@ done
 Cada bloque termina con su verificación y con la parada para el visto bueno
 de Diego. **Con cada uno se abre el README del sistema de diseño que se
 indica.**
+
+### 4.0 Combate y tipografía con el sistema (filas 6 a 14 del inventario)
+
+Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
+(`"$GODOT" --path . res://tools/battle_capture.tscn -- <zona> <etiqueta> [purificado]`):
+
+1. **Escena:** HECHO el 2026-11-02 (`58e3e63`).
+2. **Tipografía Brote** en todo el juego (`tools/tierra_viva/final/brote.fnt`
+   → `assets/fonts/`, `DesignTokens.FONT_PATH`), y luego medir que ningún
+   texto se corte: `verify_usability`, `verify_party_ai`.
+3. **Marcos del combate:** `EnemyPlate`, `PartyRow`, `CommandMenu`
+   (LUCHAR, ECO, BOLSA, HUIR; ECO abre las habilidades y la orden del grupo
+   pasa a Tab) y el aviso de papel `DialogBox`. Con más de tres miembros se
+   ven tres filas: el del turno y los dos siguientes.
+4. **Estados:** chapas `TypeBadge`, barras `hp-high/mid/low`, cifras a doble
+   tamaño con `~`, pantalla de resultado y la cola de turnos (decide Diego).
 
 ### 4.1 Paso 4a: masas de región · HECHO el 2026-11-01 (falta el visto bueno de Diego)
 
