@@ -200,7 +200,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | HECHO 2026-11-03 |
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
-| 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | ver §4.0 |
+| 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
 | 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
 | 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
@@ -251,8 +251,6 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
      `TvFrame.PLATE` de 184 × 44 en (10, 10), con el nombre, las chapas de
      tipo y de estado (CORRUPTO o PURIFICADO) y «PV» con su barra de 5 px y
      la cifra. Captura: `docs/ux/capturas/2026-11-03-placa-*.png`.
-     **Lo siguiente es el aviso de papel** (abajo), que no espera ninguna
-     decisión de Diego.
    - **`CommandMenu`:** rejilla de 2 × 2 en (432, 284), 100 × 30, con los
      marcos `cmd-luchar`, `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y
      `cmd-selected` para el elegido. Está en `action_menu.gd`, el menú raíz.
@@ -260,9 +258,13 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
      (recomendado: ECO abre las habilidades y ORDEN pasa a Tab) o las cinco
      de hoy. `verify_party_ai` comprueba la fila de ORDEN y habrá que
      adaptarla.
-   - **El aviso de papel:** en `BattleScreen._draw_message`, con
-     `TvFrame.TEXTBOX` en `MESSAGE_RECT` (6, 282, 420 × 72), texto
-     `TvFrame.paper_text` a 15 px de interlínea y `▼` en `TV_RUST_2`.
+   - **El aviso de papel:** HECHO el 2026-11-03. `BattleScreen._draw_message`
+     dibuja `TvFrame.TEXTBOX` en `MESSAGE_RECT` (6, 282, 420 × 72), con el
+     texto en papel a 15 px de interlínea y `▼` en `TV_RUST_2`. Los tonos del
+     registro pasan al papel con `_paper_tone`. Captura:
+     `docs/ux/capturas/2026-11-03-aviso-*.png`. **Lo siguiente es el
+     `CommandMenu`**, que espera la decisión de Diego (cuatro o cinco
+     entradas).
    - Los submenús (habilidades, bolsa, objetivo) no están en el sistema:
      se usa `TvFrame.PLATE` como marco de lista, y se avisa a Diego.
    - **Aviso para Diego:** las barras de PV del sistema son verdes
