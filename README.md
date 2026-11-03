@@ -77,6 +77,11 @@ ataja la causa del daño.
   y todos los sprites. Los assets se pueden regenerar con
   `python tools/gen_sprites.py`.
 
+## Privacidad
+
+El juego no recoge datos de nadie ni se conecta a internet. Detalle en
+[`docs/legal/privacidad.md`](docs/legal/privacidad.md).
+
 ## Qué falta
 
 - La exploración top-down y los puzzles ambientales de cada región.
