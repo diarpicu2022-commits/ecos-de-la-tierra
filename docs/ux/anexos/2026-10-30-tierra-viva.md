@@ -1134,3 +1134,38 @@ equipo §4.4.
 - **Con esto R1 queda completo salvo la matriz orgánica de Valdehoja**
   (cláusula 6, aplazada; falta que Diego lo confirme). Siguiente: el PR de R1
   contra `master` (guía §4.4, punto 4).
+
+#### Combate con el sistema de diseño, paso 3: la placa del monstruo · 2026-11-03
+
+Componentes `EnemyPlate` y `TypeBadge` del sistema; modelo
+`project/assets/img/combate_enfermo.png`. Lo hace el compañero (Diego,
+2026-11-02: «sigue el compañero» desde la §4.0 de la guía).
+
+- **`MonsterView._draw_panel`** usa `TvFrame` en vez del panel de ceniza:
+  - marco `TvFrame.PLATE`, de 184 × 44, en (10, 10);
+  - el nombre en `text-on-slate` con su sombra, recortado si no cabe;
+  - las chapas: el tipo (`TvFrame.type_fill`; el jefe de la Cripta lleva
+    AVARICIA) y CORRUPTO (`paper-5` sobre `status-corrupt`) o PURIFICADO
+    (`eco-5` sobre `status-purified`). El estado cambia a la mitad de la
+    transición de purificación, a la vez que la forma del monstruo;
+  - «PV» en `text-highlight`, la barra de 5 px con `TvFrame.hp_fill` y la
+    cifra en `text-muted-slate`, que nunca se oculta.
+- **Lo que se quita:** la franja «✖ SIN PURIFICAR / se regenera cada ronda»
+  del contrato viejo. Ahora lo dice la chapa, y el porqué («La llama se
+  rehace. Su causa es FUEGO») va en el aviso de papel, que es el paso
+  siguiente.
+- **Contraste medido** (texto sobre chapa): FUEGO 5,40:1, PETRÓLEO 8,32,
+  PLÁSTICO 8,60, MONOCULTIVO 6,33, DESHIELO 8,56, AVARICIA 8,61, CORRUPTO
+  10,20 y PURIFICADO 5,58. Todas ≥ 4,5:1, como pide el README («todos
+  ≥ 5,4:1»).
+- **Propuesta de enmienda 15, pendiente de Diego:** las barras de PV del
+  sistema son verdes cuando la vida está alta (`hp-high`). Eso choca con la
+  regla «el verde solo significa purificado» (AGENTS.md, guía §2.3). La
+  guía dice que manda el sistema, y las filas del grupo (`PartyRow`) ya las
+  usaban desde el 2026-11-02; la placa hace lo mismo. Queda anotado para que
+  Diego la apruebe o la cambie.
+- **Medido:** usability 16/16, flow 23/23, party_ai 19/19 y encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-placa-{ashen_forest,purificado-ashen_forest,withered_plain,greed_crypt}.png`.
+- **Siguiente:** el aviso de papel (`BattleScreen._draw_message`, con
+  `TvFrame.TEXTBOX`).

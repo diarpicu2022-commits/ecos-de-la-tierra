@@ -32,10 +32,10 @@ const SPRITE_DIR := "res://assets/sprites/monsters/"
 ## origen es el centro de la fila de abajo del sprite.
 const TIERRA_VIVA_DIR := "res://assets/sprites/monsters/tierra_viva/"
 
-## Umbrales de la barra de PV. La vida se drena hacia la brasa, nunca al verde:
-## el verde es el acento reservado a la purificación.
-const HP_WOUNDED := 0.55
-const HP_CRITICAL := 0.25
+## Placa del enemigo del sistema de diseño (`components/EnemyPlate`): 184 px
+## de ancho, con nombre, fila de chapas y la fila de los PV.
+const PLATE_SIZE := Vector2(184, 44)
+const PLATE_PAD := 8.0
 
 ## Con varios enemigos en el campo, solo el que está en el punto de mira enseña
 ## su ficha; los demás se quedan en el sprite.
@@ -322,85 +322,47 @@ func top_center() -> Vector2:
 	return Vector2(SPRITE_SIZE * 0.5, 0)
 
 
+## Placa del enemigo (`components/EnemyPlate`, `TypeBadge`): marco de pizarra;
+## el nombre; la fila de chapas con el tipo de daño y CORRUPTO o PURIFICADO; y
+## «PV» con su barra de 5 px y la cifra, que nunca se oculta. El estado de
+## purificación lo dicen la chapa y el propio monstruo, que cambia de forma.
 func _draw_panel() -> void:
-	var top: float = panel_offset.y
-	var left: float = panel_offset.x
-	var panel := Rect2(Vector2(left, top), Vector2(PANEL_WIDTH, PANEL_HEIGHT))
-	var border: Color = DesignTokens.BORDER_IDLE.lerp(
-			DesignTokens.BORDER_PURIFIED, _purify_progress)
+	var at := panel_offset
+	TvFrame.draw(self, TvFrame.PLATE, Rect2(at, PLATE_SIZE))
+	var pad := PLATE_PAD
+	TvFrame.slate_text(self, _font, at + Vector2(pad, 13),
+			_fit(monster.display_name, PLATE_SIZE.x - pad * 2.0))
 
-	draw_rect(panel, DesignTokens.PANEL_FILL)
-	draw_rect(panel, border, false, DesignTokens.BORDER_WIDTH)
-
-	var pad: float = DesignTokens.SPACE_8
-	_text(_fit(monster.display_name, PANEL_WIDTH - pad * 2.0),
-			Vector2(left + pad, top + 13), DesignTokens.TEXT_PRIMARY)
-
-	_draw_hp_bar(left, top)
-	_draw_purification(left, top, border)
-
-
-func _draw_hp_bar(left: float, top: float) -> void:
-	var pad: float = DesignTokens.SPACE_8
-	var track := Rect2(Vector2(left + pad, top + 19), Vector2(104, 6))
-	draw_rect(track, DesignTokens.BAR_TRACK)
-
-	var ratio: float = _ratio()
-	var fill_color: Color = DesignTokens.ASH_050
-	if ratio <= HP_CRITICAL:
-		fill_color = DesignTokens.EMBER_500
-	elif ratio <= HP_WOUNDED:
-		fill_color = DesignTokens.EMBER_400
-
-	if ratio > 0.0:
-		# Al menos 1 px mientras siga vivo: una barra vacía diría que ya cayó.
-		var width: float = maxf(1.0, roundf(track.size.x * ratio))
-		draw_rect(Rect2(track.position, Vector2(width, track.size.y)), fill_color)
-	draw_rect(track, DesignTokens.BORDER_IDLE, false, DesignTokens.BORDER_WIDTH)
-
-	# La cifra exacta acompaña siempre a la barra. Una barra sola obliga a
-	# estimar, y aquí el jugador decide con este número. Se lee del valor
-	# animado, no del real, para que cifra y barra digan lo mismo.
-	var label := "%d/%d" % [roundi(_shown_hp), monster.max_hp]
-	var tone: Color = DesignTokens.TEXT_CRITICAL if ratio <= HP_CRITICAL \
-			else DesignTokens.TEXT_PRIMARY
-	_text(label, Vector2(left + PANEL_WIDTH - DesignTokens.SPACE_8 - _width(label),
-			top + 25), tone)
-
-
-## La franja que responde a «¿por qué el daño no sirvió?».
-func _draw_purification(left: float, top: float, border: Color) -> void:
-	var pad: float = DesignTokens.SPACE_8
-	var band := Rect2(Vector2(left + 1, top + 30), Vector2(PANEL_WIDTH - 2, 21))
-	draw_rect(band, DesignTokens.PANEL_FILL_DEEP)
-	draw_rect(Rect2(band.position, Vector2(2, band.size.y)), border)
-
+	var x := at.x + pad
+	x += TvFrame.badge(self, _font, Vector2(x, at.y + 17), _type_label(),
+			TvFrame.type_fill(monster.required_counter_type)) + 3.0
 	var purified: bool = _purify_progress >= 0.5
-	var headline: String = "✓ PURIFICADO" if purified else "✖ SIN PURIFICAR"
-	var tone: Color = DesignTokens.TEXT_PURIFIED if purified 			else DesignTokens.TEXT_WARNING
+	if purified:
+		TvFrame.badge(self, _font, Vector2(x, at.y + 17), "PURIFICADO",
+				DesignTokens.TV_STATUS_PURIFIED, DesignTokens.TV_ECO_5)
+	else:
+		TvFrame.badge(self, _font, Vector2(x, at.y + 17), "CORRUPTO",
+				DesignTokens.TV_STATUS_CORRUPT, DesignTokens.TV_PAPER_4)
 
-	_text(headline, Vector2(left + pad, top + 40), tone)
-	# El tipo de daño y lo que hace el monstruo van en una sola frase, no como
-	# dos etiquetas flotando en extremos opuestos. Con nombres largos
-	# («Monocultivo») las dos se tocaban, y además un tipo suelto a la derecha
-	# no decía qué hacer con él.
-	_text(_status_line(purified), Vector2(left + pad, top + 49),
-			DesignTokens.TEXT_SECONDARY)
+	# La cifra se lee del valor animado, no del real, para que cifra y barra
+	# digan lo mismo.
+	var label := "%d/%d" % [roundi(_shown_hp), monster.max_hp]
+	var label_w := TvFrame.width(_font, label)
+	var base := at.y + 38.0
+	TvFrame.slate_text(self, _font, Vector2(at.x + pad, base), "PV", DesignTokens.TV_TEXT_HIGHLIGHT)
+	var bar_x := at.x + pad + TvFrame.width(_font, "PV") + 4.0
+	var bar_w := at.x + PLATE_SIZE.x - pad - label_w - 6.0 - bar_x
+	TvFrame.bar(self, Vector2(bar_x, base - 6.0), bar_w, 5, _ratio(), TvFrame.hp_fill(_ratio()))
+	TvFrame.slate_text(self, _font, Vector2(at.x + PLATE_SIZE.x - pad - label_w, base), label,
+			DesignTokens.TV_TEXT_MUTED_SLATE)
 
 
-## Segunda línea de la franja: de qué daño se trata y qué implica ahora mismo.
-func _status_line(purified: bool) -> String:
-	var behaviour: String = "ya puede ser derrotado" if purified 			else "se regenera cada ronda"
-	# El jefe final no tiene una sola contramedida: exige combinar las cinco,
-	# y decir «Neutro» no le sirve de nada al jugador.
+## Texto de la chapa de tipo, en mayúsculas (`TypeBadge`). El jefe de la
+## Cripta no tiene una sola contramedida: su chapa es la de la avaricia.
+func _type_label() -> String:
 	if monster.required_counter_type == Enums.EcoType.NONE:
-		return "aprende de lo que repites" if not purified else behaviour
-	var eco: String = Enums.eco_type_name(monster.required_counter_type)
-	var line: String = "%s · %s" % [eco, behaviour]
-	if _width(line) <= PANEL_WIDTH - DesignTokens.SPACE_8 * 2.0:
-		return line
-	# Si la frase entera no cabe, manda el tipo: es la pista de qué usar.
-	return "%s · %s" % [eco, "se regenera" if not purified else "puede caer"]
+		return "AVARICIA"
+	return Enums.eco_type_name(monster.required_counter_type).to_upper()
 
 
 func _text(text: String, position: Vector2, color: Color) -> void:
