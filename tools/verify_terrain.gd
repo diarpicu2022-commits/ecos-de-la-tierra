@@ -19,6 +19,8 @@ extends Node
 ##   del mundo: sin filtro, sin escala y sin desfase. Las capturas se hacen
 ##   después, con todo visible.
 ## - **Estado:** enferma, se ve el enfermo; purificada, el sano.
+##   En una zona por partes (Valdehoja), además, cada casilla en el estado de
+##   su parte.
 ## - **Ola:** a mitad de la ola, cada píxel visible del suelo es enfermo o
 ##   sano, nunca una mezcla, y hay de los dos.
 ## Capturas: docs/ux/capturas/<fecha>-<etiqueta>-<zona>-{enfermo,ola,sano}.png,
@@ -91,9 +93,17 @@ func _ready() -> void:
 	world.label.visible = false
 	await _settle()
 	var shot := await _bare(world)
-	var m := _match(shot, world, sick_img)
-	_check("enferma: se ve el enfermo en el %.0f %% de la pantalla (≥ %.0f %%)" % [m * 100, MATCH_MIN * 100],
-		m >= MATCH_MIN and not world.terrain_pure.visible)
+	var parted := not ZoneRules.load_parts(zone).is_empty()
+	if parted:
+		# Valdehoja (paso 5): cada casilla, en el estado de su parte.
+		var expected := _by_parts(sick_img, pure_img, WorldDecor.purified_lookup(zone, state))
+		var mp := _match(shot, world, expected)
+		_check("por partes: cada casilla se ve en el estado de su parte en el %.0f %% de la pantalla" % [mp * 100],
+			mp >= MATCH_MIN and world.terrain_pure.material != null)
+	else:
+		var m := _match(shot, world, sick_img)
+		_check("enferma: se ve el enfermo en el %.0f %% de la pantalla (≥ %.0f %%)" % [m * 100, MATCH_MIN * 100],
+			m >= MATCH_MIN and not world.terrain_pure.visible)
 	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "enfermo"]))
 
 	print("\nOla")
@@ -114,7 +124,7 @@ func _ready() -> void:
 		world.monster.active = false
 	await _settle()
 	shot = await _bare(world)
-	m = _match(shot, world, pure_img)
+	var m := _match(shot, world, pure_img)
 	_check("purificada: se ve el sano en el %.0f %% de la pantalla" % [m * 100],
 		m >= MATCH_MIN and world.terrain_pure.visible)
 	(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [day, tag, zone, "sano"]))
@@ -182,6 +192,18 @@ func _match(shot: Image, world: WorldRoot, tex: Image) -> float:
 			if _same(shot.get_pixel(x, y), tex.get_pixel(view.position.x + x, view.position.y + y)):
 				hit += 1
 	return float(hit) / (shot.get_width() * shot.get_height())
+
+
+## El suelo esperado en una zona por partes: el sano en las casillas
+## purificadas y el enfermo en las demás.
+func _by_parts(sick: Image, pure: Image, purified_at: Callable) -> Image:
+	var out := sick.duplicate()
+	var t := DesignTokens.TILE_SIZE
+	for cy in sick.get_height() / t:
+		for cx in sick.get_width() / t:
+			if purified_at.call(Vector2i(cx, cy)):
+				out.blit_rect(pure, Rect2i(cx * t, cy * t, t, t), Vector2i(cx * t, cy * t))
+	return out
 
 
 ## [fracción enfermo-o-sano, píxeles que solo casan con el sano, solo con el enfermo].

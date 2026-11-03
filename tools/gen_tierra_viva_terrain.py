@@ -49,9 +49,12 @@ SEED = 1
 ## un cuarto de casilla: no tapan a quien anda junto al borde.
 OVERHANG = 4
 
-## Región de la paleta por zona (cláusula 2). Valdehoja va aparte: paso 5.
+## Región de la paleta por zona (cláusula 2). Valdehoja (paso 5) lleva la
+## paleta común: su enfermo es el del pueblo sin región, y cada parte se
+## enseña en su estado en el motor (`part_mask.gdshader`).
 REGION = {"ashen_forest": "bosque", "tar_basin": "cuenca", "broken_coast": "costa",
-          "withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta"}
+          "withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta",
+          "valdehoja": "valdehoja"}
 
 
 # --- paleta --------------------------------------------------------------------
@@ -364,6 +367,7 @@ MASS = {
     "costa": ("bush", "twigs", 11, 8),
     "llanura": ("bush", "twigs", 11, 8),
     "cumbre": ("frailejon", "frailejon_dry", 10, 9),
+    "valdehoja": ("tree", "burnt", 14, 10),
 }
 
 ## Píxeles que una pieza del borde norte de la masa puede asomar por encima

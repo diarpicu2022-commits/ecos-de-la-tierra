@@ -1040,3 +1040,57 @@ el permiso de Diego del 2026-11-02.
     12 px de ancho. Si hace falta, se agranda en una pasada aparte.
 - **Siguiente:** Valdehoja, que es el paso 5 (matriz orgánica nueva) y lleva
   su decorado con él.
+
+#### Paso 5, primera parte — Piel nueva de Valdehoja sobre la matriz aprobada · 2026-11-03
+
+**Decisión de Juan José Rueda (2026-11-03), por la presentación del
+miércoles 2026-11-04:** Valdehoja se viste ya con el suelo y el decorado de
+Tierra Viva **sobre su matriz aprobada de 60 × 34**. La cláusula 6 del
+contrato (la trama orgánica de 90 × 64 desde `village5.py`, con los edificios
+de PixelLab a su tamaño) **no se cumple todavía**: queda para después de la
+presentación. No es una enmienda aprobada; **falta que Diego lo confirme**.
+
+- **Suelo por partes** (lo que pedía la guía, §4.3, punto 3):
+  - `tools/gen_tierra_viva_terrain.py` pinta `valdehoja` con la paleta
+    común y la masa de árboles («tree» sano, «burnt» enfermo);
+  - `WorldRoot._mount_terrain` monta siempre el sano en una zona con partes,
+    y `src/world/part_mask.gdshader` lo enseña solo en las casillas
+    purificadas: una máscara con un píxel por casilla, que sale de
+    `WorldDecor.purified_lookup`. Cada píxel es enfermo o sano, nunca una
+    mezcla;
+  - la ola sigue igual. Al purificar Valdehoja entera, se monta el sano
+    sin máscara.
+- **Decorado, `village()` en `tools/gen_tierra_viva_decor.py`**, 34 sprites:
+  - casa (tejado de teja roja, muro encalado, zócalo de piedra, puerta y
+    jardineras con flores) y la casa de piedra de Ilan (pizarra azul), en
+    52 × 60 sobre su huella de 3 × 3. Siguen el diseño de la tarjeta `casa`
+    del sistema, dibujado en código a la escala de la matriz actual: los
+    edificios de PixelLab miden 104 × 120 (seis casillas) y no caben en
+    3 × 3. Enfermas, en la rampa de ceniza, con las ventanas a oscuras;
+  - el pozo de la era (agua clara o turbia), el árbol del jardín de Yara (el
+    roble del Bosque), la bocamina tapiada (arco de piedra y tablones en
+    cruz, enmienda 12) y las flores (mustias o de colores, con cuadro de
+    mecerse);
+  - árboles, arbusto, tocón, hierba, matojo, cascotes, hilera de cultivo,
+    basura, roca y semillero, con las piezas de cada región.
+- **Siguen viejos:** Yara, los animales y la fauna (fila 18 del inventario).
+- **`verify_terrain`** gana una comprobación en las zonas por partes: cada
+  casilla se ve en el estado de su parte, comparada píxel a píxel con el PNG
+  de su estado.
+- **Medido:**
+  - el suelo: `image` y `tv-state` limpios; `value` 2,35 (normal), 2,23
+    (deuteranopía), 2,53 (protanopía) y 2,32 (tritanopía);
+  - los 34 sprites pasan `image` y `tv-state`;
+  - `verify_zone valdehoja` 55/55;
+  - `verify_terrain valdehoja` 7/7 en cuatro vistas: casas `30 13`, jardín
+    `22 6`, bocamina `5 4` y pozo `24 21`;
+  - la batería entera en verde: las seis regiones 7/7 en `verify_terrain` y
+    en verde en `verify_zone`, usability 16, camera 37, encounters 82, flow
+    23, party_ai 19, movement 100/100 y 320 tokens sin deriva.
+- **Fallo del entorno, dicho:** la primera importación de Godot se cortó
+  («Segmentation fault») antes de importar los PNG nuevos, y la primera
+  pasada de `verify_terrain` falló por eso. Se repitió la importación.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-decorado{,-jardin,-bocamina,-pozo}-valdehoja-{enfermo,ola,sano}.png`.
+- **Siguiente:** el paso 6 (los estados, con el agua viva) o, tras la
+  presentación y con el visto bueno de Diego, la matriz orgánica.
