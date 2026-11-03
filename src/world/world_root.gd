@@ -142,11 +142,27 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	body.global_position = Vector2(feet_of(cell))
 	camera.limits = Rect2i(Vector2i.ZERO, zone_size * DesignTokens.TILE_SIZE)
 	camera.snap_to_target()
-	label.show_name(_names.get(id, id))
+	label.show_name(_names.get(id, id), _sign_subtitle(id, state))
 	if state != null:
 		state.facing = body.facing
 		state.set_zone(id)
 	zone_changed.emit(id)
+
+
+## Segunda línea del cartel de lugar (`LocationSign`): el apodo del pueblo o
+## el estado de la región, concordado con su nombre.
+const SIGN_NICKNAME := {"valdehoja": "Pueblo de las terrazas"}
+const SIGN_FEMININE := ["tar_basin", "broken_coast", "withered_plain", "waning_peak", "greed_crypt"]
+
+
+func _sign_subtitle(id: String, state: Node) -> String:
+	if SIGN_NICKNAME.has(id):
+		return SIGN_NICKNAME[id]
+	if state == null or not ZoneRules.load_parts(id).is_empty() or not WorldDecor.has_terrain(id):
+		return ""
+	var pure: bool = state.is_zone_purified(id)
+	var ending := "a" if id in SIGN_FEMININE else "o"
+	return ("Purificad" if pure else "Enferm") + ending
 
 
 const TERRAIN_DIR := "res://assets/world/tierra_viva/"
