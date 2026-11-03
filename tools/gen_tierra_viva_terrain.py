@@ -49,9 +49,12 @@ SEED = 1
 ## un cuarto de casilla: no tapan a quien anda junto al borde.
 OVERHANG = 4
 
-## Región de la paleta por zona (cláusula 2). Valdehoja va aparte: paso 5.
+## Región de la paleta por zona (cláusula 2). Valdehoja (paso 5) lleva la
+## paleta común: su enfermo es el del pueblo sin región, y cada parte se
+## enseña en su estado en el motor (`part_mask.gdshader`).
 REGION = {"ashen_forest": "bosque", "tar_basin": "cuenca", "broken_coast": "costa",
-          "withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta"}
+          "withered_plain": "llanura", "waning_peak": "cumbre", "greed_crypt": "cripta",
+          "valdehoja": "valdehoja"}
 
 
 # --- paleta --------------------------------------------------------------------
@@ -309,9 +312,11 @@ def paint_beach_water(img, wat, beach, P):
     img[bw & (dd > 8) & (dd <= 9) & (xx % 7 < 4)] = P["water"][5]
 
 
-def paint_water(img, wat, land, P, rng):
+def paint_water(img, wat, land, P, rng, frame=0):
     """Agua hundida: profundidad por distancia a la orilla, cara de tierra de
-    6 px al norte, talud de 1 px en los lados, destellos en el agua abierta."""
+    6 px al norte, talud de 1 px en los lados, destellos en el agua abierta.
+    `frame` es el cuadro del agua viva (enmienda 8): en el 1 los destellos se
+    corren `SPARKLE_SHIFT` px; la semilla se gasta igual en los dos."""
     w = P["water"]
     d = ndi.distance_transform_edt(wat)
     yy, xx = np.indices(wat.shape)
@@ -325,7 +330,7 @@ def paint_water(img, wat, land, P, rng):
     open_ = wat & (d > 5)
     ys, xs = np.where(open_)
     for k in rng.choice(len(ys), size=max(1, len(ys) // 90), replace=False) if len(ys) else []:
-        y, x = ys[k], xs[k]
+        y, x = ys[k], xs[k] + frame * SPARKLE_SHIFT
         for i in range(2 + k % 3):
             if x + i < wat.shape[1] and open_[y, x + i]:
                 img[y, x + i] = w[5]
@@ -364,6 +369,7 @@ MASS = {
     "costa": ("bush", "twigs", 11, 8),
     "llanura": ("bush", "twigs", 11, 8),
     "cumbre": ("frailejon", "frailejon_dry", 10, 9),
+    "valdehoja": ("tree", "burnt", 14, 10),
 }
 
 ## Píxeles que una pieza del borde norte de la masa puede asomar por encima
@@ -797,7 +803,11 @@ def paint_blight(img, ground, region: str, state: str, P: dict, rng) -> None:
         img[blob & ~chk & ((xx + 2 * yy) % 3 == 0)] = P["ash"][1]
 
 
-def render(lines: list[str], state: str, region: str) -> np.ndarray:
+## Píxeles que se corren los destellos del agua en el segundo cuadro.
+SPARKLE_SHIFT = 2
+
+
+def render(lines: list[str], state: str, region: str, frame: int = 0) -> np.ndarray:
     """La zona entera en un estado. Misma semilla en los dos estados: el
     dibujo coincide píxel a píxel y solo cambia el material."""
     if region == "cripta":
@@ -823,7 +833,7 @@ def render(lines: list[str], state: str, region: str) -> np.ndarray:
     foliage = rounded(G == "#", 5, sigma=6) & ~wat
     beach = ndi.binary_dilation(sand, iterations=3) if sand.any() else sand
     # orilla con talud solo donde el agua no da a la playa
-    bank = paint_water(img, wat, ~wat & ~beach, P, rng)
+    bank = paint_water(img, wat, ~wat & ~beach, P, rng, frame)
     if beach.any():
         paint_beach_water(img, wat, beach, P)
     paint_water_life(img, wat, bank, state, P, rng)
@@ -844,10 +854,15 @@ def main(argv: list[str]) -> int:
             print(f"  FALLA {zone}: sin región de paleta ({', '.join(REGION)})")
             return 1
         lines = (ZONES / f"{zone}.txt").read_text(encoding="utf8").split()
-        for state in ("enfermo", "sano"):
-            img = render(lines, state, REGION[zone])
+        # el segundo cuadro del agua viva, solo en lo sano (enmienda 8: solo
+        # se mueve lo purificado) y solo donde hay agua
+        frames = [("enfermo", 0), ("sano", 0)]
+        if REGION[zone] != "cripta" and any("~" in r for r in lines):
+            frames.append(("sano", 1))
+        for state, frame in frames:
+            img = render(lines, state, REGION[zone], frame)
             moved = quantize(img, allowed_colors(state))
-            path = OUT / f"{zone}_{state}.png"
+            path = OUT / f"{zone}_{state}{'_1' if frame else ''}.png"
             Image.fromarray(img, "RGBA").save(path)
             print(f"  {path.relative_to(ROOT)}: {img.shape[1]}×{img.shape[0]}, "
                   f"{moved} px llevados a su token")

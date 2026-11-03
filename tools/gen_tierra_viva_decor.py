@@ -1095,6 +1095,645 @@ def weed(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
     return img
 
 
+# --- piezas de la Cumbre -----------------------------------------------------------------
+# Daño de deshielo: hollín sobre `ice` (README del sistema §Mundo), pedregal
+# donde estaba el glaciar y agua turbia. Purificado vuelve la nieve (`snow`,
+# rampa de solo-purificado). Lo que se limpia con la ola (deshielo, grietas,
+# bloques de hielo, charcas y el paso cerrado) solo tiene sprite enfermo.
+
+def soot(img: np.ndarray, P: dict, seed: int, n: int) -> None:
+    """Hollín tramado sobre lo opaco: motas de ceniza oscura en pares."""
+    h, w = img.shape[:2]
+    rs = np.random.default_rng(seed)
+    ash = P["ash"]
+    for _ in range(n):
+        x, y = int(rs.integers(1, w - 2)), int(rs.integers(1, h - 1))
+        if img[y, x, 3] and img[y, x + 1, 3]:
+            img[y, x] = rgba(ash[1])
+            if (x + y) % 2:
+                img[y, x + 1] = rgba(ash[2])
+
+
+def pine(P: dict, sick: bool) -> np.ndarray:
+    """Pino de montaña (2×2, 32×40): tres pisos de ramas en triángulo sobre el
+    tronco. Enfermo, agujas secas con hollín; purificado, verde con nieve en
+    las puntas."""
+    img = canvas(32, 40)
+    foot(img, 16, 37, 11, 3, P, sick)
+    s = canvas(32, 40)
+    tv.trunk(s, 16, 26, 39, P["wood"])
+    nd = P["dead"] if sick else P["leaf"]
+    yy, xx = np.indices((40, 32))
+    for top, half, base in ((2, 6, 14), (8, 9, 22), (15, 12, 31)):
+        tri = (yy >= top) & (yy <= base) & (np.abs(xx + 0.5 - 16) <= half * (yy - top + 1) / (base - top + 1))
+        s[tri] = rgba(nd[3])
+        s[tri & (xx < 16)] = rgba(nd[4])
+        s[tri & (yy >= base - 1)] = rgba(nd[2])
+    s = tv.outlined(s, rgba(nd[0]))
+    if sick:
+        soot(s, P, 61, 18)
+    else:
+        sn = P["snow"]
+        for top, half, base in ((2, 6, 14), (8, 9, 22), (15, 12, 31)):
+            s[top, 16] = rgba(sn[4])
+            for k in (-half + 2, half - 2):
+                s[base - 1, 16 + k] = rgba(sn[3])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def boulder(P: dict, sick: bool) -> np.ndarray:
+    """Peñasco (2×2, 32×32): roca grande con luz arriba a la izquierda.
+    Enfermo, tiznado de hollín; purificado, con su capa de nieve."""
+    img = canvas(32, 32)
+    foot(img, 16, 29, 14, 3, P, sick)
+    st = P["stone"]
+    yy, xx = np.indices((32, 32))
+    m = ellipse(32, 32, 16, 18, 14, 11) | ellipse(32, 32, 12, 13, 8, 7)
+    s = canvas(32, 32)
+    s[m] = rgba(st[3])
+    s[m & (yy < 17)] = rgba(st[4])
+    s[m & (yy < 14) & (xx < 15)] = rgba(st[5])
+    s[m & (yy > 24)] = rgba(st[2])
+    tv.line(s, 18, 10, 15, 20, rgba(st[1]))
+    tv.line(s, 15, 20, 19, 26, rgba(st[1]))
+    s = tv.outlined(s, rgba(st[0]))
+    if sick:
+        soot(s, P, 62, 30)
+    else:
+        sn = P["snow"]
+        s[m & (yy <= 9)] = rgba(sn[3])
+        s[m & (yy <= 8) & (xx < 15)] = rgba(sn[4])
+        s[m & (yy == 10) & (xx % 3 != 0)] = rgba(sn[2])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def dark_rock(P: dict, sick: bool) -> np.ndarray:
+    """Roca oscura que asoma donde había nieve (16×16), la placa del suelo.
+    La viñeta (`v1_dark_rock`) usa el mismo sprite. Enferma, la placa de
+    pedregal desnuda con hollín; purificada, la nieve la cubre otra vez."""
+    img = canvas(16, 16)
+    sc = P["sand"]   # pedregal en lo enfermo, nieve en lo sano
+    yy, xx = np.indices((16, 16))
+    m = ellipse(16, 16, 8, 10, 6.5, 3.6)
+    img[m] = rgba(sc[1])
+    img[m & ((xx + yy) % 3 == 0)] = rgba(sc[2])
+    img[m & (yy < 9)] = rgba(sc[2])
+    if sick:
+        soot(img, P, 64, 6)
+    return img
+
+
+def meltwater(P: dict) -> np.ndarray:
+    """Reguero de deshielo (16×16, pisable): agua turbia que baja en zigzag."""
+    img = canvas(16, 16)
+    t = P["water"]   # `turbid` en la Cumbre enferma
+    pts = [(3, 1), (6, 4), (5, 7), (9, 10), (8, 13), (11, 15)]
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        tv.line(img, x0, y0, x1, y1, rgba(t[3]), 2)
+    for x, y in pts[1:-1]:
+        img[y, x] = rgba(t[5])
+    return img
+
+
+def crack(P: dict) -> np.ndarray:
+    """Grieta en el suelo (16×16, pisable)."""
+    img = canvas(16, 16)
+    c = P["sand"][0]
+    tv.line(img, 2, 9, 7, 7, rgba(c))
+    tv.line(img, 7, 7, 10, 10, rgba(c))
+    tv.line(img, 10, 10, 14, 8, rgba(c))
+    tv.line(img, 7, 7, 6, 4, rgba(c))
+    img[8, 7:9] = rgba(P["ash"][0])
+    return img
+
+
+def ice_block(P: dict) -> np.ndarray:
+    """Bloque de hielo caído del glaciar (16×16): cubo azul con la cara clara
+    arriba, tiznado de hollín y fundiéndose en su charco."""
+    img = canvas(16, 16)
+    ice, t = P["ice"], P["water"]
+    m = ellipse(16, 16, 8, 13.5, 7, 2.2)
+    img[m] = rgba(t[2])
+    s = canvas(16, 16)
+    s[5:13, 3:13] = rgba(ice[3])
+    s[5:8, 3:13] = rgba(ice[4])
+    s[5, 4:9] = rgba(ice[5])
+    s[8:13, 10:13] = rgba(ice[2])
+    s = tv.outlined(s, rgba(ice[0]))
+    # hollín en veta diagonal: con motas sueltas el cubo parecía una cara
+    # (hoja de sprites del 2026-11-02)
+    ash = P["ash"]
+    for k in range(6):
+        s[6 + k, 4 + k] = rgba(ash[2] if k % 2 else ash[1])
+    s[7:9, 11] = rgba(ash[1])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    img[14, 3:5] = rgba(t[4])
+    return img
+
+
+def meltpool(P: dict) -> np.ndarray:
+    """Charca de deshielo (16×16, pisable): agua turbia con su borde."""
+    img = canvas(16, 16)
+    t = P["water"]
+    m = ellipse(16, 16, 8, 10, 6.5, 3.8)
+    img[m] = rgba(t[1])
+    img[m & ellipse(16, 16, 8, 10, 5.5, 2.8)] = rgba(t[2])
+    img[9, 5:7] = rgba(t[5])
+    img[11, 10] = rgba(t[4])
+    return img
+
+
+def stake(P: dict, sick: bool) -> np.ndarray:
+    """La estaca que marcaba hasta dónde llegaba el hielo (16×16): poste de
+    madera con bandas pintadas. Enferma, la estaca sola sobre el pedregal;
+    purificada, la nieve vuelve a llegarle a la marca."""
+    img = canvas(16, 16)
+    foot(img, 8, 14, 5, 1.6, P, sick)
+    w, red = P["wood"], P["roof_red"]
+    s = canvas(16, 16)
+    s[1:15, 7:10] = rgba(w[3])
+    s[1:15, 7] = rgba(w[4])
+    for y in (3, 7):
+        s[y:y + 2, 7:10] = rgba(red[3])
+    s = tv.outlined(s, rgba(w[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    if not sick:
+        sn = P["snow"]
+        drift = ellipse(16, 16, 8, 13.5, 7, 3.2)
+        img[drift] = rgba(sn[3])
+        img[drift & ellipse(16, 16, 7, 12.5, 5, 1.8)] = rgba(sn[4])
+    return img
+
+
+def moraine(P: dict, sick: bool) -> np.ndarray:
+    """La morrena (16×16, pisable): cordón de piedras que dejó el glaciar.
+    Purificada, con hierba alpina y una flor entre las piedras."""
+    img = canvas(16, 16)
+    st = P["stone"]
+    for x, y, r in ((3, 10, 2), (6, 8, 2.5), (10, 9, 2), (13, 11, 1.6), (8, 12, 1.8)):
+        m = ellipse(16, 16, x, y, r, r * 0.8)
+        img[m] = rgba(st[3])
+        img[m & ellipse(16, 16, x - 0.6, y - 0.6, r * 0.5, r * 0.4)] = rgba(st[5])
+    if not sick:
+        g = P["grass"]
+        for x in (5, 9, 12):
+            img[12:14, x] = rgba(g[4])
+            img[11, x] = rgba(g[5])
+        img[10, 9] = rgba(P["flower"][4])
+    return img
+
+
+def glacier(P: dict, sick: bool) -> np.ndarray:
+    """Hito: el glaciar sobre el Refugio de Altahielo. Huella de 4×4; el
+    sprite (80×80) la desborda hacia arriba. Tres gradas de hielo, cada una
+    con su frente de seracs: con una sola masa redonda se leía como una bola
+    de nieve (captura del 2026-11-02). Purificado, nieve sobre cada grada;
+    enfermo, el mismo glaciar partido por una grieta, con pedregal donde
+    había nieve, tiznado de hollín y soltando agua turbia por el frente."""
+    W, H = 80, 80
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 76, 37, 4, P, sick)
+    ice = P["ice"]
+    yy, xx = np.indices((H, W))
+    tiers = [(cx + 4, 30, 22, 9), (cx - 4, 46, 31, 11), (cx, 62, 38, 12)]
+    t = canvas(W, H)
+    body = np.zeros((H, W), bool)
+    for tx, ty, rx, ry in tiers:
+        top = ellipse(W, H, tx, ty, rx, ry) & (yy <= ty)
+        face = (np.abs(xx + 0.5 - tx) <= rx * 0.97) & (yy > ty) & (yy <= ty + 9)
+        face &= ellipse(W, H, tx, ty + 4, rx, ry)
+        surface = (ice[4], ice[5]) if not sick else (P["sand"][2], P["sand"][3])
+        if not sick:
+            surface = (P["snow"][3], P["snow"][4])
+        t[top] = rgba(surface[0])
+        t[top & (xx < tx - rx * 0.3)] = rgba(surface[1])
+        t[face] = rgba(ice[3])
+        t[face & (xx % 4 == 0)] = rgba(ice[2])
+        t[face & (yy == ty + 1)] = rgba(ice[5])
+        t[face & (yy >= ty + 7)] = rgba(ice[1])
+        body |= top | face
+    if sick:
+        for k in range(0, 62):
+            x = int(cx - 4 + 4 * np.sin(k / 6))
+            y = 16 + k
+            if y < 74 and body[y, x]:
+                t[y, x - 1:x + 2] = rgba(ice[0])
+        soot(t, P, 66, 220)
+        t = tv.outlined(t, rgba(ice[0]))
+        tt = P["water"]
+        for x in (14, 30, 50, 64):
+            t[72:77, x] = rgba(tt[3])
+            t[76, x - 1:x + 2] = rgba(tt[2])
+    else:
+        t = tv.outlined(t, rgba(ice[0]))
+    img[t[..., 3] > 0] = t[t[..., 3] > 0]
+    return img
+
+
+def peak_blocker(P: dict) -> np.ndarray:
+    """Paso cerrado de la Cumbre (16×16): esquirlas de hielo sucio y piedra.
+    Con la ola desaparece (solo hay sprite enfermo)."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7.5, 2.5, P, True)
+    ice, st = P["ice"], P["stone"]
+    s = canvas(16, 16)
+    for x0, top, wd in ((2, 4, 4), (6, 1, 4), (10, 5, 4)):
+        for y in range(top, 14):
+            half = max(0, (y - top) * wd // (2 * (14 - top)) + 1)
+            s[y, x0 + 2 - half:x0 + 2 + half] = rgba(ice[3])
+        s[top + 1:top + 4, x0 + 1] = rgba(ice[5])
+    s[11:14, 4:12] = rgba(st[3])
+    s = tv.outlined(s, rgba(ice[0]))
+    soot(s, P, 67, 10)
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+# --- piezas de la Cripta -----------------------------------------------------------------
+# Daño de avaricia: `gold` + `smog` y el fuego maldito (`curse_fire`) (README del
+# sistema §Mundo; `components/Regiones/README.md`: «oro fundido, monedas
+# regadas, telarañas, fuego morado» / «agua limpia, musgo, raíces, rayo de
+# luz»). Cinco bóvedas con lo que la Compañía se llevó de cada región: sus
+# piezas son las mismas de su región. Al purificar el oro desaparece
+# (`VANISH_WHEN_PURE`), así que el oro, las monedas, el estandarte, las
+# grietas y la reja solo tienen sprite enfermo.
+
+def gold_pile(P: dict) -> np.ndarray:
+    """Oro amontonado (16×16): monte de monedas con lingotes y brillos."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7, 2.2, P, True)
+    g = P["gold"]
+    s = canvas(16, 16)
+    yy, xx = np.indices((16, 16))
+    m = ellipse(16, 16, 8, 11, 6.5, 4.5)
+    s[m] = rgba(g[3])
+    s[m & (yy < 10)] = rgba(g[4])
+    s[m & (yy > 12)] = rgba(g[2])
+    s[m & ((xx + 2 * yy) % 5 == 0)] = rgba(g[2])
+    s[6:8, 3:8] = rgba(g[4])
+    s[6, 3:8] = rgba(g[5])
+    for x, y in ((10, 8), (6, 11), (12, 11)):
+        s[y, x] = rgba(g[5])
+    s = tv.outlined(s, rgba(g[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def coins(P: dict) -> np.ndarray:
+    """Monedas derramadas (16×16, pisable), sueltas hacia la fuente."""
+    img = canvas(16, 16)
+    g = P["gold"]
+    for x, y in ((3, 5), (8, 4), (12, 7), (5, 10), (10, 11), (13, 13), (2, 13)):
+        img[y, x:x + 2] = rgba(g[4])
+        img[y + 1, x:x + 2] = rgba(g[2])
+        img[y, x] = rgba(g[5])
+    return img
+
+
+def baron_statue(P: dict, sick: bool) -> np.ndarray:
+    """Hito: la estatua del Barón Cendral (huella de 2×3; sprite 40×60, que la
+    desborda hacia arriba). Figura de pie con chistera y bastón sobre un
+    pedestal de piedra. Enferma, toda de oro, con los ojos de fuego maldito;
+    purificada, el oro se ha ido: queda la piedra, con musgo y una flor."""
+    W, H = 40, 60
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 57, 17, 3, P, sick)
+    st = P["stone"]
+    t = canvas(W, H)
+    # pedestal
+    t[44:58, 8:32] = rgba(st[3])
+    t[44:46, 6:34] = rgba(st[4])
+    t[44, 6:34] = rgba(st[5])
+    t[54:58, 8:32] = rgba(st[2])
+    t[48:52, 14:26] = rgba(st[2])
+    m = P["gold"] if sick else st
+    lo, mid, hi, top = (m[2], m[3], m[4], m[5]) if sick else (st[2], st[3], st[4], st[5])
+    # cuerpo: levita, piernas y brazos
+    yy, xx = np.indices((H, W))
+    coat = (yy >= 22) & (yy < 44) & (np.abs(xx + 0.5 - cx) <= 4 + (yy - 22) * 0.25)
+    t[coat] = rgba(mid)
+    t[coat & (xx < cx - 1)] = rgba(hi)
+    t[coat & (xx > cx + 3)] = rgba(lo)
+    t[38:44, cx - 1:cx + 1] = rgba(lo)
+    # cabeza y chistera
+    head = ellipse(W, H, cx, 18, 4, 4.5)
+    t[head] = rgba(mid)
+    t[head & (xx < cx)] = rgba(hi)
+    t[4:13, cx - 3:cx + 4] = rgba(lo)
+    t[4:13, cx - 3:cx - 1] = rgba(mid)
+    t[12:14, cx - 6:cx + 7] = rgba(lo)
+    t[12, cx - 6:cx + 7] = rgba(mid)
+    # brazo con el bastón y brazo en jarra
+    tv.line(t, cx + 5, 25, cx + 10, 33, rgba(mid), 2)
+    t[30:44, cx + 10] = rgba(lo)
+    t[29, cx + 9:cx + 12] = rgba(top)
+    tv.line(t, cx - 5, 25, cx - 9, 31, rgba(mid), 2)
+    tv.line(t, cx - 9, 31, cx - 5, 34, rgba(mid), 2)
+    t = tv.outlined(t, rgba(m[0] if sick else st[0]))
+    if sick:
+        cf = P["curse_fire"]
+        t[18, cx - 2] = rgba(cf[3])
+        t[18, cx + 1] = rgba(cf[3])
+        for x, y in ((cx - 1, 6), (cx - 4, 24), (cx + 2, 30)):
+            t[y, x] = rgba(top)
+    else:
+        leaf, fl = P["leaf"], P["flower"]
+        for x in range(8, 32, 3):
+            t[53 + (x % 2), x] = rgba(leaf[3])
+            t[52, x + 1] = rgba(leaf[4])
+        t[42, cx - 4:cx - 1] = rgba(leaf[3])
+        t[43, 10] = rgba(fl[4])
+        t[43, 29] = rgba(fl[1])
+    img[t[..., 3] > 0] = t[t[..., 3] > 0]
+    return img
+
+
+def pillar(P: dict, sick: bool) -> np.ndarray:
+    """Columna (16×32): fuste con estrías, basa y capitel. Enferma, con
+    telaraña y tizne de humo; purificada, con musgo trepando."""
+    img = canvas(16, 32)
+    st = P["stone"]
+    s = canvas(16, 32)
+    s[6:28, 4:12] = rgba(st[3])
+    s[6:28, 4:6] = rgba(st[4])
+    s[6:28, 10:12] = rgba(st[2])
+    for x in (7, 9):
+        s[7:27, x] = rgba(st[2])
+    s[2:6, 2:14] = rgba(st[4])
+    s[2, 2:14] = rgba(st[5])
+    s[28:32, 2:14] = rgba(st[3])
+    s[31, 2:14] = rgba(st[2])
+    s = tv.outlined(s, rgba(st[0]))
+    if sick:
+        sm = P["smog"]
+        for k in range(6):
+            s[6 + k, 12 - k // 2] = rgba(st[5])
+            s[6, 12 - k] = rgba(st[5])
+        for x, y in ((5, 14), (8, 19), (6, 23)):
+            s[y, x] = rgba(sm[1])
+    else:
+        leaf = P["leaf"]
+        for k, y in enumerate(range(27, 12, -2)):
+            s[y, 4 + (k % 2)] = rgba(leaf[3])
+            s[y - 1, 5 - (k % 2)] = rgba(leaf[4])
+        s[28, 3:7] = rgba(leaf[3])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def root(P: dict, sick: bool) -> np.ndarray:
+    """Raíces que bajan por el muro (16×16). Enfermas, secas y partidas;
+    purificadas, vivas, con musgo y una hoja."""
+    img = canvas(16, 16)
+    w = P["dead"] if sick else P["wood"]
+    for x0, x1, top, bot in ((4, 3, 0, 14), (8, 9, 0, 15), (12, 13, 0, 11), (8, 6, 6, 13)):
+        tv.line(img, x0, top, x1, bot, rgba(w[2]), 2 if x0 == 8 and top == 0 else 1)
+    img[0:4, 7:10] = rgba(w[3])
+    if sick:
+        img[11:13, 12:14] = 0
+    else:
+        leaf = P["leaf"]
+        for x, y in ((3, 9), (9, 12), (12, 6)):
+            img[y, x] = rgba(leaf[4])
+            img[y, x + 1] = rgba(leaf[3])
+        img[14, 9] = rgba(leaf[5])
+    return img
+
+
+def banner(P: dict) -> np.ndarray:
+    """Estandarte rasgado de la Compañía en el muro (16×32): tela oscura con
+    la moneda de oro y el borde de abajo en jirones."""
+    img = canvas(16, 32)
+    red, g = P["roof_red"], P["gold"]
+    s = canvas(16, 32)
+    s[2:3, 1:15] = rgba(P["wood"][2])
+    s[3:26, 3:13] = rgba(red[1])
+    s[3:26, 3:5] = rgba(red[2])
+    for x, d in ((3, 2), (5, 6), (7, 1), (9, 4), (11, 0)):
+        s[26:26 + d, x:x + 2] = rgba(red[1])
+    s[ellipse(16, 32, 8, 12, 3, 3)] = rgba(g[3])
+    s[ellipse(16, 32, 8, 12, 1.5, 1.5)] = rgba(g[4])
+    s[10, 7] = rgba(g[5])
+    s[17:19, 5:11] = rgba(g[2])
+    s = tv.outlined(s, rgba(red[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def pebbles(P: dict, sick: bool) -> np.ndarray:
+    """Cascotes (16×16, pisable). Purificados, con musgo entre las piedras."""
+    img = canvas(16, 16)
+    st = P["stone"]
+    for x, y, r in ((4, 9, 1.8), (8, 11, 1.4), (11, 8, 1.6), (6, 13, 1.1), (12, 12, 1.0)):
+        m = ellipse(16, 16, x, y, r, r * 0.8)
+        img[m] = rgba(st[3])
+        img[int(y - r * 0.4), int(x - 0.5)] = rgba(st[5])
+    if not sick:
+        leaf = P["leaf"]
+        for x, y in ((6, 10), (10, 12), (9, 9)):
+            img[y, x] = rgba(leaf[3])
+    return img
+
+
+def grain_sack(P: dict, sick: bool) -> np.ndarray:
+    """Saco de grano de la Llanura (16×16), en su bóveda. Enfermo, cerrado y
+    apilado como botín; purificado, abierto y con brotes."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7, 2.2, P, sick)
+    sw = P["straw"]
+    s = canvas(16, 16)
+    s[ellipse(16, 16, 8, 9.5, 5.5, 4.5)] = rgba(sw[2])
+    s[ellipse(16, 16, 7, 8.5, 3.5, 3)] = rgba(sw[3])
+    s[4:6, 6:10] = rgba(sw[1])
+    s[13, 4:12] = rgba(sw[1])
+    s = tv.outlined(s, rgba(sw[0]))
+    if not sick:
+        leaf = P["leaf"]
+        for x in (6, 8, 10):
+            s[2:5, x] = rgba(leaf[3])
+            s[2, x] = rgba(leaf[5])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def gold_grate(P: dict) -> np.ndarray:
+    """Paso cerrado de la Cripta (16×16): la reja de oro de la Compañía.
+    Con la ola desaparece (solo hay sprite enfermo)."""
+    img = canvas(16, 16)
+    g = P["gold"]
+    s = canvas(16, 16)
+    for x in (2, 6, 10, 14):
+        s[1:16, x - 1:x + 1] = rgba(g[3])
+        s[1:16, x - 1] = rgba(g[4])
+        s[0, x - 1:x + 1] = rgba(g[5])
+    s[5:7, 1:15] = rgba(g[2])
+    s[12:14, 1:15] = rgba(g[2])
+    s[5, 1:15] = rgba(g[4])
+    s = tv.outlined(s, rgba(g[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+# --- piezas de Valdehoja -----------------------------------------------------------------
+# Piel nueva sobre la matriz aprobada de 60 × 34 (decisión de Juan José
+# Rueda, 2026-11-03, por la presentación). Las casas del sistema (tarjeta
+# `casa`, edificios de PixelLab) miden unos 102 px, seis casillas, y la
+# matriz actual les da 3 × 3: aquí se dibujan en código a la escala de su
+# huella con el diseño de la tarjeta (tejado rojo a dos aguas, muro encalado,
+# zócalo de piedra, puerta de madera y jardineras). Las de PixelLab entran con
+# la matriz orgánica. Cada pieza toma el estado de su parte del pueblo; en lo
+# enfermo, casas y madera «se apagan hacia el gris ceniza» (README §Mundo).
+
+def house(P: dict, sick: bool, stone: bool = False) -> np.ndarray:
+    """Casa del pueblo (huella de 3×3; sprite 52×60, que asoma 12 px por
+    arriba): tejado de teja, muro, zócalo de piedra, puerta y dos ventanas
+    con jardinera. `stone`: la casa de piedra de Ilan, con muro de piedra y
+    tejado de pizarra azul. Enferma, todo en la rampa de ceniza, ventanas a
+    oscuras y jardineras vacías."""
+    W, H = 52, 60
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 57, 25, 3, P, sick)
+    ash, st, w = P["ash"], P["stone"], P["wood"]
+    if sick:
+        roof, wall = [ash[1], ash[2], ash[3], ash[4]], [ash[3], ash[4], ash[5]]
+    elif stone:
+        rb = P["roof_blue"]
+        roof, wall = [rb[1], rb[2], rb[3], rb[4]], [st[3], st[4], st[5]]
+    else:
+        rr, wl = P["roof_red"], P["wall"]
+        roof, wall = [rr[1], rr[2], rr[3], rr[4]], [wl[2], wl[3], wl[4]]
+    t = canvas(W, H)
+    yy, xx = np.indices((H, W))
+    # zócalo de piedra
+    t[49:58, 3:49] = rgba(st[3] if not sick else ash[2])
+    t[49, 3:49] = rgba(st[4] if not sick else ash[3])
+    for y in (52, 55):
+        t[y, 3:49] = rgba(st[2] if not sick else ash[1])
+    for y0 in (49, 52, 55):
+        for x in range(5 + (y0 % 2) * 3, 49, 6):
+            t[y0 + 1:y0 + 3, x] = rgba(st[2] if not sick else ash[1])
+    # muro
+    t[28:49, 4:48] = rgba(wall[1])
+    t[28:49, 4:8] = rgba(wall[2])
+    t[28:49, 44:48] = rgba(wall[0])
+    if stone:
+        for y in range(30, 49, 4):
+            t[y, 4:48] = rgba(wall[0])
+            for x in range(6 + (y % 8 == 2) * 4, 48, 8):
+                t[y:y + 4, x] = rgba(wall[0])
+    # tejado a dos aguas visto desde arriba: faldón con hileras de teja
+    roofm = (yy >= 4) & (yy < 30) & (np.abs(xx + 0.5 - cx) <= 14 + (yy - 4) * 0.48)
+    t[roofm] = rgba(roof[2])
+    t[roofm & (xx < cx)] = rgba(roof[3])
+    for y in range(7, 30, 4):
+        t[roofm & (yy == y)] = rgba(roof[1])
+    t[roofm & (yy == 29)] = rgba(roof[0])
+    t[4:6, cx - 14:cx + 15] = rgba(roof[3])
+    # chimenea
+    t[0:8, 36:41] = rgba(st[4] if not sick else ash[3])
+    t[0, 35:42] = rgba(st[5] if not sick else ash[4])
+    # puerta
+    t[37:49, cx - 4:cx + 4] = rgba(w[2] if not sick else ash[1])
+    t[37:49, cx - 4] = rgba(w[3] if not sick else ash[2])
+    t[37, cx - 5:cx + 5] = rgba(st[4] if not sick else ash[3])
+    t[43, cx + 2] = rgba(P["gold"][4] if not sick else ash[3])
+    # ventanas con jardinera
+    for x0 in (10, 35):
+        t[34:41, x0:x0 + 8] = rgba(w[1] if not sick else ash[1])
+        t[35:40, x0 + 1:x0 + 7] = rgba(P["roof_blue"][1] if not sick else ash[0])
+        t[35:40, x0 + 4] = rgba(w[1] if not sick else ash[1])
+        t[41:43, x0 - 1:x0 + 9] = rgba(w[2] if not sick else ash[2])
+    t = tv.outlined(t, rgba(roof[0] if not sick else ash[0]))
+    if not sick:
+        fl, leaf = P["flower"], P["leaf"]
+        for x0 in (10, 35):
+            for k, x in enumerate(range(x0, x0 + 8, 2)):
+                t[40, x] = rgba(leaf[3])
+                t[39, x] = rgba(fl[(1, 3, 0, 4)[k]])
+    img[t[..., 3] > 0] = t[t[..., 3] > 0]
+    return img
+
+
+def well(P: dict, sick: bool) -> np.ndarray:
+    """El pozo de la era (2×2, 32×32): brocal de piedra, tejadillo de madera y
+    el cubo. Purificado, agua clara dentro; enfermo, agua turbia y la madera
+    carbonizada."""
+    img = canvas(32, 32)
+    foot(img, 16, 29, 14, 2.5, P, sick)
+    st = P["stone"]
+    wd = P["ash"] if sick else P["wood"]
+    s = canvas(32, 32)
+    ring = ellipse(32, 32, 16, 22, 12, 7)
+    s[ring] = rgba(st[3])
+    s[ring & ellipse(32, 32, 16, 20, 12, 4)] = rgba(st[4])
+    s[ellipse(32, 32, 16, 20.5, 8.5, 3.6)] = rgba(P["water"][2])
+    s[ellipse(32, 32, 16, 20, 6, 2)] = rgba(P["water"][4 if not sick else 3])
+    for x in (6, 25):
+        s[4:22, x:x + 2] = rgba(wd[2])
+        s[4:22, x] = rgba(wd[3])
+    roofm = ellipse(32, 32, 16, 5, 14, 4)
+    s[roofm] = rgba(wd[2])
+    s[roofm & (np.indices((32, 32))[0] < 4)] = rgba(wd[3])
+    s[8:14, 16] = rgba(wd[1])
+    s[14:17, 14:19] = rgba(wd[3])
+    s = tv.outlined(s, rgba(st[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def mine_mouth(P: dict) -> np.ndarray:
+    """La bocamina tapiada (2×2, 32×32; enmienda 12): arco de piedra, la boca
+    negra y tablones clavados en cruz. Se abre al purificar la Cripta (solo
+    hay sprite enfermo: con la ola desaparece)."""
+    img = canvas(32, 32)
+    st, w = P["stone"], P["wood"]
+    s = canvas(32, 32)
+    arch = ellipse(32, 32, 16, 18, 15, 16) & (np.indices((32, 32))[0] < 31)
+    s[arch] = rgba(st[3])
+    s[arch & ellipse(32, 32, 14, 14, 13, 12)] = rgba(st[4])
+    hole = ellipse(32, 32, 16, 20, 9, 11) & (np.indices((32, 32))[0] < 31)
+    s[hole] = rgba(st[0])
+    for x0, y0, x1, y1 in ((8, 13, 24, 28), (24, 13, 8, 28)):
+        tv.line(s, x0, y0, x1, y1, rgba(w[2]), 3)
+    for y in (16, 23):
+        s[y:y + 3, 7:25] = rgba(w[3])
+        s[y, 7:25] = rgba(w[4])
+        s[y + 1, 9] = rgba(st[1])
+        s[y + 1, 22] = rgba(st[1])
+    s = tv.outlined(s, rgba(st[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def flowers(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
+    """Flores (16×16, pisable). Purificadas, de varios colores y se mecen;
+    enfermas, mustias y dobladas."""
+    img = canvas(16, 16)
+    if sick:
+        dl = P["dead"]
+        for x, top in ((3, 9), (6, 7), (9, 8), (12, 9)):
+            img[top:14, x] = rgba(dl[2])
+            img[top, x + 1] = rgba(dl[4])
+            img[top + 1, x + 1] = rgba(dl[3])
+    else:
+        leaf, fl = P["leaf"], P["flower"]
+        for k, (x, top) in enumerate(((3, 8), (6, 5), (9, 7), (12, 6), (8, 10))):
+            for y in range(top, 14):
+                lean = sway if y < top + 2 else 0
+                img[y, min(15, x + lean)] = rgba(leaf[3])
+            hx = min(14, max(1, x + sway))
+            c = fl[(1, 3, 6, 4, 2)[k]]
+            img[top - 1, hx] = rgba(c)
+            img[top, hx - 1:hx + 2] = rgba(c)
+            img[top, hx] = rgba(fl[3 if k != 1 else 4])
+    return img
+
+
 # --- catálogo por zona -------------------------------------------------------------------
 
 def forest() -> dict[str, np.ndarray]:
@@ -1216,7 +1855,104 @@ def plain() -> dict[str, np.ndarray]:
     return out
 
 
-CATALOG = {"ashen_forest": forest, "tar_basin": basin, "broken_coast": coast, "withered_plain": plain}
+def peak() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "cumbre")
+        P["ice"] = tv.ramp("ice")
+        if sick:
+            # el pie se asienta en el pedregal del glaciar
+            P["stain"] = P["sand"]
+        else:
+            P["snow"] = P["sand"]
+        out[f"glacier_{state}"] = glacier(P, sick)
+        out[f"pine_{state}"] = pine(P, sick)
+        out[f"boulder_{state}"] = boulder(P, sick)
+        out[f"dark_rock_{state}"] = dark_rock(P, sick)
+        out[f"stake_{state}"] = stake(P, sick)
+        out[f"moraine_{state}"] = moraine(P, sick)
+        out[f"grass_{state}"] = tall_grass(P, sick, 0)
+        if sick:
+            out["meltwater_sick"] = meltwater(P)
+            out["crack_sick"] = crack(P)
+            out["ice_block_sick"] = ice_block(P)
+            out["meltpool_sick"] = meltpool(P)
+            out["blocker_sick"] = peak_blocker(P)
+            out["rock_sick"] = rock(P)
+            out["seedbed_sick"] = seedbed(P)
+        else:
+            out["grass_pure_1"] = tall_grass(P, False, 1)
+    return out
+
+
+def crypt() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "cripta")
+        P["straw"] = tv.ramp("straw")
+        if sick:
+            for name in ("oil", "sheen", "plastic", "ice", "curse_fire", "roof_blue"):
+                P[name] = tv.ramp(name)
+            # el pie se asienta en el humo de la avaricia
+            P["stain"] = P["smog"]
+        out[f"baron_statue_{state}"] = baron_statue(P, sick)
+        out[f"pillar_{state}"] = pillar(P, sick)
+        out[f"root_{state}"] = root(P, sick)
+        out[f"pebbles_{state}"] = pebbles(P, sick)
+        out[f"log_pile_{state}"] = log_pile(P, sick)
+        out[f"sack_{state}"] = grain_sack(P, sick)
+        if sick:
+            out["gold_sick"] = gold_pile(P)
+            out["coins_sick"] = coins(P)
+            out["banner_sick"] = banner(P)
+            out["crack_sick"] = crack(P)
+            out["barrel_sick"] = barrel(P)
+            out["bottle_sick"] = bottle(P)
+            out["ice_block_sick"] = ice_block(P)
+            out["blocker_sick"] = gold_grate(P)
+    return out
+
+
+def village() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "valdehoja")
+        P["wall"] = tv.ramp("wall")
+        P["roof_blue"] = tv.ramp("roof_blue")
+        P["straw"] = tv.ramp("straw")
+        if sick:
+            P["plastic"] = tv.ramp("plastic")
+        out[f"house_{state}"] = house(P, sick)
+        out[f"house_stone_{state}"] = house(P, sick, stone=True)
+        out[f"well_{state}"] = well(P, sick)
+        out[f"yara_tree_{state}"] = oak(P, sick)
+        out[f"tree_{state}"] = tree(P, sick, 0)
+        out[f"tree_b_{state}"] = tree(P, sick, 1)
+        out[f"bush_{state}"] = shrub(P, sick)
+        out[f"stump_{state}"] = stump(P, sick)
+        out[f"grass_{state}"] = tall_grass(P, sick, 0)
+        out[f"weed_{state}"] = weed(P, sick)
+        out[f"pebbles_{state}"] = pebbles(P, sick)
+        out[f"flower_{state}"] = flowers(P, sick)
+        out[f"crop_row_{state}"] = crop_row(P, sick)
+        if sick:
+            out["litter_sick"] = litter(P)
+            out["blocker_sick"] = mine_mouth(P)
+            out["rock_sick"] = rock(P)
+            out["seedbed_sick"] = seedbed(P)
+        else:
+            out["grass_pure_1"] = tall_grass(P, False, 1)
+            out["weed_pure_1"] = weed(P, False, 1)
+            out["flower_pure_1"] = flowers(P, False, 1)
+            out["crop_row_pure_1"] = crop_row(P, False, 1)
+    return out
+
+
+CATALOG = {"ashen_forest": forest, "tar_basin": basin, "broken_coast": coast, "withered_plain": plain,
+           "waning_peak": peak, "greed_crypt": crypt, "valdehoja": village}
 
 
 def quantize(img: np.ndarray, state: str) -> int:

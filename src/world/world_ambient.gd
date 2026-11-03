@@ -7,7 +7,9 @@ extends Node
 ## nada.
 ##
 ## - El agua viva alterna sus dos cuadros (filas 4 y 8 del atlas) cada
-##   `DUR_AMBIENT_WATER`.
+##   `DUR_AMBIENT_WATER`. Con el suelo de Tierra Viva (paso 6), lo que alterna
+##   es la textura de la capa sana entre `<zona>_sano.png` y `_sano_1.png`;
+##   la enferma no se mueve.
 ## - La hierba, las flores, los matojos y los cultivos purificados alternan
 ##   sus dos cuadros cada `DUR_AMBIENT_SWAY`, cada pieza con su fase: un prado
 ##   no se mece a la vez.
@@ -29,6 +31,8 @@ var _swayers: Array[Sprite2D] = []
 var _fauna: Array[Sprite2D] = []
 var _animals: Array[Sprite2D] = []
 var _walkable: Callable
+var _terrain: Sprite2D = null
+var _terrain_frames: Array[Texture2D] = []
 
 
 func _physics_process(_delta: float) -> void:
@@ -45,6 +49,8 @@ func setup(layer: TileMapLayer, entities: Node, walkable: Callable) -> void:
 	_swayers.clear()
 	_fauna.clear()
 	_animals.clear()
+	_terrain = null
+	_terrain_frames = []
 	for cell in layer.get_used_cells():
 		if layer.get_cell_atlas_coords(cell).y == WorldTiles.OVERLAY_ROW[WorldTiles.Terrain.WATER] + 1:
 			_water.append(cell)
@@ -73,6 +79,8 @@ func advance() -> void:
 			else WorldTiles.OVERLAY_ROW[WorldTiles.Terrain.WATER] + 1
 		for cell in _water:
 			_layer.set_cell(cell, 0, Vector2i(_layer.get_cell_atlas_coords(cell).x, row))
+		if _terrain != null and is_instance_valid(_terrain):
+			_terrain.texture = _terrain_frames[(tick / water_frames) % 2]
 	var sway := _frames(DesignTokens.DUR_AMBIENT_SWAY)
 	for sprite in _swayers:
 		_show(sprite, ((tick + int(sprite.get_meta("phase"))) / sway) % 2)
@@ -83,6 +91,13 @@ func advance() -> void:
 		sprite.position.y = float(sprite.get_meta("base_y")) - f * DesignTokens.FAUNA_BOB
 	for sprite in _animals:
 		_walk(sprite)
+
+
+## La capa del suelo sano y sus dos cuadros de agua viva. Sin dos cuadros, no
+## se anima.
+func set_terrain(sprite: Sprite2D, frames: Array[Texture2D]) -> void:
+	_terrain = sprite if frames.size() == 2 else null
+	_terrain_frames = frames
 
 
 ## Un cuadro de un animal: espera, o da un paso de 1 px por eje hacia su

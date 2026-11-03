@@ -963,3 +963,174 @@ Diego del 2026-11-02.
   PixelLab, de unos 110 px, son más grandes que la huella para la que se
   colocaron. Se arregla moviendo la `M` unas casillas en cada `*.deco.txt`.
 - **Siguiente:** la Cumbre (`waning_peak`).
+
+#### Paso 4b — El decorado de la Cumbre · 2026-11-02
+
+Cláusulas: 2, 3 y la regla del sistema para la Cumbre (README §Mundo: «hollín
+sobre `ice`»; `components/Regiones/README.md`: «pedregal donde estaba el
+glaciar, laguna encogida… neblina» / «casquete de nieve»). Nada se parece a
+una lona doblada (`waning_peak.deco.txt`). Fusión con el permiso de Diego del
+2026-11-02.
+
+- **`peak()` en `tools/gen_tierra_viva_decor.py`**, 22 sprites:
+  - el hito, el glaciar (80 × 80, desborda su huella de 4 × 4): tres gradas
+    de hielo, cada una con su frente de seracs. Purificado, nieve sobre cada
+    grada; enfermo, partido por una grieta, con pedregal donde había nieve,
+    hollín y agua turbia por el frente;
+  - las viñetas: la roca oscura que asoma (la misma placa del suelo), el
+    deshielo, la estaca de las bandas (purificada, la nieve vuelve a su
+    marca), la morrena (purificada, con hierba alpina y una flor), el bloque
+    de hielo caído y la charca;
+  - pino (enfermo, agujas secas con hollín; purificado, verde con nieve en
+    las puntas), peñasco (enfermo, tiznado; purificado, con capa de nieve),
+    grieta, hierba alpina, roca, semillero y paso cerrado (esquirlas de
+    hielo sucio y piedra).
+- **`soot()`**: hollín tramado sobre lo opaco, en pares de motas.
+- **El pie** se asienta en el pedregal (`scree`). La nieve (`snow`) es de
+  solo-purificado y solo sale en lo sano.
+- **Lo que se limpia con la ola** (deshielo, grieta, bloque, charca y paso
+  cerrado) solo tiene sprite enfermo.
+- **Fallos propios, vistos y corregidos:**
+  1. El hollín en motas sueltas le ponía cara al bloque de hielo (dos ojos y
+     una boca). Ahora es una veta diagonal.
+  2. El glaciar, una masa redonda, se leía como una bola de nieve. Ahora va
+     en tres gradas con frente de seracs.
+- **Medido:** los 22 sprites pasan `image` y `tv-state`; `verify_zone
+  waning_peak` 46/46; `verify_terrain waning_peak` 7/7 en las cuatro vistas.
+  Las otras regiones, regeneradas, dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-waning_peak-{enfermo,ola,sano}.png`
+  (hito `50 47`; viñetas `63 12`, `17 31` y `72 59`).
+- **Para Diego:** el Coloso de mapa (en `(51, 50)`) tapa el glaciar entero
+  en lo enfermo, como el Espectro tapa el silo en la Llanura.
+- **Siguiente:** la Cripta (`greed_crypt`).
+
+#### Paso 4b — El decorado de la Cripta · 2026-11-02
+
+Cláusulas: 2, 3 y la regla del sistema para la Cripta (README §Mundo:
+«`gold` + `smog`»; `components/Regiones/README.md`: «oro fundido, monedas
+regadas, telarañas, fuego morado» / «agua limpia, musgo, raíces»). Las cinco
+bóvedas (Diego, 2026-10-28) reutilizan las piezas de su región. Fusión con
+el permiso de Diego del 2026-11-02.
+
+- **`crypt()` en `tools/gen_tierra_viva_decor.py`**, 20 sprites:
+  - el hito, la estatua del Barón Cendral (40 × 60, desborda su huella de
+    2 × 3): figura de pie con chistera y bastón sobre un pedestal. Enferma,
+    toda de oro y con los ojos de fuego maldito; purificada, el oro se ha
+    ido y queda la piedra, con musgo y flores;
+  - las bóvedas: troncos apilados (Bosque), barril de crudo (Cuenca),
+    botella (Costa), saco de grano (Llanura; purificado, abierto y con
+    brotes) y bloque de hielo (Cumbre), cada una con su oro amontonado;
+  - columna (enferma, con telaraña y tizne; purificada, con musgo), raíces
+    (secas o vivas), estandarte rasgado de la Compañía, monedas, cascotes,
+    grieta y la reja de oro del paso cerrado.
+- **El pie** se asienta en el humo (`smog`).
+- **Lo que desaparece con la ola** (oro, monedas, estandarte, grieta,
+  barril, botella, bloque y reja) solo tiene sprite enfermo.
+- **Medido:** los 20 sprites pasan `image` y `tv-state`; `verify_zone
+  greed_crypt` 50/50; `verify_terrain greed_crypt` 7/7 en las cuatro vistas
+  (hito `38 57`; bóvedas 1, 3 y 5: `72 39`, `11 42` y `62 73`). Las otras
+  regiones, regeneradas, dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v3,-v5}-greed_crypt-{enfermo,ola,sano}.png`.
+- **Para Diego:**
+  - la Sombra de mapa (en `(40, 59)`) tapa la estatua en lo enfermo, como
+    pasa con los otros hitos;
+  - purificada, la estatua se ve pequeña a 640 × 360: la figura mide unos
+    12 px de ancho. Si hace falta, se agranda en una pasada aparte.
+- **Siguiente:** Valdehoja, que es el paso 5 (matriz orgánica nueva) y lleva
+  su decorado con él.
+
+#### Paso 5, primera parte — Piel nueva de Valdehoja sobre la matriz aprobada · 2026-11-03
+
+**Decisión de Juan José Rueda (2026-11-03), por la presentación del
+miércoles 2026-11-04:** Valdehoja se viste ya con el suelo y el decorado de
+Tierra Viva **sobre su matriz aprobada de 60 × 34**. La cláusula 6 del
+contrato (la trama orgánica de 90 × 64 desde `village5.py`, con los edificios
+de PixelLab a su tamaño) **no se cumple todavía**: queda para después de la
+presentación. No es una enmienda aprobada; **falta que Diego lo confirme**.
+
+- **Suelo por partes** (lo que pedía la guía, §4.3, punto 3):
+  - `tools/gen_tierra_viva_terrain.py` pinta `valdehoja` con la paleta
+    común y la masa de árboles («tree» sano, «burnt» enfermo);
+  - `WorldRoot._mount_terrain` monta siempre el sano en una zona con partes,
+    y `src/world/part_mask.gdshader` lo enseña solo en las casillas
+    purificadas: una máscara con un píxel por casilla, que sale de
+    `WorldDecor.purified_lookup`. Cada píxel es enfermo o sano, nunca una
+    mezcla;
+  - la ola sigue igual. Al purificar Valdehoja entera, se monta el sano
+    sin máscara.
+- **Decorado, `village()` en `tools/gen_tierra_viva_decor.py`**, 34 sprites:
+  - casa (tejado de teja roja, muro encalado, zócalo de piedra, puerta y
+    jardineras con flores) y la casa de piedra de Ilan (pizarra azul), en
+    52 × 60 sobre su huella de 3 × 3. Siguen el diseño de la tarjeta `casa`
+    del sistema, dibujado en código a la escala de la matriz actual: los
+    edificios de PixelLab miden 104 × 120 (seis casillas) y no caben en
+    3 × 3. Enfermas, en la rampa de ceniza, con las ventanas a oscuras;
+  - el pozo de la era (agua clara o turbia), el árbol del jardín de Yara (el
+    roble del Bosque), la bocamina tapiada (arco de piedra y tablones en
+    cruz, enmienda 12) y las flores (mustias o de colores, con cuadro de
+    mecerse);
+  - árboles, arbusto, tocón, hierba, matojo, cascotes, hilera de cultivo,
+    basura, roca y semillero, con las piezas de cada región.
+- **Siguen viejos:** Yara, los animales y la fauna (fila 18 del inventario).
+- **`verify_terrain`** gana una comprobación en las zonas por partes: cada
+  casilla se ve en el estado de su parte, comparada píxel a píxel con el PNG
+  de su estado.
+- **Medido:**
+  - el suelo: `image` y `tv-state` limpios; `value` 2,35 (normal), 2,23
+    (deuteranopía), 2,53 (protanopía) y 2,32 (tritanopía);
+  - los 34 sprites pasan `image` y `tv-state`;
+  - `verify_zone valdehoja` 55/55;
+  - `verify_terrain valdehoja` 7/7 en cuatro vistas: casas `30 13`, jardín
+    `22 6`, bocamina `5 4` y pozo `24 21`;
+  - la batería entera en verde: las seis regiones 7/7 en `verify_terrain` y
+    en verde en `verify_zone`, usability 16, camera 37, encounters 82, flow
+    23, party_ai 19, movement 100/100 y 320 tokens sin deriva.
+- **Fallo del entorno, dicho:** la primera importación de Godot se cortó
+  («Segmentation fault») antes de importar los PNG nuevos, y la primera
+  pasada de `verify_terrain` falló por eso. Se repitió la importación.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-decorado{,-jardin,-bocamina,-pozo}-valdehoja-{enfermo,ola,sano}.png`.
+- **Siguiente:** el paso 6 (los estados, con el agua viva) o, tras la
+  presentación y con el visto bueno de Diego, la matriz orgánica.
+
+#### Paso 6 — Los estados: agua viva y partes · 2026-11-03
+
+Cláusulas: 7 («Lo que no cambia»: la ola de 900 ms en Bayer 4 × 4 y la fauna
+solo en lo purificado) y enmienda 8 (solo se mueve lo purificado). Guía del
+equipo §4.4.
+
+- **Agua viva** (punto 2): con el suelo en sprite, el segundo cuadro del agua
+  ya no se veía.
+  - `tools/gen_tierra_viva_terrain.py` escribe `<zona>_sano_1.png` en las
+    cinco zonas con agua (Bosque, Cuenca, Costa, Cumbre y Valdehoja; la
+    Llanura y la Cripta no tienen). En el segundo cuadro los destellos del
+    agua se corren `SPARKLE_SHIFT` = 2 px, y la semilla se gasta igual: el
+    primer cuadro sale idéntico byte a byte al de antes, y en el segundo solo
+    cambian tonos de `water` (medido: 0 colores fuera del agua).
+  - `WorldRoot` guarda los dos cuadros en `terrain_pure_frames`, y
+    `WorldAmbient.set_terrain` alterna la textura de la capa sana cada
+    `DUR_AMBIENT_WATER`, al mismo tiempo que los tiles. La enferma no se
+    mueve; con movimiento reducido, nada.
+- **Partes de Valdehoja** (punto 1): el paso 5 ya las enseña por casilla
+  (`part_mask.gdshader`). `verify_zone valdehoja` sigue midiendo que la
+  arboleda está enferma al empezar y vuelve, con su fauna, al purificar el
+  Bosque.
+- **Fauna y animales** (punto 3): siguen como estaban. `verify_zone` mide
+  que la fauna está dentro de una parte, que un animal en lo purificado anda
+  y que uno en lo enfermo se queda quieto.
+- **`verify_terrain`** gana la comprobación del agua viva: purificada, la capa
+  sana pasa por sus dos cuadros cada 0,50 s.
+- **Medido:**
+  - los cinco `_sano_1.png` pasan `image` y `tv-state`;
+  - `verify_terrain`: 8/8 en Bosque, Cuenca, Costa y Cumbre, y en dos vistas
+    de Valdehoja; 7/7 en Llanura y Cripta, que no tienen agua;
+  - `verify_zone` en verde en las siete zonas; usability 16, camera 37,
+    encounters 82, flow 23, party_ai 19 y movement 100/100.
+- **Fallo propio, dicho:** la primera versión de la comprobación repetía el
+  nombre de una variable (`frames`). Godot no cargó el script, la escena se
+  quedó abierta sin terminar y hubo que parar los procesos a mano. Corregido.
+- **Con esto R1 queda completo salvo la matriz orgánica de Valdehoja**
+  (cláusula 6, aplazada; falta que Diego lo confirme). Siguiente: el PR de R1
+  contra `master` (guía §4.4, punto 4).
