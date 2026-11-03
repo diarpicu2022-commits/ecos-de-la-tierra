@@ -57,6 +57,9 @@ var _layer: TileMapLayer = null
 ## de tiles queda oculta y solo da la colisión, que sigue saliendo de la matriz.
 var terrain_sick: Sprite2D = null
 var terrain_pure: Sprite2D = null
+## Los dos cuadros del suelo sano si la zona tiene agua viva (paso 6): el
+## segundo es `<zona>_sano_1.png`. Vacío si no hay.
+var terrain_pure_frames: Array[Texture2D] = []
 var _exits: Array = []
 var _zone_exits: Array = []
 var _names: Dictionary = {}
@@ -130,6 +133,7 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	ambient.setup(_layer, entities, func(c: Vector2i) -> bool:
 		return Rect2i(Vector2i.ZERO, size).has_point(c) and not blocked.has(c) \
 			and ZoneRules.walkable(lines[c.y][c.x]) and purified_at.call(c))
+	ambient.set_terrain(terrain_pure, terrain_pure_frames)
 	if id != zone_id:
 		arrival_cell = cell
 	zone_id = id
@@ -159,6 +163,7 @@ func _mount_terrain(id: String, state: Node, purified_at: Callable, cells: Vecto
 			s.queue_free()
 	terrain_sick = null
 	terrain_pure = null
+	terrain_pure_frames = []
 	var sick_path := TERRAIN_DIR + id + "_enfermo.png"
 	var pure_path := TERRAIN_DIR + id + "_sano.png"
 	if not (ResourceLoader.exists(sick_path) and ResourceLoader.exists(pure_path)):
@@ -167,6 +172,9 @@ func _mount_terrain(id: String, state: Node, purified_at: Callable, cells: Vecto
 	_layer.visible = false
 	terrain_sick = _terrain_sprite(load(sick_path))
 	terrain_pure = _terrain_sprite(load(pure_path))
+	var alt_path := TERRAIN_DIR + id + "_sano_1.png"
+	if ResourceLoader.exists(alt_path):
+		terrain_pure_frames = [terrain_pure.texture, load(alt_path)]
 	terrain_pure.visible = state != null and state.is_zone_purified(id)
 	if not terrain_pure.visible and not ZoneRules.load_parts(id).is_empty():
 		terrain_pure.material = _part_mask(purified_at, cells)
