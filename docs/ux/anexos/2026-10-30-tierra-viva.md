@@ -879,3 +879,46 @@ Diego: «sigue» (después de ver a Ilan y los monstruos de mapa).
     sistema, cuatro (LUCHAR, ECO, BOLSA, HUIR). Lo decide Diego.
   - **Paso 4:** los estados, la cola de turnos (que no está en el sistema)
     y las cifras.
+
+#### Paso 4b — El decorado de la Costa · 2026-11-02
+
+**Permiso de Diego (2026-11-02, por chat, transmitido por Juan José
+Rueda):** fusionar todo lo necesario para llegar a la presentación del
+miércoles 2026-11-04. La Cuenca entró con el PR #21. Desde aquí cada región
+se fusiona en `rediseno/terreno` al pasar sus medidas, sin esperar el visto
+bueno paso a paso; las decisiones abiertas se siguen anotando para Diego.
+
+Cláusulas: 2, 3 y la regla del sistema «la basura va suelta y dispersa»
+(`broken_coast.deco.txt`; `components/Regiones/README.md`: «mar gris con
+botellas, bolsas, latas y redes; palmas secas» / «mar azul… conchas»).
+
+- **`coast()` en `tools/gen_tierra_viva_decor.py`**, 19 sprites:
+  - el hito, la montaña de basura (80 × 72, desborda su huella de 4 × 4).
+    Enferma, un montón escalonado de bolsas, botellas, cajas, latas y
+    neumáticos sobre una masa oscura; purificada, una duna con la misma
+    silueta, hierba, conchas y flores;
+  - las viñetas: arbusto con bolsas enganchadas (purificado, la mata con
+    flores), botella, red fantasma entre dos rocas (purificada, las rocas
+    limpias con conchas), boya varada, bolsa rota y el reguero en diagonal
+    hacia la montaña;
+  - basura suelta, arbusto de duna, hierba, roca, semillero y paso cerrado
+    (chatarra y plástico retorcidos).
+- **Daño:** la rampa `plastic` (azul de botella, tapas roja y amarilla,
+  blanco). El pie se asienta en la arena gris de la Costa enferma.
+- **Lo que se limpia con la ola** (basura, botella, bolsa, reguero, boya y
+  paso cerrado) solo tiene sprite enfermo.
+- **Fallos propios, vistos en las capturas y corregidos:**
+  1. La montaña, ovalada y con la basura en puntos sueltos, se leía como un
+     huevo moteado, y sana como una roca lisa. Ahora es un montón ancho y
+     escalonado, con objetos de tamaño reconocible.
+  2. La red fantasma tapaba las dos rocas y se leía como una estera. Ahora
+     cuelga entre ellas y por encima.
+- **Medido:** los 19 sprites pasan `image` y `tv-state`; `verify_zone
+  broken_coast` 47/47; `verify_terrain broken_coast` 7/7 en las cuatro
+  vistas. Bosque y Cuenca regenerados dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-broken_coast-{enfermo,ola,sano}.png`
+  (hito `49 27`; viñetas `113 14`, `13 30` y `58 29`).
+- **Para Diego:** el Gólem de mapa (PixelLab) queda junto a la montaña y la
+  tapa en parte, como el Devorador en la Cuenca.
+- **Siguiente:** la Llanura (`withered_plain`).
