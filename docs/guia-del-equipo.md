@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque ya está.** Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque y la Cuenca ya están.** Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -220,8 +220,12 @@ y `components/Terrain/README.md`.
   y `WorldDecor` los busca ahí antes que en el decorado viejo.
 - **PixelLab movido** a `assets/source/pixellab/` (con README) y excepción de
   paleta hecha: `verify_palette.py image <png> --source <original>`.
+- **Cuenca hecha (2026-11-02):** `basin()` escribe 25 sprites; falta el
+  visto bueno de Diego y decidir si el Devorador se mueve, porque tapa la
+  torre del hito (anexo de Tierra Viva, «Paso 4b — El decorado de la
+  Cuenca»).
 - **Falta:**
-  - las otras cinco regiones y Valdehoja, una por una: se añade su función
+  - la Costa, la Llanura, la Cumbre, la Cripta y Valdehoja, una por una: se añade su función
     al `CATALOG` del generador, igual que `forest()`;
   - ~~el monstruo de mapa~~: hecho el 2026-11-01 (punto 5).
 
