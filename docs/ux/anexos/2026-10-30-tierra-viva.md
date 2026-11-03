@@ -1190,3 +1190,34 @@ Componente `DialogBox` del sistema, en el sitio del mensaje del combate.
 - **Siguiente:** el `CommandMenu` de 2 × 2, que espera la decisión de Diego:
   las cuatro entradas del sistema (LUCHAR, ECO, BOLSA, HUIR; recomendado:
   ECO abre las habilidades y ORDEN pasa a Tab) o las cinco de hoy.
+
+#### Cartel de lugar con el sistema de diseño (LocationSign) · 2026-11-03
+
+Componente `LocationSign` del sistema (guía del equipo §3.1, fila 15).
+Sustituye al panel de ceniza del contrato «Umbral».
+
+- **`PlaceLabel`** (`src/world/place_label.gd`) dibuja la tabla de madera con
+  clavos (`TvFrame.SIGN`, el marco `sign.png` del sistema) en (12, 12), como
+  pide el componente. Antes iba a 8 px.
+  - Dos líneas centradas: el nombre de la zona en `paper-5` (`TV_PAPER_4`) y,
+    debajo, el apodo o el estado en `paper-4` (`TV_PAPER_3`), los dos con
+    sombra `wood-2` (`TV_WOOD_1`). Relleno de 6 px (`.sign`).
+  - Valdehoja lleva su apodo, «Pueblo de las terrazas». Las regiones llevan
+    su estado, concordado con su nombre: «Enfermo» o «Purificado» en el
+    Bosque, «Enferma» o «Purificada» en las demás. La segunda línea la elige
+    `WorldRoot._sign_subtitle`.
+  - La entrada, la espera de 2 s (`PLACE_LABEL_HOLD`, igual que `dur-sign`)
+    y la salida no cambian.
+- **`verify_movement`:** la comprobación de la posición pasa de `SPACE_8` a
+  `SPACE_12`, la del sistema. Da 100/100.
+- **`tools/sign_capture.tscn`** (nuevo) hace la captura del cartel entero.
+- **Contraste, medido y no cumplido:** sobre la madera (`wood-5`, #b27a4c),
+  el nombre da **3,22:1** y el subtítulo **2,65:1**. La guía (§4.6) pide
+  4,5:1, y la sombra de 1 px no cuenta para ese cálculo. **Juan José eligió
+  dejarlo como el sistema (2026-11-03): falta que Diego decida.** La
+  alternativa medida es el texto en `wood-1` (#2e1a1e) sin sombra clara, que
+  da 4,51:1 pero se aparta del color del sistema.
+- **Medido:** movement 100/100, usability 16/16, camera 37/37, flow 23/23 y
+  encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-cartel-{valdehoja,ashen_forest,tar_basin-purificada}.png`.

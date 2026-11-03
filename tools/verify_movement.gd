@@ -502,8 +502,8 @@ func _test_label() -> void:
 		var outs := phases.count(PlaceLabel.Phase.OUT)
 		if not reduced:
 			_check("rotulo: dice el nombre de la zona", lbl.text == "Ribera de prueba", lbl.text)
-			_check("  arriba a la izquierda, margen SPACE_8",
-				lbl.panel_rect().position == Vector2i(DesignTokens.SPACE_8, DesignTokens.SPACE_8),
+			_check("  arriba a la izquierda, en (12, 12) como el LocationSign del sistema",
+				lbl.panel_rect().position == Vector2i(DesignTokens.SPACE_12, DesignTokens.SPACE_12),
 				"%s" % lbl.panel_rect())
 			var first_step: float = alphas[1] - alphas[0]
 			var last_step: float = alphas[in_frames] - alphas[in_frames - 1]
