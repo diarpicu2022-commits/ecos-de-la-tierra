@@ -94,7 +94,10 @@ const BORDER_WIDTH := 1
 
 # --- Tipografía --------------------------------------------------------------
 
-const FONT_PATH := "res://assets/fonts/ceniza.fnt"
+## Brote, la tipografía del sistema de diseño (README §Tipografía): pixel
+## proporcional de 11 px, generada por `tools/tierra_viva/font.py`
+## (2026-11-02; antes, «ceniza»).
+const FONT_PATH := "res://assets/fonts/brote.fnt"
 
 ## La fuente es de mapa de bits: solo escala por múltiplos enteros. Un valor
 ## intermedio la rompe, así que no hay tamaños entre estos dos.
