@@ -12,7 +12,8 @@ extends Control
 ## Antes era una columna de 96 px bajo cada sprite. Con el campo en diagonal esa
 ## correspondencia dejó de existir, y una lista vertical la recupera.
 
-const ROW := Vector2(168, 16)
+## 176 × 24, las filas a 27 px (`PartyRow`).
+const ROW := Vector2(176, 24)
 const PAD := DesignTokens.SPACE_4
 
 ## Umbrales de la barra de PV, los mismos que usa la ficha del monstruo.
@@ -130,56 +131,47 @@ func _on_any_change(_a = null, _b = null) -> void:
 
 # --- Dibujo ------------------------------------------------------------------
 
+## `PartyRow` del sistema de diseño: marco `f-row` (pizarra) o `f-active`
+## con borde de oro para quien tiene el turno; nombre, chapa de estado y PV
+## arriba; barra de PV de 5 px y, debajo, la de energía de 4 px.
 func _draw() -> void:
 	if character == null:
 		return
-
 	var down: bool = not character.is_alive()
-
-	if _is_turn:
-		# A quien le toca se le ilumina la fila entera, no solo el nombre: es lo
-		# primero que hay que poder localizar sin buscar.
-		draw_rect(Rect2(Vector2.ZERO, ROW), DesignTokens.PANEL_FILL)
-		draw_rect(Rect2(Vector2.ZERO, Vector2(2, ROW.y)),
-				DesignTokens.BORDER_FOCUS)
-
-	var name_tone: Color = DesignTokens.TEXT_PRIMARY
+	TvFrame.draw(self, TvFrame.PLATE_ACTIVE if _is_turn else TvFrame.ROW, Rect2(Vector2.ZERO, ROW))
+	var name_tone: Color = DesignTokens.TV_TEXT_HIGHLIGHT if _is_turn \
+			else DesignTokens.TV_TEXT_ON_SLATE
 	if down:
-		name_tone = DesignTokens.TEXT_SECONDARY
-	elif _is_turn:
-		name_tone = DesignTokens.TEXT_CRITICAL
-	_text(character.display_name, Vector2(PAD + 2.0, 10), name_tone)
-
-	# Estado alterado o «fuera de combate», justo tras el nombre: es lo que
-	# cambia lo que el jugador puede hacer con este personaje.
+		name_tone = DesignTokens.TV_UI_3
+	TvFrame.slate_text(self, _font, Vector2(PAD + 2.0, 11), character.display_name, name_tone)
 	var flag: String = _status_flag(down)
 	if not flag.is_empty():
-		_text(flag, Vector2(PAD + 44.0, 10), DesignTokens.TEXT_WARNING)
-
-	# Energía: la cifra que decide si una Habilidad Ecológica se puede pagar.
-	var energy := "%d" % character.energy
-	_text(energy, Vector2(ROW.x - PAD - 54.0 - _width(energy), 10),
-			DesignTokens.ASH_200)
-
+		var x := PAD + 6.0 + TvFrame.width(_font, character.display_name)
+		TvFrame.badge(self, _font, Vector2(x, 3), flag, DesignTokens.TV_STATUS_CORRUPT,
+				DesignTokens.TV_PAPER_4)
 	var hp_label := "%d/%d" % [roundi(_shown_hp), character.max_hp]
-	_text(hp_label, Vector2(ROW.x - PAD - _width(hp_label), 10), _hp_tone(down))
-
-	_bar(Vector2(PAD + 2.0, 12), ROW.x - PAD * 2.0 - 4.0, 3, _ratio(),
-			_hp_fill(down))
+	TvFrame.slate_text(self, _font, Vector2(ROW.x - PAD - 2.0 - TvFrame.width(_font, hp_label), 11),
+			hp_label, DesignTokens.TV_TEXT_MUTED_SLATE)
+	var w := ROW.x - PAD * 2.0 - 4.0
+	TvFrame.bar(self, Vector2(PAD + 2.0, 13), w, 5, _ratio(),
+			DesignTokens.TV_UI_3 if down else TvFrame.hp_fill(_ratio()))
+	var energy_ratio := 0.0 if character.max_energy <= 0 \
+			else clampf(float(character.energy) / character.max_energy, 0.0, 1.0)
+	TvFrame.bar(self, Vector2(PAD + 2.0, 18), w, 4, energy_ratio, DesignTokens.TV_ENERGY)
 
 
 ## Marca corta del estado. A 168 px no cabe «Aturdimiento», y lo que importa es
 ## que haya algo raro con este personaje: el detalle lo da el registro.
 func _status_flag(down: bool) -> String:
 	if down:
-		return "✖ fuera"
+		return "FUERA"
 	var statuses: Array[StatusEffect] = character.get_statuses()
 	if statuses.is_empty():
 		return ""
 	for effect in statuses:
 		if effect.blocks_action():
-			return effect.display_name.substr(0, 4) + "."
-	return statuses[0].display_name.substr(0, 4) + "."
+			return effect.display_name.substr(0, 4).to_upper() + "."
+	return statuses[0].display_name.substr(0, 4).to_upper() + "."
 
 
 func _hp_fill(down: bool) -> Color:

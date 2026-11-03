@@ -83,6 +83,7 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Paso 4b, Llanura hecha** (2026-11-02): 28 sprites con `plain()`, `verify_zone` 45/45 y `verify_terrain` 7/7. Siguiente: la Cumbre. Pendiente para Diego: los monstruos de mapa nuevos tapan los hitos. **Todo, personajes incluidos, con el sistema de diseño.**
 - **Personajes del sistema en el mapa** (2026-11-01): Ilan a 48 px con caminata de PixelLab y los seis monstruos de mapa de PixelLab (`tools/gen_tierra_viva_cast.py`). Sigue viejo: decorado de las otras regiones, pantalla de combate, HUD, diálogo y título.
 - **Combate, paso 1 (escena) hecho** (2026-11-02): pantalla a 640 × 360, fondos del sistema por región (`tools/gen_tierra_viva_battle.py`), monstruo de PixelLab sobre su plataforma y grupo de espaldas al doble. Siguen: paso 2 (placa y filas), paso 3 (mandos 2 × 2 y aviso de papel) y paso 4 (estados).
+- **2026-11-02, cierre de Diego en esta tanda:** Brote en todo el juego, marcos del sistema en `assets/ui/marcos/` con `TvFrame` y filas del grupo (`PartyRow`) hechas. **Sigue el compañero** desde la §4.0 de la guía: placa del monstruo, mandos 2 × 2 (Diego decide cuatro o cinco entradas), aviso de papel y estados; y en paralelo, el inventario de §3.1.
 
 ## 3. Lista de trabajo, en orden
 

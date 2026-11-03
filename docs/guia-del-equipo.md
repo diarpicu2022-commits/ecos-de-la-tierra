@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Reparto desde el 2026-11-02, para no pisarse:** el compañero sigue con el decorado de las regiones (§4.2: el Bosque, la Cuenca, la Costa y la Llanura ya están; faltan Cumbre, Cripta y Valdehoja) y Diego, con el combate y la tipografía (§4.0). La lista de todo lo que sigue viejo está en §3.1. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado de las regiones (§4.2) ya están el Bosque, la Cuenca, la Costa y la Llanura; faltan la Cumbre, la Cripta y Valdehoja. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -51,6 +51,10 @@ hecha.
    combates sueltos está en `scenes/main.tscn` (ábrela y pulsa F6).
 
 ### Trucos que ahorran horas
+
+- Si Godot dice «No loader found» de una imagen nueva, la importación se
+  cortó antes de llegar a ella: repite `--import` hasta que exista su
+  `.import`.
 
 - **Las pruebas que hacen capturas necesitan ventana**: sin `--headless`, o
   se quedan colgadas esperando el dibujo. En Linux, `xvfb-run -a "$GODOT" ...`.
@@ -192,9 +196,9 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 3 | Monstruos de mapa | `src/world/map_monster.gd` | `MonsterRoster`, `referencias/combate_accion.png` | HECHO 2026-11-01 |
 | 4 | Decorado del Bosque | `tools/gen_tierra_viva_decor.py` | README §Mundo, `Overworld` | HECHO 2026-11-01 |
 | 5 | Escena del combate (fondo, monstruo, grupo de espaldas) | `src/ui/battle/battle_screen.gd`, `tools/gen_tierra_viva_battle.py` | `assets/img/combate_enfermo.png`, `combate_purificado.png` | HECHO 2026-11-02 |
-| 6 | **Tipografía**: el juego usa «ceniza» | `DesignTokens.FONT_PATH` | README §Tipografía: **Brote**, 11 px y 22 px | ver §4.0 |
+| 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-02 (falta el titular de 22 px) |
 | 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | ver §4.0 |
-| 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | ver §4.0 |
+| 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | ver §4.0 |
 | 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
@@ -233,13 +237,38 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
 (`"$GODOT" --path . res://tools/battle_capture.tscn -- <zona> <etiqueta> [purificado]`):
 
 1. **Escena:** HECHO el 2026-11-02 (`58e3e63`).
-2. **Tipografía Brote** en todo el juego (`tools/tierra_viva/final/brote.fnt`
-   → `assets/fonts/`, `DesignTokens.FONT_PATH`), y luego medir que ningún
-   texto se corte: `verify_usability`, `verify_party_ai`.
-3. **Marcos del combate:** `EnemyPlate`, `PartyRow`, `CommandMenu`
-   (LUCHAR, ECO, BOLSA, HUIR; ECO abre las habilidades y la orden del grupo
-   pasa a Tab) y el aviso de papel `DialogBox`. Con más de tres miembros se
-   ven tres filas: el del turno y los dos siguientes.
+2. **Tipografía Brote:** HECHO el 2026-11-02 (`8153c2c`). Cubre todos los
+   caracteres de la fuente vieja; las pruebas siguen en verde.
+3. **Marcos del combate.** Las herramientas ya están:
+   - **`src/ui/tv_frame.gd` (`TvFrame`):** dibuja los marcos del sistema
+     (`assets/ui/marcos/*.png`, nueve partes con bordes de 8 px, todos
+     tokens), el texto con sombra sobre pizarra o papel, las chapas
+     `TypeBadge` (`badge`, `type_fill`) y las barras (`bar`, `hp_fill`).
+   - **`PartyRow`:** HECHO. `party_member_hud.gd` usa `TvFrame`; se ven tres
+     filas alrededor de quien tiene el turno (`BattleScreen._layout_huds`).
+     Captura: `docs/ux/capturas/2026-11-02-combate-filas-waning_peak.png`.
+   - **`EnemyPlate`, lo siguiente:** reescribir `MonsterView._draw_panel`
+     con `TvFrame.PLATE` de 184 px en (10, 10). Lleva nombre, una fila de
+     chapas (el tipo con `type_fill` y CORRUPTO o PURIFICADO con
+     `TV_STATUS_CORRUPT` o `TV_STATUS_PURIFIED`) y «PV» en
+     `TV_TEXT_HIGHLIGHT` con barra de 5 px y la cifra. Modelo:
+     `docs/ux/sistema-de-diseno/project/assets/img/combate_enfermo.png`.
+   - **`CommandMenu`:** rejilla de 2 × 2 en (432, 284), 100 × 30, con los
+     marcos `cmd-luchar`, `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y
+     `cmd-selected` para el elegido. Está en `action_menu.gd`, el menú raíz.
+     **Antes, Diego decide** si se quedan las cuatro entradas del sistema
+     (recomendado: ECO abre las habilidades y ORDEN pasa a Tab) o las cinco
+     de hoy. `verify_party_ai` comprueba la fila de ORDEN y habrá que
+     adaptarla.
+   - **El aviso de papel:** en `BattleScreen._draw_message`, con
+     `TvFrame.TEXTBOX` en `MESSAGE_RECT` (6, 282, 420 × 72), texto
+     `TvFrame.paper_text` a 15 px de interlínea y `▼` en `TV_RUST_2`.
+   - Los submenús (habilidades, bolsa, objetivo) no están en el sistema:
+     se usa `TvFrame.PLATE` como marco de lista, y se avisa a Diego.
+   - **Aviso para Diego:** las barras de PV del sistema son verdes
+     (`hp-high`). Eso choca con la regla vieja de «el verde solo significa
+     purificado». Manda el sistema, pero hay que anotarlo como enmienda
+     fechada en el anexo.
 4. **Estados:** chapas `TypeBadge`, barras `hp-high/mid/low`, cifras a doble
    tamaño con `~`, pantalla de resultado y la cola de turnos (decide Diego).
 
