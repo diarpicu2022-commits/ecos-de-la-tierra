@@ -53,7 +53,7 @@ def plan_layout(seed=RNG_SEED):
     """Coloca las casas con desfase y huecos irregulares, sin solaparse."""
     scene2.load_overrides()
     for n, door in scene2.NEW_DOOR.items():
-        p = f'pl/bld/{n}_0.png'
+        p = f'../../assets/source/pixellab/bld/{n}_0.png'
         import os
         if os.path.exists(p) and n not in scene2.BLD_OVERRIDE:
             a = np.array(Image.open(p).convert('RGBA'))
@@ -247,7 +247,7 @@ def npc_actors():
         if p['name'] == 'botes':
             places.append(('mariela', 'south-west', p['door_cx'] + 26, p['yb'] + 22))
     for n, d, x, y in places:
-        pth = f'pl/npc/{n}/{d}.png'
+        pth = f'../../assets/source/pixellab/npc/{n}/{d}.png'
         if not os.path.exists(pth):
             continue
         s = scene.trim(np.array(Image.open(pth)))

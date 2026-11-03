@@ -1,0 +1,30 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Cover</title>
+<style>
+html,body{margin:0;background:var(--ui-1)}
+.cv{position:relative;width:960px;height:288px;overflow:hidden;background:var(--ui-1)}
+.cv svg{position:absolute;left:0;top:0}
+.sky{fill:var(--water-5)} .fire{fill:var(--fire-4)} .eco{fill:var(--eco-3)} .dirt{fill:var(--dirt-5)}
+.g{fill:var(--grass-5)} .a{fill:var(--ash-3)} .gold{fill:var(--gold-5)}
+.name{position:absolute;left:40px;bottom:58px;width:440px;font-family:var(--font-pixel);font-size:66px;line-height:66px;color:var(--ui-7);-webkit-font-smoothing:none;text-shadow:6px 6px 0 var(--ink-1)}
+.tag{position:absolute;left:42px;bottom:30px;width:440px;font-family:var(--font-pixel);font-size:11px;line-height:13px;color:var(--ui-5);-webkit-font-smoothing:none}
+</style><link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="../bundle.css"></head><body>
+<div class="cv">
+<svg width="960" height="288" viewBox="0 0 960 288" shape-rendering="crispEdges">
+<!-- bloques: water-5 160×128 (cielo sano), fire-4 112×128 (la causa activa), eco-3 32×128 (la purificación), dirt-5 cinta 368×32 (el camino), todo en múltiplos de tile (16 px)
+     disposición: bandas que cuelgan del borde superior y un campo de losetas que se apoya en el inferior, de derecha a izquierda el mundo sana
+     patrón: losetas de 32 px (2 × tile) de ash-3 a grass-5 por tramado ordenado 4×4: el mapa que vuelve a ser verde, el mecanismo del juego
+     escalas: tile 16 px, corner-1 a corner-3 no se usan en la portada (todo cuadrado, como la rejilla) -->
+<rect class="fire" x="480" y="0" width="112" height="128"/>
+<rect class="eco" x="592" y="0" width="32" height="128"/>
+<rect class="sky" x="624" y="0" width="336" height="96"/>
+<rect class="gold" x="912" y="48" width="16" height="16"/>
+<rect class="dirt" x="592" y="96" width="368" height="32"/>
+<rect class="a" x="480" y="128" width="112" height="160"/>
+<rect class="a" x="592" y="128" width="32" height="32"/><rect class="a" x="624" y="128" width="32" height="32"/><rect class="g" x="656" y="128" width="32" height="32"/><rect class="a" x="688" y="128" width="32" height="32"/><rect class="g" x="720" y="128" width="32" height="32"/><rect class="a" x="752" y="128" width="32" height="32"/><rect class="g" x="784" y="128" width="32" height="32"/><rect class="a" x="816" y="128" width="32" height="32"/><rect class="g" x="848" y="128" width="32" height="32"/><rect class="g" x="880" y="128" width="32" height="32"/><rect class="g" x="912" y="128" width="32" height="32"/><rect class="g" x="944" y="128" width="32" height="32"/><rect class="a" x="592" y="160" width="32" height="32"/><rect class="a" x="624" y="160" width="32" height="32"/><rect class="a" x="656" y="160" width="32" height="32"/><rect class="a" x="688" y="160" width="32" height="32"/><rect class="a" x="720" y="160" width="32" height="32"/><rect class="g" x="752" y="160" width="32" height="32"/><rect class="a" x="784" y="160" width="32" height="32"/><rect class="g" x="816" y="160" width="32" height="32"/><rect class="a" x="848" y="160" width="32" height="32"/><rect class="g" x="880" y="160" width="32" height="32"/><rect class="g" x="912" y="160" width="32" height="32"/><rect class="g" x="944" y="160" width="32" height="32"/><rect class="a" x="592" y="192" width="32" height="32"/><rect class="a" x="624" y="192" width="32" height="32"/><rect class="g" x="656" y="192" width="32" height="32"/><rect class="a" x="688" y="192" width="32" height="32"/><rect class="g" x="720" y="192" width="32" height="32"/><rect class="a" x="752" y="192" width="32" height="32"/><rect class="g" x="784" y="192" width="32" height="32"/><rect class="g" x="816" y="192" width="32" height="32"/><rect class="g" x="848" y="192" width="32" height="32"/><rect class="g" x="880" y="192" width="32" height="32"/><rect class="g" x="912" y="192" width="32" height="32"/><rect class="g" x="944" y="192" width="32" height="32"/><rect class="a" x="592" y="224" width="32" height="32"/><rect class="a" x="624" y="224" width="32" height="32"/><rect class="a" x="656" y="224" width="32" height="32"/><rect class="g" x="688" y="224" width="32" height="32"/><rect class="a" x="720" y="224" width="32" height="32"/><rect class="g" x="752" y="224" width="32" height="32"/><rect class="a" x="784" y="224" width="32" height="32"/><rect class="g" x="816" y="224" width="32" height="32"/><rect class="a" x="848" y="224" width="32" height="32"/><rect class="g" x="880" y="224" width="32" height="32"/><rect class="g" x="912" y="224" width="32" height="32"/><rect class="g" x="944" y="224" width="32" height="32"/><rect class="g" x="592" y="256" width="32" height="32"/><rect class="a" x="624" y="256" width="32" height="32"/><rect class="g" x="656" y="256" width="32" height="32"/><rect class="a" x="688" y="256" width="32" height="32"/><rect class="g" x="720" y="256" width="32" height="32"/><rect class="g" x="752" y="256" width="32" height="32"/><rect class="g" x="784" y="256" width="32" height="32"/><rect class="g" x="816" y="256" width="32" height="32"/><rect class="g" x="848" y="256" width="32" height="32"/><rect class="g" x="880" y="256" width="32" height="32"/><rect class="g" x="912" y="256" width="32" height="32"/><rect class="g" x="944" y="256" width="32" height="32"/>
+</svg>
+<div class="name">Ecos de la<br>Tierra</div>
+<div class="tag">Tierra Viva: el mundo enferma con color y sana con color.</div>
+</div>
+</body></html>

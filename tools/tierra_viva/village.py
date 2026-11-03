@@ -2,8 +2,8 @@ import numpy as np
 from PIL import Image
 import maps, world, flora, scene, ui, px
 from pal import P
-HOUSE = np.array(Image.open('pl/obj3/house.png'))
-TREE = scene.trim(np.array(Image.open('pl/obj2/tree_clean.png')))
+HOUSE = np.array(Image.open('../../assets/source/pixellab/obj3/house.png'))
+TREE = scene.trim(np.array(Image.open('../../assets/source/pixellab/obj2/tree_clean.png')))
 
 
 def render(actors=(), sign=None, dialog=None):

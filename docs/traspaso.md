@@ -6,6 +6,11 @@ el estado exacto y la lista de trabajo en orden.
 
 ## 0. Antes de nada
 
+**La guía completa para el equipo, de aquí al juego terminado, es
+`docs/guia-del-equipo.md`.** Todo lo visual sigue el sistema de diseño de
+`docs/ux/sistema-de-diseno/`.
+
+
 1. Lee `AGENTS.md` entero; es corto.
 2. Lee `docs/plan-de-trabajo.md`: solo el «Punto de retome».
 3. Lee `docs/ux/anexos/2026-10-30-tierra-viva.md`. Es el anexo en curso y su contrato «Piel nueva» manda en todo lo visual del mundo.
@@ -42,6 +47,7 @@ $GODOT --headless --path . res://tools/verify_encounters.tscn          # 82/82
 $GODOT --headless --path . res://tools/verify_flow.tscn                # 23/23
 $GODOT --headless --path . res://tools/verify_party_ai.tscn            # 19/19
 $GODOT --headless --path . res://tools/verify_movement.tscn            # 99/99
+$GODOT --path . res://tools/verify_terrain.tscn                        # 7/7 (con ventana)
 for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   $GODOT --headless --path . res://tools/verify_zone.tscn -- $z        # todas en verde
 done
@@ -57,7 +63,7 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
   - El combate actual sigue en el código hasta R2.
 - **Arte del mundo.**
   - Diego rechazó los materiales planos y aprobó el arte de **Tierra Viva**: `tools/tierra_viva/` (prototipo en Python) y `docs/ux/tierra-viva/referencias/` (renders aprobados).
-  - El Design System con todo está en la página «Ecos de la Tierra» de Diego (tarjetas Overworld, Regiones, Interiores y ActionHUD).
+  - El sistema de diseño con todo está en `docs/ux/sistema-de-diseno/` (abre `index.html`; tarjetas Overworld, Regiones, Interiores, ActionHUD y el resto de componentes).
 - **Contrato «Piel nueva» (bloqueado el 2026-10-30), dirección B.**
   - El arte nuevo se pinta **sobre las matrices aprobadas** de `data/world/zones/`.
   - Viewport 640×360; las regiones están agrandadas ×4/3.
@@ -67,7 +73,17 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
   - paso 1, tokens `TV_*` y viewport;
   - paso 1b, regiones agrandadas con `tools/scale_zone.py`, y `verify_zone` en verde.
 - **Visto bueno de Diego al paso 1:** 2026-10-30.
-- **Tarea 1 hecha** (2026-10-30): `verify_movement` 99/99. Falta el visto bueno de Diego.
+- **Tarea 1 hecha** (2026-10-30), con el visto bueno de Diego. Entra en el PR #20.
+- **Tarea 2 hecha** (2026-10-31, rama `rediseno/terreno`), con el visto bueno de Diego: `tools/gen_tierra_viva_terrain.py`, `WorldRoot._mount_terrain` y `tools/verify_terrain.tscn`.
+- **Tarea 3 hecha** (2026-10-31), con el visto bueno de Diego.
+- **Paso 4a hecho** (2026-11-01): masas de región según el sistema de diseño (enmienda 14) y rasgos de región; `verify_terrain` 7/7 y `verify_zone` en verde en las seis. Visto bueno de Diego el 2026-11-01.
+- **Paso 4b, Bosque hecho** (2026-11-01): decorado del sistema con `tools/gen_tierra_viva_decor.py`, PixelLab en `assets/source/pixellab/` y excepción `--source` en `verify_palette.py`. Falta el visto bueno de Diego. Siguiente: las otras regiones (§4.2 de `docs/guia-del-equipo.md`).
+- **Paso 4b, Cuenca hecha** (2026-11-02, rama `rediseno/decorado-cuenca`): 25 sprites con `basin()`, `verify_zone` 45/45 y `verify_terrain` 7/7. Fusionada con el PR #21 (permiso de Diego para fusionar lo necesario, 2026-11-02).
+- **Paso 4b, Costa hecha** (2026-11-02): 19 sprites con `coast()`, `verify_zone` 47/47 y `verify_terrain` 7/7.
+- **Paso 4b, Llanura hecha** (2026-11-02): 28 sprites con `plain()`, `verify_zone` 45/45 y `verify_terrain` 7/7. Siguiente: la Cumbre. Pendiente para Diego: los monstruos de mapa nuevos tapan los hitos. **Todo, personajes incluidos, con el sistema de diseño.**
+- **Personajes del sistema en el mapa** (2026-11-01): Ilan a 48 px con caminata de PixelLab y los seis monstruos de mapa de PixelLab (`tools/gen_tierra_viva_cast.py`). Sigue viejo: decorado de las otras regiones, pantalla de combate, HUD, diálogo y título.
+- **Combate, paso 1 (escena) hecho** (2026-11-02): pantalla a 640 × 360, fondos del sistema por región (`tools/gen_tierra_viva_battle.py`), monstruo de PixelLab sobre su plataforma y grupo de espaldas al doble. Siguen: paso 2 (placa y filas), paso 3 (mandos 2 × 2 y aviso de papel) y paso 4 (estados).
+- **2026-11-02, cierre de Diego en esta tanda:** Brote en todo el juego, marcos del sistema en `assets/ui/marcos/` con `TvFrame` y filas del grupo (`PartyRow`) hechas. **Sigue el compañero** desde la §4.0 de la guía: placa del monstruo, mandos 2 × 2 (Diego decide cuatro o cinco entradas), aviso de papel y estados; y en paralelo, el inventario de §3.1.
 
 ## 3. Lista de trabajo, en orden
 
@@ -81,7 +97,7 @@ Cada tarea termina con verificación medida y parada para el visto bueno.
   - Actualizar sus salidas en `data/world/exits.json` y las coordenadas fijas de `tools/verify_movement.gd`, que usa celdas como `(5, 8)`, `(10, 9)`, `(1, 8)` y `(15, 1)`.
   - **No escales con `scale_zone.py`:** se probó y da más de 20 fallos por esas coordenadas.
 
-### Tarea 2: contrato, paso 2, el motor de terreno
+### Tarea 2: contrato, paso 2, el motor de terreno (Bosque hecho el 2026-10-31)
 - **Portar** `tools/tierra_viva/map2.py`, con lo que necesita de `px.py`, `pal.py` y `scene2.py` (tufos, agua viva y puentes), a `tools/gen_tierra_viva_terrain.py`: código en inglés, comentarios en español y semilla fija.
 - **Entrada:** una matriz del repo. Su leyenda está en `src/world/world_tiles.gd` (`LEGEND`), y no es la del prototipo:
 
@@ -118,7 +134,7 @@ Las siete zonas pintadas desde sus matrices, con sus `verify_zone` y `value`.
 ### Tarea 4: paso 4, el decorado
 - **Sprites:** los del catálogo de cada `*.deco.txt` (árboles, viñetas, hitos, pasos cerrados, fauna) se generan con el estilo del prototipo en `tools/gen_tierra_viva_decor.py`. Lo carga `src/world/world_decor.gd`, mismo `id` y sprite nuevo, desde `assets/sprites/world/decor/`.
 - **Contorno:** el decorado lleva el contorno de su rampa. `ASH_050` solo va en lo que responde (cláusula 3).
-- **PixelLab:** los edificios y vecinos se mueven de `tools/tierra_viva/pl/` a `assets/source/pixellab/` con un README (cláusula 4). Hay que añadir a `verify_palette.py` la excepción de «tinta de personaje o edificio».
+- **PixelLab (hecho, 2026-11-01):** los originales están en `assets/source/pixellab/` con su README (cláusula 4), y `verify_palette.py image <png> --source <original>` acepta su «tinta de personaje o edificio».
 
 ### Tarea 5: paso 5, Valdehoja
 - **Matriz nueva:** se escribe la de `data/world/zones/valdehoja.txt` (y `.deco` y `.parts`) desde `tools/tierra_viva/village5.py`.

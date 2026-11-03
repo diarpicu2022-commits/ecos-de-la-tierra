@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-30 (sesión 9; anexo del rediseño «Tierra Viva»)
+Última actualización: 2026-11-02 (decorado de la Cuenca, la Costa y la Llanura, paso 4b)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -42,6 +42,12 @@ válidos:
 
 ## Punto de retome
 
+> **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
+> Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
+> está hecho y aprobado; del paso 4b (§4.2 de la guía) están hechos el Bosque, la Cuenca, la Costa y la Llanura (2026-11-02) y faltan la Cumbre, la Cripta y Valdehoja. Diego dio permiso (2026-11-02) para fusionar lo necesario de cara a la presentación del miércoles 2026-11-04. **Todo lo visual
+> sigue el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
+
+
 > **Rediseño «Tierra Viva» — contrato «Piel nueva» BLOQUEADO el 2026-10-30.**
 > Rama `rediseno/tierra-viva`. Anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
 >
@@ -65,8 +71,14 @@ válidos:
 > - `docs/ux/tierra-viva/` tiene los renders de referencia y el concepto del título y los créditos (partes 10 y 12, pendientes de anexo).
 >
 > **Siguiente:**
-> 1. visto bueno de Diego a la tarea 1;
-> 2. paso 2: motor de terreno, empezando por el Bosque.
+> - tarea 1 aprobada (PR #20);
+> - paso 2 en el Bosque (rama `rediseno/terreno`): generador `tools/gen_tierra_viva_terrain.py`,
+>   dos sprites de suelo en `WorldRoot` y `verify_terrain` 7/7; `value` 1,61–1,85.
+>
+> - paso 2 aprobado; paso 3: las seis regiones pintadas, `verify_terrain` 7/7 en cada una.
+>
+> 1. paso 4a: el relleno dentro del follaje deja de montarse y cada región gana su masa (enmienda 14, aprobada);
+> 2. paso 4b: los sprites del catálogo, empezando por el Bosque.
 >
 > **Para jugar:** F5 abre `scenes/game.tscn` (el mundo con `GameFlow`). La
 > parte 5 (diálogos) está en la rama `parte-5/anexo`, subida como respaldo y

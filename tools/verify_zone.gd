@@ -95,7 +95,10 @@ func _measure_engine(zone_id: String) -> void:
 		state.flags.clear()
 	var deco := ZoneRules.load_deco(zone_id)
 	var legend: Dictionary = deco["legend"]
-	var pieces := WorldDecor.pieces(deco["rows"], legend)
+	# El relleno que la masa de Tierra Viva ya pinta no se monta (enmienda 14).
+	var fill_lines := ZoneRules.load_zone(zone_id) if WorldDecor.has_terrain(zone_id) else PackedStringArray()
+	var pieces := WorldDecor.pieces(deco["rows"], legend).filter(func(p):
+		return not WorldDecor.is_fill(legend[p["ch"]], p["at"], fill_lines))
 	var spawn := Vector2i(-1, -1)
 	var solid := 0
 	for piece in pieces:

@@ -1,5 +1,8 @@
 # Ecos de la Tierra
 
+> **Para seguir el desarrollo:** `docs/guia-del-equipo.md`. Todo lo visual sigue el
+> sistema de diseño «Tierra Viva» de `docs/ux/sistema-de-diseno/` (abre `index.html`).
+
 RPG 2D por turnos con estética pixel art y enfoque de concienciación ambiental.
 Godot Engine 4 + GDScript, exportable a PC y Android desde el mismo proyecto.
 

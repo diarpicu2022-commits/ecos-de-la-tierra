@@ -258,9 +258,9 @@ def overlays(img, info, P, sway=0, state='sano'):
                 img[fy + 1, fx + 1] = P['ash'][4]; img[fy + 2, fx + 1] = P['ash'][2]
 
 
-TREE = scene.trim(np.array(Image.open('pl/obj2/tree_clean.png')))
+TREE = scene.trim(np.array(Image.open('../../assets/source/pixellab/obj2/tree_clean.png')))
 import burnt as _burnt
-BURNT = _burnt.burnt_tree_v2(scene.trim(np.array(Image.open('pl/obj2/tree_clean.png'))), 3)
+BURNT = _burnt.burnt_tree_v2(scene.trim(np.array(Image.open('../../assets/source/pixellab/obj2/tree_clean.png'))), 3)
 
 
 def bush2(state='sano', seed=0):
@@ -490,7 +490,7 @@ def render(state='sano', actors=(), frame=0, sign=None, dialog=None, spec=None, 
     return img
 
 
-HOUSE = np.array(Image.open('pl/obj3/house.png'))
+HOUSE = np.array(Image.open('../../assets/source/pixellab/obj3/house.png'))
 
 
 def fence(n):
@@ -630,7 +630,7 @@ BLD_PL = {'posada': ('posadaC_0', 51), 'panaderia': ('panaderia_0', 49), 'escuel
 def load_overrides():
     import os
     for name, (fn, door) in BLD_PL.items():
-        p = f'pl/bld/{fn}.png'
+        p = f'../../assets/source/pixellab/bld/{fn}.png'
         if os.path.exists(p):
             import roofix
             a = np.array(Image.open(p).convert('RGBA'))
@@ -887,7 +887,7 @@ def village4_objects(state, info=None):
     import os
     load_overrides()
     for n in NEW_HOUSES:
-        p = f'pl/bld/{n}_0.png'
+        p = f'../../assets/source/pixellab/bld/{n}_0.png'
         if os.path.exists(p) and n not in BLD_OVERRIDE:
             a = np.array(Image.open(p).convert('RGBA'))
             rows = np.where(a[..., 3].any(1))[0]

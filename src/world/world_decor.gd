@@ -16,9 +16,12 @@ extends RefCounted
 ## su fila de abajo. La fauna silvestre solo se monta donde está purificado
 ## (enmienda 7). La aparición no se dibuja: solo dice dónde empieza Ilan.
 ##
-## Los sprites salen de `tools/gen_world_decor.py`.
+## Los sprites salen de `tools/gen_tierra_viva_decor.py` (estilo del sistema
+## de diseño, por zona: `<id>_<zona>_<estado>.png`) y, en las zonas que aún no
+## lo tienen, de `tools/gen_world_decor.py` (paso 4b, guía del equipo §4.2).
 
 const DECOR_DIR := "res://assets/sprites/world/decor/"
+const TIERRA_VIVA_DIR := "res://assets/sprites/world/tierra_viva/"
 
 ## Sprite de cada id de la leyenda cuando no se llama igual.
 const SPRITE := {"person": "yara", "chicken": "chicken_0", "bird": "bird_0",
@@ -33,6 +36,13 @@ const SWAYS := ["grass", "flower", "weed", "crop_row", "reeds"]
 ## bosque no se lea como plantación (Bosque, 2026-10-28).
 const JITTER := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
 const JITTER_PX := 3
+
+## Relleno del follaje (enmienda 14, 2026-10-31): en una zona con suelo de
+## Tierra Viva, la masa del generador ya pinta el bosque como un muro de
+## árboles. Estas piezas, cuando caen enteras dentro del follaje sólido (`#`),
+## no se montan: ni sprite ni cuerpo, porque la colisión ya sale de la matriz.
+const FILL := ["tree", "tree_b", "burnt_tree", "bush", "pine", "boulder"]
+
 
 ## Lo que desaparece con la ola de purificación: el paso cerrado y el
 ## monstruo (catálogo 2a) y el daño que se limpia (crudo, barriles, basura y,
@@ -60,10 +70,13 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 	var rows: PackedStringArray = deco["rows"]
 	var t := DesignTokens.TILE_SIZE
 	var spawn := Vector2i(-1, -1)
+	var lines := ZoneRules.load_zone(zone_id) if has_terrain(zone_id) else PackedStringArray()
 	for piece in pieces(rows, legend):
 		var entry: Dictionary = legend[piece["ch"]]
 		var at: Vector2i = piece["at"]
 		var size: Vector2i = entry["size"]
+		if is_fill(entry, at, lines):
+			continue
 		if entry["kind"] == "spawn":
 			spawn = at
 			continue
@@ -98,7 +111,7 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 		sprite.position = feet
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
-		_mark_motion(sprite, entry, at, pure)
+		_mark_motion(sprite, entry, at, pure, zone_id)
 		if entry["solid"]:
 			for j in size.y:
 				for i in size.x:
@@ -113,6 +126,25 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 			body.add_child(collider)
 			solids.add_child(body)
 	return spawn
+
+
+## La zona tiene su suelo de Tierra Viva (los dos PNG del generador).
+static func has_terrain(zone_id: String) -> bool:
+	return ResourceLoader.exists(WorldRoot.TERRAIN_DIR + zone_id + "_enfermo.png") 		and ResourceLoader.exists(WorldRoot.TERRAIN_DIR + zone_id + "_sano.png")
+
+
+## Pieza de relleno que la masa ya pinta (FILL). `lines` es la matriz de la
+## zona si tiene suelo de Tierra Viva, o vacía si no: entonces nada es relleno.
+static func is_fill(entry: Dictionary, at: Vector2i, lines: PackedStringArray) -> bool:
+	if lines.is_empty() or not (entry["id"] in FILL):
+		return false
+	var size: Vector2i = entry["size"]
+	for j in size.y:
+		for i in size.x:
+			var c := at + Vector2i(i, j)
+			if c.y >= lines.size() or c.x >= lines[c.y].length() or lines[c.y][c.x] != "#":
+				return false
+	return true
 
 
 ## Las piezas por su esquina superior izquierda: `[{ch, at}]`. Una pieza de
@@ -156,14 +188,17 @@ static func purified_lookup(zone_id: String, state: Node) -> Callable:
 ## Cuadros y fase de lo que se mueve. Lo enfermo no lleva cuadros: no se
 ## mueve. Los animales sí los llevan siempre; `WorldAmbient` solo los deja
 ## andar por lo purificado.
-static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure: bool) -> void:
+static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure: bool,
+		zone_id: String) -> void:
 	var id: String = entry["id"]
 	var kind: String = entry["kind"]
 	var frames: Array[Texture2D] = []
 	if kind == "decor" and pure and id in SWAYS:
-		var alt := "%s%s_pure_1.png" % [DECOR_DIR, id]
-		if ResourceLoader.exists(alt):
-			frames = [sprite.texture, load(alt)]
+		for alt in ["%s%s_%s_pure_1.png" % [TIERRA_VIVA_DIR, id, zone_id],
+				"%s%s_pure_1.png" % [DECOR_DIR, id]]:
+			if ResourceLoader.exists(alt):
+				frames = [sprite.texture, load(alt)]
+				break
 	elif kind == "fauna" or kind == "animal":
 		var base: String = SPRITE.get(id, id)
 		frames = [sprite.texture]
@@ -194,6 +229,10 @@ static func _texture(id: String, pure: bool, zone_id: String) -> Texture2D:
 	var name: String = SPRITE.get(id, id)
 	if name.length() > 3 and name[0] == "v" and name[1].is_valid_int() and name[2] == "_":
 		name = name.substr(3)
+	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
+		var path := "%s%s_%s_%s.png" % [TIERRA_VIVA_DIR, name, zone_id, state]
+		if ResourceLoader.exists(path):
+			return load(path)
 	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
 		for base in ["%s_%s" % [name, zone_id], name]:
 			var path := "%s%s_%s.png" % [DECOR_DIR, base, state]

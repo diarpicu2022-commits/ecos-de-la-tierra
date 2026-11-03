@@ -65,14 +65,32 @@ RAMPS: list[tuple[str, list[str], str]] = [
     ("puya", ["#2d4a3c", "#466b4c", "#6a8f62", "#94b183", "#c3d6ae"], "Puya"),
     ("straw", ["#56502e", "#7d7238", "#a6984a", "#cdbd66", "#e6d98a"], "Paja de páramo"),
     ("curse_fire", ["#2a1d3a", "#5a2d6b", "#8f4fb0", "#c98ae0", "#f2d1ff"], "Fuego maldito de la Cripta"),
+    ("ui", ["#1d1a2b", "#2e2a42", "#4a4566", "#a49ec0", "#d8d3e8", "#f4f1fa", "#ffffff"], "Pizarra de la interfaz"),
+    ("paper", ["#5b4a3c", "#8a7560", "#c9b694", "#e8dbbd", "#f8f1de"], "Papel del aviso y del diálogo"),
+    ("hp", ["#2b8a3e", "#5ad06a", "#a8f08a", "#b8860b", "#f5c33b", "#a3261b", "#ee5840"], "Barras de PV (alto, medio, bajo)"),
+    ("dusk", ["#2b1830", "#3f1d33", "#5c2534", "#83342f", "#ad4f2d", "#d27a37"], "Cielo de humo del combate (prototipo battle.py)"),
+    ("dusk_hill", ["#1e141c", "#2a1a24", "#3a2530", "#4a2a35", "#5c3540", "#6e4a4e"], "Siluetas y humo contra el cielo de humo"),
+    ("sky", ["#4a8fd9", "#5ea6e6", "#78bdf0", "#98d2f5", "#bde5f8", "#dcf3fb", "#cfe8f6"], "Cielo limpio del combate y su nube"),
+    ("far_hill", ["#6fae9e", "#8cc6b0"], "Colinas lejanas con cielo limpio"),
+]
+
+## Papeles de la interfaz del sistema de diseño (`components/tokens.css`):
+## nombre semántico → token de rampa. Solo van al lado de Godot.
+ROLES: list[tuple[str, str]] = [
+    ("slate", "ui_1"), ("slate_edge", "ink_0"), ("paper", "paper_4"), ("paper_edge", "wood_1"),
+    ("text_on_paper", "ink_1"), ("text_shadow_paper", "paper_2"), ("text_on_slate", "ui_6"),
+    ("text_muted_slate", "ui_5"), ("text_highlight", "gold_4"), ("focus_ring", "ui_6"),
+    ("hp_high", "hp_1"), ("hp_mid", "hp_4"), ("hp_low", "hp_6"), ("energy", "eco_3"),
+    ("cmd_fight", "rust_2"), ("cmd_eco", "eco_1"), ("cmd_bag", "gold_1"), ("cmd_run", "roof_blue_2"),
+    ("status_corrupt", "rust_1"), ("status_purified", "eco_1"),
 ]
 
 ## Solo en celdas purificadas: el color que vuelve.
-PURIFIED_ONLY = ["grass", "leaf", "flower", "water", "eco", "paramo", "snow", "frailejon", "puya"]
+PURIFIED_ONLY = ["grass", "leaf", "flower", "water", "eco", "paramo", "snow", "frailejon", "puya", "sky", "far_hill"]
 ## Solo en celdas enfermas: la causa y su rastro.
 SICK_ONLY = ["dry_grass", "dead_leaf", "oil", "sheen", "sludge", "smog", "plastic", "turbid",
              "oil_water", "plastic_water", "sludge_grass", "grey_sand", "paramo_dry", "scree",
-             "sick_soil", "curse_fire"]
+             "sick_soil", "curse_fire", "dusk", "dusk_hill"]
 
 
 def token_names() -> list[tuple[str, str]]:
@@ -93,6 +111,9 @@ def gd_block() -> str:
         lines.append(f"## {note}.")
         for i, h in enumerate(ramp):
             lines.append(f'const TV_{name.upper()}_{i} := Color("{h.lower()}")')
+    lines.append("## Papeles de la interfaz (components/tokens.css del sistema de diseño).")
+    for role, tok in ROLES:
+        lines.append(f"const TV_{role.upper()} := TV_{tok.upper()}")
     lines.append("const TV_PURIFIED_ONLY := [" + ", ".join(f'"{n}"' for n in PURIFIED_ONLY) + "]")
     lines.append("const TV_SICK_ONLY := [" + ", ".join(f'"{n}"' for n in SICK_ONLY) + "]")
     lines.append(f"# --- {END} ---")
@@ -126,6 +147,10 @@ def main() -> None:
               f"TV_PURIFIED_ONLY = {PURIFIED_ONLY!r}\nTV_SICK_ONLY = {SICK_ONLY!r}\n")
     if "TV_PURIFIED_ONLY" not in py:
         py = py.replace("\n## Rampa de calor de la llama", groups + "\n## Rampa de calor de la llama", 1)
+    else:
+        # los grupos ya existen: se reescriben, para que una rampa nueva entre
+        py = re.sub(r"^TV_PURIFIED_ONLY = .*$", f"TV_PURIFIED_ONLY = {PURIFIED_ONLY!r}", py, flags=re.M)
+        py = re.sub(r"^TV_SICK_ONLY = .*$", f"TV_SICK_ONLY = {SICK_ONLY!r}", py, flags=re.M)
     PIXEL_PY.write_text(py, encoding="utf-8")
     print(f"{len(token_names())} tokens TV escritos en design_tokens.gd y pixel.py")
 

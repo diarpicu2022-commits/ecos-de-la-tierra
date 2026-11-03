@@ -5,8 +5,18 @@ Software: **se evalúa el criterio de diseño, no solo que funcione.**
 
 ## Antes de tocar nada, en este orden
 
+**Si eres del equipo (Diego o su compañero), empieza por
+`docs/guia-del-equipo.md`:** cómo preparar el equipo, cómo se trabaja, dónde
+está el juego y todo lo que falta hasta terminarlo, en orden. **Todo lo
+visual se hace con el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
+
+
 1. Lee `docs/traspaso.md`: el estado exacto y la lista de trabajo en orden
    (rediseño «Tierra Viva», tareas 1 a 10).
+   **El sistema de diseño «Tierra Viva» manda en todo lo visual:** está en
+   `docs/ux/sistema-de-diseno/` (abre `index.html` en el navegador; reglas en
+   `project/README.md`, tokens en `project/tokens.json` y un README por
+   componente en `project/components/`).
 2. Lee `docs/plan-de-trabajo.md`. Dice qué parte está en curso y cuál es el
    siguiente paso exacto. **No explores el repositorio entero.**
 3. Lee `docs/guia-de-continuacion.md`: §1 (protocolo), §2 (identidad), §3

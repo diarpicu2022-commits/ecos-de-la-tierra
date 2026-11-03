@@ -10,8 +10,8 @@ def spr(path):
 
 ILAN = spr('final/chars/ilan_east.png')
 BRUMA = spr('final/chars/bruma_east.png')
-LLAMA = spr('pl/monsters/llama_corrupto.png')
-GUARD = spr('pl/monsters/llama_purificado.png')
+LLAMA = spr('../../assets/source/pixellab/monsters/llama_corrupto.png')
+GUARD = spr('../../assets/source/pixellab/monsters/llama_purificado.png')
 MX, MY = 400, 262          # pie del monstruo
 HX, HY = 300, 262          # pie del héroe
 

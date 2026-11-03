@@ -52,6 +52,11 @@ var fade := Fade.NONE
 var curtain := ColorRect.new()
 
 var _layer: TileMapLayer = null
+## Suelo pintado de Tierra Viva (contrato «Piel nueva», paso 2), si la zona lo
+## tiene: el enfermo debajo y el purificado encima. Mientras existen, la capa
+## de tiles queda oculta y solo da la colisión, que sigue saliendo de la matriz.
+var terrain_sick: Sprite2D = null
+var terrain_pure: Sprite2D = null
 var _exits: Array = []
 var _zone_exits: Array = []
 var _names: Dictionary = {}
@@ -111,6 +116,7 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	# Estado por casilla: en Valdehoja, cada parte sigue a su región.
 	var purified_at := WorldDecor.purified_lookup(id, state)
 	WorldTiles.paint(_layer, WorldTiles.parse(lines), purified_at)
+	_mount_terrain(id, state)
 	# Fuera del árbol antes de liberarlos: así el decorado de la zona anterior
 	# no choca de nombre con el nuevo ni cuenta para la física de este cuadro.
 	for child in entities.get_children() + solids.get_children():
@@ -139,6 +145,40 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	zone_changed.emit(id)
 
 
+const TERRAIN_DIR := "res://assets/world/tierra_viva/"
+
+
+## Monta el suelo de Tierra Viva de la zona `id` si existe su par enfermo y
+## sano. En las regiones el estado es de toda la zona; Valdehoja, que va por
+## partes, todavía no tiene el suyo (paso 5) y sigue con los tiles.
+func _mount_terrain(id: String, state: Node) -> void:
+	for s in [terrain_sick, terrain_pure]:
+		if s != null:
+			s.get_parent().remove_child(s)
+			s.queue_free()
+	terrain_sick = null
+	terrain_pure = null
+	var sick_path := TERRAIN_DIR + id + "_enfermo.png"
+	var pure_path := TERRAIN_DIR + id + "_sano.png"
+	if not (ResourceLoader.exists(sick_path) and ResourceLoader.exists(pure_path)):
+		_layer.visible = true
+		return
+	_layer.visible = false
+	terrain_sick = _terrain_sprite(load(sick_path))
+	terrain_pure = _terrain_sprite(load(pure_path))
+	terrain_pure.visible = state != null and state.is_zone_purified(id)
+	for s in [terrain_sick, terrain_pure]:
+		add_child(s)
+		move_child(s, _layer.get_index() + 1 + int(s == terrain_pure))
+
+
+func _terrain_sprite(tex: Texture2D) -> Sprite2D:
+	var s := Sprite2D.new()
+	s.texture = tex
+	s.centered = false
+	return s
+
+
 ## La ola de purificación desde `origin_cell` (enmienda 3, contrato
 ## «Persiana» §5). El suelo purificado se pinta en una capa encima del enfermo
 ## y `purify_wave.gdshader` lo descubre píxel a píxel en tramado de Bayer 4x4,
@@ -150,7 +190,7 @@ signal wave_finished
 
 ## Radio del frente de la ola, en píxeles, mientras dura. Lo lee la prueba.
 var wave_radius := -1.0
-var wave_layer: TileMapLayer = null
+var wave_layer: Node2D = null
 
 
 func purify_wave(origin_cell: Vector2i) -> void:
@@ -162,9 +202,13 @@ func purify_wave(origin_cell: Vector2i) -> void:
 		* Engine.physics_ticks_per_second)
 	if frames > 0:
 		body.input_enabled = false
-		wave_layer = TileMapLayer.new()
-		wave_layer.tile_set = _layer.tile_set
-		WorldTiles.paint(wave_layer, WorldTiles.parse(lines), func(_c): return true)
+		if terrain_pure != null:
+			wave_layer = _terrain_sprite(terrain_pure.texture)
+		else:
+			var tiles := TileMapLayer.new()
+			tiles.tile_set = _layer.tile_set
+			WorldTiles.paint(tiles, WorldTiles.parse(lines), func(_c): return true)
+			wave_layer = tiles
 		var mat := ShaderMaterial.new()
 		mat.shader = load("res://src/world/purify_wave.gdshader")
 		var flat: Array[int] = []
@@ -178,7 +222,8 @@ func purify_wave(origin_cell: Vector2i) -> void:
 		mat.set_shader_parameter("band", band)
 		wave_layer.material = mat
 		add_child(wave_layer)
-		move_child(wave_layer, _layer.get_index() + 1)
+		var under: Node = terrain_sick if terrain_sick != null else _layer
+		move_child(wave_layer, under.get_index() + 1)
 		# El frente llega a la esquina visible más lejana, más la banda.
 		var view := Rect2(camera.get_screen_center_position() - get_viewport_rect().size / 2,
 			get_viewport_rect().size)

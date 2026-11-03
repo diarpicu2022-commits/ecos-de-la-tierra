@@ -34,43 +34,56 @@ extends Control
 
 signal battle_finished(result: Enums.BattleResult)
 
-const SCREEN := Vector2(480, 270)
+## A 640 × 360, el viewport del juego (contrato «Piel nueva»). Hasta el
+## 2026-11-02 seguía a 480 × 270 y en el juego ocupaba solo una esquina.
+const SCREEN := Vector2(640, 360)
 
 # --- Bandas ------------------------------------------------------------------
 const TURNS_HEIGHT := 13.0
 const FIELD_TOP := 13.0
 const FIELD_HEIGHT := 167.0
-const BAND_TOP := 180.0
+const BAND_TOP := 270.0
 
 ## Línea del horizonte dentro del campo. Los enemigos se apoyan cerca de ella
 ## (lejos) y el grupo muy por debajo (cerca).
 const HORIZON := 104.0
 
-# --- Colocación de los dos bandos --------------------------------------------
-const CHARACTER_SPRITE := Vector2(32, 48)
+# --- Colocación de los dos bandos (sistema de diseño, combate_enfermo.png) ----
+## Sprite de espaldas del grupo: la rotación norte-este de PixelLab al doble
+## (`battle-back: 96px`). Es la caja de referencia para las cifras.
+const CHARACTER_SPRITE := Vector2(54, 90)
 const PARTY_SLOTS := 5
-## Punto de apoyo del miembro más cercano, abajo a la izquierda.
-const PARTY_BASE := Vector2(14, 132)
-## Cada miembro se aparta este paso hacia arriba y hacia la derecha.
-const PARTY_STEP := Vector2(24, 12)
+## Pies del grupo, sobre su plataforma (centro 160, 268): el primero delante a
+## la izquierda y los demás un paso a la derecha y 8 px más atrás.
+const PARTY_FEET := Vector2(150, 276)
+const PARTY_STEP := 70.0
+const PARTY_BACK := 8.0
+## Distancia máxima entre el primero y el último.
+const PARTY_SPAN := 228.0
 
-## Punto de apoyo del enemigo más cercano, a media altura por la derecha.
-const ENEMY_BASE := Vector2(286, 104)
-const ENEMY_STEP := Vector2(44, 24)
-## Con un solo enemigo no hay diagonal que formar: se planta en el centro de su
-## mitad, que es donde la mirada va sola.
-const ENEMY_SOLO := Vector2(322, 74)
+## Pies del monstruo, sobre su plataforma (centro 470, 176).
+const ENEMY_SOLO := Vector2(470, 184)
+## Con más de uno, los siguientes se escalonan hacia atrás a la izquierda.
+const ENEMY_STEP := Vector2(-96, -14)
 
-# --- Piezas de la banda inferior ---------------------------------------------
-const MENU_RECT := Rect2(Vector2(8, 190), Vector2(108, 48))
-const MESSAGE_RECT := Rect2(Vector2(124, 186), Vector2(156, 78))
-const PARTY_WINDOW := Rect2(Vector2(288, 184), Vector2(184, 84))
-const PARTY_ROW_INSET := Vector2(8, 2)
+# --- Interfaz (paso 2 del rediseño del combate: sus marcos) --------------------
+const MENU_RECT := Rect2(Vector2(432, 284), Vector2(204, 66))
+const MESSAGE_RECT := Rect2(Vector2(6, 282), Vector2(420, 72))
+## Filas del grupo (`PartyRow`): desde (456, 196), una cada 27 px. Se ven tres
+## como en el sistema; con más miembros, las tres que rodean a quien tiene el
+## turno.
+const PARTY_WINDOW := Rect2(Vector2(456, 196), Vector2(176, 78))
+const PARTY_ROW_STEP := 27.0
+const PARTY_ROWS_SHOWN := 3
 
-## Ficha del enemigo enfocado, arriba a la izquierda.
-const ENEMY_PANEL := Vector2(8, 18)
+## Ficha del enemigo enfocado, arriba a la izquierda (`EnemyPlate`, 10, 10).
+const ENEMY_PANEL := Vector2(10, 10)
 
 const PARTY_SPRITE_DIR := "res://assets/sprites/party/"
+## Sprites del sistema de diseño (`tools/gen_tierra_viva_cast.py`) y fondos
+## (`tools/gen_tierra_viva_battle.py`).
+const PARTY_BACK_DIR := "res://assets/sprites/party/tierra_viva/"
+const BACKGROUND_DIR := "res://assets/sprites/battle/tierra_viva/"
 
 ## Cuánto se queda en pantalla cada línea del registro antes de pasar a la
 ## siguiente. Corto a propósito: el jugador verá miles de estas líneas.
@@ -108,6 +121,10 @@ var _phase: int = Phase.IDLE
 var _monster_views: Array[MonsterView] = []
 var _huds: Array[PartyMemberHud] = []
 var _party_art: Array[Texture2D] = []
+## Fondo de la región en sus dos estados: enfermo mientras la causa sigue
+## activa y sano cuando todos los monstruos están purificados.
+var _backgrounds := {}
+var _drawn_pure := false
 var _menu: ActionMenu = null
 var _overlay: ResultOverlay = null
 var _turns: TurnOrderStrip = null
@@ -141,8 +158,15 @@ func _ready() -> void:
 	size = SCREEN
 
 	for key in ["ilan", "bruma", "coral", "nix", "suri"]:
-		var path: String = PARTY_SPRITE_DIR + key + ".png"
+		var path: String = PARTY_BACK_DIR + key + "_back.png"
+		if not ResourceLoader.exists(path):
+			path = PARTY_SPRITE_DIR + key + ".png"
 		_party_art.append(load(path) if ResourceLoader.exists(path) else null)
+	var zone := region if region != "" else "ashen_forest"
+	for state in ["enfermo", "sano"]:
+		var path := "%s%s_%s.png" % [BACKGROUND_DIR, zone, state]
+		if ResourceLoader.exists(path):
+			_backgrounds[state] = load(path)
 
 	_menu = ActionMenu.new()
 	_menu.position = options_rect().position
@@ -154,7 +178,9 @@ func _ready() -> void:
 	_menu.close()
 
 	_turns = TurnOrderStrip.new()
-	_turns.position = Vector2(DesignTokens.SPACE_4, DesignTokens.SPACE_4)
+	# La cola de turnos no está en el sistema de diseño; mientras se decide,
+	# va arriba a la derecha, donde no tapa la placa ni al monstruo.
+	_turns.position = Vector2(SCREEN.x - 200.0, DesignTokens.SPACE_4)
 	add_child(_turns)
 
 	_numbers = DamageNumbers.new()
@@ -170,33 +196,42 @@ func _ready() -> void:
 
 # --- Anclajes del layout -----------------------------------------------------
 
-## Dónde se apoya el miembro `index` de un grupo de `total`.
-##
-## El índice 0 es el **más lejano** (arriba a la derecha del grupo) y el último
-## el más cercano (abajo a la izquierda). La ventana del grupo lista las filas
-## en ese mismo orden, así que la primera fila corresponde al que está más
-## arriba en el campo: la lista y el campo se leen igual.
+## Esquina superior izquierda del sprite de espaldas del miembro `index` de
+## `total`. El 0 va delante a la izquierda; el resto, a su derecha y un poco
+## más atrás, como en la referencia del sistema.
 static func character_anchor(index: int, total: int = PARTY_SLOTS) -> Vector2:
-	var from_front: int = maxi(0, total - 1 - index)
-	return Vector2(
-		roundf(PARTY_BASE.x + from_front * PARTY_STEP.x),
-		roundf(PARTY_BASE.y - from_front * PARTY_STEP.y)
-	)
+	var feet := character_feet(index, total)
+	return Vector2(roundf(feet.x - CHARACTER_SPRITE.x * 0.5), roundf(feet.y - CHARACTER_SPRITE.y))
 
 
-## Dónde se planta el enemigo `index` de `total`. El 0 es el más cercano.
+static func character_feet(index: int, total: int = PARTY_SLOTS) -> Vector2:
+	# Con más de tres, el paso se encoge para que nadie se salga por la izquierda
+	# (con cinco, a 70 px Ilan quedaba cortado).
+	var step: float = minf(PARTY_STEP, PARTY_SPAN / maxf(1.0, total - 1.0))
+	var x: float = PARTY_FEET.x + (index - (total - 1) * 0.5) * step
+	var y: float = PARTY_FEET.y - (0.0 if index == 0 else PARTY_BACK)
+	return Vector2(roundf(x), y)
+
+
+## Dónde pisa el enemigo `index` de `total`. El 0 es el más cercano.
 static func enemy_anchor(index: int, total: int) -> Vector2:
 	if total <= 1:
 		return ENEMY_SOLO
-	return Vector2(
-		roundf(ENEMY_BASE.x + index * ENEMY_STEP.x),
-		roundf(ENEMY_BASE.y - index * ENEMY_STEP.y)
-	)
+	return ENEMY_SOLO + ENEMY_STEP * index
 
 
 ## Fila `index` dentro de la ventana del grupo.
 static func hud_row_position(index: int) -> Vector2:
-	return PARTY_WINDOW.position + PARTY_ROW_INSET 			+ Vector2(0, index * PartyMemberHud.ROW.y)
+	return PARTY_WINDOW.position + Vector2(0, index * PARTY_ROW_STEP)
+
+
+## Enseña las filas que caben, alrededor de quien tiene el turno.
+func _layout_huds(active: int = 0) -> void:
+	var n := _huds.size()
+	var start := clampi(active - 1, 0, maxi(0, n - PARTY_ROWS_SHOWN))
+	for i in n:
+		_huds[i].visible = i >= start and i < start + PARTY_ROWS_SHOWN
+		_huds[i].position = hud_row_position(i - start)
 
 
 static func message_rect() -> Rect2:
@@ -259,6 +294,7 @@ func _build_party_huds(players: Array) -> void:
 		hud.set_paused(true)
 		_huds.append(hud)
 		_watch_numbers(players[i] as Combatant)
+	_layout_huds()
 
 
 func _build_monster_views(enemies: Array) -> void:
@@ -361,7 +397,7 @@ func _release_numbers() -> void:
 func _anchor_for(combatant: Combatant) -> Vector2:
 	for view in _monster_views:
 		if view.monster == combatant:
-			return view.position + Vector2(MonsterView.SPRITE_SIZE * 0.5, 10.0)
+			return view.position + view.top_center() + Vector2(0, 10.0)
 	for i in range(_huds.size()):
 		if _huds[i].character == combatant:
 			return character_anchor(i, _huds.size()) + Vector2(
@@ -495,6 +531,8 @@ func _begin_choice(character: Character) -> void:
 	_pending_item = null
 	for i in range(_huds.size()):
 		_huds[i].set_active_turn(_huds[i].character == character)
+		if _huds[i].character == character:
+			_layout_huds(i)
 	_open_root_menu()
 
 
@@ -699,6 +737,10 @@ func _draw() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	# El fondo pasa a sano en cuanto el último monstruo se purifica.
+	if _all_purified() != _drawn_pure:
+		_drawn_pure = not _drawn_pure
+		queue_redraw()
 	var frames := roundi(DesignTokens.DUR_BATTLE_BLINDS * Engine.physics_ticks_per_second)
 	if region != "" and _entry_frame < frames:
 		_entry_frame += 1
@@ -716,42 +758,24 @@ func parallax_offset(depth: int) -> int:
 	return roundi((1.0 - eased) * depth * DesignTokens.BATTLE_PARALLAX)
 
 
-## Fondo del campo, en escalones de token. Nada de degradados interpolados: un
-## lerp genera tonos que no son tokens y la auditoría de paleta los detecta.
-## Con región, el fondo es el de esa región (contrato «Persiana» §4).
+## Fondo del campo: la imagen de la región del sistema de diseño, con las dos
+## plataformas ya pintadas. Enfermo mientras quede un monstruo sin purificar;
+## sano cuando todos lo están (`combate_purificado.png`).
 func _draw_background() -> void:
-	if region != "":
-		_draw_region_background()
-		_platform(Vector2(78, 176), 94.0, 15.0)
+	var state := "sano" if _all_purified() else "enfermo"
+	if _backgrounds.has(state):
+		draw_texture(_backgrounds[state], Vector2.ZERO)
 		return
-	draw_rect(Rect2(Vector2(0, 0), Vector2(SCREEN.x, FIELD_TOP + 34.0)),
-			DesignTokens.ASH_900)
-	draw_rect(Rect2(Vector2(0, FIELD_TOP + 34.0),
-			Vector2(SCREEN.x, HORIZON - FIELD_TOP - 34.0)),
-			DesignTokens.ASH_800)
+	_draw_region_background()
 
-	# Silueta de cordillera recortada contra el cielo, en dientes de sierra.
-	var peaks := [4, 18, 8, 26, 14, 32, 10, 22, 6, 28, 12, 20]
-	var step: float = SCREEN.x / float(peaks.size())
-	for i in range(peaks.size()):
-		var height: float = float(peaks[i]) + 6.0
-		draw_rect(Rect2(Vector2(step * i, HORIZON - height),
-				Vector2(step + 1.0, height)), DesignTokens.ASH_700)
 
-	# Suelo: una franja clara justo bajo el horizonte da la sensación de
-	# distancia, y el resto baja de tono según se acerca al jugador.
-	draw_rect(Rect2(Vector2(0, HORIZON), Vector2(SCREEN.x, 1)),
-			DesignTokens.ASH_600)
-	draw_rect(Rect2(Vector2(0, HORIZON + 1.0), Vector2(SCREEN.x, 22.0)),
-			DesignTokens.ASH_800)
-	draw_rect(Rect2(Vector2(0, HORIZON + 23.0),
-			Vector2(SCREEN.x, BAND_TOP - HORIZON - 23.0)),
-			DesignTokens.ASH_900)
-
-	# El grupo va apretado, así que le basta una plataforma ancha de primer
-	# plano. Los enemigos se escalonan en diagonal y cada uno necesita la suya:
-	# sobre una sola elipse plana, los de atrás quedaban flotando.
-	_platform(Vector2(78, 176), 94.0, 15.0)
+func _all_purified() -> bool:
+	if _monster_views.is_empty():
+		return false
+	for view in _monster_views:
+		if view.monster == null or not view.monster.is_purified:
+			return false
+	return true
 
 
 ## Fondo regional en tres capas (contrato «Persiana» §4), sacado de las
@@ -870,46 +894,34 @@ func _shadow(center: Vector2, half_width: float) -> void:
 ## vista dibujara su propio suelo, se lo pondría encima al enemigo de delante.
 func _draw_enemy_ground() -> void:
 	var total: int = _monster_views.size()
-	for i in range(total):
-		var anchor := enemy_anchor(i, total)
-		var feet := Vector2(anchor.x + MonsterView.SPRITE_SIZE * 0.5,
-				anchor.y + MonsterView.SPRITE_SIZE - 2.0)
-		# Cuanto más lejos, más pequeña la plataforma y más tenue la sombra.
+	# El primero ya tiene su plataforma en el fondo; los que se suman, la suya.
+	for i in range(1, total):
+		var feet := enemy_anchor(i, total)
 		var depth: float = 1.0 - 0.16 * float(i)
-		_platform(feet + Vector2(0, 4), 34.0 * depth, 7.0 * depth)
-		_shadow(feet, 13.0 * depth)
+		_platform(feet + Vector2(0, -4), 60.0 * depth, 12.0 * depth)
 
 
 func _draw_party() -> void:
 	var total: int = _huds.size()
 	# De lejos a cerca: quien está delante se dibuja encima y tapa al de atrás.
 	# El solapamiento es el segundo indicio de profundidad.
-	for i in range(total):
+	for i in range(total - 1, -1, -1):
 		var character: Character = _huds[i].character
 		if character == null or i >= _party_art.size():
 			continue
 		var art: Texture2D = _party_art[i]
 		if art == null:
 			continue
-		var anchor := character_anchor(i, total)
+		var feet := character_feet(i, total)
 		var alpha: float = 1.0 if character.is_alive() else 0.3
-		# La sombra crece con la cercanía, igual que en el mundo real.
-		var nearness: float = float(i + 1) / float(maxi(1, total))
-		_shadow(Vector2(anchor.x + CHARACTER_SPRITE.x * 0.5,
-				anchor.y + CHARACTER_SPRITE.y - 2.0), 8.0 + 4.0 * nearness)
-		draw_texture(art, anchor, Color(1, 1, 1, alpha))
+		var at := Vector2(roundf(feet.x - art.get_width() * 0.5), feet.y - art.get_height())
+		draw_texture(art, at, Color(1, 1, 1, alpha))
 
 
 func _draw_bands() -> void:
-	draw_rect(Rect2(Vector2(0, BAND_TOP), Vector2(SCREEN.x, SCREEN.y - BAND_TOP)),
-			DesignTokens.PANEL_FILL)
-	draw_rect(Rect2(Vector2(0, BAND_TOP), Vector2(SCREEN.x, 1)),
-			DesignTokens.BORDER_IDLE)
-
-	# Ventana del grupo, abajo a la derecha: la esquina contraria a sus sprites.
-	draw_rect(PARTY_WINDOW, DesignTokens.PANEL_FILL_DEEP)
-	draw_rect(PARTY_WINDOW, DesignTokens.BORDER_IDLE, false,
-			DesignTokens.BORDER_WIDTH)
+	# Sin banda ni ventana: el campo llega al borde y cada fila del grupo
+	# lleva su propio marco (sistema de diseño).
+	pass
 
 
 ## Mitad central de la banda: descripción de la opción enfocada mientras el

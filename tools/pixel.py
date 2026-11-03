@@ -310,13 +310,53 @@ PALETTE: dict[str, tuple[int, int, int, int]] = {
     "tv_curse_fire_2": (0x8F, 0x4F, 0xB0, 255),
     "tv_curse_fire_3": (0xC9, 0x8A, 0xE0, 255),
     "tv_curse_fire_4": (0xF2, 0xD1, 0xFF, 255),
+    "tv_ui_0": (0x1D, 0x1A, 0x2B, 255),
+    "tv_ui_1": (0x2E, 0x2A, 0x42, 255),
+    "tv_ui_2": (0x4A, 0x45, 0x66, 255),
+    "tv_ui_3": (0xA4, 0x9E, 0xC0, 255),
+    "tv_ui_4": (0xD8, 0xD3, 0xE8, 255),
+    "tv_ui_5": (0xF4, 0xF1, 0xFA, 255),
+    "tv_ui_6": (0xFF, 0xFF, 0xFF, 255),
+    "tv_paper_0": (0x5B, 0x4A, 0x3C, 255),
+    "tv_paper_1": (0x8A, 0x75, 0x60, 255),
+    "tv_paper_2": (0xC9, 0xB6, 0x94, 255),
+    "tv_paper_3": (0xE8, 0xDB, 0xBD, 255),
+    "tv_paper_4": (0xF8, 0xF1, 0xDE, 255),
+    "tv_hp_0": (0x2B, 0x8A, 0x3E, 255),
+    "tv_hp_1": (0x5A, 0xD0, 0x6A, 255),
+    "tv_hp_2": (0xA8, 0xF0, 0x8A, 255),
+    "tv_hp_3": (0xB8, 0x86, 0x0B, 255),
+    "tv_hp_4": (0xF5, 0xC3, 0x3B, 255),
+    "tv_hp_5": (0xA3, 0x26, 0x1B, 255),
+    "tv_hp_6": (0xEE, 0x58, 0x40, 255),
+    "tv_dusk_0": (0x2B, 0x18, 0x30, 255),
+    "tv_dusk_1": (0x3F, 0x1D, 0x33, 255),
+    "tv_dusk_2": (0x5C, 0x25, 0x34, 255),
+    "tv_dusk_3": (0x83, 0x34, 0x2F, 255),
+    "tv_dusk_4": (0xAD, 0x4F, 0x2D, 255),
+    "tv_dusk_5": (0xD2, 0x7A, 0x37, 255),
+    "tv_dusk_hill_0": (0x1E, 0x14, 0x1C, 255),
+    "tv_dusk_hill_1": (0x2A, 0x1A, 0x24, 255),
+    "tv_dusk_hill_2": (0x3A, 0x25, 0x30, 255),
+    "tv_dusk_hill_3": (0x4A, 0x2A, 0x35, 255),
+    "tv_dusk_hill_4": (0x5C, 0x35, 0x40, 255),
+    "tv_dusk_hill_5": (0x6E, 0x4A, 0x4E, 255),
+    "tv_sky_0": (0x4A, 0x8F, 0xD9, 255),
+    "tv_sky_1": (0x5E, 0xA6, 0xE6, 255),
+    "tv_sky_2": (0x78, 0xBD, 0xF0, 255),
+    "tv_sky_3": (0x98, 0xD2, 0xF5, 255),
+    "tv_sky_4": (0xBD, 0xE5, 0xF8, 255),
+    "tv_sky_5": (0xDC, 0xF3, 0xFB, 255),
+    "tv_sky_6": (0xCF, 0xE8, 0xF6, 255),
+    "tv_far_hill_0": (0x6F, 0xAE, 0x9E, 255),
+    "tv_far_hill_1": (0x8C, 0xC6, 0xB0, 255),
     # --- TIERRA VIVA: END ---
     "transparent": (0, 0, 0, 0),
 }
 
 ## Enmienda 13: significado de las rampas TV (ver gen_tierra_viva_tokens.py).
-TV_PURIFIED_ONLY = ['grass', 'leaf', 'flower', 'water', 'eco', 'paramo', 'snow', 'frailejon', 'puya']
-TV_SICK_ONLY = ['dry_grass', 'dead_leaf', 'oil', 'sheen', 'sludge', 'smog', 'plastic', 'turbid', 'oil_water', 'plastic_water', 'sludge_grass', 'grey_sand', 'paramo_dry', 'scree', 'sick_soil', 'curse_fire']
+TV_PURIFIED_ONLY = ['grass', 'leaf', 'flower', 'water', 'eco', 'paramo', 'snow', 'frailejon', 'puya', 'sky', 'far_hill']
+TV_SICK_ONLY = ['dry_grass', 'dead_leaf', 'oil', 'sheen', 'sludge', 'smog', 'plastic', 'turbid', 'oil_water', 'plastic_water', 'sludge_grass', 'grey_sand', 'paramo_dry', 'scree', 'sick_soil', 'curse_fire', 'dusk', 'dusk_hill']
 
 ## Rampa de calor de la llama, de la brasa apagada al núcleo blanco.
 EMBER_RAMP = ["ember_700", "ember_500", "ember_400", "ember_300", "ash_050"]
