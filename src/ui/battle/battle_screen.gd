@@ -924,30 +924,48 @@ func _draw_bands() -> void:
 	pass
 
 
-## Mitad central de la banda: descripción de la opción enfocada mientras el
-## jugador elige, y última línea del registro mientras se resuelve el turno.
+## Interlínea del aviso de papel (`components/DialogBox`: 15 px).
+const MESSAGE_LINE := 15.0
+
+
+## El aviso de papel (`components/DialogBox`, guía §4.0): marco
+## `TvFrame.TEXTBOX`, texto `text-on-paper` con su sombra y `▼` cuando hay
+## más. Enseña la descripción de la opción enfocada mientras el jugador elige
+## y la última línea del registro mientras se resuelve el turno.
 func _draw_message() -> void:
 	var rect := MESSAGE_RECT
-	draw_rect(rect, DesignTokens.PANEL_FILL_DEEP)
-	draw_rect(Rect2(rect.position, Vector2(2, rect.size.y)),
-			DesignTokens.BORDER_IDLE)
-
-	var pad: float = DesignTokens.SPACE_8
-	var y: float = rect.position.y + 12.0
+	TvFrame.draw(self, TvFrame.TEXTBOX, rect)
+	var pad: float = DesignTokens.SPACE_8 + 2.0
+	var y: float = rect.position.y + 18.0
+	var ink := _paper_tone(_message_tone)
 	for line in _wrap(_message, rect.size.x - pad * 2.0):
-		if y > rect.end.y - 2.0:
+		if y > rect.end.y - 6.0:
 			break
-		draw_string(_font, Vector2(rect.position.x + pad, y), line,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-				_message_tone)
-		y += DesignTokens.LINE_HEIGHT
+		TvFrame.text(self, _font, Vector2(rect.position.x + pad, y), line, ink,
+				DesignTokens.TV_TEXT_SHADOW_PAPER)
+		y += MESSAGE_LINE
 
 	# Indicador de «hay más»: sin él, el jugador no sabe si la pantalla espera
 	# una tecla o se quedó colgada.
 	if _phase == Phase.PLAYING and not _queue.is_empty():
-		draw_string(_font, Vector2(rect.end.x - 12.0, rect.end.y - 4.0),
+		draw_string(_font, Vector2(rect.end.x - 14.0, rect.end.y - 7.0),
 				"▼", HORIZONTAL_ALIGNMENT_LEFT, -1,
-				DesignTokens.FONT_SIZE_BODY, DesignTokens.TEXT_CRITICAL)
+				DesignTokens.FONT_SIZE_BODY, DesignTokens.TV_RUST_2)
+
+
+## El tono del registro, llevado al papel: los tonos de la pizarra vieja son
+## claros y sobre papel no se leen. Lo normal en `text-on-paper`; lo
+## secundario (rondas, descripciones) en `paper-0`; el aviso de que el
+## monstruo se rehace en `rust-2`; y que deja de regenerarse en `eco-1`, que
+## nunca va solo: la frase lo dice.
+func _paper_tone(tone: Color) -> Color:
+	if tone == DesignTokens.TEXT_SECONDARY:
+		return DesignTokens.TV_PAPER_0
+	if tone == DesignTokens.TEXT_WARNING:
+		return DesignTokens.TV_RUST_2
+	if tone == DesignTokens.TEXT_PURIFIED:
+		return DesignTokens.TV_ECO_1
+	return DesignTokens.TV_TEXT_ON_PAPER
 
 
 ## Reparte el texto en líneas que quepan, cortando por palabras.

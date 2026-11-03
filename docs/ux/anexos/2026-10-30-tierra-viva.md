@@ -1169,3 +1169,24 @@ Componentes `EnemyPlate` y `TypeBadge` del sistema; modelo
   `docs/ux/capturas/2026-11-03-placa-{ashen_forest,purificado-ashen_forest,withered_plain,greed_crypt}.png`.
 - **Siguiente:** el aviso de papel (`BattleScreen._draw_message`, con
   `TvFrame.TEXTBOX`).
+
+#### Combate con el sistema de diseño, paso 3: el aviso de papel · 2026-11-03
+
+Componente `DialogBox` del sistema, en el sitio del mensaje del combate.
+
+- **`BattleScreen._draw_message`** dibuja `TvFrame.TEXTBOX` (papel con marco
+  de madera) en `MESSAGE_RECT` (6, 282, 420 × 72). No usa los 616 px del
+  `DialogBox` porque a la derecha va el menú del turno. El texto va en papel
+  con su sombra (`TvFrame.text`), a 15 px de interlínea (`MESSAGE_LINE`), y
+  `▼` en `TV_RUST_2` cuando hay más.
+- **Tonos del registro en papel** (`_paper_tone`): los tonos claros de la
+  pizarra vieja no se leen sobre papel. Lo normal va en `text-on-paper`
+  (14,59:1); lo secundario, en `paper-0` (7,48:1); «se rehace», en `rust-2`
+  (6,50:1); y «deja de regenerarse», en `eco-1` (5,24:1). El verde nunca va
+  solo: la frase lo dice.
+- **Medido:** usability 16/16, flow 23/23, party_ai 19/19 y encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-aviso-{ashen_forest,broken_coast,purificado-ashen_forest}.png`.
+- **Siguiente:** el `CommandMenu` de 2 × 2, que espera la decisión de Diego:
+  las cuatro entradas del sistema (LUCHAR, ECO, BOLSA, HUIR; recomendado:
+  ECO abre las habilidades y ORDEN pasa a Tab) o las cinco de hoy.
