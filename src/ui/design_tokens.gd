@@ -503,9 +503,80 @@ const TV_CURSE_FIRE_1 := Color("#5a2d6b")
 const TV_CURSE_FIRE_2 := Color("#8f4fb0")
 const TV_CURSE_FIRE_3 := Color("#c98ae0")
 const TV_CURSE_FIRE_4 := Color("#f2d1ff")
-const TV_PURIFIED_ONLY := ["grass", "leaf", "flower", "water", "eco", "paramo", "snow", "frailejon", "puya"]
-const TV_SICK_ONLY := ["dry_grass", "dead_leaf", "oil", "sheen", "sludge", "smog", "plastic", "turbid", "oil_water", "plastic_water", "sludge_grass", "grey_sand", "paramo_dry", "scree", "sick_soil", "curse_fire"]
+## Pizarra de la interfaz.
+const TV_UI_0 := Color("#1d1a2b")
+const TV_UI_1 := Color("#2e2a42")
+const TV_UI_2 := Color("#4a4566")
+const TV_UI_3 := Color("#a49ec0")
+const TV_UI_4 := Color("#d8d3e8")
+const TV_UI_5 := Color("#f4f1fa")
+const TV_UI_6 := Color("#ffffff")
+## Papel del aviso y del diálogo.
+const TV_PAPER_0 := Color("#5b4a3c")
+const TV_PAPER_1 := Color("#8a7560")
+const TV_PAPER_2 := Color("#c9b694")
+const TV_PAPER_3 := Color("#e8dbbd")
+const TV_PAPER_4 := Color("#f8f1de")
+## Barras de PV (alto, medio, bajo).
+const TV_HP_0 := Color("#2b8a3e")
+const TV_HP_1 := Color("#5ad06a")
+const TV_HP_2 := Color("#a8f08a")
+const TV_HP_3 := Color("#b8860b")
+const TV_HP_4 := Color("#f5c33b")
+const TV_HP_5 := Color("#a3261b")
+const TV_HP_6 := Color("#ee5840")
+## Cielo de humo del combate (prototipo battle.py).
+const TV_DUSK_0 := Color("#2b1830")
+const TV_DUSK_1 := Color("#3f1d33")
+const TV_DUSK_2 := Color("#5c2534")
+const TV_DUSK_3 := Color("#83342f")
+const TV_DUSK_4 := Color("#ad4f2d")
+const TV_DUSK_5 := Color("#d27a37")
+## Siluetas y humo contra el cielo de humo.
+const TV_DUSK_HILL_0 := Color("#1e141c")
+const TV_DUSK_HILL_1 := Color("#2a1a24")
+const TV_DUSK_HILL_2 := Color("#3a2530")
+const TV_DUSK_HILL_3 := Color("#4a2a35")
+const TV_DUSK_HILL_4 := Color("#5c3540")
+const TV_DUSK_HILL_5 := Color("#6e4a4e")
+## Cielo limpio del combate y su nube.
+const TV_SKY_0 := Color("#4a8fd9")
+const TV_SKY_1 := Color("#5ea6e6")
+const TV_SKY_2 := Color("#78bdf0")
+const TV_SKY_3 := Color("#98d2f5")
+const TV_SKY_4 := Color("#bde5f8")
+const TV_SKY_5 := Color("#dcf3fb")
+const TV_SKY_6 := Color("#cfe8f6")
+## Colinas lejanas con cielo limpio.
+const TV_FAR_HILL_0 := Color("#6fae9e")
+const TV_FAR_HILL_1 := Color("#8cc6b0")
+## Papeles de la interfaz (components/tokens.css del sistema de diseño).
+const TV_SLATE := TV_UI_1
+const TV_SLATE_EDGE := TV_INK_0
+const TV_PAPER := TV_PAPER_4
+const TV_PAPER_EDGE := TV_WOOD_1
+const TV_TEXT_ON_PAPER := TV_INK_1
+const TV_TEXT_SHADOW_PAPER := TV_PAPER_2
+const TV_TEXT_ON_SLATE := TV_UI_6
+const TV_TEXT_MUTED_SLATE := TV_UI_5
+const TV_TEXT_HIGHLIGHT := TV_GOLD_4
+const TV_FOCUS_RING := TV_UI_6
+const TV_HP_HIGH := TV_HP_1
+const TV_HP_MID := TV_HP_4
+const TV_HP_LOW := TV_HP_6
+const TV_ENERGY := TV_ECO_3
+const TV_CMD_FIGHT := TV_RUST_2
+const TV_CMD_ECO := TV_ECO_1
+const TV_CMD_BAG := TV_GOLD_1
+const TV_CMD_RUN := TV_ROOF_BLUE_2
+const TV_STATUS_CORRUPT := TV_RUST_1
+const TV_STATUS_PURIFIED := TV_ECO_1
+const TV_PURIFIED_ONLY := ["grass", "leaf", "flower", "water", "eco", "paramo", "snow", "frailejon", "puya", "sky", "far_hill"]
+const TV_SICK_ONLY := ["dry_grass", "dead_leaf", "oil", "sheen", "sludge", "smog", "plastic", "turbid", "oil_water", "plastic_water", "sludge_grass", "grey_sand", "paramo_dry", "scree", "sick_soil", "curse_fire", "dusk", "dusk_hill"]
 # --- TIERRA VIVA: END ---
+
+
+
 
 
 # --- Lenguaje del entorno --------------------------------------------------
