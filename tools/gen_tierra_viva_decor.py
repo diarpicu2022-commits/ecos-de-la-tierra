@@ -1710,6 +1710,112 @@ def mine_mouth(P: dict) -> np.ndarray:
     return img
 
 
+# Animales domésticos (siempre) y fauna silvestre (solo en lo purificado,
+# enmienda 7). Van a la escala del Ilan de 48 px: los viejos eran de 8 px,
+# para el de 16. No son personajes de PixelLab (componente `Cast`): se dibujan
+# aquí con el contorno de su propia rampa. Los animales no cambian con el
+# estado; la fauna solo tiene sprite purificado.
+
+def chicken(P: dict, frame: int) -> np.ndarray:
+    """Gallina (12×12) mirando al este. Cuadro 1: picotea, con la cabeza
+    abajo."""
+    img = canvas(12, 12)
+    wl, red, g = P["wall"], P["roof_red"], P["gold"]
+    s = canvas(12, 12)
+    body = ellipse(12, 12, 5, 7.5, 4, 3)
+    s[body] = rgba(wl[4])
+    s[body & (np.indices((12, 12))[0] > 7)] = rgba(wl[3])
+    s[5:7, 1:3] = rgba(wl[3])   # la cola
+    s[4, 1] = rgba(wl[4])
+    hy = 4 if frame == 0 else 7
+    s[hy:hy + 3, 7:10] = rgba(wl[4])
+    s[hy - 1, 8:10] = rgba(red[3])
+    s[hy + 1, 10] = rgba(g[4])
+    s[hy + 1, 8] = rgba(P["ink"][0])
+    s = tv.outlined(s, rgba(wl[0]))
+    for x in (4, 6):
+        s[10:12, x] = rgba(g[3])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def dog(P: dict) -> np.ndarray:
+    """Perro (20×16) mirando al este: pelo de madera, oreja caída y la cola
+    arriba."""
+    img = canvas(20, 16)
+    w = P["wood"]
+    s = canvas(20, 16)
+    s[ellipse(20, 16, 9, 9, 6, 3)] = rgba(w[3])
+    s[ellipse(20, 16, 8, 8, 5, 1.6)] = rgba(w[4])
+    s[ellipse(20, 16, 15, 6, 3, 2.6)] = rgba(w[3])
+    s[5:8, 17:19] = rgba(w[3])
+    s[4:7, 13:15] = rgba(w[1])   # la oreja
+    s[5, 16] = rgba(P["ink"][0])
+    s[6, 18] = rgba(P["ink"][0])
+    for x in (5, 7, 11, 13):
+        s[11:14, x] = rgba(w[2])
+    tv.line(s, 3, 8, 1, 4, rgba(w[3]), 2)
+    s = tv.outlined(s, rgba(w[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def goat(P: dict) -> np.ndarray:
+    """Cabra (20×18) mirando al este: pelo claro, cuernos de piedra y barba."""
+    img = canvas(20, 18)
+    pa, st = P["paper"], P["stone"]
+    s = canvas(20, 18)
+    s[ellipse(20, 18, 9, 10, 6, 3.4)] = rgba(pa[3])
+    s[ellipse(20, 18, 8, 9, 5, 1.8)] = rgba(pa[4])
+    s[ellipse(20, 18, 15, 7, 2.8, 2.6)] = rgba(pa[3])
+    s[8:10, 17:19] = rgba(pa[3])
+    s[10:12, 16] = rgba(pa[2])   # la barba
+    tv.line(s, 14, 4, 12, 1, rgba(st[3]))
+    tv.line(s, 16, 4, 15, 1, rgba(st[3]))
+    s[6, 16] = rgba(P["ink"][0])
+    for x in (5, 7, 11, 13):
+        s[13:16, x] = rgba(pa[2])
+    s = tv.outlined(s, rgba(pa[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def bird(P: dict, frame: int) -> np.ndarray:
+    """Pájaro (10×8) en vuelo. Cuadro 0, alas arriba; cuadro 1, alas abajo."""
+    img = canvas(10, 8)
+    b, wl = P["roof_blue"], P["wall"]
+    s = canvas(10, 8)
+    s[3:5, 3:7] = rgba(b[3])
+    s[4, 4:6] = rgba(wl[4])
+    s[3, 7] = rgba(b[3])
+    s[3, 8] = rgba(P["gold"][4])
+    wy = (1, 2) if frame == 0 else (5, 6)
+    s[wy[0], 2:4] = rgba(b[4])
+    s[wy[1], 1:3] = rgba(b[4])
+    s[wy[0], 5:7] = rgba(b[4])
+    s[wy[1], 6:8] = rgba(b[4])
+    s = tv.outlined(s, rgba(b[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def butterfly(P: dict, frame: int) -> np.ndarray:
+    """Mariposa (9×8). Cuadro 0, alas abiertas; cuadro 1, plegadas."""
+    img = canvas(9, 8)
+    fl, w = P["flower"], P["wood"]
+    s = canvas(9, 8)
+    if frame == 0:
+        for x0 in (1, 5):
+            s[ellipse(9, 8, x0 + 1.5, 3, 1.8, 2)] = rgba(fl[2])
+            s[ellipse(9, 8, x0 + 1.5, 5.5, 1.2, 1.2)] = rgba(fl[1])
+    else:
+        s[ellipse(9, 8, 4.5, 3.2, 1.4, 2.4)] = rgba(fl[2])
+    s[2:7, 4] = rgba(w[1])
+    s = tv.outlined(s, rgba(fl[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
 def flowers(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
     """Flores (16×16, pisable). Purificadas, de varios colores y se mecen;
     enfermas, mustias y dobladas."""
@@ -1943,7 +2049,18 @@ def village() -> dict[str, np.ndarray]:
             out["blocker_sick"] = mine_mouth(P)
             out["rock_sick"] = rock(P)
             out["seedbed_sick"] = seedbed(P)
+            # los animales son los mismos en los dos estados: el purificado
+            # usa este sprite
+            P["paper"] = tv.ramp("paper")
+            out["chicken_0_sick"] = chicken(P, 0)
+            out["chicken_1_sick"] = chicken(P, 1)
+            out["dog_sick"] = dog(P)
+            out["goat_sick"] = goat(P)
         else:
+            out["bird_0_pure"] = bird(P, 0)
+            out["bird_1_pure"] = bird(P, 1)
+            out["butterfly_0_pure"] = butterfly(P, 0)
+            out["butterfly_1_pure"] = butterfly(P, 1)
             out["grass_pure_1"] = tall_grass(P, False, 1)
             out["weed_pure_1"] = weed(P, False, 1)
             out["flower_pure_1"] = flowers(P, False, 1)

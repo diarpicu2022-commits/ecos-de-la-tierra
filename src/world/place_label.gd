@@ -1,10 +1,11 @@
 class_name PlaceLabel
 extends Node2D
 
-## Rótulo de lugar. Contrato «Umbral» y «Vereda»: el nombre de la zona al
-## entrar, arriba a la izquierda con margen `SPACE_8`, panel `PANEL_FILL` con
-## borde `BORDER_IDLE` de 1 px y texto 1x en `TEXT_PRIMARY` (repertorio de la
-## guía §3.1: «panel `ASH_800` + borde `ASH_600`, todo texto que se lee»).
+## Cartel de lugar (`components/LocationSign` del sistema de diseño «Tierra
+## Viva», guía del equipo §3.1, fila 15): tabla de madera con clavos (marco
+## `TvFrame.SIGN`) arriba a la izquierda, en (12, 12), con el nombre de la
+## zona en `paper-5` y, debajo, su estado o su apodo en `paper-4`, los dos con
+## sombra `wood-2`. Sustituye al panel de ceniza del contrato «Umbral».
 ##
 ## Entra en `DUR_PLACE_LABEL` con la curva de salida de la batalla, se queda
 ## `PLACE_LABEL_HOLD` y se va solo en `DUR_PLACE_LABEL`. Solo se anima la
@@ -17,8 +18,15 @@ extends Node2D
 
 enum Phase { HIDDEN, IN, HOLD, OUT }
 
+## Relleno horizontal del texto dentro del marco (`.sign { padding: 0 6px }`)
+## y altura de cada línea.
+const SIGN_PAD := 6
+const SIGN_LINE := 12
+
 var phase := Phase.HIDDEN
 var text := ""
+## Segunda línea: el estado de la zona o su apodo. Vacía, el cartel lleva una.
+var subtitle := ""
 
 var _font: Font = null
 var _frame := 0
@@ -28,13 +36,15 @@ var _hold_frames := 0
 
 func _ready() -> void:
 	_font = load(DesignTokens.FONT_PATH)
-	position = Vector2(DesignTokens.SPACE_8, DesignTokens.SPACE_8)
+	position = Vector2(DesignTokens.SPACE_12, DesignTokens.SPACE_12)
 	modulate.a = 0.0
 
 
-## Enseña `name` desde el principio, aunque hubiera otro rótulo a medias.
-func show_name(name: String) -> void:
+## Enseña `name` (y `sub` debajo) desde el principio, aunque hubiera otro
+## cartel a medias.
+func show_name(name: String, sub: String = "") -> void:
 	text = name
+	subtitle = sub
 	var ticks := Engine.physics_ticks_per_second
 	_in_frames = roundi(DesignTokens.duration(DesignTokens.DUR_PLACE_LABEL) * ticks)
 	_hold_frames = roundi(DesignTokens.PLACE_LABEL_HOLD * ticks)
@@ -77,20 +87,28 @@ func _eased(t: float) -> float:
 		DesignTokens.EASE_OUT_TRANS, DesignTokens.EASE_OUT_EASE)
 
 
-## Caja del panel en coordenadas de pantalla. La usan la prueba y `_draw`.
+## Caja del cartel en coordenadas de pantalla. La usan la prueba y `_draw`.
 func panel_rect() -> Rect2i:
-	var pad := DesignTokens.SPACE_4
-	var width := int(_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1,
-		DesignTokens.FONT_SIZE_BODY).x) if _font != null else 0
-	return Rect2i(Vector2i(position), Vector2i(width + pad * 2, DesignTokens.LINE_HEIGHT + pad * 2))
+	var inset := TvFrame.SLICE
+	var width := 0
+	if _font != null:
+		width = int(maxf(TvFrame.width(_font, text), TvFrame.width(_font, subtitle)))
+	var lines := 1 if subtitle.is_empty() else 2
+	return Rect2i(Vector2i(position), Vector2i(width + (inset + SIGN_PAD) * 2,
+		inset * 2 + DesignTokens.FONT_SIZE_BODY + SIGN_LINE * (lines - 1)))
 
 
 func _draw() -> void:
 	if text.is_empty():
 		return
 	var box := Rect2(Vector2.ZERO, Vector2(panel_rect().size))
-	draw_rect(box, DesignTokens.PANEL_FILL)
-	draw_rect(box.grow(-0.5), DesignTokens.BORDER_IDLE, false, DesignTokens.BORDER_WIDTH)
-	# Línea base de la fuente: 9 px dentro de su celda de 11.
-	draw_string(_font, Vector2(DesignTokens.SPACE_4, DesignTokens.SPACE_4 + 9), text,
-		HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY, DesignTokens.TEXT_PRIMARY)
+	TvFrame.draw(self, TvFrame.SIGN, box)
+	# Línea base de la fuente: 9 px dentro de su celda de 11. Centrado, como
+	# en el sistema.
+	var y := float(TvFrame.SLICE + 9)
+	for line in [[text, DesignTokens.TV_PAPER_4], [subtitle, DesignTokens.TV_PAPER_3]]:
+		if String(line[0]).is_empty():
+			continue
+		var x := roundf((box.size.x - TvFrame.width(_font, line[0])) * 0.5)
+		TvFrame.text(self, _font, Vector2(x, y), line[0], line[1], DesignTokens.TV_WOOD_1)
+		y += SIGN_LINE

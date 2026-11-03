@@ -1134,3 +1134,121 @@ equipo §4.4.
 - **Con esto R1 queda completo salvo la matriz orgánica de Valdehoja**
   (cláusula 6, aplazada; falta que Diego lo confirme). Siguiente: el PR de R1
   contra `master` (guía §4.4, punto 4).
+
+#### Combate con el sistema de diseño, paso 3: la placa del monstruo · 2026-11-03
+
+Componentes `EnemyPlate` y `TypeBadge` del sistema; modelo
+`project/assets/img/combate_enfermo.png`. Lo hace el compañero (Diego,
+2026-11-02: «sigue el compañero» desde la §4.0 de la guía).
+
+- **`MonsterView._draw_panel`** usa `TvFrame` en vez del panel de ceniza:
+  - marco `TvFrame.PLATE`, de 184 × 44, en (10, 10);
+  - el nombre en `text-on-slate` con su sombra, recortado si no cabe;
+  - las chapas: el tipo (`TvFrame.type_fill`; el jefe de la Cripta lleva
+    AVARICIA) y CORRUPTO (`paper-5` sobre `status-corrupt`) o PURIFICADO
+    (`eco-5` sobre `status-purified`). El estado cambia a la mitad de la
+    transición de purificación, a la vez que la forma del monstruo;
+  - «PV» en `text-highlight`, la barra de 5 px con `TvFrame.hp_fill` y la
+    cifra en `text-muted-slate`, que nunca se oculta.
+- **Lo que se quita:** la franja «✖ SIN PURIFICAR / se regenera cada ronda»
+  del contrato viejo. Ahora lo dice la chapa, y el porqué («La llama se
+  rehace. Su causa es FUEGO») va en el aviso de papel, que es el paso
+  siguiente.
+- **Contraste medido** (texto sobre chapa): FUEGO 5,40:1, PETRÓLEO 8,32,
+  PLÁSTICO 8,60, MONOCULTIVO 6,33, DESHIELO 8,56, AVARICIA 8,61, CORRUPTO
+  10,20 y PURIFICADO 5,58. Todas ≥ 4,5:1, como pide el README («todos
+  ≥ 5,4:1»).
+- **Propuesta de enmienda 15, pendiente de Diego:** las barras de PV del
+  sistema son verdes cuando la vida está alta (`hp-high`). Eso choca con la
+  regla «el verde solo significa purificado» (AGENTS.md, guía §2.3). La
+  guía dice que manda el sistema, y las filas del grupo (`PartyRow`) ya las
+  usaban desde el 2026-11-02; la placa hace lo mismo. Queda anotado para que
+  Diego la apruebe o la cambie.
+- **Medido:** usability 16/16, flow 23/23, party_ai 19/19 y encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-placa-{ashen_forest,purificado-ashen_forest,withered_plain,greed_crypt}.png`.
+- **Siguiente:** el aviso de papel (`BattleScreen._draw_message`, con
+  `TvFrame.TEXTBOX`).
+
+#### Combate con el sistema de diseño, paso 3: el aviso de papel · 2026-11-03
+
+Componente `DialogBox` del sistema, en el sitio del mensaje del combate.
+
+- **`BattleScreen._draw_message`** dibuja `TvFrame.TEXTBOX` (papel con marco
+  de madera) en `MESSAGE_RECT` (6, 282, 420 × 72). No usa los 616 px del
+  `DialogBox` porque a la derecha va el menú del turno. El texto va en papel
+  con su sombra (`TvFrame.text`), a 15 px de interlínea (`MESSAGE_LINE`), y
+  `▼` en `TV_RUST_2` cuando hay más.
+- **Tonos del registro en papel** (`_paper_tone`): los tonos claros de la
+  pizarra vieja no se leen sobre papel. Lo normal va en `text-on-paper`
+  (14,59:1); lo secundario, en `paper-0` (7,48:1); «se rehace», en `rust-2`
+  (6,50:1); y «deja de regenerarse», en `eco-1` (5,24:1). El verde nunca va
+  solo: la frase lo dice.
+- **Medido:** usability 16/16, flow 23/23, party_ai 19/19 y encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-aviso-{ashen_forest,broken_coast,purificado-ashen_forest}.png`.
+- **Siguiente:** el `CommandMenu` de 2 × 2, que espera la decisión de Diego:
+  las cuatro entradas del sistema (LUCHAR, ECO, BOLSA, HUIR; recomendado:
+  ECO abre las habilidades y ORDEN pasa a Tab) o las cinco de hoy.
+
+#### Cartel de lugar con el sistema de diseño (LocationSign) · 2026-11-03
+
+Componente `LocationSign` del sistema (guía del equipo §3.1, fila 15).
+Sustituye al panel de ceniza del contrato «Umbral».
+
+- **`PlaceLabel`** (`src/world/place_label.gd`) dibuja la tabla de madera con
+  clavos (`TvFrame.SIGN`, el marco `sign.png` del sistema) en (12, 12), como
+  pide el componente. Antes iba a 8 px.
+  - Dos líneas centradas: el nombre de la zona en `paper-5` (`TV_PAPER_4`) y,
+    debajo, el apodo o el estado en `paper-4` (`TV_PAPER_3`), los dos con
+    sombra `wood-2` (`TV_WOOD_1`). Relleno de 6 px (`.sign`).
+  - Valdehoja lleva su apodo, «Pueblo de las terrazas». Las regiones llevan
+    su estado, concordado con su nombre: «Enfermo» o «Purificado» en el
+    Bosque, «Enferma» o «Purificada» en las demás. La segunda línea la elige
+    `WorldRoot._sign_subtitle`.
+  - La entrada, la espera de 2 s (`PLACE_LABEL_HOLD`, igual que `dur-sign`)
+    y la salida no cambian.
+- **`verify_movement`:** la comprobación de la posición pasa de `SPACE_8` a
+  `SPACE_12`, la del sistema. Da 100/100.
+- **`tools/sign_capture.tscn`** (nuevo) hace la captura del cartel entero.
+- **Contraste, medido y no cumplido:** sobre la madera (`wood-5`, #b27a4c),
+  el nombre da **3,22:1** y el subtítulo **2,65:1**. La guía (§4.6) pide
+  4,5:1, y la sombra de 1 px no cuenta para ese cálculo. **Juan José eligió
+  dejarlo como el sistema (2026-11-03): falta que Diego decida.** La
+  alternativa medida es el texto en `wood-1` (#2e1a1e) sin sombra clara, que
+  da 4,51:1 pero se aparta del color del sistema.
+- **Medido:** movement 100/100, usability 16/16, camera 37/37, flow 23/23 y
+  encounters 82/82.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-cartel-{valdehoja,ashen_forest,tar_basin-purificada}.png`.
+
+#### Paso 4b — Animales y fauna de Valdehoja · 2026-11-03
+
+Guía del equipo §3.1, fila 18. Enmienda 7 (animales siempre, fauna solo en lo
+purificado) y enmienda 8 (solo se mueve lo purificado).
+
+- **En `village()`**, 8 sprites:
+  - gallina (12 × 12, dos cuadros, el segundo picoteando), perro (20 × 16) y
+    cabra (20 × 18), un solo sprite para los dos estados;
+  - pájaro (10 × 8, alas arriba y abajo) y mariposa (9 × 8, abierta y
+    plegada), solo purificados.
+  - Los viejos eran de 8 px, para el Ilan de 16; estos van a la escala del
+    Ilan de 48. Contorno del tono más oscuro de su propia rampa.
+- **`WorldDecor._mark_motion`** busca el segundo cuadro (`<id>_1_<zona>_<estado>.png`)
+  primero en `assets/sprites/world/tierra_viva/` y después en el decorado
+  viejo.
+- **Yara sigue con el sprite viejo:** es un personaje (componente `Cast`) y el
+  sistema pide que salga de PixelLab, donde todavía no está.
+- **El HUD del mapa no se empieza todavía:** el contrato «Piel nueva» dice
+  que R3 abre su propio anexo (usuarios, investigación, direcciones y la
+  elección de Diego), y el HUD enseña mandos del combate de acción (R2), que
+  todavía no existe.
+- **Medido:**
+  - los 8 sprites pasan `image` y `tv-state`;
+  - `verify_zone valdehoja` 55/55: la fauna está dentro de una parte y
+    vuelve al purificar, la gallina anda en lo purificado y se queda quieta
+    en lo enfermo;
+  - `verify_terrain valdehoja` 8/8;
+  - las demás zonas en verde, y movement, encounters y flow también.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-fauna-valdehoja-{enfermo,sano}.png`.
