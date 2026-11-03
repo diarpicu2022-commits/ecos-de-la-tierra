@@ -963,3 +963,44 @@ Diego del 2026-11-02.
   PixelLab, de unos 110 px, son más grandes que la huella para la que se
   colocaron. Se arregla moviendo la `M` unas casillas en cada `*.deco.txt`.
 - **Siguiente:** la Cumbre (`waning_peak`).
+
+#### Paso 4b — El decorado de la Cumbre · 2026-11-02
+
+Cláusulas: 2, 3 y la regla del sistema para la Cumbre (README §Mundo: «hollín
+sobre `ice`»; `components/Regiones/README.md`: «pedregal donde estaba el
+glaciar, laguna encogida… neblina» / «casquete de nieve»). Nada se parece a
+una lona doblada (`waning_peak.deco.txt`). Fusión con el permiso de Diego del
+2026-11-02.
+
+- **`peak()` en `tools/gen_tierra_viva_decor.py`**, 22 sprites:
+  - el hito, el glaciar (80 × 80, desborda su huella de 4 × 4): tres gradas
+    de hielo, cada una con su frente de seracs. Purificado, nieve sobre cada
+    grada; enfermo, partido por una grieta, con pedregal donde había nieve,
+    hollín y agua turbia por el frente;
+  - las viñetas: la roca oscura que asoma (la misma placa del suelo), el
+    deshielo, la estaca de las bandas (purificada, la nieve vuelve a su
+    marca), la morrena (purificada, con hierba alpina y una flor), el bloque
+    de hielo caído y la charca;
+  - pino (enfermo, agujas secas con hollín; purificado, verde con nieve en
+    las puntas), peñasco (enfermo, tiznado; purificado, con capa de nieve),
+    grieta, hierba alpina, roca, semillero y paso cerrado (esquirlas de
+    hielo sucio y piedra).
+- **`soot()`**: hollín tramado sobre lo opaco, en pares de motas.
+- **El pie** se asienta en el pedregal (`scree`). La nieve (`snow`) es de
+  solo-purificado y solo sale en lo sano.
+- **Lo que se limpia con la ola** (deshielo, grieta, bloque, charca y paso
+  cerrado) solo tiene sprite enfermo.
+- **Fallos propios, vistos y corregidos:**
+  1. El hollín en motas sueltas le ponía cara al bloque de hielo (dos ojos y
+     una boca). Ahora es una veta diagonal.
+  2. El glaciar, una masa redonda, se leía como una bola de nieve. Ahora va
+     en tres gradas con frente de seracs.
+- **Medido:** los 22 sprites pasan `image` y `tv-state`; `verify_zone
+  waning_peak` 46/46; `verify_terrain waning_peak` 7/7 en las cuatro vistas.
+  Las otras regiones, regeneradas, dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-waning_peak-{enfermo,ola,sano}.png`
+  (hito `50 47`; viñetas `63 12`, `17 31` y `72 59`).
+- **Para Diego:** el Coloso de mapa (en `(51, 50)`) tapa el glaciar entero
+  en lo enfermo, como el Espectro tapa el silo en la Llanura.
+- **Siguiente:** la Cripta (`greed_crypt`).
