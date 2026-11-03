@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado de las regiones (§4.2) ya están las seis regiones (Bosque, Cuenca, Costa, Llanura, Cumbre y Cripta); falta Valdehoja, que va con el paso 5. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado (§4.2) ya están las seis regiones, y Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (§4.3, 2026-11-03); su matriz orgánica queda para después de la presentación. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -207,7 +207,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | §4.6 (R3) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
-| 17 | Decorado de Valdehoja (las seis regiones: HECHO 2026-11-02, PR #21, #22, #23, #25 y #26) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
+| 17 | Decorado de las seis regiones y de Valdehoja: HECHO (regiones 2026-11-02, PR #21, #22, #23, #25 y #26; Valdehoja 2026-11-03, sobre la matriz actual) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
 | 18 | Fauna y animales | `tools/gen_world_decor.py` | sistema: «aparecen flores y fauna» | §4.2 |
 | 19 | Valdehoja orgánica, edificios de PixelLab y vecinos | `data/world/zones/valdehoja.*` | `components/Overworld`, `assets/source/pixellab/bld`, `npc` | §4.3 y §4.6 |
 | 20 | Caminata de Bruma, Coral, Nix y Suri, y las diagonales | `assets/source/pixellab/<nombre>/` (solo rotaciones) | `Cast`: 8 rotaciones y 4 cuadros | generar en PixelLab y correr `gen_tierra_viva_cast.py` |
@@ -368,6 +368,16 @@ Sistema de diseño: `project/README.md` §Mundo y §Activos,
    posturas, y la alerta la dicen las bandas.
 
 ### 4.3 Paso 5: Valdehoja orgánica
+
+**Estado (2026-11-03):** hecha la primera parte, la piel nueva sobre la
+matriz aprobada de 60 × 34 (decisión de Juan José Rueda por la
+presentación; **falta que Diego la confirme**):
+- el suelo por partes, con `part_mask.gdshader` (punto 3 de abajo, hecho);
+- el decorado de `village()`, con casas dibujadas en código a la escala de
+  3 × 3.
+
+**Falta** la matriz orgánica (puntos 1, 2 y 4), con los edificios de PixelLab
+a su tamaño. Detalle en el anexo, «Paso 5, primera parte».
 
 Sistema de diseño: `components/Overworld/README.md` (está entera la Valdehoja
 de 90 × 60) y `referencias/valdehoja_*.png`, `v_*.png`.

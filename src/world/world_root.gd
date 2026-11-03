@@ -116,7 +116,7 @@ func enter_zone(id: String, cell: Vector2i) -> void:
 	# Estado por casilla: en Valdehoja, cada parte sigue a su región.
 	var purified_at := WorldDecor.purified_lookup(id, state)
 	WorldTiles.paint(_layer, WorldTiles.parse(lines), purified_at)
-	_mount_terrain(id, state)
+	_mount_terrain(id, state, purified_at, Vector2i(lines[0].length(), lines.size()))
 	# Fuera del árbol antes de liberarlos: así el decorado de la zona anterior
 	# no choca de nombre con el nuevo ni cuenta para la física de este cuadro.
 	for child in entities.get_children() + solids.get_children():
@@ -149,9 +149,10 @@ const TERRAIN_DIR := "res://assets/world/tierra_viva/"
 
 
 ## Monta el suelo de Tierra Viva de la zona `id` si existe su par enfermo y
-## sano. En las regiones el estado es de toda la zona; Valdehoja, que va por
-## partes, todavía no tiene el suyo (paso 5) y sigue con los tiles.
-func _mount_terrain(id: String, state: Node) -> void:
+## sano. En las regiones el estado es de toda la zona. En una zona por partes
+## (Valdehoja, paso 5) el sano va siempre montado y `part_mask.gdshader` lo
+## enseña solo en las casillas purificadas (`purified_at`).
+func _mount_terrain(id: String, state: Node, purified_at: Callable, cells: Vector2i) -> void:
 	for s in [terrain_sick, terrain_pure]:
 		if s != null:
 			s.get_parent().remove_child(s)
@@ -167,9 +168,26 @@ func _mount_terrain(id: String, state: Node) -> void:
 	terrain_sick = _terrain_sprite(load(sick_path))
 	terrain_pure = _terrain_sprite(load(pure_path))
 	terrain_pure.visible = state != null and state.is_zone_purified(id)
+	if not terrain_pure.visible and not ZoneRules.load_parts(id).is_empty():
+		terrain_pure.material = _part_mask(purified_at, cells)
+		terrain_pure.visible = true
 	for s in [terrain_sick, terrain_pure]:
 		add_child(s)
 		move_child(s, _layer.get_index() + 1 + int(s == terrain_pure))
+
+
+## Material de la capa sana en una zona por partes: un píxel de máscara por
+## casilla, blanco donde está purificada.
+func _part_mask(purified_at: Callable, cells: Vector2i) -> ShaderMaterial:
+	var img := Image.create(cells.x, cells.y, false, Image.FORMAT_L8)
+	for y in cells.y:
+		for x in cells.x:
+			if purified_at.call(Vector2i(x, y)):
+				img.set_pixel(x, y, Color.WHITE)
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://src/world/part_mask.gdshader")
+	mat.set_shader_parameter("cell_mask", ImageTexture.create_from_image(img))
+	return mat
 
 
 func _terrain_sprite(tex: Texture2D) -> Sprite2D:
