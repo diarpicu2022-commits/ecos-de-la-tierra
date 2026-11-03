@@ -769,6 +769,54 @@ los nuevos». Se adelanta lo que más se ve, que son los personajes.
     Ilan;
   - las diagonales.
 
+#### Paso 4b — El decorado de la Cuenca · 2026-11-02
+
+Cláusulas: 2 (paleta y cuantizado), 3 (contorno de la propia rampa) y la
+regla del sistema «en lo enfermo todo se asienta en el daño»
+(`project/README.md` §Mundo; `components/Regiones/README.md`: «ciénaga de
+crudo, balancines, tubería, barriles, árboles quemados» / «laguna limpia con
+juncos y bosque alrededor»).
+
+- **`basin()` en `tools/gen_tierra_viva_decor.py`**, igual que `forest()`.
+  Hace 25 sprites del catálogo de `tar_basin.deco.txt`:
+  - árbol y segunda copa: la misma pieza que la masa de la Cuenca (sano y
+    quemado sin brasas, `MASS["cuenca"]`);
+  - el hito, la torre de la refinería: 56 × 84, desborda su huella de
+    3 × 4 hacia arriba como el roble del Bosque. Enferma, con la llama de la
+    antorcha (`fire`, la causa activa), óxido a manchas y crudo que chorrea;
+    purificada, apagada y con enredadera y flores al pie;
+  - las viñetas: barril volcado (bidón `roof_blue`, como en
+    `referencias/z_cuenca_enfermo.png`), mancha de crudo, tubería partida
+    (purificada, empalmada con un collar), barca varada (casco negro hasta
+    el charco) y red rota (purificada, remendada y con flotadores);
+  - juncos (purificados, con espadañas y su cuadro de mecerse), hierba alta,
+    arbusto (enfermo, ramitas secas, regla de Regiones), roca, semillero y
+    paso cerrado (tuberías retorcidas en el crudo).
+- **El daño de la Cuenca es el crudo, no la ceniza.** `foot()` toma el cerco
+  de `P["stain"]` si la región lo da; la Cuenca le pasa la rampa `oil`, con
+  reflejos de `sheen`. El Bosque no cambia: regenerado, da los mismos bytes.
+- **Lo que se limpia con la ola** (crudo, barriles y paso cerrado) solo tiene
+  sprite enfermo: `WorldDecor.VANISH_WHEN_PURE` no lo monta purificado.
+- **Fallos propios, vistos en las capturas y corregidos:**
+  1. La barca, una elipse plana, se leía como un disco. Ahora tiene popa
+     recta, proa en punta y bancadas.
+  2. La red en gris medio no se veía sobre la hierba de lodo. Ahora la
+     cuerda es clara (`stone_5`; purificada, `wood_5`).
+- **Medido:**
+  - los 25 sprites pasan `verify_palette.py image` y `tv-state`, con 0 px
+    llevados a su token;
+  - `verify_zone tar_basin` da 45/45;
+  - `verify_terrain tar_basin` da 7/7 en las cuatro vistas.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-tar_basin-{enfermo,ola,sano}.png`
+  (hito `49 44`; viñetas `64 12`, `19 35` y `81 59`).
+- **Pendiente, para que lo decida Diego:** en lo enfermo, el Devorador de
+  mapa (PixelLab, unos 110 px, en `(50, 47)`) tapa casi entera la torre del
+  hito, que está justo detrás. Con el monstruo viejo de 48 px no pasaba.
+  Opciones: mover el monstruo unas casillas al sur o al este en
+  `tar_basin.deco.txt`, o aceptar que el hito se descubre al purificar.
+- **Siguiente:** la Costa (`broken_coast`), cuando Diego dé el visto bueno.
+
 #### Combate con el sistema de diseño, paso 1: la escena · 2026-11-02
 
 Diego: «sigue» (después de ver a Ilan y los monstruos de mapa).

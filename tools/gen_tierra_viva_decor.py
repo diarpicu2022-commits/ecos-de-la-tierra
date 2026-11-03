@@ -61,11 +61,12 @@ def ellipse(w: int, h: int, cx: float, cy: float, rx: float, ry: float) -> np.nd
 
 def foot(img: np.ndarray, cx: float, cy: float, rx: float, ry: float, P: dict, sick: bool) -> None:
     """Lo que hay al pie, debajo de la pieza: sombra sobre hierba en lo sano;
-    en lo enfermo, cerco de ceniza tramado con hollín en el centro."""
+    en lo enfermo, cerco del daño de la región (`stain`; ceniza si no hay)
+    tramado, con el tono más oscuro en el centro."""
     h, w = img.shape[:2]
     m = ellipse(w, h, cx, cy, rx, ry) & (img[..., 3] == 0)
     if sick:
-        ash = P["ash"]
+        ash = P.get("stain", P["ash"])
         yy, xx = np.indices((h, w))
         core = ellipse(w, h, cx, cy, rx * 0.65, ry * 0.65)
         img[m] = rgba(ash[1])
@@ -342,6 +343,300 @@ def blocker(P: dict, sick: bool) -> np.ndarray:
     return img
 
 
+# --- piezas de la Cuenca -----------------------------------------------------------------
+# Daño de crudo (`oil` + `sheen`, README del sistema §Mundo): lo enfermo se
+# asienta en una mancha de crudo con reflejo irisado, no en ceniza. Lo que se
+# limpia con la ola (crudo, barriles y el paso cerrado) solo tiene sprite
+# enfermo: `WorldDecor.VANISH_WHEN_PURE` no lo monta purificado.
+
+def oil_puddle(img: np.ndarray, cx: float, cy: float, rx: float, ry: float, P: dict) -> None:
+    """Charco de crudo sobre lo transparente: borde, cuerpo, fondo y dos
+    reflejos de `sheen`."""
+    h, w = img.shape[:2]
+    oil, sh = P["oil"], P["sheen"]
+    m = ellipse(w, h, cx, cy, rx, ry) & (img[..., 3] == 0)
+    img[m] = rgba(oil[2])
+    img[m & ellipse(w, h, cx, cy, rx - 1, ry - 0.8)] = rgba(oil[1])
+    img[m & ellipse(w, h, cx + 0.5, cy + 0.3, rx * 0.5, ry * 0.5)] = rgba(oil[0])
+    for dx, c in ((-rx * 0.45, 2), (-rx * 0.45 + 1, 3)):
+        x, y = int(cx + dx), int(cy - ry * 0.35)
+        if 0 <= y < h and 0 <= x < w and m[y, x]:
+            img[y, x] = rgba(sh[c])
+
+
+def oil_patch(P: dict) -> np.ndarray:
+    """Mancha de crudo en el suelo (16×16, pisable): dos lóbulos con el borde
+    más claro y el reflejo irisado en arco."""
+    img = canvas(16, 16)
+    oil, sh = P["oil"], P["sheen"]
+    blob = ellipse(16, 16, 6.5, 9, 5.5, 3.4) | ellipse(16, 16, 10.5, 10.5, 4, 2.6)
+    img[blob] = rgba(oil[2])
+    inner = tv.ndi.binary_erosion(blob)
+    img[inner] = rgba(oil[1])
+    img[inner & (ellipse(16, 16, 6.5, 9.5, 3, 1.8) | ellipse(16, 16, 11, 11, 2, 1.2))] = rgba(oil[0])
+    for x, y, c in ((4, 8, 2), (5, 7, 3), (6, 7, 2), (9, 9, 1), (10, 9, 2)):
+        img[y, x] = rgba(sh[c])
+    return img
+
+
+def barrel(P: dict) -> np.ndarray:
+    """Barril volcado (16×16): bidón azul tendido, con la boca abierta hacia el
+    este y el crudo que se sale."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7, 2.5, P, True)
+    b, oil = P["roof_blue"], P["oil"]
+    s = canvas(16, 16)
+    s[5:13, 2:12] = rgba(b[3])
+    s[5:7, 2:12] = rgba(b[4])
+    s[11:13, 2:12] = rgba(b[2])
+    s[5:13, 5] = rgba(b[1])
+    s[5:13, 9] = rgba(b[1])
+    s[ellipse(16, 16, 12, 9, 2.5, 4)] = rgba(b[2])
+    s[ellipse(16, 16, 12.3, 9.3, 1.3, 2.6)] = rgba(oil[0])
+    s = tv.outlined(s, rgba(b[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    oil_puddle(img, 14, 13.5, 2.5, 1.8, P)
+    return img
+
+
+def broken_pipe(P: dict, sick: bool) -> np.ndarray:
+    """Tubería (2×1, 32×16) tendida de oeste a este. Enferma, partida por la
+    mitad y soltando crudo; purificada, empalmada con un collar y con hierba
+    que vuelve a crecer al pie."""
+    img = canvas(32, 16)
+    foot(img, 16, 13.5, 15, 2.5, P, sick)
+    st, ru = P["stone"], P["rust"]
+    s = canvas(32, 16)
+    s[6:12, 1:31] = rgba(st[3])
+    s[6, 1:31] = rgba(st[5])
+    s[7, 1:31] = rgba(st[4])
+    s[11, 1:31] = rgba(st[1])
+    for x in (1, 27):
+        s[4:14, x:x + 3] = rgba(ru[2])
+        s[4, x:x + 3] = rgba(ru[3])
+    if sick:
+        # rotura: dos cabos dentados y la boca negra
+        s[6:12, 14:18] = 0
+        for y in (6, 8, 10):
+            s[y, 14] = rgba(st[3])
+        for y in (7, 9, 11):
+            s[y, 17] = rgba(st[3])
+        s[8:11, 13] = rgba(st[0])
+        s[7:10, 18] = rgba(st[0])
+    else:
+        s[5:13, 13:19] = rgba(ru[2])
+        s[5, 13:19] = rgba(ru[3])
+        for x in (14, 17):
+            s[8, x] = rgba(ru[4])
+    s = tv.outlined(s, rgba(st[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    if sick:
+        oil = P["oil"]
+        img[9:13, 15:17] = rgba(oil[1])
+        img[9, 15] = rgba(P["sheen"][2])
+        oil_puddle(img, 16, 13.5, 6, 2.2, P)
+    else:
+        g = P["grass"]
+        for x in (4, 9, 21, 25):
+            img[12:14, x] = rgba(g[4])
+            img[11, x] = rgba(g[5])
+    return img
+
+
+def boat(P: dict, sick: bool) -> np.ndarray:
+    """Barca de pesca (2×1, 32×16), proa al este. Enferma, varada en el crudo
+    con el casco negro hasta la línea del charco y la pintura apagada;
+    purificada, limpia y con el remo dentro."""
+    img = canvas(32, 16)
+    foot(img, 16, 13, 15, 2.8, P, sick)
+    w, red = P["wood"], P["roof_red"]
+    yy, xx = np.indices((16, 32))
+    # casco visto desde arriba y un poco de lado: la borda, el interior de
+    # tablas y el costado sur, más oscuro
+    # popa recta al oeste y proa en punta al este: se lee como barca, no como
+    # disco (captura del 2026-11-02)
+    taper = np.clip(1 - (xx + 0.5 - 20) / 12, 0, 1)
+    hull = (np.abs(yy + 0.5 - 8.5) <= 6 * np.sqrt(taper)) & (xx >= 2)
+    deck = (np.abs(yy + 0.5 - 7.8) <= 3.6 * np.sqrt(np.clip(1 - (xx + 0.5 - 18) / 10, 0, 1))) & (xx >= 4)
+    s = canvas(32, 16)
+    paint = (red[2], red[1], red[3]) if sick else (red[4], red[2], red[5])
+    s[hull] = rgba(paint[0])
+    s[hull & ~deck & (yy >= 10)] = rgba(paint[1])
+    s[hull & ~deck & (yy <= 5)] = rgba(paint[2])
+    s[deck] = rgba(w[3] if sick else w[4])
+    s[deck & (yy <= 5)] = rgba(w[4] if sick else w[5])
+    for x in (8, 15, 21):
+        s[deck & (xx == x)] = rgba(w[1])
+    if sick:
+        s[hull & ~deck & (yy >= 11)] = rgba(P["oil"][1])
+        s[12, 6:9] = rgba(P["sheen"][2])
+    else:
+        tv.line(s, 9, 9, 22, 8, rgba(w[1]))
+        s[8, 22:24] = rgba(w[2])
+    s = tv.outlined(s, rgba(red[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def torn_net(P: dict, sick: bool) -> np.ndarray:
+    """La red de los pescadores tendida en el suelo (16×16, pisable). Enferma,
+    rota y manchada de crudo; purificada, remendada y con los flotadores."""
+    img = canvas(16, 16)
+    yy, xx = np.indices((16, 16))
+    area = ellipse(16, 16, 8, 10, 7, 4.5)
+    mesh = area & (((xx + yy) % 3 == 0) | ((xx - yy) % 3 == 0))
+    if sick:
+        st, oil = P["stone"], P["oil"]
+        mesh &= ~ellipse(16, 16, 6, 9, 2.2, 1.6) & ~ellipse(16, 16, 11, 11, 1.6, 1.2)
+        # cuerda clara: sobre la hierba de lodo, la gris media no se veía
+        # (captura del 2026-11-02)
+        img[mesh] = rgba(st[5])
+        img[mesh & ((xx + 2 * yy) % 7 == 0)] = rgba(st[3])
+        img[mesh & ellipse(16, 16, 10, 8, 2.5, 1.5)] = rgba(oil[1])
+        img[12, 3] = rgba(P["roof_red"][1])
+    else:
+        w, red = P["wood"], P["roof_red"]
+        img[mesh] = rgba(w[5])
+        img[mesh & ((xx + 2 * yy) % 7 == 0)] = rgba(w[3])
+        for x, y in ((3, 8), (8, 6), (13, 9)):
+            img[y, x:x + 2] = rgba(red[4])
+            img[y + 1, x:x + 2] = rgba(red[2])
+    return img
+
+
+def refinery_tower(P: dict, sick: bool) -> np.ndarray:
+    """Hito: la torre de la refinería de Puerto Brea. Huella de 3×4 casillas;
+    el sprite (56×84) la desborda hacia arriba, como el roble del Bosque, para
+    leerse desde lejos. Enferma, con la llama de la antorcha encendida y el
+    crudo que chorrea; purificada, apagada y con la enredadera que la sube."""
+    W, H = 56, 84
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 80, 25, 4.5, P, sick)
+    st, ru = P["stone"], P["rust"]
+    t = canvas(W, H)
+    # losa
+    t[77:83, 8:48] = rgba(st[2])
+    t[77, 8:48] = rgba(st[4])
+    # columna principal con luz a la izquierda
+    t[14:77, cx - 8:cx + 8] = rgba(st[3])
+    t[14:77, cx - 8:cx - 4] = rgba(st[4])
+    t[14:77, cx - 8] = rgba(st[5])
+    t[14:77, cx + 5:cx + 8] = rgba(st[1])
+    t[10:14, cx - 6:cx + 6] = rgba(st[4])
+    t[10, cx - 4:cx + 4] = rgba(st[5])
+    # columna lateral y su conducto
+    t[40:77, 40:47] = rgba(st[3])
+    t[40:77, 40:42] = rgba(st[4])
+    t[38:40, 41:46] = rgba(st[4])
+    t[50:53, cx + 8:40] = rgba(st[2])
+    # antorcha
+    t[3:10, cx + 1:cx + 3] = rgba(st[2])
+    # plataformas con barandilla
+    for y in (26, 44, 62):
+        t[y:y + 3, cx - 12:cx + 12] = rgba(ru[2])
+        t[y, cx - 12:cx + 12] = rgba(ru[3])
+        t[y - 3:y, cx - 12] = rgba(ru[1])
+        t[y - 3:y, cx + 11] = rgba(ru[1])
+        t[y - 3, cx - 12:cx + 12:3] = rgba(ru[1])
+    # escalera
+    t[14:77, cx + 3] = rgba(ru[1])
+    t[14:77, cx + 6] = rgba(ru[1])
+    t[16:77:3, cx + 3:cx + 7] = rgba(ru[2])
+    if sick:
+        # óxido a manchas
+        for x, y in ((cx - 6, 33), (cx - 2, 52), (43, 60), (cx - 5, 70)):
+            t[y:y + 3, x:x + 2] = rgba(ru[1])
+    t = tv.outlined(t, rgba(st[0]))
+    if sick:
+        oil, sh, fire = P["oil"], P["sheen"], P["fire"]
+        for x, y0, y1 in ((cx - 3, 29, 44), (cx - 6, 47, 60), (43, 55, 76)):
+            t[y0:y1, x] = rgba(oil[1])
+            t[y1 - 1, x] = rgba(oil[0])
+        t[35, cx - 3] = rgba(sh[2])
+        # llama de la antorcha: la causa sigue activa
+        flame = [(cx + 1, 2, 3), (cx + 2, 2, 3), (cx + 1, 1, 4), (cx + 2, 0, 5), (cx, 2, 2), (cx + 3, 1, 2),
+                 (cx + 1, 0, 4)]
+        for x, y, c in flame:
+            t[y, x] = rgba(fire[c])
+    else:
+        # enredadera de hoja por la columna y el pie, y flores en la losa
+        leaf, fl = P["leaf"], P["flower"]
+        for k, y in enumerate(range(74, 34, -3)):
+            x = cx - 8 + (k % 2)
+            t[y:y + 2, x] = rgba(leaf[3])
+            t[y, x + 1 - 2 * (k % 2)] = rgba(leaf[5])
+        for x, y in ((12, 76), (18, 76), (44, 76)):
+            t[y, x] = rgba(fl[5])
+            t[y, x + 1] = rgba(leaf[4])
+    img[t[..., 3] > 0] = t[t[..., 3] > 0]
+    return img
+
+
+def tar_blocker(P: dict) -> np.ndarray:
+    """Paso cerrado de la Cuenca (16×16): tuberías retorcidas hundidas en el
+    crudo. Con la ola desaparece (solo hay sprite enfermo)."""
+    img = canvas(16, 16)
+    oil_puddle(img, 8, 13, 7.5, 2.8, P)
+    st, ru = P["stone"], P["rust"]
+    s = canvas(16, 16)
+    tv.line(s, 1, 12, 14, 4, rgba(st[3]), 2)
+    tv.line(s, 2, 4, 9, 9, rgba(st[2]), 2)
+    tv.line(s, 9, 9, 13, 13, rgba(st[2]), 2)
+    s[6:8, 6:8] = rgba(ru[2])
+    s[9:11, 9:11] = rgba(ru[3])
+    s = tv.outlined(s, rgba(st[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    img[13, 3:6] = rgba(P["oil"][1])
+    img[12, 11] = rgba(P["sheen"][2])
+    return img
+
+
+def shrub(P: dict, sick: bool) -> np.ndarray:
+    """Arbusto de la marisma (18×16): enfermo, ramitas secas (regla del
+    sistema); purificado, la mata de la masa con bayas."""
+    img = canvas(18, 16)
+    foot(img, 9, 14, 8, 2, P, sick)
+    rs = np.random.default_rng(31)
+    if sick:
+        place(img, tv.piece("twigs", P, rs), 9, 15)
+    else:
+        b = tv.piece("bush", P, rs)
+        for x, y in ((5, 6), (12, 5), (9, 9)):
+            b[y, x] = rgba(P["flower"][4])
+        place(img, b, 9, 15)
+    return img
+
+
+def reeds(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
+    """Juncos de la orilla (16×16). Purificados, verdes con espadañas de
+    madera; enfermos, secos, doblados y con el pie en crudo. `sway` inclina las
+    puntas (segundo cuadro del mecerse)."""
+    img = canvas(16, 16)
+    stems = [(2, 4), (4, 2), (6, 5), (8, 1), (10, 4), (12, 3), (14, 6)]
+    g = P["dead"] if sick else P["grass"]
+    for k, (x, top) in enumerate(stems):
+        if sick and k % 3 == 1:
+            top += 4   # el junco partido
+        for y in range(top, 15):
+            lean = sway if y < top + 4 else 0
+            img[y, min(15, max(0, x + lean))] = rgba(g[4 if k % 2 else 3])
+        img[top, min(15, max(0, x + sway))] = rgba(g[5])
+        if not sick and k % 2 == 1:
+            hx = min(15, max(0, x + sway))
+            img[top + 1:top + 4, hx] = rgba(P["wood"][2])
+            img[top + 1, hx] = rgba(P["wood"][3])
+    if sick:
+        oil = P["oil"]
+        img[13:15, 1:15] = rgba(oil[1])
+        img[15, 2:14] = rgba(oil[0])
+        img[13, 4] = rgba(P["sheen"][2])
+    else:
+        img[14, 1:15] = rgba(g[1])
+        img[15, 2:14] = rgba(g[0])
+    return img
+
+
 # --- catálogo por zona -------------------------------------------------------------------
 
 def forest() -> dict[str, np.ndarray]:
@@ -367,7 +662,39 @@ def forest() -> dict[str, np.ndarray]:
     return out
 
 
-CATALOG = {"ashen_forest": forest}
+def basin() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "cuenca")
+        P["rust"] = tv.ramp("rust")
+        P["roof_blue"] = tv.ramp("roof_blue")
+        if sick:
+            P["oil"], P["sheen"] = tv.ramp("oil"), tv.ramp("sheen")
+            P["stain"] = P["oil"]
+        # misma pieza que la masa de la Cuenca: árbol sano y quemado sin brasas
+        out[f"tree_{state}"] = tree(P, sick, 0)
+        out[f"tree_b_{state}"] = tree(P, sick, 1)
+        out[f"refinery_tower_{state}"] = refinery_tower(P, sick)
+        out[f"broken_pipe_{state}"] = broken_pipe(P, sick)
+        out[f"boat_{state}"] = boat(P, sick)
+        out[f"torn_net_{state}"] = torn_net(P, sick)
+        out[f"bush_{state}"] = shrub(P, sick)
+        out[f"reeds_{state}"] = reeds(P, sick)
+        out[f"grass_{state}"] = tall_grass(P, sick, 0)
+        if sick:
+            out["oil_sick"] = oil_patch(P)
+            out["barrel_sick"] = barrel(P)
+            out["blocker_sick"] = tar_blocker(P)
+            out["rock_sick"] = rock(P)
+            out["seedbed_sick"] = seedbed(P)
+        else:
+            out["reeds_pure_1"] = reeds(P, False, 1)
+            out["grass_pure_1"] = tall_grass(P, False, 1)
+    return out
+
+
+CATALOG = {"ashen_forest": forest, "tar_basin": basin}
 
 
 def quantize(img: np.ndarray, state: str) -> int:
