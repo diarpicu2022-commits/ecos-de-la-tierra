@@ -12,6 +12,14 @@ hoja que usa el mapa, en `assets/sprites/world/cast/<nombre>.png`:
   caminata (`walk_<dir>.gif`, «caminata de 4 cuadros»). Quien no trae
   caminata repite la rotación de pie, y se avisa.
 
+Para el combate (referencias `combate_enfermo.png` y `combate_purificado.png`):
+
+- el grupo de espaldas, la rotación norte-este al doble de escala
+  (`battle-back: 96px`), en `assets/sprites/party/tierra_viva/<nombre>_back.png`;
+- los seis monstruos en sus dos formas, recortados a su silueta, en
+  `assets/sprites/monsters/tierra_viva/<clave>{,_purified}.png`, con la clave
+  del script del monstruo, que es como los busca `MonsterView`.
+
 No se repinta ni se recolorea nada: cada píxel es del original. Se mide con
 `verify_palette.py image <hoja> --source assets/source/pixellab/<nombre>`.
 """
@@ -39,6 +47,11 @@ CAST = ["ilan", "bruma", "coral", "nix", "suri"]
 ## del sistema `referencias/combate_accion.png`; mira abajo a la izquierda.
 MONSTERS = {"ashen_forest": "llama", "tar_basin": "devorador", "broken_coast": "golem",
             "withered_plain": "espectro", "waning_peak": "coloso", "greed_crypt": "sombra"}
+## Clave del script de cada monstruo (`src/actors/monsters/<clave>.gd`).
+BATTLE_KEY = {"llama": "deforestation_flame", "devorador": "oil_devourer", "golem": "plastic_golem",
+              "espectro": "monoculture_specter", "coloso": "thaw_colossus", "sombra": "adaptive_boss"}
+BATTLE_PARTY = ROOT / "assets" / "sprites" / "party" / "tierra_viva"
+BATTLE_MONSTERS = ROOT / "assets" / "sprites" / "monsters" / "tierra_viva"
 
 
 def sheet(name: str) -> Image.Image:
@@ -77,6 +90,19 @@ def main(argv: list[str]) -> int:
                 im = trimmed(SRC / "monsters" / f"{name}_{form}.png")
                 im.save(path)
                 print(f"  {path.relative_to(ROOT)}: {im.width}×{im.height}")
+        BATTLE_PARTY.mkdir(parents=True, exist_ok=True)
+        for name in CAST:
+            back = trimmed(SRC / name / "north-east.png")
+            back = back.resize((back.width * 2, back.height * 2), Image.NEAREST)
+            path = BATTLE_PARTY / f"{name}_back.png"
+            back.save(path)
+            print(f"  {path.relative_to(ROOT)}: {back.width}×{back.height}")
+        BATTLE_MONSTERS.mkdir(parents=True, exist_ok=True)
+        for name, key in BATTLE_KEY.items():
+            for suffix, form in (("", "corrupto"), ("_purified", "purificado")):
+                path = BATTLE_MONSTERS / f"{key}{suffix}.png"
+                trimmed(SRC / "monsters" / f"{name}_{form}.png").save(path)
+                print(f"  {path.relative_to(ROOT)}")
     return 0
 
 

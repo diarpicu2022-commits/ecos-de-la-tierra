@@ -27,6 +27,10 @@ const GAP := DesignTokens.SPACE_4
 const TOTAL_SIZE := Vector2(PANEL_WIDTH, SPRITE_SIZE + GAP + PANEL_HEIGHT)
 
 const SPRITE_DIR := "res://assets/sprites/monsters/"
+## Monstruos del sistema de diseño (PixelLab, `tools/gen_tierra_viva_cast.py`):
+## se buscan primero. Van a su tamaño y la vista se planta en sus pies: el
+## origen es el centro de la fila de abajo del sprite.
+const TIERRA_VIVA_DIR := "res://assets/sprites/monsters/tierra_viva/"
 
 ## Umbrales de la barra de PV. La vida se drena hacia la brasa, nunca al verde:
 ## el verde es el acento reservado a la purificación.
@@ -47,6 +51,8 @@ var monster: Monster = null
 var _font: Font = null
 var _art_active: Texture2D = null      ## La causa sigue activa.
 var _art_purified: Texture2D = null    ## La causa se atajó.
+## El sprite es del sistema de diseño y se dibuja desde los pies.
+var _feet_origin := false
 
 # Estado dibujado, que va por detrás del estado real para poder animarlo.
 var _shown_hp: float = 0.0
@@ -105,8 +111,12 @@ func _load_art(suffix: String) -> Texture2D:
 	if script == null:
 		return null
 	var key: String = script.resource_path.get_file().get_basename()
-	var path: String = SPRITE_DIR + key + suffix + ".png"
-	return load(path) if ResourceLoader.exists(path) else null
+	for dir in [TIERRA_VIVA_DIR, SPRITE_DIR]:
+		var path: String = dir + key + suffix + ".png"
+		if ResourceLoader.exists(path):
+			_feet_origin = dir == TIERRA_VIVA_DIR
+			return load(path)
+	return null
 
 
 func _disconnect_current() -> void:
@@ -274,6 +284,9 @@ func _draw_sprite() -> void:
 	# Quien ya cayó se queda tenue, no desaparece: el jugador tiene que poder
 	# ver qué había ahí.
 	var alpha: float = 1.0 if monster.is_alive() else 0.35
+	if _feet_origin:
+		_draw_from_feet(origin, alpha)
+		return
 	var rect := Rect2(origin, Vector2(SPRITE_SIZE, SPRITE_SIZE))
 	# Fundido entre los dos estados: la purificación se ve en el propio
 	# monstruo, no solo en una etiqueta.
@@ -284,6 +297,29 @@ func _draw_sprite() -> void:
 				Color(1, 1, 1, _purify_progress * alpha))
 	if _flash > 0.01:
 		draw_texture_rect(_art_active, rect, false, Color(1, 1, 1, _flash * 0.7))
+
+
+## Las dos formas tienen tamaños distintos: cada una se apoya en los mismos
+## pies. El fundido entre ellas es la purificación vista en el monstruo.
+func _draw_from_feet(shift: Vector2, alpha: float) -> void:
+	var forms := [[_art_active, 1.0 - _purify_progress], [_art_purified, _purify_progress]]
+	for form in forms:
+		var art: Texture2D = form[0]
+		if art == null or form[1] <= 0.0:
+			continue
+		var at := Vector2(roundf(shift.x - art.get_width() * 0.5), shift.y - art.get_height())
+		draw_texture(art, at, Color(1, 1, 1, form[1] * alpha))
+	if _flash > 0.01:
+		var at := Vector2(roundf(shift.x - _art_active.get_width() * 0.5), shift.y - _art_active.get_height())
+		draw_texture(_art_active, at, Color(1, 1, 1, _flash * 0.7))
+
+
+## Centro del borde de arriba del sprite, respecto a la vista: ahí se
+## escriben las cifras.
+func top_center() -> Vector2:
+	if _feet_origin and _art_active != null:
+		return Vector2(0, -_art_active.get_height())
+	return Vector2(SPRITE_SIZE * 0.5, 0)
 
 
 func _draw_panel() -> void:

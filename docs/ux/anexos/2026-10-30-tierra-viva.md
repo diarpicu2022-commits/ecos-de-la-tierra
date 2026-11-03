@@ -768,3 +768,66 @@ los nuevos». Se adelanta lo que más se ve, que son los personajes.
   - la caminata de Bruma, Coral, Nix y Suri, que PixelLab solo dio para
     Ilan;
   - las diagonales.
+
+#### Combate con el sistema de diseño, paso 1: la escena · 2026-11-02
+
+Diego: «sigue» (después de ver a Ilan y los monstruos de mapa).
+
+- **Qué combate se hace.** El componente `BattleScreen` del sistema describe
+  el combate de acción en el mapa (R2, guía §4.5). Pero `EnemyPlate`,
+  `PartyRow`, `CommandMenu`, `TypeBadge` y la imagen `combate_enfermo.png`
+  describen, con medidas exactas, la pantalla por turnos, que es la que
+  tiene el juego. Se rediseña esa; R2 sigue en su sitio.
+- **Fallo propio, encontrado al medir:** el combate seguía a 480 × 270 desde
+  antes de «Piel nueva». En el juego, a 640 × 360, ocupaba solo la esquina
+  de arriba a la izquierda y dejaba una franja gris. El grupo, además, salía
+  con siluetas grises provisionales. Captura del antes:
+  `2026-11-02-combate-antes-ashen_forest.png`.
+- **Tokens:**
+  - `gen_tierra_viva_tokens.py` añade las rampas de interfaz del sistema
+    (`ui`, `paper`, `hp`) y las del cielo del combate del prototipo
+    (`dusk` y `dusk_hill`, solo-enfermo; `sky` y `far_hill`, solo-purificado);
+  - también los papeles semánticos de `components/tokens.css`
+    (`TV_SLATE`, `TV_PAPER`, `TV_CMD_FIGHT`, `TV_HP_HIGH`…);
+  - el generador ahora reescribe los grupos de estado de `pixel.py` aunque
+    ya existan, porque antes se quedaban viejos;
+  - en total, 320 tokens sin deriva.
+- **`tools/gen_tierra_viva_battle.py`:**
+  - porta `battle.py` del prototipo y hace los fondos de 640 × 360 por región
+    y estado, con las dos plataformas;
+  - el Bosque es el del sistema;
+  - **las otras cinco son derivadas**, porque el sistema no las dibuja: la
+    misma estructura con la paleta aprobada de cada región. Cuenca con
+    torres de bombeo, Costa con mar, Llanura con silo y cerca, Cumbre con
+    picos y Cripta como interior de sillares y columnas.
+- **`gen_tierra_viva_cast.py`** añade dos cosas:
+  - el grupo de espaldas: la rotación norte-este de PixelLab al doble
+    (`battle-back: 96px`);
+  - los seis monstruos de combate, con la clave de su script.
+- **Pantalla:**
+  - `SCREEN` pasa a 640 × 360;
+  - el fondo es la imagen de la región: enfermo mientras quede un monstruo
+    sin purificar y sano cuando todos lo están;
+  - el monstruo se planta en sus pies (470, 184), sobre su plataforma, a su
+    tamaño;
+  - el grupo va de espaldas con los pies en (150, 276): el primero delante a
+    la izquierda y el resto 8 px más atrás;
+  - con más de tres miembros el paso se encoge para que nadie se salga, que
+    con cinco se salía Ilan.
+- **Medido:**
+  - usability 16/16, party_ai 19/19, flow 23/23, encounters 82/82 y wave 7/7;
+  - la paleta de los 12 fondos (`image` y `tv-state`), de las 5 espaldas y
+    de los 12 monstruos (`--source`) sin fallos.
+- **Capturas:**
+  - `2026-11-02-combate-escena-ashen_forest.png`;
+  - `…-escena-purificado-ashen_forest.png`;
+  - `…-escena-tar_basin.png` y `…-escena-waning_peak.png`.
+- **Lo que queda para los pasos siguientes:**
+  - **Paso 2:** la placa del enemigo y las filas del grupo con sus marcos
+    `f-plate` y `f-row`. Con cinco miembros, las filas no caben a 27 px
+    sobre los mandos: hay que decidir cómo.
+  - **Paso 3:** los mandos en rejilla de 2 × 2 y el aviso de papel. El juego
+    tiene cinco entradas (ATACAR, HABILIDADES, BOLSA, HUIR, ORDEN) y el
+    sistema, cuatro (LUCHAR, ECO, BOLSA, HUIR). Lo decide Diego.
+  - **Paso 4:** los estados, la cola de turnos (que no está en el sistema)
+    y las cifras.
