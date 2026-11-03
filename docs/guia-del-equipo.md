@@ -159,7 +159,7 @@ done
 | Rama | Qué tiene | Estado |
 |---|---|---|
 | `master` | Partes 1 a 4: mundo en estilo plano, combate por turnos con persiana | Estable |
-| `rediseno/tierra-viva` | Contrato «Piel nueva», paso 1: rampas `TV_*`, pantalla de 640 × 360, regiones ×4/3; el juego arranca en el mundo | **PR #20 abierto**, sin fusionar |
+| `rediseno/tierra-viva` | Contrato «Piel nueva», paso 1: rampas `TV_*`, pantalla de 640 × 360, regiones ×4/3; el juego arranca en el mundo | Fusionada (PR #20) |
 | `rediseno/terreno` | Lo anterior, más el suelo Tierra Viva de las seis regiones, el sistema de diseño en `docs/ux/sistema-de-diseno/`, el decorado del Bosque, Ilan y los monstruos de PixelLab y la escena del combate a 640 × 360 (ver el inventario §3.1) | **Rama de trabajo** |
 | `parte-5/anexo` | Parte 5 (diálogos y retratos), pasos 1 a 5, hecha para 480 × 270 | Respaldo, sin PR; en espera |
 
@@ -197,7 +197,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 4 | Decorado del Bosque | `tools/gen_tierra_viva_decor.py` | README §Mundo, `Overworld` | HECHO 2026-11-01 |
 | 5 | Escena del combate (fondo, monstruo, grupo de espaldas) | `src/ui/battle/battle_screen.gd`, `tools/gen_tierra_viva_battle.py` | `assets/img/combate_enfermo.png`, `combate_purificado.png` | HECHO 2026-11-02 |
 | 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-02 (falta el titular de 22 px) |
-| 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | ver §4.0 |
+| 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | HECHO 2026-11-03 |
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | ver §4.0 |
@@ -247,12 +247,12 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
    - **`PartyRow`:** HECHO. `party_member_hud.gd` usa `TvFrame`; se ven tres
      filas alrededor de quien tiene el turno (`BattleScreen._layout_huds`).
      Captura: `docs/ux/capturas/2026-11-02-combate-filas-waning_peak.png`.
-   - **`EnemyPlate`, lo siguiente:** reescribir `MonsterView._draw_panel`
-     con `TvFrame.PLATE` de 184 px en (10, 10). Lleva nombre, una fila de
-     chapas (el tipo con `type_fill` y CORRUPTO o PURIFICADO con
-     `TV_STATUS_CORRUPT` o `TV_STATUS_PURIFIED`) y «PV» en
-     `TV_TEXT_HIGHLIGHT` con barra de 5 px y la cifra. Modelo:
-     `docs/ux/sistema-de-diseno/project/assets/img/combate_enfermo.png`.
+   - **`EnemyPlate`:** HECHO el 2026-11-03. `MonsterView._draw_panel` usa
+     `TvFrame.PLATE` de 184 × 44 en (10, 10), con el nombre, las chapas de
+     tipo y de estado (CORRUPTO o PURIFICADO) y «PV» con su barra de 5 px y
+     la cifra. Captura: `docs/ux/capturas/2026-11-03-placa-*.png`.
+     **Lo siguiente es el aviso de papel** (abajo), que no espera ninguna
+     decisión de Diego.
    - **`CommandMenu`:** rejilla de 2 × 2 en (432, 284), 100 × 30, con los
      marcos `cmd-luchar`, `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y
      `cmd-selected` para el elegido. Está en `action_menu.gd`, el menú raíz.
@@ -272,7 +272,7 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
 4. **Estados:** chapas `TypeBadge`, barras `hp-high/mid/low`, cifras a doble
    tamaño con `~`, pantalla de resultado y la cola de turnos (decide Diego).
 
-### 4.1 Paso 4a: masas de región · HECHO el 2026-11-01 (falta el visto bueno de Diego)
+### 4.1 Paso 4a: masas de región · HECHO el 2026-11-01 (visto bueno de Diego el 2026-11-01)
 
 Sistema de diseño: `project/README.md` §Mundo, `components/Regiones/README.md`
 y `components/Terrain/README.md`.
