@@ -881,6 +881,220 @@ def coast_blocker(P: dict) -> np.ndarray:
     return img
 
 
+# --- piezas de la Llanura ----------------------------------------------------------------
+# Daño de agotamiento (`drygrass` + `sludge`, README del sistema §Mundo): el
+# monocultivo en hileras iguales, el abono químico, la sal y el lodo tóxico.
+# Las hileras van sin cerca (`withered_plain.deco.txt`). Lo que se limpia con
+# la ola (saco y sal) solo tiene sprite enfermo.
+
+def crop_row(P: dict, sick: bool, sway: int = 0, wilted: bool = False) -> np.ndarray:
+    """Hilera de cultivo (16×16, pisable) sobre su surco. Enferma, un solo
+    cultivo de paja, todas las matas iguales (`wilted`: dobladas y secas);
+    purificada, cultivos mezclados con hoja, flor y grano. `sway` inclina las
+    puntas (segundo cuadro del mecerse)."""
+    img = canvas(16, 16)
+    d = P["dirt"]
+    img[12:15, 0:16] = rgba(d[2])
+    img[12, 0:16] = rgba(d[3])
+    img[14, 0:16] = rgba(d[1])
+    if sick:
+        st = P["straw"]
+        for x in (2, 6, 10, 14):
+            top = 7 if wilted else 3
+            for y in range(top, 12):
+                lean = (y - top) // 2 if wilted and y < top + 3 else 0
+                img[y, min(15, x + lean)] = rgba(st[2])
+            img[top, x] = rgba(st[3])
+            if wilted:
+                img[top - 1, x + 1] = rgba(P["dead"][3])
+            else:
+                img[5, x - 1] = rgba(st[1])
+                img[6, x + 1] = rgba(st[1])
+    else:
+        leaf, fl, gold = P["leaf"], P["flower"], P["gold"]
+        plants = [(2, 4, "grain"), (6, 6, "leaf"), (10, 3, "flower"), (13, 5, "leaf")]
+        for x, top, kind in plants:
+            for y in range(top, 12):
+                lean = sway if y < top + 3 else 0
+                img[y, min(15, max(0, x + lean))] = rgba(leaf[3])
+            tx = min(15, max(0, x + sway))
+            if kind == "grain":
+                img[top:top + 3, tx] = rgba(gold[4])
+                img[top, tx] = rgba(gold[5])
+            elif kind == "flower":
+                img[top, tx] = rgba(fl[3])
+                img[top + 1, tx - 1:tx + 2] = rgba(leaf[4])
+            else:
+                img[top + 1, tx - 1] = rgba(leaf[5])
+                img[top + 2, tx + 1] = rgba(leaf[4])
+    return img
+
+
+def sack(P: dict) -> np.ndarray:
+    """Saco de abono químico abierto (16×16): costal claro con la etiqueta y el
+    granulado blanco que se derrama."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7, 2.5, P, True)
+    w, red, st = P["wall"], P["roof_red"], P["stone"]
+    s = canvas(16, 16)
+    s[ellipse(16, 16, 7, 9, 5, 4.5)] = rgba(w[3])
+    s[ellipse(16, 16, 6, 8, 3, 3)] = rgba(w[4])
+    s[9:11, 4:9] = rgba(red[3])
+    s[4:6, 5:10] = rgba(w[2])   # la boca abierta
+    s = tv.outlined(s, rgba(w[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    for x, y in ((11, 12), (13, 13), (12, 11), (14, 12), (10, 13)):
+        img[y, x] = rgba(st[6])
+    return img
+
+
+def salt_crust(P: dict) -> np.ndarray:
+    """Costra de sal (16×16, pisable): mancha blanca tramada con grietas."""
+    img = canvas(16, 16)
+    st, so = P["stone"], P["sick_soil"]
+    yy, xx = np.indices((16, 16))
+    blob = ellipse(16, 16, 8, 9, 6.5, 4)
+    img[blob & ((xx + yy) % 2 == 0)] = rgba(st[6])
+    img[blob & ((xx + yy) % 2 == 1)] = rgba(st[5])
+    tv.line(img, 4, 8, 8, 10, rgba(so[2]))
+    tv.line(img, 8, 10, 12, 9, rgba(so[2]))
+    tv.line(img, 8, 10, 7, 12, rgba(so[2]))
+    return img
+
+
+def sprayer(P: dict, sick: bool) -> np.ndarray:
+    """La pulverizadora (2×1, 32×16) tumbada de lado: depósito, rueda y la
+    barra de boquillas. Enferma, goteando lodo químico; purificada, oxidada y
+    con flores que crecen dentro."""
+    img = canvas(32, 16)
+    foot(img, 16, 13.5, 15, 2.5, P, sick)
+    red, st, ru = P["roof_red"], P["stone"], P["rust"]
+    s = canvas(32, 16)
+    tank = ellipse(32, 16, 12, 8.5, 9, 4.5)
+    yy, _ = np.indices((16, 32))
+    s[tank] = rgba(red[3] if sick else ru[3])
+    s[tank & (yy < 7)] = rgba(red[4] if sick else ru[4])
+    s[tank & (yy > 10)] = rgba(red[2] if sick else ru[2])
+    s[ellipse(32, 16, 4, 11, 3, 3)] = rgba(st[1])
+    s[ellipse(32, 16, 4, 11, 1.3, 1.3)] = rgba(st[3])
+    s[8:10, 21:31] = rgba(st[3])
+    s[8, 21:31] = rgba(st[4])
+    for x in (24, 27, 30):
+        s[10, x] = rgba(st[2])
+    s = tv.outlined(s, rgba(st[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    if sick:
+        sl = P["sludge"]
+        for x in (24, 27, 30):
+            img[11:13, x] = rgba(sl[2])
+        img[13, 23:31] = rgba(sl[1])
+        img[13, 26] = rgba(sl[3])
+    else:
+        leaf, fl = P["leaf"], P["flower"]
+        for x, y, c in ((9, 4, 1), (12, 3, 3), (15, 4, 2)):
+            img[y + 1:y + 3, x] = rgba(leaf[3])
+            img[y, x] = rgba(fl[c])
+    return img
+
+
+def silo(P: dict, sick: bool) -> np.ndarray:
+    """Hito: el silo de Grano de Sal. Huella de 3×4 casillas; el sprite
+    (56×84) la desborda hacia arriba. Cilindro de chapa con nervios, cúpula y
+    escalera. Enfermo, chapa apagada con chorretones de óxido y la puerta
+    rota; purificado, la cúpula roja y la enredadera al pie."""
+    W, H = 56, 84
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 80, 24, 4.5, P, sick)
+    w, red, ru, st = P["wall"], P["roof_red"], P["rust"], P["stone"]
+    t = canvas(W, H)
+    yy, xx = np.indices((H, W))
+    body = (np.abs(xx + 0.5 - cx) <= 17) & (yy >= 22) & (yy < 80)
+    t[body] = rgba(w[2])
+    t[body & (xx < cx - 6)] = rgba(w[3])
+    t[body & (xx < cx - 12)] = rgba(w[4])
+    t[body & (xx > cx + 10)] = rgba(w[1])
+    for x in range(cx - 15, cx + 17, 5):
+        t[22:80, x] = rgba(w[1])
+    for y in (34, 50, 66):
+        t[y, cx - 17:cx + 18] = rgba(w[1])
+    dome = ellipse(W, H, cx, 22, 18, 13) & (yy <= 22)
+    roof = (red[1], red[2], red[3]) if sick else (red[3], red[4], red[5])
+    t[dome] = rgba(roof[0])
+    t[dome & (xx < cx + 6)] = rgba(roof[1])
+    t[dome & (xx < cx - 6) & (yy > 12)] = rgba(roof[2])
+    t[6:10, cx - 3:cx + 3] = rgba(st[3])
+    # escalera
+    t[18:80, cx + 12] = rgba(ru[1])
+    t[18:80, cx + 15] = rgba(ru[1])
+    t[20:80:3, cx + 12:cx + 16] = rgba(ru[2])
+    # puerta
+    t[66:80, cx - 6:cx + 2] = rgba(P["wood"][2])
+    t[66, cx - 6:cx + 2] = rgba(P["wood"][4])
+    if sick:
+        t[70:76, cx - 4:cx] = rgba(st[0])
+        for x, y0, y1 in ((cx - 10, 24, 44), (cx + 4, 36, 58), (cx - 2, 52, 66)):
+            t[y0:y1, x] = rgba(ru[2])
+            t[y0:y1:4, x] = rgba(ru[1])
+    t = tv.outlined(t, rgba(w[0]))
+    if not sick:
+        leaf, fl = P["leaf"], P["flower"]
+        for k, y in enumerate(range(78, 52, -3)):
+            x = cx - 17 + (k % 2)
+            t[y:y + 2, x] = rgba(leaf[3])
+            t[y, x + 1] = rgba(leaf[5])
+        for x in (cx - 12, cx + 6, cx + 20):
+            t[81, x] = rgba(fl[1])
+            t[82, x] = rgba(leaf[4])
+    img[t[..., 3] > 0] = t[t[..., 3] > 0]
+    return img
+
+
+def wire_blocker(P: dict) -> np.ndarray:
+    """Paso cerrado de la Llanura (16×16): alambre de espino en diagonal entre
+    dos postes. Con la ola desaparece (solo hay sprite enfermo)."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7.5, 2.5, P, True)
+    w, st = P["wood"], P["stone"]
+    s = canvas(16, 16)
+    s[3:14, 2:4] = rgba(w[2])
+    s[3:14, 2] = rgba(w[3])
+    s[7:14, 12:14] = rgba(w[2])
+    s[7:14, 12] = rgba(w[3])
+    s = tv.outlined(s, rgba(w[0]))
+    for a, b in (((3, 4), (13, 8)), ((3, 8), (13, 11)), ((3, 11), (13, 13))):
+        tv.line(s, a[0], a[1], b[0], b[1], rgba(st[4]))
+    for x, y in ((6, 6), (9, 7), (6, 9), (10, 10), (7, 12)):
+        s[y - 1, x] = rgba(st[5])
+        s[y + 1, x] = rgba(st[2])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def weed(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
+    """Matojo (16×16, pisable). Enfermo, cardo seco; purificado, mata de
+    flores silvestres. `sway` inclina las puntas."""
+    img = canvas(16, 16)
+    if sick:
+        dl = P["dead"]
+        for x, top in ((4, 7), (7, 5), (9, 6), (12, 8)):
+            img[top:14, x] = rgba(dl[3])
+            img[top, x - 1:x + 2] = rgba(dl[4])
+            img[top - 1, x] = rgba(dl[5])
+        img[13:15, 3:13] = rgba(dl[1])
+    else:
+        g, fl = P["grass"], P["flower"]
+        for k, (x, top) in enumerate(((3, 7), (6, 4), (9, 6), (12, 5))):
+            for y in range(top, 14):
+                lean = sway if y < top + 3 else 0
+                img[y, min(15, x + lean)] = rgba(g[4])
+            tx = min(15, x + sway)
+            img[top - 1, tx] = rgba(fl[(0, 3, 5, 1)[k]])
+            img[top, max(0, tx - 1)] = rgba(fl[(0, 3, 5, 1)[k]])
+        img[14, 2:14] = rgba(g[1])
+    return img
+
+
 # --- catálogo por zona -------------------------------------------------------------------
 
 def forest() -> dict[str, np.ndarray]:
@@ -967,7 +1181,42 @@ def coast() -> dict[str, np.ndarray]:
     return out
 
 
-CATALOG = {"ashen_forest": forest, "tar_basin": basin, "broken_coast": coast}
+def plain() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "llanura")
+        P["rust"] = tv.ramp("rust")
+        P["wall"] = tv.ramp("wall")
+        P["straw"] = tv.ramp("straw")
+        if sick:
+            # el pie se asienta en la tierra agotada
+            P["sick_soil"] = tv.ramp("sick_soil")
+            P["stain"] = P["sick_soil"]
+        out[f"tree_{state}"] = tree(P, sick, 0)
+        out[f"tree_b_{state}"] = tree(P, sick, 1)
+        out[f"stump_{state}"] = stump(P, sick)
+        out[f"silo_{state}"] = silo(P, sick)
+        out[f"crop_row_{state}"] = crop_row(P, sick)
+        out[f"wilted_row_{state}"] = crop_row(P, sick, wilted=sick)
+        out[f"sprayer_{state}"] = sprayer(P, sick)
+        out[f"bush_{state}"] = shrub(P, sick)
+        out[f"grass_{state}"] = tall_grass(P, sick, 0)
+        out[f"weed_{state}"] = weed(P, sick)
+        if sick:
+            out["sack_sick"] = sack(P)
+            out["salt_sick"] = salt_crust(P)
+            out["blocker_sick"] = wire_blocker(P)
+            out["rock_sick"] = rock(P)
+            out["seedbed_sick"] = seedbed(P)
+        else:
+            out["crop_row_pure_1"] = crop_row(P, False, 1)
+            out["grass_pure_1"] = tall_grass(P, False, 1)
+            out["weed_pure_1"] = weed(P, False, 1)
+    return out
+
+
+CATALOG = {"ashen_forest": forest, "tar_basin": basin, "broken_coast": coast, "withered_plain": plain}
 
 
 def quantize(img: np.ndarray, state: str) -> int:

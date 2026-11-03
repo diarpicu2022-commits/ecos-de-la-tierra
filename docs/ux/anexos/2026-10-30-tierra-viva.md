@@ -922,3 +922,44 @@ botellas, bolsas, latas y redes; palmas secas» / «mar azul… conchas»).
 - **Para Diego:** el Gólem de mapa (PixelLab) queda junto a la montaña y la
   tapa en parte, como el Devorador en la Cuenca.
 - **Siguiente:** la Llanura (`withered_plain`).
+
+#### Paso 4b — El decorado de la Llanura · 2026-11-02
+
+Cláusulas: 2, 3 y la regla del sistema para la Llanura (`components/Regiones/README.md`:
+«tierra cuarteada, surcos vacíos, matojos» / «cultivos… arboledas»). Las
+hileras van sin cerca (`withered_plain.deco.txt`). Fusión con el permiso de
+Diego del 2026-11-02.
+
+- **`plain()` en `tools/gen_tierra_viva_decor.py`**, 28 sprites:
+  - el hito, el silo de Grano de Sal (56 × 84): cilindro de chapa con
+    nervios, cúpula y escalera. Enfermo, la chapa y la cúpula apagadas, con
+    chorretones de óxido y la puerta rota; purificado, la cúpula roja y la
+    enredadera al pie;
+  - las viñetas: tocón del seto arrancado, hilera de monocultivo, saco de
+    abono abierto con el granulado derramado, costra de sal, pulverizadora
+    tumbada (enferma, goteando lodo `sludge`; purificada, oxidada y con
+    flores dentro) e hilera marchita;
+  - árboles del seto (sano y quemado, la pieza de la masa), arbusto, hierba,
+    matojo (enfermo, cardo seco; purificado, flores silvestres que se
+    mecen), roca, semillero y paso cerrado (alambre de espino entre dos
+    postes).
+- **La hilera:** enferma, un solo cultivo de paja con todas las matas
+  iguales; purificada, cultivos mezclados con hoja, flor y grano, con su
+  cuadro de mecerse.
+- **El pie** se asienta en la tierra agotada (`sick_soil`).
+- **Lo que se limpia con la ola** (saco, sal y paso cerrado) solo tiene
+  sprite enfermo.
+- **Fallo propio:** la última mata de la hilera, al mecerse, se salía del
+  sprite y el generador se cortó. Se movió un píxel.
+- **Medido:** los 28 sprites pasan `image` y `tv-state`; `verify_zone
+  withered_plain` 45/45; `verify_terrain withered_plain` 7/7 en las cuatro
+  vistas. Bosque, Cuenca y Costa regenerados dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-withered_plain-{enfermo,ola,sano}.png`
+  (hito `76 27`; viñetas `18 14`, `111 6` y `95 42`).
+- **Para Diego:** aquí el monstruo de mapa tapa el hito entero. El Espectro
+  (en `(76, 30)`) cae justo delante del silo, y en lo enfermo el silo no se
+  ve. Es el mismo choque que en la Cuenca y la Costa: los monstruos de
+  PixelLab, de unos 110 px, son más grandes que la huella para la que se
+  colocaron. Se arregla moviendo la `M` unas casillas en cada `*.deco.txt`.
+- **Siguiente:** la Cumbre (`waning_peak`).
