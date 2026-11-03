@@ -78,7 +78,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Tarea 3 hecha** (2026-10-31), con el visto bueno de Diego.
 - **Paso 4a hecho** (2026-11-01): masas de región según el sistema de diseño (enmienda 14) y rasgos de región; `verify_terrain` 7/7 y `verify_zone` en verde en las seis. Visto bueno de Diego el 2026-11-01.
 - **Paso 4b, Bosque hecho** (2026-11-01): decorado del sistema con `tools/gen_tierra_viva_decor.py`, PixelLab en `assets/source/pixellab/` y excepción `--source` en `verify_palette.py`. Falta el visto bueno de Diego. Siguiente: las otras regiones (§4.2 de `docs/guia-del-equipo.md`).
-- **Paso 4b, Cuenca hecha** (2026-11-02, rama `rediseno/decorado-cuenca`): 25 sprites con `basin()`, `verify_zone` 45/45 y `verify_terrain` 7/7. Falta el visto bueno de Diego. Siguiente: la Costa. **Todo, personajes incluidos, con el sistema de diseño.**
+- **Paso 4b, Cuenca hecha** (2026-11-02, rama `rediseno/decorado-cuenca`): 25 sprites con `basin()`, `verify_zone` 45/45 y `verify_terrain` 7/7. Fusionada con el PR #21 (permiso de Diego para fusionar lo necesario, 2026-11-02).
+- **Paso 4b, Costa hecha** (2026-11-02): 19 sprites con `coast()`, `verify_zone` 47/47 y `verify_terrain` 7/7. Siguiente: la Llanura. **Todo, personajes incluidos, con el sistema de diseño.**
 - **Personajes del sistema en el mapa** (2026-11-01): Ilan a 48 px con caminata de PixelLab y los seis monstruos de mapa de PixelLab (`tools/gen_tierra_viva_cast.py`). Sigue viejo: decorado de las otras regiones, pantalla de combate, HUD, diálogo y título.
 - **Combate, paso 1 (escena) hecho** (2026-11-02): pantalla a 640 × 360, fondos del sistema por región (`tools/gen_tierra_viva_battle.py`), monstruo de PixelLab sobre su plataforma y grupo de espaldas al doble. Siguen: paso 2 (placa y filas), paso 3 (mandos 2 × 2 y aviso de papel) y paso 4 (estados).
 

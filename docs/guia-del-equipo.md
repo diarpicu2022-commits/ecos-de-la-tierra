@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque y la Cuenca ya están.** Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Siguiente tarea: §4.2 (paso 4b), las regiones que faltan; el Bosque, la Cuenca y la Costa ya están.** Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -224,8 +224,13 @@ y `components/Terrain/README.md`.
   visto bueno de Diego y decidir si el Devorador se mueve, porque tapa la
   torre del hito (anexo de Tierra Viva, «Paso 4b — El decorado de la
   Cuenca»).
+- **Costa hecha (2026-11-02):** `coast()` escribe 19 sprites (anexo de
+  Tierra Viva, «Paso 4b — El decorado de la Costa»).
+- **Permiso de Diego (2026-11-02):** fusionar lo necesario para la
+  presentación del miércoles; cada región entra en `rediseno/terreno` al
+  pasar sus medidas.
 - **Falta:**
-  - la Costa, la Llanura, la Cumbre, la Cripta y Valdehoja, una por una: se añade su función
+  - la Llanura, la Cumbre, la Cripta y Valdehoja, una por una: se añade su función
     al `CATALOG` del generador, igual que `forest()`;
   - ~~el monstruo de mapa~~: hecho el 2026-11-01 (punto 5).
 

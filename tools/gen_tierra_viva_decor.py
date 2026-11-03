@@ -637,6 +637,250 @@ def reeds(P: dict, sick: bool, sway: int = 0) -> np.ndarray:
     return img
 
 
+# --- piezas de la Costa ------------------------------------------------------------------
+# Daño de residuos (`plastic`, README del sistema §Mundo): la basura va suelta y
+# dispersa, nunca en fardos (`broken_coast.deco.txt`). La rampa `plastic` mezcla
+# los colores de la basura de verdad (azul de botella, tapa roja y amarilla,
+# blanco de bolsa); todo lo que se limpia con la ola solo tiene sprite enfermo.
+
+def bottle_at(img: np.ndarray, x: int, y: int, pl: list, dx: int = 1) -> None:
+    """Botella tumbada de 6 px hacia `dx`, con su tapa."""
+    for k in range(5):
+        img[y, x + dx * k] = rgba(pl[1])
+        img[y - 1, x + dx * k] = rgba(pl[2] if k else pl[1])
+    img[y - 1, x + dx] = rgba(pl[3])
+    img[y, x + dx * 5] = rgba(pl[4])
+
+
+def litter(P: dict) -> np.ndarray:
+    """Basura suelta (16×16, pisable): una botella, tapas y un trozo de bolsa,
+    separados, para que se lea como dispersa."""
+    img = canvas(16, 16)
+    pl, st = P["plastic"], P["stone"]
+    bottle_at(img, 3, 6, pl)
+    img[11, 11] = rgba(pl[4])
+    img[4, 12] = rgba(pl[5])
+    img[13, 4:6] = rgba(pl[6])
+    img[12, 5] = rgba(st[5])
+    img[9, 8] = rgba(pl[3])
+    return img
+
+
+def bottle(P: dict) -> np.ndarray:
+    """Botella tumbada en la arena (16×16, pisable), en diagonal."""
+    img = canvas(16, 16)
+    pl = P["plastic"]
+    s = canvas(16, 16)
+    for k in range(8):
+        x, y = 3 + k, 11 - k // 2
+        s[y - 1:y + 1, x] = rgba(pl[1])
+        s[y - 1, x] = rgba(pl[2])
+    s[7, 6:9] = rgba(pl[3])
+    s[6:8, 11] = rgba(pl[1])
+    s[6, 12] = rgba(pl[4])
+    s = tv.outlined(s, rgba(pl[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def torn_bag(P: dict) -> np.ndarray:
+    """Bolsa rota (16×16, pisable): blanca, arrugada y con el desgarro."""
+    img = canvas(16, 16)
+    st = P["stone"]
+    s = canvas(16, 16)
+    s[ellipse(16, 16, 8, 10, 5.5, 3.5)] = rgba(st[6])
+    s[ellipse(16, 16, 9, 11, 3.5, 2)] = rgba(st[5])
+    for x, y in ((5, 9), (8, 10), (10, 9)):
+        s[y, x] = rgba(st[4])
+    s[7:10, 12:14] = 0   # el desgarro
+    s[6, 4:6] = rgba(st[6])
+    s = tv.outlined(s, rgba(st[1]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def trail(P: dict) -> np.ndarray:
+    """El reguero (16×16, pisable): trozos pequeños en diagonal hacia el
+    nordeste, hacia la montaña."""
+    img = canvas(16, 16)
+    pl, st = P["plastic"], P["stone"]
+    for k, c in enumerate((pl[4], st[6], pl[2], pl[5], st[5], pl[1], pl[6])):
+        x, y = 1 + 2 * k, 14 - 2 * k
+        img[y, x] = rgba(c)
+        if k % 2:
+            img[y, x + 1] = rgba(c)
+    return img
+
+
+def buoy(P: dict) -> np.ndarray:
+    """Boya varada (16×16): flotador rojo y blanco, medio hundido en la
+    arena gris, con su cabo."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 6.5, 2.2, P, True)
+    red, st = P["roof_red"], P["stone"]
+    s = canvas(16, 16)
+    body = ellipse(16, 16, 8, 8.5, 5, 5)
+    yy, _ = np.indices((16, 16))
+    s[body] = rgba(red[3])
+    s[body & (yy >= 7) & (yy <= 9)] = rgba(st[6])
+    s[body & (yy >= 11)] = rgba(red[2])
+    s[5, 6:8] = rgba(red[5])
+    s = tv.outlined(s, rgba(red[0]))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    tv.line(img, 12, 11, 15, 14, rgba(P["wood"][3]))
+    return img
+
+
+def snagged_bag(P: dict, sick: bool) -> np.ndarray:
+    """Arbusto de duna (16×16). Enfermo, ramitas secas con bolsas enganchadas
+    por el viento; purificado, la mata con flores."""
+    img = canvas(16, 16)
+    foot(img, 8, 14, 7, 2, P, sick)
+    rs = np.random.default_rng(41)
+    if sick:
+        b = tv.piece("twigs", P, rs)
+        place(img, b, 8, 15)
+        st, pl = P["stone"], P["plastic"]
+        for x, y, c in ((4, 5, st[6]), (5, 5, st[5]), (4, 6, st[5]), (11, 7, pl[2]), (12, 7, pl[3]),
+                        (11, 8, pl[1]), (8, 3, st[6])):
+            img[y, x] = rgba(c)
+    else:
+        b = tv.piece("bush", P, rs)
+        for x, y in ((5, 5), (12, 6), (9, 9)):
+            b[y, x] = rgba(P["flower"][2])
+        place(img, b, 8, 15)
+    return img
+
+
+def ghost_net(P: dict, sick: bool) -> np.ndarray:
+    """Red fantasma enredada en las rocas (2×1, 32×16). Purificada, quedan
+    las rocas limpias, con conchas."""
+    img = canvas(32, 16)
+    foot(img, 16, 13.5, 15, 2.5, P, sick)
+    st = P["stone"]
+    yy, xx = np.indices((16, 32))
+    s = canvas(32, 16)
+    for cx, rx, ry in ((9, 7, 5), (23, 6.5, 4.5)):
+        m = ellipse(32, 16, cx, 9.5, rx, ry)
+        s[m] = rgba(st[3])
+        s[m & (yy < 9)] = rgba(st[4])
+        s[m & (yy < 8) & (xx < cx)] = rgba(st[5])
+        s[m & (yy > 12)] = rgba(st[2])
+    s = tv.outlined(s, rgba(st[0]))
+    if sick:
+        pl = P["plastic"]
+        # la red cuelga entre las dos rocas y por encima: las rocas se siguen
+        # viendo debajo (si la red las tapa, se lee como una estera)
+        net = ellipse(32, 16, 16, 8, 9, 5) & (yy < 12) & (((xx + yy) % 3 == 0) | ((xx - yy) % 3 == 0))
+        s[net] = rgba(pl[2])
+        s[net & ((xx + 2 * yy) % 7 == 0)] = rgba(pl[1])
+        for x, y in ((6, 4), (17, 6), (27, 5)):
+            s[y, x:x + 2] = rgba(pl[5])
+    else:
+        sand = P["sand"]
+        for x, y in ((4, 14), (29, 14), (16, 13)):
+            s[y, x:x + 2] = rgba(sand[4])
+            s[y - 1, x] = rgba(P["flower"][2])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def trash_mountain(P: dict, sick: bool) -> np.ndarray:
+    """Hito: la montaña de basura del vertedero. Huella de 4×4 casillas; el
+    sprite (80×72) la desborda hacia arriba y a los lados. Es un montón ancho
+    y escalonado, no una bola (captura del 2026-11-02: con silueta ovalada y
+    basura en puntos sueltos se leía como un huevo moteado). Enferma, bolsas,
+    botellas, cajas, latas y neumáticos de tamaño reconocible sobre una masa
+    oscura; purificada, una duna con la misma silueta, hierba, conchas y
+    flores."""
+    W, H = 80, 72
+    cx = W // 2
+    img = canvas(W, H)
+    foot(img, cx, 68, 37, 4, P, sick)
+    yy, xx = np.indices((H, W))
+    lumps = [(cx, 56, 36, 12), (cx - 12, 44, 20, 12), (cx + 12, 46, 18, 11), (cx - 2, 33, 15, 11),
+             (cx + 14, 36, 10, 8), (cx - 18, 52, 14, 9)]
+    hill = np.zeros((H, W), bool)
+    for lx, ly, rx, ry in lumps:
+        hill |= ellipse(W, H, lx, ly, rx, ry)
+    hill &= yy < 68
+    rs = np.random.default_rng(57)
+    s = canvas(W, H)
+    light = (xx - cx) * -0.5 + (yy - 40) * -0.9
+    if sick:
+        pl, st, red, w = P["plastic"], P["stone"], P["roof_red"], P["wood"]
+        s[hill] = rgba(st[2])
+        s[hill & (light > 4)] = rgba(st[3])
+        s[hill & (light < -14)] = rgba(st[1])
+        items = []
+        for _ in range(70):
+            x, y = int(rs.integers(4, W - 4)), int(rs.integers(22, 66))
+            if hill[y, x]:
+                items.append((y, x, int(rs.integers(0, 5))))
+        for y, x, kind in sorted(items):
+            if kind == 0:     # bolsa blanca
+                m = ellipse(W, H, x, y, 3.5, 2.4) & hill
+                s[m] = rgba(st[6])
+                s[m & (yy > y)] = rgba(st[5])
+            elif kind == 1:   # botella
+                bottle_at(s, x - 2, y, pl, 1 if x % 2 else -1)
+            elif kind == 2:   # caja
+                s[y - 2:y + 2, x - 2:x + 3] = rgba(w[3])
+                s[y - 2, x - 2:x + 3] = rgba(w[4])
+                s[y + 1, x - 2:x + 3] = rgba(w[1])
+            elif kind == 3:   # lata y tapa
+                s[y - 1:y + 1, x - 1:x + 1] = rgba(red[3])
+                s[y - 1, x - 1] = rgba(red[5])
+                s[y, x + 2] = rgba(pl[5])
+            else:             # neumático
+                m = ellipse(W, H, x, y, 3, 2) & hill
+                s[m] = rgba(st[0])
+                s[ellipse(W, H, x, y, 1.2, 0.8)] = rgba(st[2])
+        s[hill & ~tv.ndi.binary_erosion(hill)] = rgba(st[1])
+        out = st[0]
+    else:
+        base, g, fl = P["sand"], P["grass"], P["flower"]
+        s[hill] = rgba(base[2])
+        s[hill & (light > 2)] = rgba(base[3])
+        s[hill & (light > 16)] = rgba(base[4])
+        s[hill & (light < -12)] = rgba(base[1])
+        for _ in range(40):
+            x, y = int(rs.integers(4, W - 4)), int(rs.integers(24, 66))
+            if hill[y, x] and hill[min(H - 1, y + 2), x]:
+                s[y - 2:y + 1, x] = rgba(g[4])
+                s[y - 3, x] = rgba(g[6])
+                s[y - 1, x + 1] = rgba(g[3])
+                s[y, x - 1] = rgba(g[3])
+        for x, y in ((22, 62), (44, 64), (58, 58), (30, 46), (50, 40)):
+            s[y, x:x + 2] = rgba(base[4])
+            s[y - 1, x] = rgba(fl[2])
+        for x, y in ((26, 30), (48, 34), (36, 54), (62, 50)):
+            s[y, x] = rgba(fl[4])
+            s[y + 1, x] = rgba(g[3])
+        out = base[0]
+    s = tv.outlined(s, rgba(out))
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
+def coast_blocker(P: dict) -> np.ndarray:
+    """Paso cerrado de la Costa (16×16): chatarra y plástico retorcidos. Con la
+    ola desaparece (solo hay sprite enfermo)."""
+    img = canvas(16, 16)
+    foot(img, 8, 13.5, 7.5, 2.5, P, True)
+    ru, pl = P["rust"], P["plastic"]
+    s = canvas(16, 16)
+    tv.line(s, 2, 12, 13, 4, rgba(ru[2]), 2)
+    tv.line(s, 3, 5, 12, 12, rgba(ru[3]), 2)
+    s[ellipse(16, 16, 8, 9, 3, 2)] = rgba(pl[1])
+    s[8, 7:9] = rgba(pl[2])
+    s = tv.outlined(s, rgba(ru[0]))
+    s[4, 12] = rgba(pl[4])
+    s[11, 4] = rgba(pl[5])
+    img[s[..., 3] > 0] = s[s[..., 3] > 0]
+    return img
+
+
 # --- catálogo por zona -------------------------------------------------------------------
 
 def forest() -> dict[str, np.ndarray]:
@@ -694,7 +938,36 @@ def basin() -> dict[str, np.ndarray]:
     return out
 
 
-CATALOG = {"ashen_forest": forest, "tar_basin": basin}
+def coast() -> dict[str, np.ndarray]:
+    out = {}
+    for state in ("sick", "pure"):
+        sick = state == "sick"
+        P = tv.palette("enfermo" if sick else "sano", "costa")
+        P["rust"] = tv.ramp("rust")
+        if sick:
+            P["plastic"] = tv.ramp("plastic")
+            # el pie se asienta en la arena gris de la Costa enferma
+            P["stain"] = P["sand"]
+        out[f"trash_mountain_{state}"] = trash_mountain(P, sick)
+        out[f"snagged_bag_{state}"] = snagged_bag(P, sick)
+        out[f"ghost_net_{state}"] = ghost_net(P, sick)
+        out[f"bush_{state}"] = shrub(P, sick)
+        out[f"grass_{state}"] = tall_grass(P, sick, 0)
+        if sick:
+            out["litter_sick"] = litter(P)
+            out["bottle_sick"] = bottle(P)
+            out["torn_bag_sick"] = torn_bag(P)
+            out["trail_sick"] = trail(P)
+            out["buoy_sick"] = buoy(P)
+            out["blocker_sick"] = coast_blocker(P)
+            out["rock_sick"] = rock(P)
+            out["seedbed_sick"] = seedbed(P)
+        else:
+            out["grass_pure_1"] = tall_grass(P, False, 1)
+    return out
+
+
+CATALOG = {"ashen_forest": forest, "tar_basin": basin, "broken_coast": coast}
 
 
 def quantize(img: np.ndarray, state: str) -> int:
