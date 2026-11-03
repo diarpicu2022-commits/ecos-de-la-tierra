@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-10-30 (sesión 9; anexo del rediseño «Tierra Viva»)
+Última actualización: 2026-11-02 (decorado de la Cuenca y la Costa, paso 4b)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas
@@ -44,7 +44,7 @@ válidos:
 
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
 > Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
-> está hecho y aprobado; del paso 4b (§4.2 de la guía) está hecho el Bosque y faltan las otras regiones (falta el visto bueno de Diego). **Todo lo visual
+> está hecho y aprobado; del paso 4b (§4.2 de la guía) están hechos el Bosque, la Cuenca y la Costa (2026-11-02) y faltan la Llanura, la Cumbre, la Cripta y Valdehoja. Diego dio permiso (2026-11-02) para fusionar lo necesario de cara a la presentación del miércoles 2026-11-04. **Todo lo visual
 > sigue el sistema de diseño de `docs/ux/sistema-de-diseno/`.**
 
 

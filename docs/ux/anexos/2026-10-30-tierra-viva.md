@@ -769,6 +769,54 @@ los nuevos». Se adelanta lo que más se ve, que son los personajes.
     Ilan;
   - las diagonales.
 
+#### Paso 4b — El decorado de la Cuenca · 2026-11-02
+
+Cláusulas: 2 (paleta y cuantizado), 3 (contorno de la propia rampa) y la
+regla del sistema «en lo enfermo todo se asienta en el daño»
+(`project/README.md` §Mundo; `components/Regiones/README.md`: «ciénaga de
+crudo, balancines, tubería, barriles, árboles quemados» / «laguna limpia con
+juncos y bosque alrededor»).
+
+- **`basin()` en `tools/gen_tierra_viva_decor.py`**, igual que `forest()`.
+  Hace 25 sprites del catálogo de `tar_basin.deco.txt`:
+  - árbol y segunda copa: la misma pieza que la masa de la Cuenca (sano y
+    quemado sin brasas, `MASS["cuenca"]`);
+  - el hito, la torre de la refinería: 56 × 84, desborda su huella de
+    3 × 4 hacia arriba como el roble del Bosque. Enferma, con la llama de la
+    antorcha (`fire`, la causa activa), óxido a manchas y crudo que chorrea;
+    purificada, apagada y con enredadera y flores al pie;
+  - las viñetas: barril volcado (bidón `roof_blue`, como en
+    `referencias/z_cuenca_enfermo.png`), mancha de crudo, tubería partida
+    (purificada, empalmada con un collar), barca varada (casco negro hasta
+    el charco) y red rota (purificada, remendada y con flotadores);
+  - juncos (purificados, con espadañas y su cuadro de mecerse), hierba alta,
+    arbusto (enfermo, ramitas secas, regla de Regiones), roca, semillero y
+    paso cerrado (tuberías retorcidas en el crudo).
+- **El daño de la Cuenca es el crudo, no la ceniza.** `foot()` toma el cerco
+  de `P["stain"]` si la región lo da; la Cuenca le pasa la rampa `oil`, con
+  reflejos de `sheen`. El Bosque no cambia: regenerado, da los mismos bytes.
+- **Lo que se limpia con la ola** (crudo, barriles y paso cerrado) solo tiene
+  sprite enfermo: `WorldDecor.VANISH_WHEN_PURE` no lo monta purificado.
+- **Fallos propios, vistos en las capturas y corregidos:**
+  1. La barca, una elipse plana, se leía como un disco. Ahora tiene popa
+     recta, proa en punta y bancadas.
+  2. La red en gris medio no se veía sobre la hierba de lodo. Ahora la
+     cuerda es clara (`stone_5`; purificada, `wood_5`).
+- **Medido:**
+  - los 25 sprites pasan `verify_palette.py image` y `tv-state`, con 0 px
+    llevados a su token;
+  - `verify_zone tar_basin` da 45/45;
+  - `verify_terrain tar_basin` da 7/7 en las cuatro vistas.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-tar_basin-{enfermo,ola,sano}.png`
+  (hito `49 44`; viñetas `64 12`, `19 35` y `81 59`).
+- **Pendiente, para que lo decida Diego:** en lo enfermo, el Devorador de
+  mapa (PixelLab, unos 110 px, en `(50, 47)`) tapa casi entera la torre del
+  hito, que está justo detrás. Con el monstruo viejo de 48 px no pasaba.
+  Opciones: mover el monstruo unas casillas al sur o al este en
+  `tar_basin.deco.txt`, o aceptar que el hito se descubre al purificar.
+- **Siguiente:** la Costa (`broken_coast`), cuando Diego dé el visto bueno.
+
 #### Combate con el sistema de diseño, paso 1: la escena · 2026-11-02
 
 Diego: «sigue» (después de ver a Ilan y los monstruos de mapa).
@@ -831,3 +879,46 @@ Diego: «sigue» (después de ver a Ilan y los monstruos de mapa).
     sistema, cuatro (LUCHAR, ECO, BOLSA, HUIR). Lo decide Diego.
   - **Paso 4:** los estados, la cola de turnos (que no está en el sistema)
     y las cifras.
+
+#### Paso 4b — El decorado de la Costa · 2026-11-02
+
+**Permiso de Diego (2026-11-02, por chat, transmitido por Juan José
+Rueda):** fusionar todo lo necesario para llegar a la presentación del
+miércoles 2026-11-04. La Cuenca entró con el PR #21. Desde aquí cada región
+se fusiona en `rediseno/terreno` al pasar sus medidas, sin esperar el visto
+bueno paso a paso; las decisiones abiertas se siguen anotando para Diego.
+
+Cláusulas: 2, 3 y la regla del sistema «la basura va suelta y dispersa»
+(`broken_coast.deco.txt`; `components/Regiones/README.md`: «mar gris con
+botellas, bolsas, latas y redes; palmas secas» / «mar azul… conchas»).
+
+- **`coast()` en `tools/gen_tierra_viva_decor.py`**, 19 sprites:
+  - el hito, la montaña de basura (80 × 72, desborda su huella de 4 × 4).
+    Enferma, un montón escalonado de bolsas, botellas, cajas, latas y
+    neumáticos sobre una masa oscura; purificada, una duna con la misma
+    silueta, hierba, conchas y flores;
+  - las viñetas: arbusto con bolsas enganchadas (purificado, la mata con
+    flores), botella, red fantasma entre dos rocas (purificada, las rocas
+    limpias con conchas), boya varada, bolsa rota y el reguero en diagonal
+    hacia la montaña;
+  - basura suelta, arbusto de duna, hierba, roca, semillero y paso cerrado
+    (chatarra y plástico retorcidos).
+- **Daño:** la rampa `plastic` (azul de botella, tapas roja y amarilla,
+  blanco). El pie se asienta en la arena gris de la Costa enferma.
+- **Lo que se limpia con la ola** (basura, botella, bolsa, reguero, boya y
+  paso cerrado) solo tiene sprite enfermo.
+- **Fallos propios, vistos en las capturas y corregidos:**
+  1. La montaña, ovalada y con la basura en puntos sueltos, se leía como un
+     huevo moteado, y sana como una roca lisa. Ahora es un montón ancho y
+     escalonado, con objetos de tamaño reconocible.
+  2. La red fantasma tapaba las dos rocas y se leía como una estera. Ahora
+     cuelga entre ellas y por encima.
+- **Medido:** los 19 sprites pasan `image` y `tv-state`; `verify_zone
+  broken_coast` 47/47; `verify_terrain broken_coast` 7/7 en las cuatro
+  vistas. Bosque y Cuenca regenerados dan los mismos bytes.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-02-decorado{,-v1,-v2,-v3}-broken_coast-{enfermo,ola,sano}.png`
+  (hito `49 27`; viñetas `113 14`, `13 30` y `58 29`).
+- **Para Diego:** el Gólem de mapa (PixelLab) queda junto a la montaña y la
+  tapa en parte, como el Devorador en la Cuenca.
+- **Siguiente:** la Llanura (`withered_plain`).
