@@ -207,7 +207,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | §4.6 (R3) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
-| 17 | Decorado de Valdehoja (las seis regiones: HECHO 2026-11-02, PR #21, #22, #23, #25 y el de la Cripta) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
+| 17 | Decorado de Valdehoja (las seis regiones: HECHO 2026-11-02, PR #21, #22, #23, #25 y #26) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
 | 18 | Fauna y animales | `tools/gen_world_decor.py` | sistema: «aparecen flores y fauna» | §4.2 |
 | 19 | Valdehoja orgánica, edificios de PixelLab y vecinos | `data/world/zones/valdehoja.*` | `components/Overworld`, `assets/source/pixellab/bld`, `npc` | §4.3 y §4.6 |
 | 20 | Caminata de Bruma, Coral, Nix y Suri, y las diagonales | `assets/source/pixellab/<nombre>/` (solo rotaciones) | `Cast`: 8 rotaciones y 4 cuadros | generar en PixelLab y correr `gen_tierra_viva_cast.py` |
