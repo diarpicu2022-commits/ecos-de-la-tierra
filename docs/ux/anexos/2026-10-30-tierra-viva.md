@@ -1221,3 +1221,34 @@ Sustituye al panel de ceniza del contrato «Umbral».
   encounters 82/82.
 - **Capturas a 640 × 360:**
   `docs/ux/capturas/2026-11-03-cartel-{valdehoja,ashen_forest,tar_basin-purificada}.png`.
+
+#### Paso 4b — Animales y fauna de Valdehoja · 2026-11-03
+
+Guía del equipo §3.1, fila 18. Enmienda 7 (animales siempre, fauna solo en lo
+purificado) y enmienda 8 (solo se mueve lo purificado).
+
+- **En `village()`**, 8 sprites:
+  - gallina (12 × 12, dos cuadros, el segundo picoteando), perro (20 × 16) y
+    cabra (20 × 18), un solo sprite para los dos estados;
+  - pájaro (10 × 8, alas arriba y abajo) y mariposa (9 × 8, abierta y
+    plegada), solo purificados.
+  - Los viejos eran de 8 px, para el Ilan de 16; estos van a la escala del
+    Ilan de 48. Contorno del tono más oscuro de su propia rampa.
+- **`WorldDecor._mark_motion`** busca el segundo cuadro (`<id>_1_<zona>_<estado>.png`)
+  primero en `assets/sprites/world/tierra_viva/` y después en el decorado
+  viejo.
+- **Yara sigue con el sprite viejo:** es un personaje (componente `Cast`) y el
+  sistema pide que salga de PixelLab, donde todavía no está.
+- **El HUD del mapa no se empieza todavía:** el contrato «Piel nueva» dice
+  que R3 abre su propio anexo (usuarios, investigación, direcciones y la
+  elección de Diego), y el HUD enseña mandos del combate de acción (R2), que
+  todavía no existe.
+- **Medido:**
+  - los 8 sprites pasan `image` y `tv-state`;
+  - `verify_zone valdehoja` 55/55: la fauna está dentro de una parte y
+    vuelve al purificar, la gallina anda en lo purificado y se queda quieta
+    en lo enfermo;
+  - `verify_terrain valdehoja` 8/8;
+  - las demás zonas en verde, y movement, encounters y flow también.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-fauna-valdehoja-{enfermo,sano}.png`.

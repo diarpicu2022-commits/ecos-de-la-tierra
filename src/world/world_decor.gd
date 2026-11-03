@@ -203,9 +203,15 @@ static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure
 		var base: String = SPRITE.get(id, id)
 		frames = [sprite.texture]
 		if base.ends_with("_0"):
-			var alt := "%s%s_1_%s.png" % [DECOR_DIR, base.trim_suffix("_0"), "pure" if pure else "sick"]
-			if ResourceLoader.exists(alt):
-				frames.append(load(alt))
+			# El segundo cuadro, primero el de Tierra Viva de la zona (en
+			# cualquiera de los dos estados, como `_texture`) y después el viejo.
+			var stem := base.trim_suffix("_0")
+			for alt in ["%s%s_1_%s_pure.png" % [TIERRA_VIVA_DIR, stem, zone_id],
+					"%s%s_1_%s_sick.png" % [TIERRA_VIVA_DIR, stem, zone_id],
+					"%s%s_1_%s.png" % [DECOR_DIR, stem, "pure" if pure else "sick"]]:
+				if ResourceLoader.exists(alt):
+					frames.append(load(alt))
+					break
 	if frames.is_empty():
 		return
 	sprite.set_meta("frames", frames)
