@@ -102,6 +102,7 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action("confirm"):
 		_confirm()
 	elif event.is_action("cancel"):
+		GameAudio.play("ui_cancel")
 		cancelled.emit()
 	else:
 		return
@@ -115,6 +116,7 @@ func _move(direction: int) -> void:
 	if entries.is_empty():
 		return
 	focused = wrapi(focused + direction, 0, entries.size())
+	GameAudio.play("ui_move")
 	_tween_cursor()
 	_announce_focus()
 
@@ -124,7 +126,9 @@ func _confirm() -> void:
 		return
 	var entry: Dictionary = entries[focused]
 	if not entry.get("enabled", true):
+		GameAudio.play("ui_denied")
 		return
+	GameAudio.play("ui_confirm")
 	option_chosen.emit(entry)
 
 
