@@ -6,7 +6,7 @@ extends Node2D
 ##
 ## Cambio de zona: cuando el centro de la caja de colisión sale del mapa por
 ## una salida, empieza el fundido. Son dos medios fundidos lineales de
-## `DUR_ZONE_FADE` en `ASH_950`, el color más profundo de la paleta (no hay
+## `DUR_ZONE_FADE` en `TV_INK_0`, el color más profundo del sistema (no hay
 ## token «negro»). Durante el de salida el cuerpo se detiene. Con la pantalla
 ## ya cubierta se carga la zona de destino, el cuerpo aparece en `to_cell`
 ## mirando igual y **vuelve a leer el teclado**: si la tecla sigue pulsada,
@@ -71,10 +71,10 @@ var _fade_frames := 0
 func _ready() -> void:
 	DesignTokens.load_settings()
 	# Fuera de la zona solo se ve cuando el mapa es menor que la pantalla, en
-	# las bandas que deja al centrarse. Ese es el papel de `ASH_950` en la
+	# las bandas que deja al centrarse. Ese es el papel de `TV_INK_0` en la
 	# paleta («fondo más profundo y bandas del viewport»); sin esto, Godot pinta
 	# su gris por defecto, que no es un token.
-	RenderingServer.set_default_clear_color(DesignTokens.ASH_950)
+	RenderingServer.set_default_clear_color(DesignTokens.TV_INK_0)
 	_exits = ZoneRules.load_exits()
 	_names = ZoneRules.load_names()
 	# El rótulo va por debajo de la cortina: aparece con la zona, no encima del
@@ -85,7 +85,7 @@ func _ready() -> void:
 	add_child(label_layer)
 	var fade_layer := CanvasLayer.new()
 	fade_layer.layer = 10
-	curtain.color = DesignTokens.ASH_950
+	curtain.color = DesignTokens.TV_INK_0
 	curtain.size = get_viewport_rect().size
 	curtain.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	curtain.modulate.a = 0.0

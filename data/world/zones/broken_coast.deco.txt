@@ -27,6 +27,11 @@
 ; g = decor, grass, pisable                   hierba de duna
 ; R = decor, rock, sólido                     roca partida
 ; @ = spawn, start, pisable                   llegada desde la Cuenca
+; à = decor, mangrove, sólido, 3x2
+; á = decor, mangrove, sólido, 3x2
+; â = decor, mangrove, sólido, 3x2
+; ã = decor, npc_pescadora, sólido, 1x1
+; ä = decor, npc_nino_costa, sólido, 1x1
 ---
      u uuu u u uu  uuu uuu uu  uuu uuu uuu  uu u u uuu uuu  uu uuu u u uu  u u uuu uu  uu  uu  u     u u u uuu uu   uu  uu uuu
      u uuu uuu uuu u   u   u   uuu uuu u u  u    u uuu u u uu  u   u    uu uuu uu  u u uuu uuu uuu uu   uu     uuu uuu   u  uu
@@ -39,9 +44,9 @@
                      S           R      l   k   u  uu  uu  uuu u              l              u  u  uuu uuu uu           uu uuu
                        n   R   R   l            uu uuu uuu  uu u           l   l             u uu   uu uuu uu           uu u u
                                                                 ll
-            n           Rl  R      l       uuu uu  uuu uuu          R  n            l           uu uuu u    Rn             uuu u
-                k   n                                                                                            g          uu
-      uuuu      l      n         l      l  u u  u   uu     uu       l      n k      l           u  uuu       R
+            n           Rl  R      l       uuu uu  uuu uuu          R  n   ä        l           uu uuu u    Rn             uuu u
+                k   n                                                                 ááá                        g          uu
+      uuuu      l      n         l      l  u u  u   uu     uu       l      n k      l ááá       u  uuu       R
                             ll  l                                      l    ll     ll                       l   1    R a
       u uu       k   R   l                                                                                   1   a a 1
        uu                           uu uuu uuu uu   uu uuu u u uuu u   u             l  uu  uu uuu u           a              @
@@ -55,16 +60,16 @@
             uu      uu uuu u u u   u u    l            ln       uu uu   uu uuu u u  uu u u  uu     u u u u u u uuu u   uuu u u u
             uu     uuu  uu u u uuu uu  u    n  YYYY ll   n
                  k                             YYYY         l   u  u u uuu  uu uuu  uu  uu uuu  uu uuu uuu uuu uu   u  uu  uuu u
-            bb       u uu    u  uu uu  Rn      YYYY     n    l
-    k       R        u  u  uu  uuu uu    n  k  YYYY                              X
+      âââ   bb       u uu    u  uu uu  Rn      YYYY     n    l
+    k âââ   R        u  u  uu  uuu uu    n  k  YYYY                              X
                 lR      uu u u uu  uuu uR    l  l   n   g    c                   X                                             u
                                                     g   c3 c3   u  uuu uuu u   uuu  uu uu   u  u u uuu  uu uuu uuu  uu   u uuu
-        k   bb l    k   u  uuu u u uuu u        l    M          uu  u    u  uu uuu uuu uuu uuu uuu   u uuu     uuu uu  uuu uuu u
+        k ã bb l    k   u  uuu u u uuu u        l    M          uu  u    u  uu uuu uuu uuu uuu uuu   u uuu     uuu uu  uuu uuu u
         R      l   l    uu   u  u  uuu u   k    nl  ll   l   u u u uu  uuu uuu u                                uu  uu u u  uu u
             2        g  uu uu  uuu u u u            k  l       uuu  uu  u  u u u                                u  uuu  u   u
                                                  k                                   l k
-                 l     uuu uu  uuu uuu   u uuu u       u uu  u uu  uuu uuu u        l        g   k             g     u  uu uuu
-       R     l  g                                    u    u  u   u uuu uuu uu  R                g      nR            u  uu uuu u
+                 l     uuu uu  uuu uuu   u uuu u       u uu  u uu  uuu uuu u        l        g   k ààà         g     u  uu uuu
+       R     l  g                                    u    u  u   u uuu uuu uu  R                g  ààà nR            u  uu uuu u
                l     u uuu  uu  uu u u  u  uuu u       u     u uuu uuu uuu uu   l              lk                    u uuu uu  u
                   lk                                                                                               u
                                                              u uuu uuu u u                       k                  u  u   uuu u

@@ -42,7 +42,7 @@ const PLATE_PAD := float(DesignTokens.SPACE_4)
 var entries: Array[Dictionary] = []
 var focused: int = 0
 ## La lista se dibuja sobre `TvFrame.PLATE`, con texto de pizarra.
-var plate := false
+var plate := true
 
 var _grid := false
 ## Mando del que se vino, para que Escape vuelva a él. -1 si no hay.
@@ -245,7 +245,7 @@ func list_capacity() -> int:
 
 ## Ancho que le queda a la etiqueta entre el cursor y el coste.
 func label_room(entry: Dictionary) -> float:
-	var pad := PLATE_PAD if plate else 0.0
+	var pad := PLATE_PAD
 	var cost: int = int(entry.get("cost", -1))
 	var reserved: float = 0.0 if cost < 0 else _width("%d" % cost) + DesignTokens.SPACE_4
 	return size.x - pad * 2.0 - CURSOR_WIDTH - reserved
@@ -265,18 +265,11 @@ func _draw() -> void:
 
 	# El cursor se dibuja como una banda, no solo como una flecha: a 11 px de
 	# texto una flecha sola no basta para saber dónde estás de un vistazo.
-	if plate:
-		TvFrame.draw(self, TvFrame.PLATE, Rect2(Vector2.ZERO, size))
-		# `TV_UI_0` y no `TV_UI_2`: el coste en aviso no llega a 4,5:1 sobre la
-		# segunda, y la banda es justo donde se lee.
-		draw_rect(Rect2(TvFrame.PLATE_EDGE_SIDE, roundf(_cursor_y),
-				size.x - TvFrame.PLATE_EDGE_SIDE * 2.0, ROW_HEIGHT), DesignTokens.TV_UI_0)
-	else:
-		var band := Rect2(Vector2(0, roundf(_cursor_y)),
-				Vector2(size.x, ROW_HEIGHT))
-		draw_rect(band, DesignTokens.PANEL_FILL_DEEP)
-		draw_rect(Rect2(band.position, Vector2(2, band.size.y)),
-				DesignTokens.BORDER_FOCUS)
+	TvFrame.draw(self, TvFrame.PLATE, Rect2(Vector2.ZERO, size))
+	# `TV_UI_0` y no `TV_UI_2`: el coste en aviso no llega a 4,5:1 sobre la
+	# segunda, y la banda es justo donde se lee.
+	draw_rect(Rect2(TvFrame.PLATE_EDGE_SIDE, roundf(_cursor_y),
+			size.x - TvFrame.PLATE_EDGE_SIDE * 2.0, ROW_HEIGHT), DesignTokens.TV_UI_0)
 
 	for i in range(entries.size()):
 		_draw_row(i, entries[i])
@@ -287,20 +280,15 @@ func _draw_row(index: int, entry: Dictionary) -> void:
 	var baseline: float = top + 9.0
 	var is_focused: bool = index == focused
 	var enabled: bool = entry.get("enabled", true)
-	var pad := PLATE_PAD if plate else 0.0
+	var pad := PLATE_PAD
 
 	if is_focused:
-		_row_text(pad, baseline, CURSOR, DesignTokens.TV_TEXT_HIGHLIGHT if plate
-				else DesignTokens.TEXT_CRITICAL)
+		_row_text(pad, baseline, CURSOR, DesignTokens.TV_TEXT_HIGHLIGHT)
 
 	# La etiqueta se recorta a lo que queda entre el cursor y el coste. Sin
 	# esto, un objetivo llamado «Espectro del Monocultivo» se salía del menú y
 	# se metía encima del mensaje de al lado.
-	var tone: Color
-	if plate:
-		tone = DesignTokens.TV_TEXT_HIGHLIGHT if is_focused else DesignTokens.TV_TEXT_ON_SLATE
-	else:
-		tone = DesignTokens.TEXT_PRIMARY if is_focused else DesignTokens.TEXT_SECONDARY
+	var tone: Color = DesignTokens.TV_TEXT_HIGHLIGHT if is_focused else DesignTokens.TV_TEXT_ON_SLATE
 	_row_text(pad + CURSOR_WIDTH, baseline,
 			_fit(str(entry.get("label", "")), label_room(entry)), tone)
 
@@ -309,18 +297,14 @@ func _draw_row(index: int, entry: Dictionary) -> void:
 	var cost: int = int(entry.get("cost", -1))
 	if cost >= 0:
 		var cost_label: String = "%d" % cost
-		var color: Color = DesignTokens.TV_RUST_4 if plate else DesignTokens.TEXT_WARNING
+		var color: Color = DesignTokens.TV_RUST_4
 		if enabled:
-			color = DesignTokens.TV_TEXT_MUTED_SLATE if plate else DesignTokens.TEXT_SECONDARY
+			color = DesignTokens.TV_TEXT_MUTED_SLATE
 		_row_text(size.x - pad - _width(cost_label), baseline, cost_label, color)
 
 
 func _row_text(x: float, baseline: float, value: String, color: Color) -> void:
-	if plate:
-		TvFrame.slate_text(self, _font, Vector2(x, baseline), value, color)
-	else:
-		draw_string(_font, Vector2(x, baseline), value, HORIZONTAL_ALIGNMENT_LEFT, -1,
-				DesignTokens.FONT_SIZE_BODY, color)
+	TvFrame.slate_text(self, _font, Vector2(x, baseline), value, color)
 
 
 func _width(text: String) -> float:

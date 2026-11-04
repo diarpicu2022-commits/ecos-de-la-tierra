@@ -186,13 +186,13 @@ func _status_flag(down: bool) -> String:
 
 func _hp_fill(down: bool) -> Color:
 	if down:
-		return DesignTokens.ASH_600
+		return DesignTokens.TV_UI_2
 	var ratio: float = _ratio()
 	if ratio <= HP_CRITICAL:
-		return DesignTokens.EMBER_500
+		return DesignTokens.TV_HP_LOW
 	if ratio <= HP_WOUNDED:
-		return DesignTokens.EMBER_400
-	return DesignTokens.ASH_050
+		return DesignTokens.TV_HP_MID
+	return DesignTokens.TV_HP_HIGH
 
 
 func _hp_tone(down: bool) -> Color:
@@ -204,7 +204,7 @@ func _hp_tone(down: bool) -> Color:
 
 func _bar(origin: Vector2, width: float, height: float, ratio: float,
 		fill: Color) -> void:
-	draw_rect(Rect2(origin, Vector2(width, height)), DesignTokens.BAR_TRACK)
+	draw_rect(Rect2(origin, Vector2(width, height)), DesignTokens.TV_INK_1)
 	if ratio > 0.0:
 		# Al menos 1 px mientras quede algo: una barra a cero diría que no hay
 		# nada, y eso es otra información.

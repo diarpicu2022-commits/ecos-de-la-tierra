@@ -79,7 +79,6 @@ const PARTY_ROWS_SHOWN := 3
 ## Ficha del enemigo enfocado, arriba a la izquierda (`EnemyPlate`, 10, 10).
 const ENEMY_PANEL := Vector2(10, 10)
 
-const PARTY_SPRITE_DIR := "res://assets/sprites/party/"
 ## Sprites del sistema de diseño (`tools/gen_tierra_viva_cast.py`) y fondos
 ## (`tools/gen_tierra_viva_battle.py`).
 const PARTY_BACK_DIR := "res://assets/sprites/party/tierra_viva/"
@@ -137,7 +136,6 @@ var _backgrounds := {}
 var _drawn_pure := false
 var _menu: ActionMenu = null
 var _overlay: ResultOverlay = null
-var _turns: TurnOrderStrip = null
 var _numbers: DamageNumbers = null
 ## Cifras que ya ocurrieron en las reglas pero todavía no se han enseñado. Se
 ## sueltan al ritmo del registro, igual que las barras.
@@ -173,15 +171,10 @@ func _ready() -> void:
 	size = SCREEN
 
 	for key in ["ilan", "bruma", "coral", "nix", "suri"]:
-		var path: String = PARTY_BACK_DIR + key + "_back.png"
-		if not ResourceLoader.exists(path):
-			path = PARTY_SPRITE_DIR + key + ".png"
-		_party_art.append(load(path) if ResourceLoader.exists(path) else null)
+		_party_art.append(load(PARTY_BACK_DIR + key + "_back.png"))
 	var zone := region if region != "" else "ashen_forest"
 	for state in ["enfermo", "sano"]:
-		var path := "%s%s_%s.png" % [BACKGROUND_DIR, zone, state]
-		if ResourceLoader.exists(path):
-			_backgrounds[state] = load(path)
+		_backgrounds[state] = load("%s%s_%s.png" % [BACKGROUND_DIR, zone, state])
 
 	_menu = ActionMenu.new()
 	_menu.position = options_rect().position
@@ -192,12 +185,6 @@ func _ready() -> void:
 	_menu.option_chosen.connect(_on_option_chosen)
 	_menu.cancelled.connect(_on_menu_cancelled)
 	_menu.close()
-
-	_turns = TurnOrderStrip.new()
-	# La cola de turnos no está en el sistema de diseño; mientras se decide,
-	# va arriba a la derecha, donde no tapa la placa ni al monstruo.
-	_turns.position = Vector2(SCREEN.x - 200.0, DesignTokens.SPACE_4)
-	add_child(_turns)
 
 	_numbers = DamageNumbers.new()
 	_numbers.size = SCREEN
@@ -523,14 +510,11 @@ func _advance_queue() -> void:
 		return
 
 	var event: Dictionary = _queue.pop_front()
-	if event.has("order"):
-		_turns.set_pending(event["order"])
 
 	match event["type"]:
 		"turn":
 			# El cambio de turno no consume tiempo propio: se enciende la ficha
 			# y se pasa de inmediato a lo que ese turno produjo.
-			_turns.set_current(event["combatant"] as Combatant)
 			_advance_queue()
 			return
 		"round":
@@ -560,7 +544,6 @@ func _advance_queue() -> void:
 			_begin_choice(event["character"] as Character)
 		"end":
 			_flush_views()
-			_turns.clear()
 			_finish(int(event["result"]))
 	queue_redraw()
 
@@ -869,10 +852,7 @@ func parallax_offset(depth: int) -> int:
 ## sano cuando todos lo están (`combate_purificado.png`).
 func _draw_background() -> void:
 	var state := "sano" if _all_purified() else "enfermo"
-	if _backgrounds.has(state):
-		draw_texture(_backgrounds[state], Vector2.ZERO)
-		return
-	_draw_region_background()
+	draw_texture(_backgrounds[state], Vector2.ZERO)
 
 
 func _all_purified() -> bool:
@@ -882,92 +862,6 @@ func _all_purified() -> bool:
 		if view.monster == null or not view.monster.is_purified:
 			return false
 	return true
-
-
-## Fondo regional en tres capas (contrato «Persiana» §4), sacado de las
-## rampas del tileset de la región y siempre en su estado enfermo: se lucha
-## contra la causa. Lejos, la silueta propia de la región contra el cielo de
-## ceniza; en medio, la franja de su material; cerca, ese material en su tono
-## más oscuro, para que el contraste baje junto a los paneles.
-const REGION_GROUND := {
-	"ashen_forest": [DesignTokens.SOIL_500, DesignTokens.SOIL_700],
-	"tar_basin": [DesignTokens.WATER_500, DesignTokens.WATER_700],
-	"broken_coast": [DesignTokens.WATER_300, DesignTokens.SOIL_700],
-	"withered_plain": [DesignTokens.FLORA_500, DesignTokens.SOIL_700],
-	"waning_peak": [DesignTokens.ASH_700, DesignTokens.WATER_700],
-	"greed_crypt": [DesignTokens.WATER_500, DesignTokens.WATER_700],
-}
-
-
-func _draw_region_background() -> void:
-	var far := parallax_offset(1)
-	var mid := parallax_offset(2)
-	var near := parallax_offset(3)
-	var ground: Array = REGION_GROUND.get(region, [DesignTokens.ASH_800, DesignTokens.ASH_900])
-	# Cielo de ceniza, como el genérico.
-	draw_rect(Rect2(0, 0, SCREEN.x, FIELD_TOP + 34.0), DesignTokens.ASH_900)
-	draw_rect(Rect2(0, FIELD_TOP + 34.0, SCREEN.x, HORIZON - FIELD_TOP - 34.0), DesignTokens.ASH_800)
-	_draw_silhouette(far)
-	# Medio: la franja del material, con su línea de horizonte.
-	draw_rect(Rect2(0, HORIZON, SCREEN.x, 1), DesignTokens.ASH_600)
-	draw_rect(Rect2(0, HORIZON + 1.0, SCREEN.x, 22.0), ground[0])
-	for i in 12:
-		var x := float((i * 41 + mid) % int(SCREEN.x))
-		draw_rect(Rect2(x, HORIZON + 6.0 + (i % 3) * 5.0, 10.0 + (i % 4) * 4.0, 1.0), ground[1])
-	# Cerca: el material oscuro hasta los paneles.
-	draw_rect(Rect2(0, HORIZON + 23.0, SCREEN.x, BAND_TOP - HORIZON - 23.0), ground[1])
-	for i in 8:
-		var x := float((i * 67 + near) % int(SCREEN.x))
-		draw_rect(Rect2(x, HORIZON + 30.0 + (i % 4) * 9.0, 18.0 + (i % 3) * 6.0, 1.0), DesignTokens.ASH_950)
-
-
-## La silueta lejana de cada región, en ASH_700 contra el cielo. Formas
-## rectas y en píxel entero: troncos, torres, montones, silo, picos, columnas.
-func _draw_silhouette(dx: int) -> void:
-	var c := DesignTokens.ASH_700
-	match region:
-		"ashen_forest":
-			for i in 14:
-				var x := float(i * 35 + 6 + dx)
-				var h := 30.0 + float((i * 13) % 26)
-				draw_rect(Rect2(x, HORIZON - h, 3.0, h), c)
-				draw_rect(Rect2(x - 5.0, HORIZON - h + 8.0, 5.0, 2.0), c)
-				draw_rect(Rect2(x + 3.0, HORIZON - h + 14.0, 6.0, 2.0), c)
-		"tar_basin":
-			for i in 5:
-				var x := float(i * 96 + 20 + dx)
-				var h := 44.0 + float((i * 17) % 22)
-				draw_rect(Rect2(x, HORIZON - h, 8.0, h), c)
-				draw_rect(Rect2(x - 6.0, HORIZON - h * 0.5, 34.0, 6.0), c)
-				draw_rect(Rect2(x + 22.0, HORIZON - h * 0.7, 5.0, h * 0.7), c)
-		"broken_coast":
-			for i in 7:
-				var cx := float(i * 72 + 30 + dx)
-				var h := 14.0 + float((i * 11) % 16)
-				for row in int(h):
-					var span := (h - row) * 1.6
-					draw_rect(Rect2(cx - span, HORIZON - row - 1.0, span * 2.0, 1.0), c)
-		"withered_plain":
-			draw_rect(Rect2(330.0 + dx, HORIZON - 52.0, 26.0, 52.0), c)
-			draw_rect(Rect2(326.0 + dx, HORIZON - 58.0, 34.0, 6.0), c)
-			for i in 30:
-				draw_rect(Rect2(float(i * 16 + dx), HORIZON - 6.0, 10.0, 6.0), c)
-		"waning_peak":
-			var peaks := [30, 52, 38, 64, 44, 58, 34, 48]
-			var step: float = SCREEN.x / float(peaks.size())
-			for i in peaks.size():
-				var h: float = float(peaks[i])
-				for row in int(h):
-					var span: float = (h - row) * 0.55
-					var tone := DesignTokens.ASH_600 if row > h - 8.0 else c
-					draw_rect(Rect2(step * i + step / 2.0 - span + dx, HORIZON - row - 1.0,
-						span * 2.0, 1.0), tone)
-		"greed_crypt":
-			draw_rect(Rect2(0, FIELD_TOP, SCREEN.x, 8.0), c)
-			for i in 9:
-				var x := float(i * 56 + 10 + dx)
-				draw_rect(Rect2(x, FIELD_TOP + 8.0, 12.0, HORIZON - FIELD_TOP - 8.0), c)
-				draw_rect(Rect2(x - 3.0, FIELD_TOP + 8.0, 18.0, 4.0), c)
 
 
 ## Plataforma elíptica bajo un bando. Es lo que convierte el suelo en un
@@ -981,7 +875,7 @@ func _platform(center: Vector2, half_width: float, half_height: float) -> void:
 			continue
 		var y: float = center.y + row
 		# El borde superior va un tono más claro: es donde daría la luz.
-		var tone: Color = DesignTokens.ASH_700 if row < -half_height * 0.45 				else DesignTokens.ASH_800
+		var tone: Color = DesignTokens.TV_UI_2 if row < -half_height * 0.45 				else DesignTokens.TV_UI_1
 		draw_rect(Rect2(Vector2(roundf(center.x - span), y),
 				Vector2(roundf(span * 2.0), 1.0)), tone)
 
@@ -992,7 +886,7 @@ func _shadow(center: Vector2, half_width: float) -> void:
 	for row in range(3):
 		var shrink: float = half_width * (1.0 - row * 0.3)
 		draw_rect(Rect2(Vector2(roundf(center.x - shrink), center.y + row),
-				Vector2(roundf(shrink * 2.0), 1.0)), DesignTokens.ASH_950)
+				Vector2(roundf(shrink * 2.0), 1.0)), DesignTokens.TV_INK_0)
 
 
 ## Plataforma y sombra de cada enemigo. Se dibujan aquí, en la pantalla, y no

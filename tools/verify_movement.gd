@@ -39,7 +39,7 @@ extends Node2D
 ##     de pie al soltar y no da pasos empujando una pared.
 ##
 ## Paso 6 — los estados.
-##   - un mapa menor que la pantalla se queda centrado, con bandas ASH_950;
+##   - un mapa menor que la pantalla se queda centrado, con bandas TV_INK_0;
 ##   - la bandera purified_<zona> de GameState pinta la zona purificada;
 ##   - las salidas hacia y desde la zona pequeña se cruzan con la tecla pulsada
 ##     (casos añadidos a «cruzar una salida»).
@@ -618,7 +618,7 @@ func _test_states() -> void:
 	var state := get_node("/root/GameState")
 
 	# Mapa menor que la pantalla en los dos ejes: se centra, y lo que queda
-	# alrededor es ASH_950, las bandas del viewport.
+	# alrededor es TV_INK_0, las bandas del viewport.
 	world.enter_zone("prueba_c", Vector2i(10, 8))
 	var map := Rect2i(Vector2i.ZERO, world.zone_size * T)
 	for dir in [Vector2i(-1, -1), Vector2i(1, -1), Vector2i(1, 1)]:
@@ -627,8 +627,8 @@ func _test_states() -> void:
 			world.camera.advance()
 	_check("mapa menor que la pantalla (%dx%d): la camara se queda centrada" % [map.size.x, map.size.y],
 		world.camera.center == map.get_center(), "centro %s, mapa %s" % [world.camera.center, map])
-	_check("  y las bandas de alrededor son ASH_950, no el gris de Godot",
-		RenderingServer.get_default_clear_color() == DesignTokens.ASH_950,
+	_check("  y las bandas de alrededor son TV_INK_0, no el gris de Godot",
+		RenderingServer.get_default_clear_color() == DesignTokens.TV_INK_0,
 		"%s" % RenderingServer.get_default_clear_color())
 
 	# Bandera de zona purificada: el mundo pinta el estado que dice GameState.

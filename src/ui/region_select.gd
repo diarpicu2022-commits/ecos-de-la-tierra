@@ -18,7 +18,7 @@ signal region_chosen(index: int)
 const MENU_POSITION := Vector2(24, 78)
 const MENU_SIZE := Vector2(184, 72)
 const ART_CENTER := Vector2(352, 108)
-const SPRITE_DIR := "res://assets/sprites/monsters/"
+const SPRITE_DIR := "res://assets/sprites/monsters/tierra_viva/"
 
 var _font: Font = null
 var _menu: ActionMenu = null
@@ -35,8 +35,7 @@ func _ready() -> void:
 	# Las texturas se cargan aquí y no dentro de `_draw()`: en el primer cuadro
 	# todavía no están listas y Godot dibuja un rectángulo blanco en su lugar.
 	for encounter in Encounters.all():
-		var path: String = SPRITE_DIR + str(encounter["monster"]) + ".png"
-		_art.append(load(path) if ResourceLoader.exists(path) else null)
+		_art.append(load(SPRITE_DIR + str(encounter["monster"]) + ".png"))
 
 	_menu = ActionMenu.new()
 	_menu.position = MENU_POSITION
@@ -67,24 +66,16 @@ func _on_chosen(entry: Dictionary) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), DesignTokens.ASH_950)
-	# Franja de cielo, la misma escalera de tokens que el campo de batalla.
-	draw_rect(Rect2(Vector2.ZERO, Vector2(size.x, 60)), DesignTokens.ASH_900)
-	draw_rect(Rect2(Vector2(0, 60), Vector2(size.x, 100)), DesignTokens.ASH_800)
-
+	draw_rect(Rect2(Vector2.ZERO, size), DesignTokens.TV_INK_1)
 	draw_string(_font, Vector2(24, 34), "ECOS DE LA TIERRA",
 			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_TITLE,
-			DesignTokens.TEXT_PRIMARY)
-	draw_string(_font, Vector2(24, 50), "Elige una region",
-			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-			DesignTokens.TEXT_SECONDARY)
+			DesignTokens.TV_TEXT_ON_SLATE)
+	_text("Elige una región", Vector2(24, 50), DesignTokens.TV_TEXT_MUTED_SLATE)
 
 	_draw_detail()
 
-	draw_string(_font, Vector2(24, 260),
-			"Flechas o WASD para moverte · Enter para entrar",
-			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-			DesignTokens.TEXT_SECONDARY)
+	_text("Flechas o WASD para moverte · Enter para entrar", Vector2(24, 260),
+			DesignTokens.TV_TEXT_MUTED_SLATE)
 
 
 ## Ficha de la región enfocada: el monstruo, su daño y quién lo ataja.
@@ -96,30 +87,29 @@ func _draw_detail() -> void:
 		draw_texture(art, ART_CENTER - art.get_size() * 0.5)
 
 	var panel := Rect2(Vector2(232, 152), Vector2(224, 84))
-	draw_rect(panel, DesignTokens.PANEL_FILL)
-	draw_rect(panel, DesignTokens.BORDER_IDLE, false, DesignTokens.BORDER_WIDTH)
+	TvFrame.draw(self, TvFrame.PLATE, panel)
 
 	var pad: float = DesignTokens.SPACE_8
 	var x: float = panel.position.x + pad
 	_text(str(encounter["place"]), Vector2(x, panel.position.y + 14),
-			DesignTokens.TEXT_SECONDARY)
+			DesignTokens.TV_TEXT_MUTED_SLATE)
 
 	var monster_name: String = _monster_name(_focused)
 	_text(monster_name, Vector2(x, panel.position.y + 28),
-			DesignTokens.TEXT_PRIMARY)
+			DesignTokens.TV_TEXT_ON_SLATE)
 
 	var eco: int = int(encounter["eco"])
-	var eco_label: String = "Dano: %s" % Enums.eco_type_name(eco) \
-			if eco != Enums.EcoType.NONE else "Dano: acumulado"
+	var eco_label: String = "Daño: %s" % Enums.eco_type_name(eco) \
+			if eco != Enums.EcoType.NONE else "Daño: acumulado"
 	_text(eco_label, Vector2(x, panel.position.y + 42),
-			DesignTokens.TEXT_WARNING)
+			DesignTokens.TV_TEXT_HIGHLIGHT)
 
 	var group: int = (encounter["party"] as Array).size()
 	_text("Grupo de %d" % group, Vector2(x, panel.position.y + 56),
-			DesignTokens.TEXT_SECONDARY)
+			DesignTokens.TV_TEXT_MUTED_SLATE)
 
 	for line in _wrap(str(encounter["hint"]), panel.size.x - pad * 2.0):
-		_text(line, Vector2(x, panel.position.y + 70), DesignTokens.TEXT_CRITICAL)
+		_text(line, Vector2(x, panel.position.y + 70), DesignTokens.TV_RUST_4)
 		break
 
 
@@ -134,8 +124,7 @@ func _monster_name(index: int) -> String:
 
 
 func _text(text: String, position: Vector2, color: Color) -> void:
-	draw_string(_font, position, text, HORIZONTAL_ALIGNMENT_LEFT, -1,
-			DesignTokens.FONT_SIZE_BODY, color)
+	TvFrame.slate_text(self, _font, position, text, color)
 
 
 func _wrap(text: String, available: float) -> PackedStringArray:
