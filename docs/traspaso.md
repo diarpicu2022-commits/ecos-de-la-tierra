@@ -92,6 +92,7 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **Personajes del sistema en el mapa** (2026-11-01): Ilan a 48 px con caminata de PixelLab y los seis monstruos de mapa de PixelLab (`tools/gen_tierra_viva_cast.py`). Sigue viejo: decorado de las otras regiones, pantalla de combate, HUD, diálogo y título.
 - **Combate, paso 1 (escena) hecho** (2026-11-02): pantalla a 640 × 360, fondos del sistema por región (`tools/gen_tierra_viva_battle.py`), monstruo de PixelLab sobre su plataforma y grupo de espaldas al doble. Siguen: paso 2 (placa y filas), paso 3 (mandos 2 × 2 y aviso de papel) y paso 4 (estados).
 - **2026-11-02, cierre de Diego en esta tanda:** Brote en todo el juego, marcos del sistema en `assets/ui/marcos/` con `TvFrame` y filas del grupo (`PartyRow`) hechas. **Sigue el compañero** desde la §4.0 de la guía: placa del monstruo, mandos 2 × 2 (Diego decide cuatro o cinco entradas), aviso de papel y estados; y en paralelo, el inventario de §3.1.
+- **2026-11-03, reparto:** el trabajo que falta queda repartido entre Juan José y Diego en la §3.2 de la guía. Esa sección manda sobre el «sigue el compañero» de la línea anterior.
 
 ## 3. Lista de trabajo, en orden
 

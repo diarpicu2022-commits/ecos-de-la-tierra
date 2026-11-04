@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado (§4.2) ya están las seis regiones, y Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (§4.3, 2026-11-03); su matriz orgánica queda para después de la presentación. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Desde el 2026-11-03 el trabajo va repartido entre los dos: mira §3.2 antes de empezar** (decisión de Diego). El inventario de §3.1 y §4.0 dicen el punto exacto en que quedó el combate. Del decorado (§4.2) ya están las seis regiones, y Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (§4.3, 2026-11-03); su matriz orgánica queda para después de la presentación. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -222,6 +222,62 @@ terminar una fila, se marca HECHO con la fecha y el commit.
   o `tools/verify_terrain.tscn`;
 - la captura se compara con la referencia del sistema;
 - se anota en el anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
+
+### 3.2 Reparto del trabajo (2026-11-03)
+
+Juan José sigue con lo que ya está especificado y no se pierde cuando entre el
+combate de acción (R2). Diego se queda con lo que necesita una decisión suya de
+diseño. Así no nos pisamos los archivos.
+
+**Juan José, antes de la presentación del miércoles 2026-11-04:**
+
+1. Pantalla de resultado (fila 14), en `result_overlay.gd`, con la pizarra o el
+   papel del sistema y el titular de 22 px que quedó pendiente en la fila 6.
+2. Cifras de daño (fila 13), en `damage_numbers.gd`, a doble tamaño y con `~`
+   si el monstruo se rehace.
+3. Chapas de tipo y estado (fila 11). Ya salen en la placa desde el PR #30. Si
+   no falta nada, se marca HECHO.
+4. Exportar otra vez el `.exe` cuando entre lo de los dos y jugarlo completo,
+   porque §4.15 dice que eso sigue pendiente.
+
+**Juan José, después de la presentación:**
+
+1. Progresión, parte 6 (§4.8).
+2. Guardado, parte 9 (§4.11), después de la progresión porque guarda sus
+   banderas. Al terminar se actualiza `docs/legal/privacidad.md`.
+3. Fauna en bandada, IA-2, con su prueba `verify_fauna.gd`.
+
+Cada una abre su anexo y espera la elección de Diego antes de programar.
+
+**Diego, antes de la presentación:**
+
+1. Menú del turno (fila 9), en `action_menu.gd`, con su ajuste en
+   `verify_party_ai`. Primero se decide si son cuatro o cinco entradas.
+2. Decisiones que quedaron abiertas:
+   - Cola de turnos (fila 12).
+   - Enmienda 15, las barras de PV verdes.
+   - Contraste del cartel de lugar, 3,22:1.
+   - Monstruos de mapa que tapan hitos en la Llanura y la Cuenca.
+   - Matriz orgánica de Valdehoja, si queda para después de la presentación.
+3. Comprobación general de §2 al final, cuando ya esté todo fusionado.
+
+**Diego, después de la presentación:**
+
+1. Anexo y direcciones del combate de acción, R2 (§4.5). Va primero porque de
+   ahí dependen los puzzles.
+2. Diálogos y retratos, parte 5 (§4.7), resolviendo primero el choque entre el
+   sistema y el contrato «Columna».
+3. HUD del mapa, interiores y vecinos, R3 (§4.6), y Valdehoja orgánica (§4.3).
+4. Personajes en PixelLab, fila 20 y Yara.
+5. Puzzles, menú, título, audio definitivo y final, partes 7, 8, 10, 11 y 12.
+6. Prueba con personas, cuando exista el combate nuevo.
+
+**Para no pisarnos:**
+
+- Juan José no toca `action_menu.gd`, `turn_order_strip.gd` ni `verify_party_ai`.
+- Diego no toca `result_overlay.gd` ni `damage_numbers.gd`.
+- `battle_screen.gd` nos puede tocar a los dos. Quien lo vaya a cambiar avisa
+  antes y hace un cambio corto.
 
 ---
 
