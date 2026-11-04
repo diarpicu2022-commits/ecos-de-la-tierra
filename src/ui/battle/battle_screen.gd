@@ -136,9 +136,6 @@ var _backgrounds := {}
 var _drawn_pure := false
 var _menu: ActionMenu = null
 var _overlay: ResultOverlay = null
-## Por encima de cualquier sprite del campo, que llevan como mucho su total.
-const NUMBERS_Z := 16
-
 var _numbers: DamageNumbers = null
 ## Cifras que ya ocurrieron en las reglas pero todavía no se han enseñado. Se
 ## sueltan al ritmo del registro, igual que las barras.
@@ -191,8 +188,6 @@ func _ready() -> void:
 
 	_numbers = DamageNumbers.new()
 	_numbers.size = SCREEN
-	# Los sprites llevan z_index positivo por orden de fila: la cifra va encima.
-	_numbers.z_index = NUMBERS_Z
 
 	_overlay = ResultOverlay.new()
 
@@ -400,16 +395,17 @@ func _release_numbers() -> void:
 		var anchor: Vector2 = _anchor_for(target)
 		if bool(pending["healing"]):
 			# La curación no puede ir en verde: el verde solo significa
-			# «la causa se atajó». Va en el blanco de la rampa de interfaz.
+			# «la causa se atajó». El hueso es el tono de lo que está sano.
 			_numbers.spawn(anchor, "+%d" % int(pending["amount"]),
-					DesignTokens.TV_UI_6)
+					DesignTokens.ASH_050)
 		elif bool(pending["resisted"]):
-			# Golpe que el monstruo se quita de encima: apagado y con `~`, en el
-			# `ui-4` de `combat_mock.py`. Es la regla del juego, dicha con una cifra.
+			# Golpe que el monstruo se quita de encima: apagado y con `~`.
+			# Es la regla del juego, dicha con una cifra.
 			_numbers.spawn(anchor, "~%d" % int(pending["amount"]),
-					DesignTokens.TV_UI_4)
+					DesignTokens.ASH_400)
 		else:
-			_numbers.spawn(anchor, str(int(pending["amount"])), DesignTokens.TV_GOLD_4)
+			var tone: Color = DesignTokens.EMBER_400 					if target.team == Enums.Team.PLAYER 					else DesignTokens.EMBER_300
+			_numbers.spawn(anchor, str(int(pending["amount"])), tone)
 	_pending_numbers.clear()
 
 

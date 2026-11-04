@@ -203,7 +203,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
 | 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
-| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | HECHO 2026-11-03 |
+| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | HECHO 2026-11-03 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | HECHO 2026-11-03 (contraste 3,22:1, pendiente de Diego) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
