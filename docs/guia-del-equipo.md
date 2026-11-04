@@ -196,7 +196,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 3 | Monstruos de mapa | `src/world/map_monster.gd` | `MonsterRoster`, `referencias/combate_accion.png` | HECHO 2026-11-01 |
 | 4 | Decorado del Bosque | `tools/gen_tierra_viva_decor.py` | README §Mundo, `Overworld` | HECHO 2026-11-01 |
 | 5 | Escena del combate (fondo, monstruo, grupo de espaldas) | `src/ui/battle/battle_screen.gd`, `tools/gen_tierra_viva_battle.py` | `assets/img/combate_enfermo.png`, `combate_purificado.png` | HECHO 2026-11-02 |
-| 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-02 (falta el titular de 22 px) |
+| 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-03, con el titular de 22 px |
 | 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | HECHO 2026-11-03 |
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
@@ -204,7 +204,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
 | 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
-| 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
+| 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | HECHO 2026-11-03 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | HECHO 2026-11-03 (contraste 3,22:1, pendiente de Diego) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
 | 17 | Decorado de las seis regiones y de Valdehoja: HECHO (regiones 2026-11-02, PR #21, #22, #23, #25 y #26; Valdehoja 2026-11-03, sobre la matriz actual) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |

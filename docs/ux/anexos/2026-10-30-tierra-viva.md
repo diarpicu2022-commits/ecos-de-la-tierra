@@ -1313,3 +1313,30 @@ por turnos, y no se sabe cuándo le quitan vida.
   party_ai 19.
 - **Queda igual:** la energía y las marcas de estado de las filas del grupo se
   actualizan con el estado real, no al ritmo del registro.
+
+#### Combate con el sistema de diseño: la pantalla de resultado · 2026-11-03
+
+Tarea de Juan José en el reparto de Diego (guía del equipo §3.2). Filas 6 y 14 del
+inventario.
+
+- **`ResultOverlay`** usa la pizarra (`TvFrame.PLATE`), con el titular de 22 px y el
+  texto centrados. Se elige pizarra porque es parte de la interfaz del combate; el
+  papel queda para el aviso.
+  - **Titular:** ✓ VICTORIA en `eco-4` (`TV_ECO_3`), ✖ EL GRUPO CAE en `fire-5`
+    (`TV_FIRE_4`) y EL GRUPO SE RETIRA en `text-highlight`.
+  - **Texto:** la retirada decía «El bosque sigue ardiendo» en cualquier región.
+    Ahora dice «El monstruo sigue en pie».
+- **Fallos vistos en la captura y corregidos:** los monstruos y su placa se dibujaban
+  encima del velo y del panel, porque se añaden después y llevan `z_index` propio, y
+  el panel usaba una altura de campo de la pantalla vieja. Ahora la capa cubre la
+  pantalla entera, va delante de todo y centra el panel. Se hizo dentro de
+  `result_overlay.gd`, sin tocar `battle_screen.gd`, que es compartido: su parámetro
+  `field_height` queda sin uso.
+- **El rojo `hp-low` no llega en el titular:** 4,00:1 sobre la pizarra. Por eso
+  `fire-5`.
+- **Medido:** `tools/verify_result.tscn` 17/17. Contraste del titular de 7,15:1 a
+  9,31:1, detalle 13,76:1 e indicación 9,31:1.
+- **Capturas a 640 × 360:**
+  `docs/ux/capturas/2026-11-03-resultado-{victoria,derrota,retirada}.png`. Son
+  montadas por la prueba: enseñan el monstruo vivo aunque el desenlace sea victoria.
+- **Siguiente:** las cifras de daño (fila 13).
