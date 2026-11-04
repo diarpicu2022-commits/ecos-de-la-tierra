@@ -28,6 +28,21 @@ Para que la demo funcione falta esto:
 | Hacer el mensaje de fin de demo en el papel del sistema | No hay una pantalla diseñada para esto y no vamos a inventar una | Diego |
 | Exportar el `.exe` desde `master` y jugarlo completo | El que hay no tiene nada de lo de hoy | Juan José |
 
+**Para Diego, antes de seguir: haz pull de `rediseno/terreno`.** Juan José adelantó parte
+de esta tabla en el PR #48, a la vez que se escribía este plan, sin haberlo visto:
+
+- **Ya está en `rediseno/terreno`, aún no en `master`:** la caja `DialogBox` a 640 × 360 y
+  `yara_inicio` y `yara_ave_bosque` en marcha. La rama `parte-5/anexo` ya va integrada, así
+  que no hace falta fusionarla otra vez.
+- **Sin montar:** `rasgo_bosque`. El texto está en `data/dialogue/` y la prueba de su chapa
+  existe, pero no sale en el juego.
+- **Añadido fuera de este plan, para que lo veas:** al empezar, Yara llama a Ilan por el ave
+  para que vaya al jardín (`yara_llamada.json`), porque aparece lejos de ella. Si no la
+  quieres, basta con quitar `on_start` de `talk.json`.
+- **Sin tocar:** la salida norte, el fin de demo, Bruma desde el Bosque y el mensaje final.
+
+Desde ese PR, Juan José no cambia `src/` ni `data/` hasta que avises.
+
 La demo no lleva título, guardado, menú fuera de combate ni puzzles. Tampoco el combate de acción, así que se presenta por turnos.
 
 ## 2. La historia que falta
