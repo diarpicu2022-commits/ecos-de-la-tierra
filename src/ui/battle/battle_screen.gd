@@ -85,11 +85,19 @@ const PARTY_SPRITE_DIR := "res://assets/sprites/party/"
 const PARTY_BACK_DIR := "res://assets/sprites/party/tierra_viva/"
 const BACKGROUND_DIR := "res://assets/sprites/battle/tierra_viva/"
 
-## Cuánto se queda en pantalla cada línea del registro antes de pasar a la
-## siguiente. Corto a propósito: el jugador verá miles de estas líneas.
-const LOG_STEP_SECONDS := 0.75
-## Pausa más larga en los momentos que cambian la estrategia.
-const LOG_BEAT_SECONDS := 1.15
+## Cuánto se queda en pantalla cada línea del registro antes de pasar sola a
+## la siguiente: depende de lo que hay que leer. Con 0,75 s fijos no se
+## entendía (Juan José Rueda, 2026-11-03). `confirm` la adelanta.
+const LOG_READ_BASE := 1.2
+const LOG_READ_PER_CHAR := 0.045
+const LOG_READ_MIN := 1.8
+## Tiempo de más en los momentos que cambian la estrategia.
+const LOG_BEAT_EXTRA := 0.8
+## El aviso de ronda es corto y no explica nada.
+const LOG_ROUND_SECONDS := 1.2
+## Durante este tiempo `confirm` no adelanta: una pulsación de más no se come
+## una línea sin que llegue a verse.
+const LOG_MIN_SHOW := 0.25
 
 enum Phase { IDLE, PLAYING, CHOOSING, FINISHED }
 
@@ -138,6 +146,9 @@ var _message: String = ""
 var _message_tone: Color = DesignTokens.TEXT_PRIMARY
 var _round: int = 0
 var _step_timer: Timer = null
+var _shown_at_msec := 0
+## Indicación del desenlace si no es la de la demo: en el mundo, seguir jugando.
+var continue_hint := ""
 
 # Estado de la elección en curso.
 ## Cuántas veces se rehízo un monstruo. No es estadística: es la prueba que se
@@ -372,9 +383,22 @@ func _flush_views() -> void:
 	_release_numbers()
 
 
-## Suelta las cifras acumuladas sobre el sprite de cada objetivo.
+## Las dos líneas que enseñan la regla del juego llevan su sonido, a la vez que
+## su color.
+func _play_line_sound(tone: Color) -> void:
+	if tone == DesignTokens.TEXT_PURIFIED:
+		GameAudio.play("purify")
+	elif tone == DesignTokens.TEXT_WARNING:
+		GameAudio.play("regen")
+
+
+## Suelta las cifras acumuladas sobre el sprite de cada objetivo, con su sonido.
 func _release_numbers() -> void:
 	for pending in _pending_numbers:
+		if bool(pending["healing"]):
+			GameAudio.play("heal")
+		else:
+			GameAudio.play("hit_resisted" if bool(pending["resisted"]) else "hit")
 		var target: Combatant = pending["target"] as Combatant
 		var anchor: Vector2 = _anchor_for(target)
 		if bool(pending["healing"]):
@@ -424,9 +448,43 @@ func _on_turn_started(combatant: Combatant) -> void:
 
 ## Cada línea del registro es un paso propio: si se volcaran juntas, el jugador
 ## vería cinco cosas a la vez y no relacionaría ninguna con su efecto.
+##
+## El motor resuelve la ronda entera antes de que se enseñe nada. Por eso cada
+## acción se lleva aquí lo que acaba de pasar (PV, cifras, purificación) y lo
+## suelta con su primera línea: primero baja la vida del monstruo y, cuando le
+## toca actuar a él, la tuya (Juan José Rueda, 2026-11-03).
 func _on_action_resolved(log_lines: Array) -> void:
+	var effects := _take_effects()
 	for line in log_lines:
-		_queue.append({"type": "log", "text": str(line), "order": _snapshot()})
+		_queue.append({"type": "log", "text": str(line), "order": _snapshot(),
+			"effects": effects})
+		effects = {}
+
+
+## Lo que ha pasado desde la última acción y aún no se ha enseñado.
+func _take_effects() -> Dictionary:
+	var monsters := []
+	for view in _monster_views:
+		monsters.append([view, view.take_pending()])
+	var party := []
+	for hud in _huds:
+		party.append([hud, hud.take_pending()])
+	var numbers := _pending_numbers.duplicate()
+	_pending_numbers.clear()
+	return {"monsters": monsters, "party": party, "numbers": numbers}
+
+
+func _show_effects(effects: Dictionary) -> void:
+	if effects.is_empty():
+		return
+	for entry in effects["monsters"]:
+		if is_instance_valid(entry[0]):
+			entry[0].show_pending(entry[1])
+	for entry in effects["party"]:
+		if is_instance_valid(entry[0]):
+			entry[0].show_pending(entry[1])
+	_pending_numbers.assign(effects["numbers"])
+	_release_numbers()
 
 
 func _on_combatant_defeated(combatant: Combatant) -> void:
@@ -473,12 +531,12 @@ func _advance_queue() -> void:
 		"round":
 			_round = int(event["round"])
 			_set_message("-- Ronda %d --" % _round, DesignTokens.TEXT_SECONDARY)
-			_schedule(LOG_STEP_SECONDS * 0.6)
+			_schedule(LOG_ROUND_SECONDS)
 		"log":
-			_flush_views()
+			_show_effects(event.get("effects", {}))
 			_set_message(str(event["text"]), _tone_for(str(event["text"])))
-			_schedule(LOG_BEAT_SECONDS if event.get("beat", false)
-					else LOG_STEP_SECONDS)
+			_play_line_sound(_message_tone)
+			_schedule(_read_seconds(str(event["text"]), event.get("beat", false)))
 		"spawn":
 			var view := MonsterView.new()
 			add_child(view)
@@ -491,7 +549,7 @@ func _advance_queue() -> void:
 			_set_message("Se suma al combate: %s"
 					% (event["enemy"] as Combatant).display_name,
 					DesignTokens.TEXT_WARNING)
-			_schedule(LOG_BEAT_SECONDS)
+			_schedule(_read_seconds(_message, true))
 		"input":
 			_flush_views()
 			_begin_choice(event["character"] as Character)
@@ -504,6 +562,13 @@ func _advance_queue() -> void:
 
 func _schedule(seconds: float) -> void:
 	_step_timer.start(seconds)
+	_shown_at_msec = Time.get_ticks_msec()
+
+
+## Tiempo de lectura de una línea del registro.
+func _read_seconds(text: String, beat: bool) -> float:
+	var seconds := maxf(LOG_READ_MIN, LOG_READ_BASE + text.length() * LOG_READ_PER_CHAR)
+	return seconds + LOG_BEAT_EXTRA if beat else seconds
 
 
 ## Las líneas que anuncian regeneración o purificación se tiñen, porque son las
@@ -710,6 +775,13 @@ func _finish(result: int) -> void:
 	_result = result
 	_menu.close()
 	_set_message("", DesignTokens.TEXT_PRIMARY)
+	if result == Enums.BattleResult.VICTORY:
+		GameAudio.play_music("")
+		GameAudio.play("victory")
+	elif result == Enums.BattleResult.DEFEAT:
+		GameAudio.play_music("")
+		GameAudio.play("defeat")
+	_overlay.continue_hint = continue_hint
 	_overlay.show_result(result, _regenerations, FIELD_HEIGHT)
 	queue_redraw()
 	battle_finished.emit(result)
@@ -721,9 +793,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Adelantar el registro. Solo mientras se reproduce: durante la elección el
 	# teclado es del menú.
 	if _phase == Phase.PLAYING and event.is_action_pressed("confirm"):
+		get_viewport().set_input_as_handled()
+		if Time.get_ticks_msec() - _shown_at_msec < LOG_MIN_SHOW * 1000.0:
+			return
 		_step_timer.stop()
 		_advance_queue()
-		get_viewport().set_input_as_handled()
 
 
 # --- Dibujo ------------------------------------------------------------------

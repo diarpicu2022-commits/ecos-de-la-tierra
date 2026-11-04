@@ -1252,3 +1252,64 @@ purificado) y enmienda 8 (solo se mueve lo purificado).
   - las demás zonas en verde, y movement, encounters y flow también.
 - **Capturas a 640 × 360:**
   `docs/ux/capturas/2026-11-03-fauna-valdehoja-{enfermo,sano}.png`.
+
+#### Ritmo del combate tras jugar el `.exe` · 2026-11-03
+
+Juan José Rueda, al jugarlo: los mensajes pasan tan rápido que no se entienden,
+tienen que tener su tiempo y poder pasarse a mano, y la victoria no da espacio.
+
+- **Mensajes:** de 0,75 s fijos a un tiempo según el texto
+  (`BattleScreen._read_seconds`): 1,2 s + 0,045 s por carácter, con un mínimo de
+  1,8 s y 0,8 s de más en los momentos clave. El aviso de ronda, 1,2 s. Enter los
+  adelanta, salvo en los primeros 0,25 s, para que una pulsación de más no se
+  coma una línea.
+- **Victoria, derrota y huida:** seguían esperando Enter, pero quien venía
+  pulsándolo salía sin verlas. Ahora no se pueden cerrar hasta pasado 1 s
+  (`GameFlow.RESULT_HOLD`), y en el mundo dicen «Enter para continuar» en vez de
+  «jugar otra vez», el texto de la demo.
+- **Cambia la decisión 1 del anexo de la batalla:** el registro ya no es «corto a
+  propósito». **Falta que Diego lo vea.**
+- **Medido:** `verify_flow` 32/32 con 9 comprobaciones nuevas; usability 16,
+  party_ai 19 y encounters 82.
+- **Sin sonido:** no es un fallo. No hay audio en el proyecto; es la parte 11
+  (guía §4.13), sin empezar.
+
+#### Sonido provisional · 2026-11-03
+
+Juan José Rueda, tras jugar el `.exe`, eligió generar sonido por código para la
+presentación del 2026-11-04. **Se salta el proceso a propósito:** la parte 11 no
+tiene anexo ni elección de Diego. Es provisional y **falta que Diego lo vea**.
+
+- **`tools/gen_audio.py`** genera 17 WAV (4,2 MB) con semilla fija: efectos,
+  interfaz, viento, vida (agua y pájaros), música del mundo y música de combate
+  en pentatónica. Sin muestras de terceros (`docs/licencias-audio.md`).
+- **`src/core/game_audio.gd`** (autoload `GameAudio`): los buses Música, Ambiente,
+  Efectos e Interfaz de la guía §4.13. El ambiente lleva paso bajo: en lo enfermo
+  suena viento apagado; en lo sano, vida con el filtro abierto, en lo que tarda la
+  ola. En Valdehoja sigue a la casilla de Ilan.
+- **Dónde suena:** menú (mover, confirmar, cancelar, opción no disponible), golpes
+  y curas al salir su cifra, «se rehace» y «deja de regenerarse» a la vez que su
+  línea, persiana, ola, victoria y derrota.
+- **Medido:** `verify_audio` 33/33, con señal real en los buses Música y Efectos.
+  Bucles sin salto en la costura. usability 16, camera 37, encounters 82, flow 32,
+  party_ai 19 y movement 100.
+- **No medido:** si suena bien. Nadie del desarrollo lo ha oído todavía; los
+  niveles de mezcla (`GameAudio.VOLUME_*`) son un primer intento.
+- **Sin opción de volumen:** llegará con las opciones (parte 10).
+
+#### Por turnos de verdad: cada acción con su bajada de vida · 2026-11-03
+
+Juan José Rueda, al jugar: al atacar baja también su vida a la vez; tiene que ser
+por turnos, y no se sabe cuándo le quitan vida.
+
+- **Causa:** el motor resuelve la ronda entera antes de enseñar nada. Las vistas
+  guardaban solo los PV finales y los soltaban con la primera línea del registro.
+  Las cifras de daño y sus sonidos, igual.
+- **Arreglo:** `BattleScreen._on_action_resolved` se lleva con cada acción lo que
+  acaba de pasar (`take_pending` en `MonsterView` y `PartyMemberHud`, más las
+  cifras) y lo suelta con su primera línea.
+- **Medido:** `verify_flow` 34/34 con dos comprobaciones nuevas sobre rondas reales.
+  Sin el arreglo falla: una línea baja las dos vidas. usability 16, encounters 82 y
+  party_ai 19.
+- **Queda igual:** la energía y las marcas de estado de las filas del grupo se
+  actualizan con el estado real, no al ritmo del registro.

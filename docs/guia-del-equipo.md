@@ -543,6 +543,10 @@ Es la dirección A del anexo.
 
 ### 4.13 Parte 11: audio
 
+**Estado (2026-11-03):** sonido provisional generado por código para la
+presentación (`tools/gen_audio.py`, `GameAudio`, `verify_audio`). Falta el anexo
+de la parte y que Diego lo vea; detalle en el anexo de Tierra Viva.
+
 - Lo enfermo suena apagado (bus Ambiente con filtro de paso bajo) y se abre
   al ritmo de la ola.
 - Buses: Música, Ambiente, Efectos, Interfaz.
@@ -561,8 +565,23 @@ Concepto en `titulo-y-creditos.md` y `referencias/creditos_*`:
 ### 4.15 Entrega
 
 1. Exportar el `.exe`: en Godot, *Editor → Administrar plantillas de
-   exportación* (descarga de unos 1 GB), luego *Proyecto → Exportar →
+   exportación* (descarga de unos 1,3 GB), luego *Proyecto → Exportar →
    Windows Desktop*.
+   - **Hecho el 2026-11-03 desde `master` (`1afe0b0`).** Se probó que arranca
+     y carga Valdehoja; falta jugarlo entero con el ejecutable.
+   - **`export_presets.cfg` no se versiona** (`.gitignore`), así que cada uno
+     crea el suyo. Tiene que llevar:
+     - **Recursos a incluir:** `data/*`. El juego lee sus mapas como `.txt` y
+       `.json` con `FileAccess`, y Godot no los exporta por defecto: sin esto,
+       el `.exe` arranca sin mapas.
+     - **Recursos a excluir:** `docs/*,tools/*`.
+     - **Incrustar el PCK** (`binary_format/embed_pck`), para que sea un solo
+       archivo.
+   - **Por consola:** `"$GODOT" --headless --path . --export-release "Windows
+     Desktop" <ruta>.exe`. Puede cerrarse con «Segmentation fault», como
+     `--import`: mira el código de salida y la fecha del `.exe`, porque si
+     falla no lo reescribe.
+   - **Entrega:** junto al `.exe` va `docs/legal/privacidad.md`.
 2. **Privacidad**, desde el diseño (regla de Diego): el juego no recoge
    datos de nadie.
    - **Hecho el 2026-11-03:** el aviso breve está en

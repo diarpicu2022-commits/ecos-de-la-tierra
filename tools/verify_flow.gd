@@ -147,8 +147,13 @@ func _flow() -> void:
 	_check("derrota: vuelta a la casilla de llegada %s" % flow.world.arrival_cell, at == flow.world.arrival_cell)
 	_check("  con el grupo a 1 PV", state.party.all(func(c): return c.hp == 1))
 	# Victoria.
+	# Viene de la prueba de derrota, con el grupo a 1 PV.
+	for c in state.party:
+		c.hp = c.max_hp
 	await _encounter(flow, MapMonster.Advantage.NONE)
 	_check("sin ventaja, manda la velocidad", flow.screen._manager.opening_team == -1)
+	await _pace(flow)
+	_turn_by_turn(flow)
 	flow.result = Enums.BattleResult.VICTORY
 	await _leave(flow)
 	for _i in 200:
@@ -159,6 +164,99 @@ func _flow() -> void:
 		state.is_zone_purified("ashen_forest") and flow.world.monster == null)
 	state.flags.clear()
 	flow.queue_free()
+
+
+## El ritmo del combate (Juan José Rueda, 2026-11-03): cada línea se queda según
+## lo que hay que leer, `confirm` la adelanta salvo justo al salir, y el
+## desenlace no se puede cerrar hasta pasado RESULT_HOLD.
+func _pace(flow: GameFlow) -> void:
+	var screen: BattleScreen = flow.screen
+	var long_line := "Golpe directo. No ataja la causa: el monstruo se rehará."
+	_check("una línea corta se queda al menos %.1f s" % BattleScreen.LOG_READ_MIN,
+		screen._read_seconds("Ilan ataca.", false) == BattleScreen.LOG_READ_MIN)
+	_check("una línea larga se queda más: %.1f s" % screen._read_seconds(long_line, false),
+		screen._read_seconds(long_line, false) > BattleScreen.LOG_READ_MIN)
+	_check("un momento clave se queda más todavía",
+		screen._read_seconds(long_line, true) > screen._read_seconds(long_line, false))
+
+	var press := InputEventAction.new()
+	press.action = "confirm"
+	press.pressed = true
+	var saved_phase: int = screen._phase
+	var saved_queue: Array[Dictionary] = screen._queue.duplicate()
+	screen._phase = BattleScreen.Phase.PLAYING
+	screen._queue.clear()
+	screen._queue.append({"type": "log", "text": "Primera."})
+	screen._queue.append({"type": "log", "text": "Segunda."})
+	screen._advance_queue()
+	screen._unhandled_input(press)
+	_check("Enter recién salida la línea no se la come", screen._message == "Primera.", screen._message)
+	screen._shown_at_msec -= roundi(BattleScreen.LOG_MIN_SHOW * 1000.0) + 1
+	screen._unhandled_input(press)
+	_check("después, Enter pasa a la siguiente", screen._message == "Segunda.", screen._message)
+	_check("sin Enter, el temporizador sigue en marcha", not screen._step_timer.is_stopped())
+	screen._step_timer.stop()
+	screen._queue.assign(saved_queue)
+	screen._phase = saved_phase
+
+	flow.awaiting_confirm = false
+	flow._on_finished(Enums.BattleResult.ONGOING)
+	_check("el desenlace no se puede cerrar al salir", not flow.awaiting_confirm)
+	var frames := roundi((GameFlow.RESULT_HOLD + 0.2) * Engine.physics_ticks_per_second)
+	for _i in frames:
+		await get_tree().physics_frame
+	_check("pasado %.1f s, Enter ya lo cierra" % GameFlow.RESULT_HOLD, flow.awaiting_confirm)
+	flow.awaiting_confirm = false
+	_check("en el mundo, la indicación es seguir", screen.continue_hint == "Enter para continuar",
+		screen.continue_hint)
+
+
+## Por turnos (Juan José Rueda, 2026-11-03): en rondas reales, la vida de cada
+## bando baja con la acción que la quita, nunca las dos con la misma línea.
+func _turn_by_turn(flow: GameFlow) -> void:
+	var was_reduced := DesignTokens.reduced_motion
+	DesignTokens.reduced_motion = true
+	var screen: BattleScreen = flow.screen
+	var view: MonsterView = screen._monster_views[0]
+	var monster_drops := 0
+	var party_drops := 0
+	var together := 0
+	for round_i in 8:
+		while screen._phase != BattleScreen.Phase.CHOOSING and not screen._queue.is_empty():
+			screen._advance_queue()
+		screen._step_timer.stop()
+		if screen._phase != BattleScreen.Phase.CHOOSING:
+			break
+		# `_submit` ya enseña la primera línea: también hay que medirla.
+		var first := true
+		while first or (screen._phase == BattleScreen.Phase.PLAYING and not screen._queue.is_empty()):
+			var monster_was: float = view._shown_hp
+			var party_was := _party_hp(screen)
+			if first:
+				screen._submit(BattleAction.attack(screen._actor, view.monster))
+				first = false
+			else:
+				screen._advance_queue()
+			var monster_fell: bool = view._shown_hp < monster_was
+			var party_fell := _party_hp(screen) < party_was
+			monster_drops += int(monster_fell)
+			party_drops += int(party_fell)
+			together += int(monster_fell and party_fell)
+		screen._step_timer.stop()
+		if monster_drops > 0 and party_drops > 0:
+			break
+	_check("en rondas reales baja la vida de los dos bandos (monstruo %d, grupo %d)" % [
+		monster_drops, party_drops], monster_drops > 0 and party_drops > 0)
+	_check("ninguna línea baja las dos vidas a la vez (%d)" % together, together == 0)
+	screen._step_timer.stop()
+	DesignTokens.reduced_motion = was_reduced
+
+
+func _party_hp(screen: BattleScreen) -> float:
+	var total := 0.0
+	for hud in screen._huds:
+		total += hud._shown_hp
+	return total
 
 
 func _encounter(flow: GameFlow, adv: MapMonster.Advantage) -> void:

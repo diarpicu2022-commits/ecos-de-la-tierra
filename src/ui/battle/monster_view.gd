@@ -134,20 +134,33 @@ func set_paused(value: bool) -> void:
 	_paused = value
 
 
-## Muestra todo lo que quedó pendiente mientras la vista estaba en pausa.
-func flush() -> void:
-	if _pending_hp >= 0.0:
-		var target: float = _pending_hp
-		_pending_hp = -1.0
+## Saca lo pendiente hasta ahora, para enseñarlo luego con la línea del registro
+## que lo cuenta. Sin esto, la ronda entera se vería de golpe en la primera línea.
+func take_pending() -> Dictionary:
+	var pending := {"hp": _pending_hp, "purified": _pending_purified,
+		"regenerated": _pending_regenerated}
+	_pending_hp = -1.0
+	_pending_purified = false
+	_pending_regenerated = false
+	return pending
+
+
+## Muestra lo sacado con `take_pending`.
+func show_pending(pending: Dictionary) -> void:
+	var target: float = pending["hp"]
+	if target >= 0.0:
 		if target < _shown_hp:
 			_play_shake()
 		_tween_hp(target)
-	if _pending_regenerated:
-		_pending_regenerated = false
+	if pending["regenerated"]:
 		_play_flash()
-	if _pending_purified:
-		_pending_purified = false
+	if pending["purified"]:
 		_play_purify()
+
+
+## Muestra todo lo que quedó pendiente mientras la vista estaba en pausa.
+func flush() -> void:
+	show_pending(take_pending())
 
 
 # --- Reacciones a las señales del combate -----------------------------------

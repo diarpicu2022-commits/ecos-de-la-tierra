@@ -18,6 +18,12 @@ extends Node
 
 signal battle_over(result: Enums.BattleResult)
 
+## Tiempo en que el desenlace no se puede cerrar: quien viene pulsando Enter
+## para pasar el registro no se lo salta sin verlo.
+const RESULT_HOLD := 1.0
+## Cada cuántos cuadros se mira si Ilan pisa lo sano o lo enfermo, para el ambiente.
+const AMBIENT_CHECK_FRAMES := 30
+
 ## Combate de `Encounters` por zona.
 const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 	"withered_plain": 3, "waning_peak": 4, "greed_crypt": 5}
@@ -37,6 +43,10 @@ var battle_cell := Vector2i.ZERO
 
 var _battle_layer := CanvasLayer.new()
 var _enemy: Monster = null
+var _purified_at: Callable
+var _ambient_frame := 0
+## Durante la ola, el ambiente ya va abierto aunque la zona aún no conste purificada.
+var _waving := false
 
 
 func _ready() -> void:
@@ -50,10 +60,32 @@ func _ready() -> void:
 	blinds_layer.add_child(blinds)
 	add_child(blinds_layer)
 	world.encounter.connect(_on_encounter)
+	world.zone_changed.connect(_on_zone_changed)
+	_on_zone_changed(world.zone_id)
+	GameAudio.start_ambient(_cell_is_alive())
+	GameAudio.play_music("music_world")
+
+
+func _on_zone_changed(zone_id: String) -> void:
+	_purified_at = WorldDecor.purified_lookup(zone_id, get_node("/root/GameState"))
+
+
+func _cell_is_alive() -> bool:
+	return _purified_at.call(MapMonster.cell_of(Vector2i(world.body.global_position)))
+
+
+## En Valdehoja, cada parte tiene su estado: el ambiente sigue a la casilla de Ilan.
+func _physics_process(_delta: float) -> void:
+	_ambient_frame += 1
+	if _ambient_frame % AMBIENT_CHECK_FRAMES == 0 and screen == null and not _waving:
+		GameAudio.set_alive(_cell_is_alive())
 
 
 func _on_encounter(adv: MapMonster.Advantage) -> void:
 	advantage = adv
+	GameAudio.play("blinds")
+	GameAudio.play_music("music_battle")
+	GameAudio.set_in_battle(true)
 	battle_cell = world.monster.cell
 	var xf := world.get_viewport().get_canvas_transform()
 	var mon_at := xf * world.monster.position
@@ -82,6 +114,7 @@ func _start_battle() -> void:
 	screen = BattleScreen.new()
 	screen.region = world.zone_id
 	screen.companions_auto = true
+	screen.continue_hint = "Enter para continuar"
 	screen.minds = state.party_minds
 	screen.sync = state.party_sync
 	_battle_layer.add_child(screen)
@@ -102,7 +135,9 @@ func _start_battle() -> void:
 
 func _on_finished(r: Enums.BattleResult) -> void:
 	result = r
-	awaiting_confirm = true
+	await get_tree().create_timer(RESULT_HOLD).timeout
+	if screen != null:
+		awaiting_confirm = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -114,6 +149,9 @@ func _unhandled_input(event: InputEvent) -> void:
 ## Vuelve al mundo con el desenlace. Lo llama `confirm`; la prueba, a mano.
 func leave_battle() -> void:
 	awaiting_confirm = false
+	GameAudio.play("blinds")
+	GameAudio.play_music("music_world")
+	GameAudio.set_in_battle(false)
 	if screen != null and screen._manager != null:
 		get_node("/root/GameState").party_sync = screen._manager.sync
 	blinds.close(int(blinds.size.y / 2), blinds.side)
@@ -147,7 +185,11 @@ func leave_battle() -> void:
 	blinds.open()
 	await blinds.finished
 	if result == Enums.BattleResult.VICTORY:
+		GameAudio.play("wave")
+		_waving = true
+		GameAudio.set_alive(true)
 		await world.purify_wave(battle_cell)
+		_waving = false
 	# Solo con el mundo entero a la vista: la gracia no se gasta tras la persiana.
 	world.body.input_enabled = true
 	if result == Enums.BattleResult.FLED and world.monster != null:
