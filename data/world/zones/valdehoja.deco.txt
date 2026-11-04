@@ -36,7 +36,7 @@
 ; l = decor, stall_1, sólido, 4x2, -3+0
 ; n = decor, stall_2, sólido, 3x2, -1-12
 ; o = decor, stall_3, sólido, 3x2, -1-4
-; q = decor, fountain, sólido, 4x2
+; q = decor, fountain, sólido, 5x2
 ; r = decor, well, sólido, 2x2, +1+0
 ; s = decor, hay, sólido, 2x1, +4-8
 ; t = decor, hay, sólido, 2x1, +4-8
@@ -60,20 +60,20 @@
 ; Â = decor, lamp, sólido, 2x1, +2+0
 ; Ã = decor, crate, sólido, 1x1
 ; Ä = decor, sign, sólido, 2x1, -5-12
-; Å = decor, sign, sólido, 2x1, -5-12
-; Æ = decor, sign, sólido, 2x1, -1+0
-; Ç = decor, hedge, sólido, 1x1, +2-14
-; È = decor, hedge_1, sólido, 1x1, +2-14
-; É = decor, hedge_2, sólido, 1x1, +2-14
-; Ê = decor, hedge_3, sólido, 1x1, +2-14
-; Ë = decor, fruit_tree, sólido, 1x1, -3-15
-; Ì = decor, fruit_tree_1, sólido, 1x1, -8-14
-; Í = decor, fruit_tree_2, sólido, 1x1, -5+0
-; Î = decor, fruit_tree_3, sólido, 1x1, +6-1
-; Ï = decor, fruit_tree_4, sólido, 1x1, +3-10
-; Ð = decor, fruit_tree_5, sólido, 1x1, +1-10
-; Ñ = decor, fruit_tree_6, sólido, 1x1, -4-8
-; Ò = decor, fruit_tree_7, sólido, 1x1, +1-6
+; Å = decor, sign, sólido, 2x1, -1+0
+; Æ = decor, hedge, sólido, 1x1, +2-14
+; Ç = decor, hedge_1, sólido, 1x1, +2-14
+; È = decor, hedge_2, sólido, 1x1, +2-14
+; É = decor, hedge_3, sólido, 1x1, +2-14
+; Ê = decor, fruit_tree, sólido, 1x1, -3-15
+; Ë = decor, fruit_tree_1, sólido, 1x1, -8-14
+; Ì = decor, fruit_tree_2, sólido, 1x1, -5+0
+; Í = decor, fruit_tree_3, sólido, 1x1, +6-1
+; Î = decor, fruit_tree_4, sólido, 1x1, +3-10
+; Ï = decor, fruit_tree_5, sólido, 1x1, +1-10
+; Ð = decor, fruit_tree_6, sólido, 1x1, -4-8
+; Ñ = decor, fruit_tree_7, sólido, 1x1, +1-6
+; Ò = decor, sign_bosque, sólido, 1x1, +3-12
 ; Ó = decor, hedge_4, pisable, 1x1, +14+16
 ; Ô = decor, hedge_5, pisable, 1x1, +10+16
 ; Õ = decor, oak_flip, sólido, 2x1, +47-6
@@ -93,8 +93,8 @@
 ; ä = decor, oak_flip, sólido, 1x1, -13-8
 ; å = decor, oak, sólido, 1x1, +3-8
 ; æ = decor, npc_rosa, sólido, 1x1, -8+0
-; ç = decor, npc_tona, pisable, 1x1, +16+14
-; è = decor, npc_tito, pisable, 1x1, +8+4
+; ç = decor, npc_pescadora, sólido, 1x1
+; è = decor, npc_tito, sólido, 1x1, -2+0
 ; é = decor, npc_julian, sólido, 1x1, -2-14
 ; ê = decor, npc_aurelio, sólido, 1x1, +6-10
 ; ë = decor, hedge_6, sólido, 1x1
@@ -151,7 +151,7 @@
      DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII            JJJJJJ    KKKKKK
      DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII            JJJJJJ    KKKKKK
      DDDDDDä EEEEEE  FFFFFF  HHHHHH   IIIIII                     åKKKKKK
-     DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII             Ç  È       ĉ  tt              ÕÕ
+     DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII             Æ  Ç       ĉ  tt              ÕÕ
      DDDDDD  EEEEEE  FFFFFF                                 ė
                Ĉ  ss                      é
 
@@ -160,25 +160,25 @@
 
 
                                                                                   ëíïðñóõ
-            Í  Î                                                                  øAAA  ù
-     Ë   Ì                 rr 6                  77                               úAAA  û
+            Ì  Í                                                                  øAAA  ù
+     Ê   Ë                 rr 6                  77                               úAAA  û
                            rr  jjj       Ę    llll                                üAAA Ęý
                     ė          jjj            llll                                þAAA  ÿ
-     Ï  Ð   Ñ   Ò                                                                 Ā   B ā
+     Î  Ï   Ð   Ñ                                                                 Ā   B ā
                                      iiiiiii          OOOOOOO PPPPPPP             ĂCė   ă
                                  æ   iiiiiii          OOOOOOO PPPPPPP             ĄĘ    ą
-                     ßMMMMMM       ç        èooo      OOOOOOO PPPPPPP             Ć     ć
+                     ßMMMMMM                 ooo      OOOOOOO PPPPPPP             Ć     ć
                       MMMMMM    nnn44      55ooo      OOOOOOO PPPPPPP QQQQQQ      ìî  òôö
-   LLLLLL  NNNNNN     MMMMMM    nnn                  àOOOOOOO PPPPPPP QQQQQQ
+   LLLLLL  NNNNNN     MMMMMM    nnn  ç        è      àOOOOOOO PPPPPPP QQQQQQ
    LLLLLL  NNNNNN     MMMMMM   8                99    OOOOOOO PPPPPPP QQQQQQ
    LLLLLL  NNNNNN     MMMMMM      Ĕ           Ĕ        Č č       ĉ  xxQQQQQQ
    LLLLLL  NNNNNN     MMMMMM         Ĕ     Ĕ                          QQQQQQ
    LLLLLL  NNNNNN       Ĉ ċ                                           QQQQQQ
      ĉ Ċ   NNNNNN                       Ē
- ďÄÄ                                                                      ê           ÅÅ
+ ďÄÄ                                                                      ê           Ò
  ď         uu  ww
  ď
- ď                         VVVVVV
+ ď                         VVVVVV                                                       ď
  ď         TTTTTT  UUUUUU  VVVVVV     Ė
  ď         TTTTTT  UUUUUU  VVVVVV     WWWWWWĕ
  ď         TTTTTT  UUUUUU  VVVVVV    ĖWWWWWW      ZZZZZZ
@@ -194,16 +194,16 @@
                                   Á
                                                   ffffff
                      eeeeee                       ffffff  hhhhhh
- ď                   eeeeee            qqqq       ffffff  hhhhhh
- ď  bbbbbb           eeeeee            qqqq       ffffff ãhhhhhh                 ēēēēēēēē
+ ď                   eeeeee            qqqqq      ffffff  hhhhhh
+ ď  bbbbbb           eeeeee            qqqqq      ffffff ãhhhhhh                 ēēēēēēēē
  ď  bbbbbb  cccccc  âeeeeee         ÀÀ            ffffff  hhhhhh  Ã              ēēēēēēēē
  ď  bbbbbb  cccccc   eeeeee                   ÂÂ          hhhhhh                 ēēēēēēēē
  ď  bbbbbb  cccccc   eeeeee                                                      ēēēēēēēē
  ď  bbbbbb  cccccc                                                               ēēēēēēēē
- ď  bbbbbb  cccccc    É  Ê                                                       ēēēēēēēē
+ ď  bbbbbb  cccccc    È  É                                                       ēēēēēēēē
  ď          cccccc            ė                                                  ēēēēēēēē
  ď            ĉ  33                                                             Ęēēēēēēēē
  ēēē          Ę                                                                  ēēēēēēēē
  ēēē                                                                             ēēēēēēēē
- ēēē  ÙÙ        ÚÚ          ÛÛ         ĐĐĐÆÆ      ÜÜ           ÝÝ         ÞÞ         ØØ
+ ēēē  ÙÙ        ÚÚ          ÛÛ         ĐĐĐÅÅ      ÜÜ           ÝÝ         ÞÞ         ØØ
 

@@ -54,12 +54,20 @@ ZONES = ROOT / "data" / "world" / "zones"
 
 # Lo que añade el juego. Casillas (columna, fila).
 EXIT_EAST_ROW = 33  # la calle mayor cruza el borde este, salida al Bosque
+# La calle llega al borde con tres filas. Salen dos, el máximo de «Umbral» por
+# pantalla; la tercera se cierra con valla, para que no acabe en un muro invisible.
+EXIT_EAST_ROWS = (33, 34)
+FENCE_EXIT = (88, 35)
 MINE = (3, 2)  # bocamina de 2 × 2, en una cara de roca; salida a la Cripta en (3, 0)
 GARDEN = (82, 16, 88, 25)  # jardín de Yara (col0, fila0, col1, fila1), con su seto
 SPAWN = (40, 31)  # en la calle mayor, al pie de la plaza: el encuadre de `v_plaza`
 # Calles que llegan al borde sin salida: se cierran con la valla de `scene2`.
 FENCE_WEST_ROWS = [*range(32, 42), 46, 47, *range(51, 60)]  # en la columna 1
 FENCE_SOUTH = (39, 62, 3)  # columna, fila y tramos: 40 px sobre las casillas 39 a 41
+# Los vecinos de la plaza que cambian respecto de `village5`. Toña es la base de
+# Yara y se confundían: en la plaza va una pescadora. Tito quedaba tapado por el
+# puesto de telas: va delante. Los dos, en una casilla libre, sólidos.
+PLAZA_NEIGHBORS = {"tona": ("pescadora", "east", 600, 432), "tito": ("tito", "south-east", 742, 432)}
 
 
 def game_spec() -> dict:
@@ -88,6 +96,9 @@ def game_spec() -> dict:
                 g[r][c] = "f"
     for r in range(r0 + 5, EXIT_EAST_ROW):
         g[r][84] = g[r][85] = "p"
+    # La escalera de la plaza: `v5` la pone en la fila 13, pero la cara de roca
+    # cae en la 14 y sin esto la muralla se dibuja de corrido sobre el paso.
+    g[14][39] = g[14][40] = "S"
     for r in range(r1 + 1, EXIT_EAST_ROW):
         for c in range(81, 89):
             if g[r][c] == "t":
@@ -188,7 +199,8 @@ def pieces(info) -> tuple[list[dict], dict]:
     for x, y in [(30 * T + 2, 18 * T + 14), (50 * T - 10, 19 * T), (31 * T, 28 * T - 2), (49 * T - 4, 28 * T - 2)]:
         out.append(piece("lamp", lamp, lamp, x, y, shadow=6))
     f = B.fountain()
-    out.append(both("fountain", f, 41 * T - f.shape[1] // 2, 53 * T, rows=2))
+    # Centrada en su plazoleta, que va de la columna 34 a la 48 (centro 41,5).
+    out.append(both("fountain", f, 41 * T + T // 2 - f.shape[1] // 2, 53 * T, rows=2))
     out.append(both("bench", B.bench(), 36 * T, 54 * T))
     out.append(piece("lamp", lamp, lamp, 34 * T + 2, 49 * T, shadow=6))
     out.append(piece("lamp", lamp, lamp, 47 * T - 6, 55 * T, shadow=6))
@@ -201,8 +213,11 @@ def pieces(info) -> tuple[list[dict], dict]:
         decals[st].append((boat(), 71 * T, 48 * T + 4))
     out.append(both("crate", crate_fish(), 66 * T, 54 * T))
     sg = sign()
-    for x, y in [(2 * T, v5.srow("mayor", 2) * T - 12), (86 * T, v5.srow("mayor", 86) * T - 12), (42 * T + 4, 63 * T)]:
+    for x, y in [(2 * T, v5.srow("mayor", 2) * T - 12), (42 * T + 4, 63 * T)]:
         out.append(piece("sign", sg, sg, x, y, shadow=10))
+    # El cartel de la salida al Bosque: señala y se lee (`talk.json`).
+    sb = sign_east(sg)
+    out.append(piece("sign_bosque", sb, sb, 86 * T, v5.srow("mayor", 86) * T - 12, shadow=10, solid="cell"))
     out.append(both("laundry", laundry(), 9 * T, 41 * T, solid=None))
     for i, (x, y) in enumerate([(37 * T - 8, 15 * T), (41 * T + 4, 15 * T)]):
         out.append(piece("hedge", bush2("enfermo", i), bush2("sano", i), x, y, shadow=22, solid="cell"))
@@ -224,7 +239,7 @@ def pieces(info) -> tuple[list[dict], dict]:
         s, u = (BURNT[:, ::-1], TREE[:, ::-1]) if flip else (BURNT, TREE)
         out.append(piece("oak_flip" if flip else "oak", s, u, x, y, shadow=54, solid="trunk"))
     # Los vecinos con nombre.
-    places = list(v5.NPCS)
+    places = [PLAZA_NEIGHBORS.get(n, (n, d, x, y)) for n, d, x, y in v5.NPCS]
     for p in v5.layout():
         if p["name"] == "capilla":
             places.append(("julian", "south", p["door_cx"] + 22, p["yb"] + 14))
@@ -233,7 +248,7 @@ def pieces(info) -> tuple[list[dict], dict]:
         if p["name"] == "botes":
             places.append(("mariela", "south-west", p["door_cx"] + 26, p["yb"] + 22))
     for n, d, x, y in places:
-        s = scene.trim(np.array(Image.open(f"../../assets/source/pixellab/npc/{n}/{d}.png")))
+        s = scene.trim(npc_vars.sprite(n, d))
         out.append(piece(f"npc_{n}", s, s, x - s.shape[1] // 2, y, shadow=22, solid="cell"))
     out += garden()
     return out, decals
@@ -271,7 +286,21 @@ def border_fences() -> list[tuple[dict, tuple[int, int]]]:
         out.append((both("fence_edge", one, T, (r + 1) * T, solid="cell"), (1, r)))
     c, r, n = FENCE_SOUTH
     out.append((both("fence_edge", fence(n), c * T + 4, (r + 1) * T), (c, r)))
+    c, r = FENCE_EXIT
+    out.append((both("fence_edge", one, c * T, (r + 1) * T, solid="cell"), (c, r)))
     return out
+
+
+def sign_east(sg: np.ndarray) -> np.ndarray:
+    """El cartel de `scene2` con una flecha al este en lugar de sus dos renglones."""
+    s = sg.copy()
+    board, ink = s[6, 10].copy(), s[5, 10].copy()
+    s[5, 4:17] = board
+    s[8, 4:17] = board
+    s[6:8, 4:15] = ink
+    for k in range(4):
+        s[6 - k:8 + k, 16 - k] = ink
+    return s
 
 
 def yara_sprite() -> np.ndarray:
@@ -336,7 +365,8 @@ def matrix(spec, info) -> list[list[str]]:
     for c in range(W):
         for r in (0, H - 1):
             rows[r][c] = "~" if rows[r][c] == "~" else "#"
-    rows[EXIT_EAST_ROW][W - 1] = "="
+    for r in EXIT_EAST_ROWS:
+        rows[r][W - 1] = "="
     # La mina: nada al norte de su cara se alcanza sin abrirla.
     for r in (0, 1):
         for c in range(0, 9):
