@@ -295,7 +295,8 @@ func _draw_sprite() -> void:
 
 	# Quien ya cayó se queda tenue, no desaparece: el jugador tiene que poder
 	# ver qué había ahí.
-	var alpha: float = 1.0 if monster.is_alive() else 0.35
+	# Sigue a lo que ya se ve: el motor resuelve antes de que se enseñe nada.
+	var alpha: float = 0.35 if roundi(_shown_hp) <= 0 else 1.0
 	if _feet_origin:
 		_draw_from_feet(origin, alpha)
 		return
