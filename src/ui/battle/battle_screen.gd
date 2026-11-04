@@ -383,9 +383,22 @@ func _flush_views() -> void:
 	_release_numbers()
 
 
-## Suelta las cifras acumuladas sobre el sprite de cada objetivo.
+## Las dos líneas que enseñan la regla del juego llevan su sonido, a la vez que
+## su color.
+func _play_line_sound(tone: Color) -> void:
+	if tone == DesignTokens.TEXT_PURIFIED:
+		GameAudio.play("purify")
+	elif tone == DesignTokens.TEXT_WARNING:
+		GameAudio.play("regen")
+
+
+## Suelta las cifras acumuladas sobre el sprite de cada objetivo, con su sonido.
 func _release_numbers() -> void:
 	for pending in _pending_numbers:
+		if bool(pending["healing"]):
+			GameAudio.play("heal")
+		else:
+			GameAudio.play("hit_resisted" if bool(pending["resisted"]) else "hit")
 		var target: Combatant = pending["target"] as Combatant
 		var anchor: Vector2 = _anchor_for(target)
 		if bool(pending["healing"]):
@@ -488,6 +501,7 @@ func _advance_queue() -> void:
 		"log":
 			_flush_views()
 			_set_message(str(event["text"]), _tone_for(str(event["text"])))
+			_play_line_sound(_message_tone)
 			_schedule(_read_seconds(str(event["text"]), event.get("beat", false)))
 		"spawn":
 			var view := MonsterView.new()
@@ -727,6 +741,12 @@ func _finish(result: int) -> void:
 	_result = result
 	_menu.close()
 	_set_message("", DesignTokens.TEXT_PRIMARY)
+	if result == Enums.BattleResult.VICTORY:
+		GameAudio.play_music("")
+		GameAudio.play("victory")
+	elif result == Enums.BattleResult.DEFEAT:
+		GameAudio.play_music("")
+		GameAudio.play("defeat")
 	_overlay.continue_hint = continue_hint
 	_overlay.show_result(result, _regenerations, FIELD_HEIGHT)
 	queue_redraw()

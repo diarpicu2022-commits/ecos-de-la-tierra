@@ -543,6 +543,10 @@ Es la dirección A del anexo.
 
 ### 4.13 Parte 11: audio
 
+**Estado (2026-11-03):** sonido provisional generado por código para la
+presentación (`tools/gen_audio.py`, `GameAudio`, `verify_audio`). Falta el anexo
+de la parte y que Diego lo vea; detalle en el anexo de Tierra Viva.
+
 - Lo enfermo suena apagado (bus Ambiente con filtro de paso bajo) y se abre
   al ritmo de la ola.
 - Buses: Música, Ambiente, Efectos, Interfaz.

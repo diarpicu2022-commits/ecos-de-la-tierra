@@ -1273,3 +1273,26 @@ tienen que tener su tiempo y poder pasarse a mano, y la victoria no da espacio.
   party_ai 19 y encounters 82.
 - **Sin sonido:** no es un fallo. No hay audio en el proyecto; es la parte 11
   (guía §4.13), sin empezar.
+
+#### Sonido provisional · 2026-11-03
+
+Juan José Rueda, tras jugar el `.exe`, eligió generar sonido por código para la
+presentación del 2026-11-04. **Se salta el proceso a propósito:** la parte 11 no
+tiene anexo ni elección de Diego. Es provisional y **falta que Diego lo vea**.
+
+- **`tools/gen_audio.py`** genera 17 WAV (4,2 MB) con semilla fija: efectos,
+  interfaz, viento, vida (agua y pájaros), música del mundo y música de combate
+  en pentatónica. Sin muestras de terceros (`docs/licencias-audio.md`).
+- **`src/core/game_audio.gd`** (autoload `GameAudio`): los buses Música, Ambiente,
+  Efectos e Interfaz de la guía §4.13. El ambiente lleva paso bajo: en lo enfermo
+  suena viento apagado; en lo sano, vida con el filtro abierto, en lo que tarda la
+  ola. En Valdehoja sigue a la casilla de Ilan.
+- **Dónde suena:** menú (mover, confirmar, cancelar, opción no disponible), golpes
+  y curas al salir su cifra, «se rehace» y «deja de regenerarse» a la vez que su
+  línea, persiana, ola, victoria y derrota.
+- **Medido:** `verify_audio` 33/33, con señal real en los buses Música y Efectos.
+  Bucles sin salto en la costura. usability 16, camera 37, encounters 82, flow 32,
+  party_ai 19 y movement 100.
+- **No medido:** si suena bien. Nadie del desarrollo lo ha oído todavía; los
+  niveles de mezcla (`GameAudio.VOLUME_*`) son un primer intento.
+- **Sin opción de volumen:** llegará con las opciones (parte 10).
