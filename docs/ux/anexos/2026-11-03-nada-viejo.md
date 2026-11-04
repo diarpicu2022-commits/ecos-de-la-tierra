@@ -89,6 +89,31 @@ Nada de esta lista se ha corrido sobre la copia de trabajo:
 - Capturas de combate, persiana y selector, y `--write-movie` del recorrido real.
 - Si queda algún id sin sprite ahora que no hay respaldo al decorado viejo.
 
+## Cifras de daño, fila 13
+
+Contrato: `project/README.md`, línea 70, y `hud.dmg` de `tools/tierra_viva/hud.py`, que dobla la fuente y su sombra con repetición de píxel.
+
+- Golpe resistido: `~` y `TV_UI_4`, el tono de `combat_mock.py`. Al apagarse baja a `TV_UI_3`.
+- Golpe efectivo: `TV_GOLD_4`. Al apagarse baja a `TV_GOLD_3`. Ya no hay un tono aparte para el daño al grupo, porque el sistema no lo define y su apagado en `TV_GOLD_2` quedaba en 2,96:1 de mediana contra el fondo.
+- Curación: `+` y `TV_UI_6`, sin verde. Al apagarse baja a `TV_UI_4`.
+- Sombra: `TV_INK_0`, a 2 px por la escala.
+- La capa de cifras pasa a `z_index` 16. Antes quedaba detrás del monstruo y el hacha tapaba la cifra.
+
+Contraste medido sobre el render a 640 × 360. La primera cifra es contra la sombra y la segunda es la mediana contra el fondo a 4 px del dígito.
+
+| Caso | Vivo | Apagado |
+|---|---|---|
+| Resistido | 12,85 y 10,04 | 7,34 y 5,74 |
+| Efectivo sobre el monstruo | 12,67 y 9,90 | 8,36 y 6,53 |
+| Efectivo sobre el grupo | 12,67 y 11,17 | 8,36 y 5,60 |
+| Curación | 18,74 y 12,55 | 12,85 y 8,60 |
+
+El peor píxel vecino es 1,48:1, donde la cifra efectiva pisa el filo claro del hacha. El mínimo a 4 px del apagado efectivo es 2,24:1.
+
+El tono resistido salió de un golpe real con `numbers_capture`. Los otros se escribieron con `spawn` en un combate real desde una escena temporal, porque `numbers_capture` no llega a un golpe efectivo: su tercer turno sigue saliendo con `~`. `reduced_motion` anula la subida y no se capturó aparte.
+
+Capturas: `docs/ux/capturas/2026-11-03-cifra-resistida.png`, `2026-11-03-cifras-tonos.png` y `2026-11-03-cifras-apagadas.png`.
+
 ## Preguntas para Diego
 
 1. ¿Las regiones deben seguir el dibujo de las referencias `z_*`? Hoy se parecen en el arte y no en la composición, porque sus mapas son otros. Igualarlas exige matrices nuevas con su colisión y sus pruebas, como en Valdehoja.
