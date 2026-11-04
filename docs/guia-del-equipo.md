@@ -201,9 +201,9 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | HECHO 2026-11-03, con el visto bueno de Diego |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
-| 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
+| 11 | Chapas de tipo y estado | `monster_view.gd`, `TvFrame.badge` | `components/TypeBadge`: en la placa y en los menús de habilidades | En la placa, HECHO (PR #30). Falta en el menú de habilidades (`action_menu.gd`, de Diego) |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
-| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
+| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | HECHO 2026-11-03 |
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | HECHO 2026-11-03 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | HECHO 2026-11-03 (contraste 3,22:1, pendiente de Diego) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
