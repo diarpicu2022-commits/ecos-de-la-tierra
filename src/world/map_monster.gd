@@ -187,6 +187,32 @@ func _walk_to(goal: Vector2i) -> bool:
 	return false
 
 
+## Combate de acción: un paso hacia `feet`, sin salir de su territorio.
+## Devuelve true si ya no hay camino o ya llegó a la casilla.
+func fight_step(feet: Vector2i) -> bool:
+	var goal := _closest_in_territory(cell_of(feet))
+	var done := _walk_to(goal)
+	_sync()
+	return done
+
+
+## Mira hacia `feet` sin moverse.
+func fight_face(feet: Vector2i) -> void:
+	_face(cell_of(feet))
+	_sync()
+
+
+## La forma purificada (sistema de diseño: dos formas por monstruo).
+func show_pure() -> void:
+	var pure := "%smonster_%s_pure.png" % [CAST, _zone]
+	if ResourceLoader.exists(pure):
+		for pose in _textures.keys():
+			_textures[pose] = load(pure)
+	state = State.PATROL
+	alert_steps = 0
+	_sync()
+
+
 func _face(ilan: Vector2i) -> void:
 	var d := ilan - cell
 	if d == Vector2i.ZERO:

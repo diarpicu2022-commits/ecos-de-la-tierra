@@ -125,9 +125,16 @@ Solo lo que ayude al recorrido:
 
 (Las sesiones agregan aquí lo que decidieron por él.)
 
+- **Esquiva de 48 px y no de 32.** Con 32 no se salía de la zona de aviso de 40 px de radio. Se cambió midiendo.
+- **El ataque de la Llama hace daño sin quemadura ni humo.** Los estados del combate por turnos cuentan por turnos y aquí no hay turnos. ¿Se agregan con duración en segundos?
+- **La segunda contramedida no hace daño, purifica directamente.** Así no se rehace en el mismo golpe que la purifica.
+
 ## 5. Bitácora
 
 Una línea por paso: fecha y hora, qué se hizo, qué se midió, commit y qué sigue.
 
 - 2026-11-04 00:20. Plan escrito desde `master` (`ec75dc3`). Sigue el bloque A.
 - 2026-11-04 00:30. Bloque A hecho: `verify_flow` 34/34, `verify_usability` 28/28, `verify_encounters` 82/82 y `verify_demo` 15/15. Diego pausó el turno de noche y sigue en la mañana. Falta grabar el arranque real (A.2). Sigue el bloque B.
+- 2026-11-04 05:40. A.2 hecho (40 cuadros del arranque, sin errores). Se trajeron a esta rama los arreglos de Juan José de `master` (PR #52 a #55).
+- 2026-11-04 05:45. Bloque B saltado: la extensión de Chrome no conecta, seguramente porque está con la cuenta de Claude anterior. Para generar en PixelLab, Diego tiene que iniciar sesión en claude.ai desde Chrome con la cuenta nueva.
+- 2026-11-04 06:40. Bloque C, fases 1, 2 y 4 hechas, con el registro en `docs/ux/anexos/2026-11-04-combate-accion.md`. `verify_action_combat` 21/21 y las demás pruebas sin cambios. El interruptor `action_combat` sigue apagado en `game.tscn`. Sigue la fase 3, el compañero en el mapa, y después encenderlo.
