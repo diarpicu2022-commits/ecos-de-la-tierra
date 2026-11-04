@@ -130,3 +130,4 @@ Solo lo que ayude al recorrido:
 Una línea por paso: fecha y hora, qué se hizo, qué se midió, commit y qué sigue.
 
 - 2026-11-04 00:20. Plan escrito desde `master` (`ec75dc3`). Sigue el bloque A.
+- 2026-11-04 00:30. Bloque A hecho: `verify_flow` 34/34, `verify_usability` 28/28, `verify_encounters` 82/82 y `verify_demo` 15/15. Diego pausó el turno de noche y sigue en la mañana. Falta grabar el arranque real (A.2). Sigue el bloque B.
