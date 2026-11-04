@@ -1,187 +1,132 @@
-# Continuar *Ecos de la Tierra* en la nube
+# Continuar Ecos de la Tierra: turno de noche
 
-Escrito el 2026-10-28 revisando GitHub (`diarpicu2022-commits/ecos-de-la-tierra`).
-La última actividad en el repositorio es del **2026-10-01**: lleva casi cuatro
-semanas parado, y parado en una pregunta, no en código.
+Escrito el 2026-11-04 a las 00:20. Diego cambia de cuenta de Claude y quiere que el trabajo siga solo toda la noche, sesión tras sesión. Si estás leyendo esto al empezar una sesión, este archivo es tu encargo.
 
-Este archivo es el punto de entrada para una sesión en la nube. **No sustituye a
-`docs/plan-de-trabajo.md`**, que sigue siendo la fuente de verdad; resume dónde
-quedó todo, qué bloquea y qué falta, para no tener que explorar el repo.
+Palabras de Diego: «en el sistema de diseño ya quedó que las peleas iban a hacer en mundo abierto, que yo controlaba al jugador, no por turno», «ya inicié sesión con otra cuenta en pixellab, entonces puedes generar los personajes que faltan», «falta colocar música y demás, que esa demo sea chévere».
 
----
+## 1. Cómo se trabaja esta noche
 
-## 1. Lo primero: abrir la parte 5
+Cada sesión hace esto:
 
-La **parte 4 se cerró el 2026-10-28** (anexo
-`docs/ux/anexos/2026-10-28-encuentros.md`):
+1. Lee este archivo entero y la bitácora del final. Lee `AGENTS.md` y `docs/guia-del-equipo.md` §2.
+2. Confirma con `git status -sb` que estás en `noche/demo-accion`. Si hay cambios sin commit de una sesión cortada, revísalos antes de seguir.
+3. Sigue el primer bloque sin terminar de la sección 3.
+4. Haz commit y `git push` al terminar cada paso. Una sesión se puede cortar en cualquier momento por límite de uso.
+5. Antes de cada commit anota en la bitácora qué quedó hecho, qué se midió y qué sigue.
 
-- monstruos que patrullan y persiguen;
-- la persiana con ventaja;
-- el combate con fondo regional;
-- la ola de purificación;
-- el bot de equilibrado (IA-4);
-- el jugador como líder con orden de grupo (IA-5).
+**Permiso de Diego para esta noche.** No hay nadie para dar visto bueno, así que no se para a esperarlo en cada paso. Se deja captura y medida de cada paso para que Diego lo revise en la mañana. Lo que normalmente se le preguntaría se decide por la opción más conservadora y se escribe en «Preguntas para Diego». Este permiso vale solo para esta rama y esta noche.
 
-Lo siguiente es la **parte 5**, diálogos y retratos, empezando por su anexo.
-Las deudas de equilibrado de la parte 4 (Costa, Llanura, Cuenca y Bosque)
-están escritas en el anexo.
+**Lo que no se hace, aunque parezca buena idea:**
 
-> Regla del proyecto: la sesión en la nube **no elige por Diego**. Si falta
-> una respuesta suya, se le pregunta y se espera.
+- No tocar `master` ni `rediseno/terreno`, y no fusionar ningún PR. Hoy 2026-11-04 es la presentación y `master` es la demo de respaldo. Juan José exporta el `.exe` desde ahí.
+- No usar `git push --force`, no borrar ramas y no reescribir historia.
+- No pagar nada, no comprar créditos y no aceptar términos en ninguna página. Si PixelLab pide pago, se anota y se sigue con otro bloque.
+- No cambiar configuración de Claude, permisos ni cuentas.
+- No escribir contraseñas ni datos de cuenta en ningún archivo.
+- Si un comando se bloquea por permisos, no se le da la vuelta. Se anota y se sigue con lo demás.
 
----
+**Terminar.** A la hora límite que te pasaron, deja todo con commit y push. Si no queda ningún bloque por hacer, crea el archivo `.noche-terminada` en la raíz del proyecto, sin commit, y el script deja de lanzar sesiones.
 
-## 2. Estado por partes
+## 2. Lo que ya aprendimos a golpes
 
-| # | Parte | Estado en GitHub |
-|---|---|---|
-| — | Motor de combate, IA por pesos, tabla Q del jefe | Hecho |
-| — | Pantalla de batalla «Ceniza y Brasa» | Hecho, `verify_usability` 16/16 |
-| 1 | Tokens de mundo, tileset y cámara | Todo aprobado; **abierta solo por la prueba con personas** de los materiales (aplazada) |
-| 2 | Movimiento, colisiones y transición entre zonas | **Cerrada** 2026-10-01 (PR #4–#9), `verify_movement` 99/99 |
-| 3 | Las siete zonas | **Cerrada** 2026-10-28 (enmiendas 6-10 y 12) |
-| 4 | Encuentros y paso mundo ↔ combate | **Cerrada** 2026-10-28 (contratos «Persiana» y «Orden de líder») |
-| 5 | Diálogos y retratos (Yara, compañeros, Rasgo) | Sin empezar |
-| 6 | Progresión | Sin empezar |
-| 7 | Puzzles ambientales, uno por región | Sin empezar |
-| 8 | Menú fuera de combate | Sin empezar |
-| 9 | Guardado de partida | Sin empezar |
-| 10 | Título y opciones | Sin empezar |
-| 11 | Audio | Sin empezar |
-| 12 | Final y créditos | Sin empezar |
+- **Las pruebas con captura se cuelgan con `--headless`.** `verify_terrain`, `verify_wave`, `verify_demo`, `verify_opening`, `verify_dialogue_states` y las capturas van con ventana. Esto dejó un agente quieto once minutos.
+- **Todo comando de Godot lleva `timeout`.** Nunca se lanza sin límite, y nunca se espera un proceso sin límite.
+- **La memoria es justa**, unos 2 GB libres de 12 GB, y una pasada ya murió por eso. Se corre una prueba a la vez.
+- **Binario de Godot:** `C:\Users\Cisna\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe`.
+- **Python en Windows:** con `PYTHONIOENCODING=utf-8`.
+- **`--import` puede terminar con «Segmentation fault»,** y las texturas quedan bien igual. Después de cada PNG nuevo hay que importar.
+- **Las pruebas dejan basura.** Se descarta con `git restore docs/balance docs/ux/capturas/2026-10-28-ola-bosque.png`, y se borran los `.png.import` sin versionar de `docs/ux/capturas`.
+- **Pasar `verify_palette` no significa que se vea bien.** Valdehoja pasó todas las medidas y no se parecía en nada al sistema. Siempre se mira la captura junto a su referencia.
+- **Quitar un respaldo puede romper el juego.** Al quitar el decorado viejo desapareció el monstruo de todas las regiones. Después de tocar el mundo se corre `verify_flow` y `verify_encounters`.
+- **`docs/ux/sistema-de-diseno/project/assets/img/valdehoja-inicio.png` es una captura vieja,** no una referencia. Las buenas son `valdehoja_enfermo.png`, `valdehoja_sano.png` y `v_plaza.png`.
+- **`verify_wave` puede fallar por duración** con la máquina cargada, 58 a 60 cuadros contra 54. El commit limpio también se pasó, así que no se afloja la prueba. Se anota.
+- **El subagente `ux-designer`** es la regla de Diego para frontend. Si lo usas, pásale estas lecciones en el encargo y que no deje procesos en segundo plano.
 
-Alcance cerrado el 2026-09-14: **el juego completo, cinco regiones**, sin
-versión de muestra. Faltan nueve partes y media; las caras por contenido son la
-3, la 5 y la 7.
+## 3. El trabajo, en orden
 
----
+La demo actual está en `docs/plan-para-terminar-la-historia.md` §1: Valdehoja, Bosque de las Cenizas y primer jefe. **Esta noche no se amplía a otras regiones.** Una demo corta y buena vale más que una larga a medias.
 
-## 3. Lo que falta, en orden
+### Bloque A. Línea base
 
-### Parte 3 — una zona por sesión (tras el visto bueno al contrato)
+1. Importa y corre `verify_flow`, `verify_demo`, `verify_usability` y `verify_encounters`. Tienen que dar verde antes de tocar nada, y si no, se anota.
+2. Graba el arranque real: `--path . --write-movie <dir>/x.png --fixed-fps 10 --quit-after 25 res://scenes/game.tscn`.
 
-Valdehoja → Bosque de las Cenizas → Cuenca de Alquitrán → Costa Quebrada →
-Llanura Marchita → Cumbre Menguante → Cripta de la Avaricia.
+### Bloque B. Personajes en PixelLab
 
-Cada zona lleva: fuente del daño, gradiente que se aclara al alejarse, **un paso
-cerrado que la purificación abre**, un único hito visual, al menos una pista
-por franja de 480 px, y la fauna en bandada al purificar (IA-2). Valdehoja
-empieza gris salvo el jardín de Yara y hace de marcador de progreso.
+Diego dejó la sesión de PixelLab abierta en Chrome. Se usa con las herramientas de Claude in Chrome. **Si no están disponibles en esta sesión, se anota y se pasa al bloque C**, sin insistir más de dos intentos. Lee `assets/source/pixellab/README.md` y `docs/ux/sistema-de-diseno/project/components/Cast/README.md`. Los originales van en `assets/source/pixellab/<nombre>/`, y no se retoca nada a mano.
 
-Verificación por zona, todavía **por escribir**: `tools/verify_zone.gd <zona>`
-(BFS: salida inalcanzable enferma y alcanzable purificada; pista por franja;
-decorado fuera del catálogo; `verify_palette.py image --world` sobre la captura).
-Detalle en `docs/guia-de-continuacion.md` §5, parte 3.
+Se genera en este orden, porque los créditos pueden acabarse:
 
-### Partes 4 a 12
+1. **Yara:** anciana curandera de Valdehoja, mentora. 48 px, 8 direcciones. Hoy es una variante de Toña.
+2. **Rasgo:** Comandante de la Compañía Áurea, 48 px, 8 direcciones. Hoy no existe en el mapa.
+3. **Bruma:** caminata de 4 cuadros en todas las direcciones. Va primero entre los compañeros porque es la que sale en la demo.
+4. **Ataque de Ilan y de Bruma,** si PixelLab lo permite, para el combate del bloque C.
+5. **Coral, Nix y Suri:** caminatas. Solo si sobran créditos.
 
-Instrucciones de cada una en la guía §5. Decisiones que quedan pendientes
-dentro de ellas:
+El sistema no describe a Yara ni a Rasgo. Se toma lo que dice `EcosDeLaTierra Propuesta Videojuego.md` §2.3 y §2.4, con el estilo y las reglas de `Cast`, y lo que se decida se anota como pregunta para Diego. Después corre `tools/gen_tierra_viva_cast.py` y `tools/gen_tierra_viva_portraits.py`, y mide con `verify_palette.py image <png> --source assets/source/pixellab/<nombre>`. Con el original de Rasgo, ponlo en el Bosque como personaje y dale su retrato. Hoy solo habla.
 
-| Qué | Dónde se decide |
-|---|---|
-| IA-5 (sintonía del grupo): enmienda del contrato de batalla, solo maneja a Ilan; orden de líder | Diego, anexo de la parte 4 |
-| IA-6: umbrales de los tres desenlaces de Rasgo | Anexo de la parte 5 |
-| IA-1 patrulla/persecución, IA-3 pistas de Yara, IA-4 bot de equilibrado | Cada una en su parte (guía §3.3) |
+### Bloque C. Combate de acción en el mapa (R2)
 
-### Deudas sueltas (guía §4)
+**Es lo más importante de la noche.** Es lo que Diego eligió el 2026-10-30, y la demo hoy lo presenta por turnos porque no alcanzó el tiempo.
 
-- **Equilibrado (parte 4):**
-  - el Gólem de la Costa no presiona;
-  - en la Llanura, la Cuenca y el Bosque la fuerza bruta gana más del 30 %.
-  - Medir con `tools/balance_bot.gd`.
-- **IA-2, fauna en bandada al purificar:** de la parte 3, sin hacer.
+La dirección no se vuelve a discutir porque ya la eligió Diego. Antes de programar, abre `docs/ux/anexos/2026-11-04-combate-accion.md` con usuarios, comunicación, las fuentes 4 a 7 que ya están en el anexo de Tierra Viva y el contrato. Las piezas salen de `components/ActionHUD/README.md`, `EnemyPlate`, `TypeBadge`, `docs/ux/tierra-viva/referencias/combate_accion.png` y `combate_purifica.png`, y del prototipo `tools/tierra_viva/combat_mock.py` y `hud.py`. El detalle está en `docs/guia-del-equipo.md` §4.5.
 
-- **Pruebas con personas** «¿Por qué pierdo?» y materiales (dE 9,2): aplazadas
-  por Diego el 2026-10-01. Hoja lista en
-  `docs/ux/pruebas/2026-10-01-hoja-de-pruebas.md`. Cierran la parte 1. **No se
-  pueden hacer en la nube**: necesitan tres personas reales.
-- **Enmienda 11** si dE 9,2 entre materiales no basta (se decide con esa prueba;
-  la 10 fue la piedra de la Cripta).
-- **Fondo de batalla por región + parallax de 3 capas**, con las rampas del
-  tileset de la región. Parte 4.
-- **Mobbin y Pinterest** sin consultar en el anexo de exploración: abrir con
-  navegador o registrarlas como «no aplicable» con motivo.
-- **GIF del follaje purificado en movimiento**: Diego tiene que juzgarlo (anexo
-  de la parte 2, paso 6).
-- **F5 abre el selector de región de pruebas**: dejar `region_select.gd` como
-  herramienta de depuración. Parte 10.
-- **Legal** (norma global de Diego desde 2026-09-28): el juego no tiene cuentas
-  ni red, pero el guardado (parte 9) y una posible exportación a Android
-  obligan a dejar escrito en el anexo qué datos guarda (o que ninguno
-  personal), una política breve en `docs/legal/` y, si va a Google Play, el
-  formulario de Seguridad de los datos. Hoy **no está anotado en ningún sitio**
-  del repo.
+**Cómo debe jugarse:**
 
----
+- Se pelea en el mismo mapa, sin pantalla aparte ni persiana. Manejas a un héroe con movimiento libre.
+- **Z** ataca, **X** esquiva, **C** usa la habilidad eco y **V** usa el objeto. **Q** y **E** cambian de héroe al instante. **1 a 4** eligen en la bolsa.
+- El golpe sin la causa correcta hace que el monstruo **se rehaga**, con el aviso en papel: «La llama se rehace. Su causa es FUEGO». Cifra con `~`.
+- La habilidad eco del héroe correcto lo purifica. En el Bosque es la Línea Cortafuegos de Bruma. Cambia la forma del monstruo y sale la ola de `purify_wave`.
+- La contramedida de dos rondas pasa a ser una **ventana de aturdimiento**. El compañero que no manejas actúa con la postura del grupo, que reemplaza a la orden de líder.
+- La Llama necesita ataques con aviso que se puedan esquivar. Sus habilidades son Onda de Calor y Sofocación por Humo.
+- Si pierdes, vuelves a la entrada de la zona. Se conserva lo que hace hoy `game_flow.gd`.
+- Golpe: tajo en media luna de oro a blanco y chispa. Con `DesignTokens.reduced_motion`, todo salta al estado final. Solo se anima transform y opacidad.
 
-## 4. Preparar el entorno en la nube
+**Por fases, con commit en cada una:**
 
-El proyecto es Godot 4 + GDScript, sin dependencias externas.
+1. **Solo el bucle:** mover, atacar y esquivar contra la Llama, con vida y daño. Sin HUD.
+2. **La regla de la causa:** rehacerse, el aviso de papel, la ventana de aturdimiento y la purificación con la ola.
+3. **Cambio de héroe** con Q/E y el compañero con su postura.
+4. **HUD** de `ActionHUD`: tarjeta del héroe, relevo, bolsa y mandos en rombo. Nunca tapa el centro de la pantalla.
+5. **Estados:** derrota, victoria, sin energía, bolsa vacía y movimiento reducido.
 
-```bash
-# Godot 4.7.2 estándar (NO .NET), Linux
-wget https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
-unzip Godot_v4.7.2-stable_linux.x86_64.zip && chmod +x Godot_v4.7.2-stable_linux.x86_64
-export GODOT=$PWD/Godot_v4.7.2-stable_linux.x86_64
+**Cómo se conecta:** con un interruptor `action_combat` en `GameFlow`, igual que `demo`, y se enciende en `game.tscn` solo cuando pasen las fases 1 a 4. El combate por turnos **no se borra** esta noche. Si el nuevo no queda bien, se deja apagado y la rama sigue sirviendo. `verify_flow` y `verify_encounters` siguen probando el de turnos con el interruptor apagado.
 
-# Godot no arranca en la nube sin permiso: Diego tiene que permitir que la
-# sesión ejecute el binario descargado.
+**Cómo se mide:** `tools/verify_action_combat.gd` con teclas simuladas. Tiene que comprobar que el golpe común no purifica, que Bruma con C sí, que Q/E cambia al instante, que la esquiva evita un ataque avisado, que perder devuelve a la entrada, que al ganar sale la ola y se abre el paso, y que con movimiento reducido no se anima. Además, una pelea con fuerza bruta **no debe ganar**. Antes ganaba el 41 % de las veces. Graba capturas y míralas junto a `combate_accion.png`.
 
-# Python para las herramientas de paleta y tileset
-pip install pillow
+### Bloque D. Música y sonido
 
-# Importar el proyecto una vez (crea .godot/)
-$GODOT --headless --path . --import
-```
+`tools/gen_audio.py` genera hoy 17 audios por código, y `src/core/game_audio.gd` los toca. Lee `docs/guia-del-equipo.md` §4.13.
 
-Comprobar que todo sigue en verde antes de tocar nada:
+1. Abre el anexo de la parte 11, que nunca se abrió.
+2. Mejora la música de Valdehoja, del Bosque y del combate, sin muestras de terceros. Lo enfermo suena apagado y se abre con la ola.
+3. Agrega sonidos para atacar, esquivar, cambiar de héroe, rehacerse y aturdir, y conéctalos.
+4. Solo se usa audio generado por código o con licencia libre anotada en `docs/licencias-audio.md`. El conector de ElevenLabs de esta cuenta no hace música y gasta créditos, así que no se usa.
+5. Mide niveles y que no haya recorte con `verify_audio`. **Claude no puede oír:** se anota que Diego tiene que escucharlo.
 
-```bash
-python tools/verify_palette.py tokens
-python tools/verify_tileset.py
-$GODOT --headless --path . res://tools/verify_usability.tscn   # 16/16
-$GODOT --headless --path . res://tools/verify_movement.tscn    # 99/99
-$GODOT --headless --path . res://tools/verify_camera.tscn      # 37/37
-$GODOT --headless --path . res://tools/verify_zone.tscn -- valdehoja
-xvfb-run -a $GODOT --path . res://tools/valdehoja_capture.tscn   # capturas del motor
-$GODOT --path . res://tools/valdehoja_play.tscn                   # pasear por Valdehoja
-python tools/verify_squint.py valdehoja                          # prueba de entrecerrar
-$GODOT --headless --path . res://tools/verify_zone.tscn -- ashen_forest
-xvfb-run -a $GODOT --path . res://tools/zone_capture.tscn -- ashen_forest
-$GODOT --headless --path . res://tools/verify_zone.tscn -- tar_basin
-$GODOT --headless --path . res://tools/verify_zone.tscn -- broken_coast
-$GODOT --headless --path . res://tools/verify_zone.tscn -- withered_plain
-$GODOT --headless --path . res://tools/verify_zone.tscn -- waning_peak
-```
+### Bloque E. Que la demo sea chévere
 
-Las capturas (`tools/*_capture.tscn`, `tools/*_sheet.tscn`) necesitan ventana.
-En un servidor sin pantalla: `xvfb-run -a $GODOT --path . res://tools/<x>.tscn`
-(instalar `xvfb` si falta). Salen a 480×270, que es el medio real del juego.
+Solo lo que ayude al recorrido:
 
----
+1. **El Bosque contra su referencia:** `assets/img/bosque_enfermo.png`, `bosque_sano.png` y `mapa_bosque_*.png`. Es la región que sale en la demo, y el mapa actual es distinto. Acerca el arte sin romper colisiones ni salidas.
+2. **Vecinos de Valdehoja que hablan:** una línea cada uno, en `data/dialogue/`. Mismo tono de Yara.
+3. **Cerrar la pelea con historia:** Bruma dice algo al purificar el Bosque, y Yara responde por el ave.
+4. **Pantalla de título** desde `docs/ux/tierra-viva/titulo-y-creditos.md`, con Valdehoja real. Solo si todo lo anterior quedó bien.
+5. Mostrar el aviso de privacidad de `docs/legal/privacidad.md` dentro del juego, en créditos u opciones.
 
-## 5. Reglas que no se saltan
+### Bloque F. Cierre
 
-Resumen; el texto completo está en `AGENTS.md` y en la guía §1.
+1. Comprobación general de `docs/guia-del-equipo.md` §2, con `verify_demo`, `verify_opening`, `verify_numbers`, `verify_result` y `verify_action_combat`.
+2. Si Godot tiene las plantillas instaladas, exporta el `.exe` de esta rama con la guía §4.15 a una carpeta fuera del repo y anota la ruta. Si no las tiene, no las descargues y anótalo.
+3. Abre un PR de `noche/demo-accion` hacia `rediseno/terreno` con la plantilla de `docs/guia-del-equipo.md` §2, con **Dev:** Diego Armando Pinta Cuasquen y capturas reales. **No lo fusiones.** Diego decide en la mañana.
+4. Escribe al final de este archivo el informe para Diego: qué quedó, qué falló, qué falta probar jugando y qué preguntas tiene que responder.
 
-- **Abrir leyendo** `docs/plan-de-trabajo.md` y la guía; no explorar el repo.
-- **Una parte por sesión** (en la parte 3, una zona por sesión). No se abre la
-  siguiente sin cerrar la actual.
-- **Diseño antes que código**: anexo con usuarios, comunicación, investigación
-  (≥ 6 fuentes reales con URL) y 2–3 direcciones; **Diego elige y se espera**.
-- **Contratos bloqueados se cumplen.** Todo valor visual sale de
-  `src/ui/design_tokens.gd`; assets por `tools/gen_*.py` con la paleta de
-  `tools/pixel.py`.
-- **El verde `VITAL_*` solo significa «purificado»**, y nunca lo carga solo
-  (va con valor, silueta o fauna).
-- **Paso a paso** (tokens → componente clave → esqueleto → resto → pantalla →
-  estados), con captura, cláusula del contrato y parada para visto bueno en
-  cada paso.
-- **Verificar midiendo**, e informar también de lo que falla.
-- Código en inglés; textos de jugador y comentarios en español.
-- Git: rama `parte-N/<tema>` desde `master`, PR hacia `master` con la plantilla
-  de la guía §1.6 (Dev: Diego Armando Pinta Cuasquen) y capturas reales. Nunca
-  commits directos a `master`. **Sin firma de herramientas** en nada.
-- **Al cerrar la sesión**: actualizar `docs/plan-de-trabajo.md` (y este
-  archivo si cambia el bloqueo) y hacer commit.
+## 4. Preguntas para Diego
+
+(Las sesiones agregan aquí lo que decidieron por él.)
+
+## 5. Bitácora
+
+Una línea por paso: fecha y hora, qué se hizo, qué se midió, commit y qué sigue.
+
+- 2026-11-04 00:20. Plan escrito desde `master` (`ec75dc3`). Sigue el bloque A.

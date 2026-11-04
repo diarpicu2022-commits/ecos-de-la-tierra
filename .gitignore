@@ -40,3 +40,4 @@ __pycache__/
 
 # Paquete descargado del sistema de diseño (ya extraído en docs/ux/sistema-de-diseno/)
 /ecos-sistema-de-diseno.zip
+.noche-terminada
