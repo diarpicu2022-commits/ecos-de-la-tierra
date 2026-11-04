@@ -1827,6 +1827,7 @@ def forest() -> dict[str, np.ndarray]:
         out[f"ash_{state}"] = ash_patch(P, sick)
         out[f"grass_{state}"] = sys_tuft(P, sick, 0)
         out[f"blocker_{state}"] = blocker(P, sick)
+        out[f"bush_{state}"] = sys_bush(P, sick)
         if not sick:
             out["grass_pure_1"] = sys_tuft(P, False, 1)
     P = tv.palette("enfermo", "bosque")
