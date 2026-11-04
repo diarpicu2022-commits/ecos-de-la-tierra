@@ -40,6 +40,11 @@ const AFTER_PURIFY := {"ashen_forest": "bosque_purificado"}
 ## Combate de acción en el mapa, contrato «Tajo» (docs/ux/anexos/
 ## 2026-11-04-combate-accion.md). Apagado, se pelea por turnos como antes.
 @export var action_combat := false
+## La partida empieza en la pantalla de título, sobre Valdehoja real.
+## Las pruebas arrancan directo en el mapa.
+@export var show_title := false
+## Casilla sobre la que se queda la cámara del título: la plaza.
+const TITLE_CELL := Vector2i(42, 22)
 
 var world := WorldRoot.new()
 var blinds := BattleBlinds.new()
@@ -54,6 +59,7 @@ var battle_cell := Vector2i.ZERO
 var _battle_layer := CanvasLayer.new()
 var action: ActionCombat = null
 var action_hud := ActionHud.new()
+var title := TitleScreen.new()
 var _enemy: Monster = null
 var _purified_at: Callable
 var _ambient_frame := 0
@@ -79,6 +85,34 @@ func _ready() -> void:
 	_on_zone_changed(world.zone_id)
 	GameAudio.start_ambient(_cell_is_alive())
 	GameAudio.play_music("music_world")
+	if show_title:
+		_open_title()
+		return
+	if play_opening:
+		await get_tree().process_frame
+		world.try_opening_talk()
+
+
+func _open_title() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 18
+	layer.add_child(title)
+	add_child(layer)
+	title.started.connect(_begin_game)
+	title.quit_requested.connect(func(): get_tree().quit())
+	world.body.input_enabled = false
+	world.body.visible = false
+	world.label.visible = false
+	world.body.global_position = Vector2(WorldRoot.feet_of(TITLE_CELL))
+	world.camera.snap_to_target()
+	title.open()
+
+
+## «Nueva partida»: Ilan aparece en su sitio y empieza la llamada de Yara.
+func _begin_game() -> void:
+	world.enter_zone(start_zone, start_cell)
+	world.body.visible = true
+	world.body.input_enabled = true
 	if play_opening:
 		await get_tree().process_frame
 		world.try_opening_talk()

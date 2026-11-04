@@ -17,6 +17,11 @@ En Windows están en
 `%APPDATA%\Godot\app_userdata\Ecos de la Tierra\`. Si borras esa carpeta,
 desaparecen.
 
+## Dónde se lee dentro del juego
+
+En la pantalla de título, en «Privacidad». Ese texto está en
+`data/legal/privacidad.txt` y resume este aviso: si uno cambia, cambia el otro.
+
 ## Si esto cambia
 
 Si algún día el juego usa red, cuentas o analítica, este aviso se sustituirá por
