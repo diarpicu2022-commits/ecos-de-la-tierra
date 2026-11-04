@@ -1,0 +1,6 @@
+Un proyecto de Diseño de Interfaces de Software
+Dirección, diseño y desarrollo: Diego Armando Pinta Cuasquen
+Desarrollo e integración: Juan José Rueda
+Personajes y monstruos: generados con PixelLab desde el sistema Tierra Viva
+Mundo, interfaz, fuente Brote y sonido: hechos en código por el equipo
+Motor: Godot 4.7.2

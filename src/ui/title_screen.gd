@@ -1,48 +1,68 @@
 class_name TitleScreen
 extends Control
 
-## Pantalla de título, dirección A de `docs/ux/tierra-viva/titulo-y-creditos.md`
-## (referencia `docs/ux/tierra-viva/referencias/titulo_nueva.png`).
+## Pantalla de título con la portada del sistema de diseño (componente
+## `Cover`, `docs/ux/sistema-de-diseno/project/components/Cover/preview.html`),
+## elegida por Diego el 2026-11-04.
 ##
-## - El fondo es Valdehoja real en el estado de la partida, con la cámara
-##   quieta sobre la plaza: lo que el jugador devuelve se ve aquí.
-## - Un solo punto de entrada, el nombre en Brote: «Ecos de la» a ×3 y
-##   «Tierra» a ×5. «Tierra» va en blanco en partida nueva y en eco en cuanto
-##   hay algo purificado: el verde dice exactamente eso.
-## - El nombre lleva el contorno de 1 px en tinta de la referencia. La
-##   referencia además oscurece la mitad izquierda multiplicando el color, lo
-##   que crea colores que no son tokens; con trama se veía como un damero, así
-##   que no se oscurece y el contraste del nombre se mide en `verify_title`.
-## - Menú en la placa de pizarra: Nueva partida, Privacidad y Salir. No hay
+## - A la derecha, la portada: Valdehoja que pasa de enferma a sana por un
+##   frente tramado de 4 × 4. Es la idea de `Cover` («el mapa que vuelve a ser
+##   verde, el mecanismo del juego») hecha con el arte real.
+## - A la izquierda, un solo punto de entrada: el nombre en Brote, «Ecos de la»
+##   a ×3 y «Tierra» a ×5 con sombra de tinta, y la frase del sistema debajo.
+##   «Tierra» pasa a eco en cuanto hay algo purificado: el verde dice eso.
+## - Debajo, el menú: Nueva partida, Créditos, Privacidad y Salir. No hay
 ##   «Continuar» porque aún no hay guardado, ni «Opciones» porque no existen.
-## - Abajo a la derecha, el estado de la partida.
+## - Abajo a la izquierda, el estado de la partida.
 ##
-## «Privacidad» enseña el aviso de `data/legal/privacidad.txt`, que resume
-## `docs/legal/privacidad.md`: si uno cambia, cambia el otro.
+## «Créditos» y «Privacidad» enseñan `data/legal/creditos.txt` y
+## `data/legal/privacidad.txt`; este resume `docs/legal/privacidad.md`.
 
 signal started
 signal quit_requested
 
-const ENTRIES := ["Nueva partida", "Privacidad", "Salir"]
-const NAME_AT := Vector2(28, 52)
-const MENU := Rect2(24, 252, 140, 58)
-const ROW := 14.0
+const ENTRIES := ["Nueva partida", "Créditos", "Privacidad", "Salir"]
+const NAME_AT := Vector2(32, 92)
+const TAGLINE_AT := Vector2(34, 186)
+const MENU_AT := Vector2(34, 232)
+const ROW := 16.0
 const PRIVACY := "res://data/legal/privacidad.txt"
-const NOTE := Rect2(150, 230, 460, 116)
+const CREDITS := "res://data/legal/creditos.txt"
+const NOTE := Rect2(150, 216, 460, 130)
+const TAGLINE := ["Tierra Viva: el mundo enferma con color", "y sana con color."]
+
+## Portada: la columna donde empieza y su imagen.
+const COVER_X := 320
+const COVER: Texture2D = preload("res://assets/ui/portada.png")
 
 var focused := 0
-var showing_privacy := false
+var showing := ""
 var active := false
 var _font: Font = null
-var _privacy := PackedStringArray()
+var _texts := {}
 
 
 func _ready() -> void:
 	_font = load(DesignTokens.FONT_PATH)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	size = Vector2(640, 360)
-	var text := FileAccess.get_file_as_string(PRIVACY)
-	_privacy = text.strip_edges().split("\n")
+	_texts["Privacidad"] = FileAccess.get_file_as_string(PRIVACY).strip_edges().split("\n")
+	_texts["Créditos"] = FileAccess.get_file_as_string(CREDITS).strip_edges().split("\n")
+
+
+## Compatibilidad con la prueba: el aviso de privacidad abierto.
+var showing_privacy: bool:
+	get:
+		return showing == "Privacidad"
+
+
+var _privacy: PackedStringArray:
+	get:
+		return _texts.get("Privacidad", PackedStringArray())
+
+
+func lines_of(entry: String) -> PackedStringArray:
+	return _texts.get(entry, PackedStringArray())
 
 
 func open() -> void:
@@ -50,7 +70,7 @@ func open() -> void:
 	visible = true
 	modulate.a = 1.0
 	focused = 0
-	showing_privacy = false
+	showing = ""
 	queue_redraw()
 
 
@@ -79,9 +99,9 @@ func status_text() -> String:
 func _unhandled_input(event: InputEvent) -> void:
 	if not active or not event.is_pressed() or event.is_echo():
 		return
-	if showing_privacy:
+	if showing != "":
 		if event.is_action("confirm") or event.is_action("cancel"):
-			showing_privacy = false
+			showing = ""
 			GameAudio.play("ui_cancel")
 			queue_redraw()
 			get_viewport().set_input_as_handled()
@@ -109,8 +129,8 @@ func choose() -> void:
 		"Nueva partida":
 			close()
 			started.emit()
-		"Privacidad":
-			showing_privacy = true
+		"Créditos", "Privacidad":
+			showing = ENTRIES[focused]
 			queue_redraw()
 		"Salir":
 			quit_requested.emit()
@@ -128,37 +148,47 @@ func close() -> void:
 
 
 func _draw() -> void:
+	draw_rect(Rect2(Vector2.ZERO, size), DesignTokens.TV_UI_0)
+	_draw_cover()
 	var tierra := DesignTokens.TV_ECO_3 if purified_count() > 0 else DesignTokens.TV_UI_6
 	_big("Ecos de la", NAME_AT, 3, DesignTokens.TV_UI_6)
-	_big("Tierra", NAME_AT + Vector2(0, 66), 5, tierra)
-	TvFrame.draw(self, TvFrame.PLATE, MENU)
+	_big("Tierra", NAME_AT + Vector2(0, 62), 5, tierra)
+	for i in TAGLINE.size():
+		TvFrame.slate_text(self, _font, TAGLINE_AT + Vector2(0, 13 * i), TAGLINE[i], DesignTokens.TV_UI_4)
 	for i in ENTRIES.size():
-		var y := MENU.position.y + 16.0 + ROW * i
+		var y := MENU_AT.y + ROW * i
 		var on := i == focused
 		if on:
-			TvFrame.slate_text(self, _font, Vector2(MENU.position.x + 8, y), "▶", DesignTokens.TV_TEXT_HIGHLIGHT)
-		TvFrame.slate_text(self, _font, Vector2(MENU.position.x + 20, y), ENTRIES[i],
+			TvFrame.slate_text(self, _font, Vector2(MENU_AT.x, y), "▶", DesignTokens.TV_TEXT_HIGHLIGHT)
+		TvFrame.slate_text(self, _font, Vector2(MENU_AT.x + 12, y), ENTRIES[i],
 			DesignTokens.TV_TEXT_HIGHLIGHT if on else DesignTokens.TV_TEXT_ON_SLATE)
-	var status := status_text()
-	var w := TvFrame.width(_font, status)
-	TvFrame.slate_text(self, _font, Vector2(640 - 12 - w, 350), status, DesignTokens.TV_UI_4)
-	if showing_privacy:
-		TvFrame.draw(self, TvFrame.TEXTBOX, NOTE)
-		TvFrame.paper_text(self, _font, NOTE.position + Vector2(12, 20), "Privacidad")
-		for i in _privacy.size():
-			TvFrame.paper_text(self, _font, NOTE.position + Vector2(12, 38 + 13 * i), _privacy[i])
-		var hint := "Enter para volver"
-		TvFrame.paper_text(self, _font, NOTE.end - Vector2(TvFrame.width(_font, hint) + 12, 8), hint)
+	TvFrame.slate_text(self, _font, Vector2(MENU_AT.x, 346), status_text(), DesignTokens.TV_UI_4)
+	if showing != "":
+		_draw_note(showing, lines_of(showing))
 
 
-## Texto a escala entera con contorno de 1 px en tinta, como `outlined` de
-## `tools/tierra_viva/title_credits.py`.
+## La portada, a la derecha: Valdehoja que sana de izquierda a derecha
+## (`tools/gen_title_cover.py`). Con las bandas planas de `Cover` a 640 × 360
+## las losetas de 32 px parecían relleno, así que la idea del componente se
+## hace con el arte del juego. Una línea de tinta la separa de la columna.
+func _draw_cover() -> void:
+	draw_texture(COVER, Vector2(COVER_X, 0))
+	draw_rect(Rect2(COVER_X - 2, 0, 2, 360), DesignTokens.TV_INK_0)
+
+
+func _draw_note(title: String, lines: PackedStringArray) -> void:
+	TvFrame.draw(self, TvFrame.TEXTBOX, NOTE)
+	TvFrame.paper_text(self, _font, NOTE.position + Vector2(12, 20), title)
+	for i in lines.size():
+		TvFrame.paper_text(self, _font, NOTE.position + Vector2(12, 38 + 13 * i), lines[i])
+	var hint := "Enter para volver"
+	TvFrame.paper_text(self, _font, NOTE.end - Vector2(TvFrame.width(_font, hint) + 12, 8), hint)
+
+
+## Texto a escala entera con la sombra de tinta de la portada (6 px con 66 px
+## de letra: un píxel por cada 11 de alto).
 func _big(text: String, at: Vector2, scale_: int, color: Color) -> void:
 	var size_ := DesignTokens.FONT_SIZE_BODY * scale_
-	for dx in [-1, 0, 1]:
-		for dy in [-1, 0, 1]:
-			if dx != 0 or dy != 0:
-				draw_string(_font, at + Vector2(dx, dy), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size_,
-					DesignTokens.TV_INK_0)
+	var shadow := Vector2(scale_, scale_)
+	draw_string(_font, at + shadow, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size_, DesignTokens.TV_INK_0)
 	draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size_, color)
-

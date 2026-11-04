@@ -60,6 +60,7 @@ func _ready() -> void:
 	_check("se ve el título y Ilan espera escondido", t.visible and t.active
 		and not flow.world.body.visible and not flow.world.body.input_enabled)
 	_check("el fondo es Valdehoja real", flow.world.zone_id == "valdehoja")
+	_check("el menú lleva «Créditos»", "Créditos" in TitleScreen.ENTRIES)
 	_check("sin «Continuar» ni «Opciones», que no existen todavía",
 		not "Continuar" in TitleScreen.ENTRIES and not "Opciones" in TitleScreen.ENTRIES)
 	_check("dice «Partida nueva»", t.status_text() == "Partida nueva")
@@ -75,31 +76,33 @@ func _ready() -> void:
 		_check("el nombre se pinta en blanco (%d px) con contorno de tinta, %.1f:1" % [white, ratio],
 			white > 500 and ratio >= 7.0)
 
-	print("\nPrivacidad")
-	t.move(1)
-	t.choose()
-	_check("«Privacidad» enseña el aviso", t.showing_privacy and t._privacy.size() >= 3)
 	var font: Font = load(DesignTokens.FONT_PATH)
-	var widest := 0.0
-	for line in t._privacy:
-		widest = maxf(widest, TvFrame.width(font, line))
-	_check("el aviso cabe en su papel (%.0f de %.0f px)" % [widest, TitleScreen.NOTE.size.x - 24],
-		widest <= TitleScreen.NOTE.size.x - 24 and 38 + 13 * t._privacy.size() <= TitleScreen.NOTE.size.y - 14)
-	var missing := ""
-	for line in t._privacy:
-		for ch in line:
-			if not font.has_char(ch.unicode_at(0)):
-				missing += ch
-	_check("la fuente tiene todos los caracteres del aviso (faltan: «%s»)" % missing, missing.is_empty())
-	await _shot("privacidad")
-	var back := InputEventAction.new()
-	back.action = "confirm"
-	back.pressed = true
-	t._unhandled_input(back)
-	_check("Enter vuelve al menú", not t.showing_privacy and t.active)
+	for k in [1, 2]:
+		t.focused = k
+		var entry: String = TitleScreen.ENTRIES[k]
+		print("\n" + entry)
+		t.choose()
+		var lines := t.lines_of(entry)
+		_check("«%s» se abre con su texto (%d líneas)" % [entry, lines.size()], t.showing == entry and lines.size() >= 3)
+		var widest := 0.0
+		var missing := ""
+		for line in lines:
+			widest = maxf(widest, TvFrame.width(font, line))
+			for ch in line:
+				if not font.has_char(ch.unicode_at(0)):
+					missing += ch
+		_check("cabe en su papel (%.0f de %.0f px, %d líneas)" % [widest, TitleScreen.NOTE.size.x - 24, lines.size()],
+			widest <= TitleScreen.NOTE.size.x - 24 and 38 + 13 * lines.size() <= TitleScreen.NOTE.size.y - 14)
+		_check("la fuente tiene todos sus caracteres (faltan: «%s»)" % missing, missing.is_empty())
+		await _shot(entry.to_lower().replace("é", "e"))
+		var back := InputEventAction.new()
+		back.action = "confirm"
+		back.pressed = true
+		t._unhandled_input(back)
+		_check("Enter vuelve al menú", t.showing == "" and t.active)
 
 	print("\nNueva partida")
-	t.move(-1)
+	t.focused = 0
 	t.choose()
 	# El fundido de salida dura dos medios fundidos de zona.
 	for i in 40:
