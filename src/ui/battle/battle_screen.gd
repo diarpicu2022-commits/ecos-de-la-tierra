@@ -105,18 +105,20 @@ enum Phase { IDLE, PLAYING, CHOOSING, FINISHED }
 ## fondo genérico de ceniza de la parte de batalla.
 var region := ""
 ## IA-5 (contrato «Orden de líder»): con true, el menú solo se abre para el
-## líder, lleva la fila de orden y los compañeros deciden solos. Las mentes y
-## la sintonía llegan de GameState y vuelven allí al terminar.
+## líder, Tab cambia la orden y los compañeros deciden solos. Las mentes y la
+## sintonía llegan de GameState y vuelven allí al terminar.
 var companions_auto := false
 var minds: Dictionary = {}
 var sync: float = DesignTokens.SYNC_START
 
-## Las tres órdenes de grupo, con la etiqueta corta del menú y su explicación.
+## Las tres órdenes de grupo, con la etiqueta corta del aviso y su explicación.
 const ORDERS := [
 	{"label": "SEGUIDME", "description": "Orden: hacen lo que te ven hacer a ti."},
 	{"label": "ATAJAD", "description": "Orden: atajad la causa. Usan su contramedida si pueden."},
 	{"label": "CUBRÍOS", "description": "Orden: cubríos. Curan y usan la bolsa con quien esté tocado."},
 ]
+
+const ORDER_KEY_HINT := "Tab para cambiarla."
 
 var _font: Font = null
 ## Parallax de entrada: cuadros desde que empezó el combate. Cada capa del
@@ -160,6 +162,8 @@ var _actor: Character = null
 var _pending_skill: Skill = null
 var _pending_item: Item = null
 var _focused_enemy: int = 0
+## Mando de la raíz por el que se entró al submenú: al cancelar se vuelve a él.
+var _root_focus: int = 0
 
 
 func _ready() -> void:
@@ -182,6 +186,7 @@ func _ready() -> void:
 	_menu = ActionMenu.new()
 	_menu.position = options_rect().position
 	_menu.size = options_rect().size
+	_menu.plate = true
 	add_child(_menu)
 	_menu.option_focused.connect(_on_option_focused)
 	_menu.option_chosen.connect(_on_option_chosen)
@@ -598,45 +603,64 @@ func _begin_choice(character: Character) -> void:
 		_huds[i].set_active_turn(_huds[i].character == character)
 		if _huds[i].character == character:
 			_layout_huds(i)
+	_root_focus = 0
 	_open_root_menu()
 
 
 func _open_root_menu() -> void:
+	_menu.set_entries(_root_entries(), true, _root_focus)
+	_menu.open()
+
+
+## Los cuatro mandos del `CommandMenu`, en el orden de la rejilla. Sus marcos son
+## fijos por contrato: lo deshabilitado no se apaga, dice el porqué en el aviso.
+func _root_entries() -> Array:
 	var skills: Array[Skill] = _actor.get_known_skills()
 	var items: Array[Item] = _manager.inventory.get_battle_items()
-	_menu.set_entries([
-		{"label": "ATACAR", "cost": -1, "enabled": true, "kind": "attack",
-			"description": "Golpe directo. No ataja la causa: el monstruo se rehará."},
+	var hint := _order_hint()
+	return [
+		{"label": "LUCHAR", "frame": TvFrame.CMD_FIGHT, "cost": -1, "enabled": true, "kind": "attack",
+			"description": "Golpe directo. No ataja la causa: el monstruo se rehará." + hint},
 		{
-			"label": "HABILIDADES", "cost": -1, "kind": "skills",
+			"label": "ECO", "frame": TvFrame.CMD_ECO, "cost": -1, "kind": "skills",
 			"enabled": not skills.is_empty(),
 			# Una opcion apagada sin explicacion solo frustra. Si el personaje
 			# no tiene ninguna habilidad aqui, se dice, y ademas se dice que
 			# eso es cosa suya y no del juego: otro del grupo si la tendra.
-			"description": "Habilidades Ecológicas. Solo la correcta purifica."
+			"description": ("Habilidades Ecológicas. Solo la correcta purifica."
 					if not skills.is_empty()
-					else "%s aún no conoce ninguna Habilidad Ecológica. Otro del grupo sí." % _actor.display_name,
+					else "%s aún no conoce ninguna Habilidad Ecológica. Otro del grupo sí." % _actor.display_name) + hint,
 		},
 		{
-			"label": "BOLSA", "cost": -1, "kind": "items",
+			"label": "BOLSA", "frame": TvFrame.CMD_BAG, "cost": -1, "kind": "items",
 			"enabled": not items.is_empty(),
-			"description": "Objetos de curación del grupo." if not items.is_empty()
-					else "La bolsa está vacía.",
+			"description": ("Objetos de curación del grupo." if not items.is_empty()
+					else "La bolsa está vacía.") + hint,
 		},
-		{"label": "HUIR", "cost": -1, "enabled": true, "kind": "flee",
-			"description": "Retirarse. Depende de la velocidad del grupo."},
-	] + _order_entry())
-	_menu.open()
+		{"label": "HUIR", "frame": TvFrame.CMD_RUN, "cost": -1, "enabled": true, "kind": "flee",
+			"description": "Retirarse. Depende de la velocidad del grupo." + hint},
+	]
 
 
-## La fila de orden, solo para el líder con los compañeros en automático.
-## Elegirla cambia a la orden siguiente sin gastar el turno.
-func _order_entry() -> Array:
-	if not companions_auto or _actor != _manager.leader:
-		return []
-	var o: Dictionary = ORDERS[_manager.order]
-	return [{"label": "ORDEN: " + o["label"], "cost": -1, "enabled": true, "kind": "order",
-		"description": o["description"] + " Confirma para cambiarla."}]
+## La orden es del líder con los compañeros en automático.
+func _order_applies() -> bool:
+	return companions_auto and _manager != null and _actor == _manager.leader
+
+
+## Segunda línea del aviso en la raíz: que la orden no quede escondida en Tab.
+func _order_hint() -> String:
+	if not _order_applies():
+		return ""
+	return "\nOrden: %s. %s" % [ORDERS[_manager.order]["label"], ORDER_KEY_HINT]
+
+
+## Tab: pasa a la orden siguiente sin gastar el turno y sin mover el foco.
+func _cycle_order() -> void:
+	_manager.order = (_manager.order + 1) % ORDERS.size()
+	_menu.replace_entries(_root_entries())
+	GameAudio.play("ui_confirm")
+	_set_message("%s %s" % [ORDERS[_manager.order]["description"], ORDER_KEY_HINT],
+			DesignTokens.TEXT_SECONDARY)
 
 
 func _open_skill_menu() -> void:
@@ -706,21 +730,18 @@ func _on_option_focused(entry: Dictionary) -> void:
 func _on_option_chosen(entry: Dictionary) -> void:
 	match str(entry.get("kind", "")):
 		"attack":
+			_root_focus = _menu.focused
 			_pending_skill = null
 			_pending_item = null
 			_open_target_menu(false)
 		"skills":
+			_root_focus = _menu.focused
 			_open_skill_menu()
 		"items":
+			_root_focus = _menu.focused
 			_open_item_menu()
 		"flee":
 			_submit(BattleAction.flee(_actor))
-		"order":
-			_manager.order = (_manager.order + 1) % ORDERS.size()
-			_open_root_menu()
-			_menu.focused = _menu.entries.size() - 1
-			_menu.queue_redraw()
-			_on_option_focused(_menu.entries[-1])
 		"skill":
 			_pending_skill = entry["skill"] as Skill
 			if _pending_skill.targets_all:
@@ -760,7 +781,8 @@ func _submit(action: BattleAction) -> void:
 ## Cancelar retrocede un paso en vez de cerrar el turno: perder la elección
 ## entera por pulsar Escape sería un castigo desproporcionado.
 func _on_menu_cancelled() -> void:
-	if _phase != Phase.CHOOSING:
+	# En la raíz, Escape ya volvió al mando anterior dentro del menú.
+	if _phase != Phase.CHOOSING or _menu.is_grid():
 		return
 	if _pending_skill != null or _pending_item != null:
 		_pending_skill = null
@@ -788,6 +810,16 @@ func _finish(result: int) -> void:
 
 
 # --- Teclado -----------------------------------------------------------------
+
+## En `_input` y no más abajo: Godot usa Tab para mover el foco de los controles
+## y se lo quedaría antes de `_unhandled_input`. Solo en la raíz, como la fila que
+## sustituye: en un submenú el aviso está explicando otra cosa.
+func _input(event: InputEvent) -> void:
+	if _phase == Phase.CHOOSING and event.is_action_pressed("order"):
+		get_viewport().set_input_as_handled()
+		if _order_applies() and _menu.is_active() and _menu.is_grid():
+			_cycle_order()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Adelantar el registro. Solo mientras se reproduce: durante la elección el
@@ -1042,20 +1074,22 @@ func _paper_tone(tone: Color) -> Color:
 	return DesignTokens.TV_TEXT_ON_PAPER
 
 
-## Reparte el texto en líneas que quepan, cortando por palabras.
+## Reparte el texto en líneas que quepan, cortando por palabras y respetando los
+## saltos de línea que traiga.
 func _wrap(text: String, available: float) -> PackedStringArray:
 	var lines := PackedStringArray()
-	var current := ""
-	for word in text.split(" ", false):
-		var candidate: String = word if current.is_empty() else current + " " + word
-		if _width(candidate) <= available:
-			current = candidate
-		else:
-			if not current.is_empty():
-				lines.append(current)
-			current = word
-	if not current.is_empty():
-		lines.append(current)
+	for paragraph in text.split("\n"):
+		var current := ""
+		for word in paragraph.split(" ", false):
+			var candidate: String = word if current.is_empty() else current + " " + word
+			if _width(candidate) <= available:
+				current = candidate
+			else:
+				if not current.is_empty():
+					lines.append(current)
+				current = word
+		if not current.is_empty():
+			lines.append(current)
 	return lines
 
 

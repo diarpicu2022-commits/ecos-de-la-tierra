@@ -1340,3 +1340,89 @@ inventario.
   `docs/ux/capturas/2026-11-03-resultado-{victoria,derrota,retirada}.png`. Son
   montadas por la prueba: enseñan el monstruo vivo aunque el desenlace sea victoria.
 - **Siguiente:** las cifras de daño (fila 13).
+
+#### Menú del turno como CommandMenu (fila 9) · 2026-11-03
+
+Guía del equipo §3.1, fila 9. Contrato en `components/CommandMenu/README.md`,
+`preview.html` y `components/bundle.css`, sin ronda de investigación porque el
+componente ya está bloqueado.
+
+**Decisión de Diego, 2026-11-03:** cuatro entradas, LUCHAR, ECO, BOLSA y HUIR. La
+orden de grupo sale de la lista y pasa a la tecla Tab, con la acción `order` en
+`project.godot`.
+
+- **Rejilla:** `ActionMenu` tiene un modo de 2 × 2 y `screen._menu` conserva
+  `entries`, `focused` y `option_chosen`. Los marcos y sus medidas están en
+  `TvFrame`. El anillo salta sin recorrido, como en `preview.html`, y la apertura
+  sigue siendo la de siempre, con escala y opacidad y quieta con
+  `DesignTokens.reduced_motion`.
+- **Lo deshabilitado:** recibe foco, dice el porqué en el aviso y suena `ui_denied`.
+  Los marcos no cambian porque el contrato los fija.
+- **Orden en Tab:** solo en la raíz, en `Phase.CHOOSING`, con `companions_auto` y si
+  el turno es del líder. La segunda línea del aviso dice «Orden: SEGUIDME. Tab para
+  cambiarla.», y para eso `_wrap` respeta los saltos de línea. Se atiende en
+  `_input` porque Godot usa Tab para mover el foco de los controles.
+- **Escape:** en la raíz vuelve una vez al mando anterior. En un submenú vuelve a la
+  raíz con el foco en el mando del que se vino.
+- **Submenús:** lista sobre `TvFrame.PLATE` en `MENU_RECT`, con `slate_text`. El foco
+  es una banda `TV_UI_0`, el `▶` y el texto en `TV_TEXT_HIGHLIGHT`. La banda no es
+  `TV_UI_2` porque ahí el coste en aviso no llega a 4,5:1. El selector de región usa
+  el mismo `ActionMenu` y no cambia, porque su fila es otra (16).
+
+**Medido** con `tools/verify_command_menu.py` sobre las capturas
+`docs/ux/capturas/2026-11-03-menu-*.png`:
+
+- **Posición:** x 432 y 536, y 284 y 320, 100 × 30, encontrada por los colores de cada
+  marco en el render.
+- **Contraste de las etiquetas:** LUCHAR 7,33:1, ECO 5,91:1, BOLSA 8,61:1 y HUIR
+  7,87:1, con piso de 5,9:1.
+- **Anillo:** x 430 a 638 e y 282 a 352 en sus cuatro posiciones. El marco del aviso
+  acaba en x 425, así que quedan 4 px libres.
+- **Referencia:** igual a `combate_enfermo.png` salvo la sombra y un canto, que se
+  explican abajo. Ningún píxel distinto por otra causa.
+- **Submenús:** caben 5 filas de 12 px en 61 px útiles. El caso real más largo son 5
+  aliados, frente a 4 objetos, 3 enemigos y 2 habilidades. Ninguna etiqueta se recorta
+  y a la más justa, «Separación en la Fuente», le sobran 71 px.
+- **Contraste sobre pizarra:** coste que no alcanza, ya en `TV_RUST_4`, 4,97:1 sobre la
+  placa y 6,14:1 sobre la banda. Enfocado 11,50:1, texto 13,76:1 y coste que alcanza
+  12,33:1.
+- **Aviso:** los 27 textos posibles caben en 2 líneas de 4, con 358 px de 400.
+  Contraste contra el papel de 7,48:1.
+- **Pruebas:** `verify_usability` 28 de 28, `verify_party_ai` 34 de 34 y `verify_flow`
+  34 de 34. `verify_palette.py image` da todo token en el recorte del menú de las 9
+  capturas. Las capturas enteras no se pasan porque los sprites de PixelLab no son
+  tokens.
+
+**Decisiones de Diego sobre los choques del sistema, 2026-11-03 (visto bueno al paso):**
+
+- **Anillo.** El README pide un anillo blanco de 2 px, pero `cmd-selected.png` y la
+  referencia pintan 1 px de tinta y 1 de blanco. Se queda como el marco.
+- **Sombra.** El CSS y el README piden `ink-1`, y `combate_enfermo.png` usa el tono 0
+  de la rampa de cada botón. Manda el CSS.
+- **Canto.** En LUCHAR y HUIR, esa misma imagen tiene otra fila de canto que `cmd-*.png`
+  no tiene (94 px). Manda el marco.
+- **Escape.** Desde objetivos vuelve a la raíz, igual que antes.
+- **Tab.** Solo actúa en la raíz.
+- **Coste que no alcanza.** Pasa de `TEXT_WARNING` a `TV_RUST_4` en la placa. Se eligió
+  midiendo, porque `TV_HP_LOW` da 4,00:1 sobre la placa y los tonos de fuego ya
+  significan el tipo de daño. El selector de región sigue con el tono viejo hasta su
+  fila (16).
+- **`components4_sheet.gd`.** Sigue enseñando ATACAR y HABILIDADES porque es la hoja
+  histórica de otro contrato.
+
+**Prueba intermitente corregida:** `verify_usability` daba 8 fallos más o menos en una
+de cada seis corridas porque `_await_choice` se rendía a los 900 cuadros. Sin ventana
+esos cuadros pasan rápido y el primer menú tarda entre 1,2 y 15,3 s si nadie pulsa
+Enter. Ahora espera por tiempo real, hasta 30 s, y falla de forma explícita. Dio 18
+corridas de 18 sin fallos. `verify_party_ai` y `verify_encounters` también esperan por
+cuadros y quedan por revisar.
+
+**Pendiente:**
+
+- Después de la presentación, definir en el sistema si lo deshabilitado necesita un
+  estado propio. Hoy ECO sin habilidades se ve igual que los demás, y lo explican el
+  aviso y `ui_denied`.
+- Revisar con Juan José los 15,3 s de espera antes del primer menú.
+- No se midió con personas, ni se oyó el sonido. `ui_denied` se comprobó por el
+  sonido cargado en la voz. Tampoco se midió la apertura animada con
+  `reduced_motion`.

@@ -40,13 +40,13 @@ func _ready() -> void:
 	# La aparición se encola como cualquier otro evento, así que hay que dejar
 	# que la reproducción avance para que las vistas lleguen a existir. Se
 	# resuelve un turno del grupo, que es lo que ocurriría en el juego.
-	await _press("confirm")          # ATACAR
+	await _press("confirm")          # LUCHAR
 	await _press("confirm")          # primer objetivo
 	await _await_choice()
 	await _shoot("02_tres")
 
 	# Recorrer objetivos: la ficha completa debe seguir al cursor.
-	await _press("confirm")          # ATACAR -> menu de objetivos
+	await _press("confirm")          # LUCHAR -> menu de objetivos
 	await get_tree().create_timer(0.35).timeout
 	await _shoot("03_objetivo_1")
 	await _press("move_down")
