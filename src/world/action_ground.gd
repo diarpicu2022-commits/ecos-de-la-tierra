@@ -66,9 +66,14 @@ static func _zone_image(r: int) -> Image:
 			var d := Vector2(x - r, y - r).length()
 			if d > r:
 				continue
-			if d > r - 1.5:
+			# Un aro que se lee de lejos (tinta, brasa, tinta) y por dentro una
+			# trama que se desvanece hacia el centro: el suelo se sigue viendo y
+			# la zona no parece un disco pintado encima.
+			if d > r - 1.0 or (d > r - 4.0 and d <= r - 3.0):
 				img.set_pixel(x, y, DesignTokens.TV_INK_0)
-			elif BAYER[y % 4][x % 4] < DENSITY:
+			elif d > r - 3.0:
+				img.set_pixel(x, y, DesignTokens.TV_FIRE_3)
+			elif BAYER[y % 4][x % 4] < int(DENSITY * (d / r)):
 				img.set_pixel(x, y, DesignTokens.TV_FIRE_2)
 	return img
 

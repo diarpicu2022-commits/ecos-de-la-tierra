@@ -807,4 +807,4 @@ const MONSTER_BODY_RADIUS := 40   ## Medio ancho del monstruo de PixelLab (unos 
 const HERO_REACH := 28            ## Alcance del tajo más allá del cuerpo del monstruo.
 const ECO_REACH := 72             ## La habilidad eco llega más lejos que el tajo, también desde el cuerpo.
 const MONSTER_ATTACK_RADIUS := 40 ## Radio de la zona de aviso.
-const MONSTER_KEEP_DISTANCE := 56 ## El monstruo se acerca hasta aquí antes de atacar: sin taparse con el héroe.
+const MONSTER_KEEP_DISTANCE := 88 ## Se acerca hasta aquí: su sprite mide unos 110 px y con menos tapaba a Ilan.
