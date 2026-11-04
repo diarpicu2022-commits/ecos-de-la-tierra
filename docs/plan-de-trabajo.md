@@ -1,6 +1,6 @@
 # Plan de trabajo — *Ecos de la Tierra*
 
-Última actualización: 2026-11-03 (decorado de las regiones y piel nueva de Valdehoja)
+Última actualización: 2026-11-04 (arreglos de Valdehoja tras jugar la demo: salida al Bosque, escalera, fuente, vecinos y Yara sin repetirse)
 
 **Este archivo se lee primero al abrir una sesión nueva.** Dice qué está hecho,
 qué toca ahora y qué decisiones ya están tomadas, para no volver a discutirlas

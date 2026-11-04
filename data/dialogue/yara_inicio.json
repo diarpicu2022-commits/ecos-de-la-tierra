@@ -6,6 +6,7 @@
 		{"who": "yara", "mood": "neutral", "text": "La tierra no enferma sola. Alguien la exprimió durante generaciones."},
 		{"who": "yara", "mood": "alerta", "text": "La Compañía Áurea. Sus fuegos, su crudo, su basura. Lo sentirás tú."},
 		{"who": "ilan", "mood": "determinado", "text": "Entonces iré a buscar dónde empieza el daño, y lo pararé."},
-		{"who": "yara", "mood": "neutral", "text": "Ve al Bosque de las Cenizas. Mi ave te seguirá. No vayas solo."}
+		{"who": "yara", "mood": "neutral", "text": "Ve al Bosque de las Cenizas: baja la senda y sigue la calle al este."},
+		{"who": "yara", "mood": "neutral", "text": "Mi ave te seguirá. No vayas solo."}
 	]
 }
