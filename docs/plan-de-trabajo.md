@@ -42,6 +42,9 @@ válidos:
 
 ## Punto de retome
 
+> **2026-11-03. Reparto del trabajo entre Juan José y Diego: §3.2 de la guía.**
+> Menú del turno hecho, con cuatro entradas y la orden en Tab (rama `rediseno/combate-menu`). Antes de la presentación falta la comprobación general.
+>
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
 > Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)
 > está hecho y aprobado; del paso 4b (§4.2 de la guía) están hechas las seis regiones (2026-11-02). Del paso 5, Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (2026-11-03); la matriz orgánica queda para después de la presentación, pendiente de que Diego lo confirme. Paso 6 hecho (2026-11-03): agua viva, partes y fauna. R1 en `master` (PR #29). Combate (guía §4.0): placa del monstruo y aviso de papel hechos; el menú del turno espera la decisión de Diego (cuatro o cinco entradas). Cartel de lugar hecho (2026-11-03). Animales y fauna de Valdehoja hechos; el HUD del mapa (R3) espera su anexo. Aviso de privacidad en `docs/legal/privacidad.md`; falta enseñarlo dentro del juego. `.exe` exportado desde `master` el 2026-11-03 (guía §4.15). Tras jugarlo (2026-11-03): ritmo de lectura, turnos con su propia bajada de vida y sonido provisional, ya en `master` (PR #41) y en el `.exe` de entrega. La parte 11 sigue sin anexo. Diego dio permiso (2026-11-02) para fusionar lo necesario de cara a la presentación del miércoles 2026-11-04. **Todo lo visual

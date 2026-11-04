@@ -36,7 +36,7 @@ func _ready() -> void:
 
 	# Turno 2: Línea Cortafuegos. Ataja la causa.
 	await _await_choice()
-	await _press("move_down")
+	await _press("move_right")       # ECO
 	await _press("confirm")
 	await _press("confirm")
 	await _burst("purificacion")

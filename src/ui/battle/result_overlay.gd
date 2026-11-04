@@ -1,7 +1,9 @@
 class_name ResultOverlay
 extends Control
 
-## Vista de cierre del combate: victoria, derrota o retirada.
+## Vista de cierre del combate: victoria, derrota o retirada, con la pizarra del
+## sistema de diseño (`TvFrame.PLATE`) y el titular de 22 px (guía del equipo
+## §3.1, filas 6 y 14).
 ##
 ## Es una capa propia y no un dibujo más de `BattleScreen` porque en Godot los
 ## hijos se pintan **después** del padre: si el desenlace se dibujara en la
@@ -14,11 +16,16 @@ extends Control
 ## prueba y le deja la conclusión.
 
 const PANEL_WIDTH := 304.0
-## Alturas de la ficha, medidas desde su borde superior.
-const HEADLINE_BASELINE := 26.0   ## Titular a doble tamaño.
+## Medidas de la placa, desde su borde superior. El marco ocupa `TvFrame.SLICE`.
+const HEADLINE_BASELINE := 28.0   ## Titular de 22 px.
 const DETAIL_TOP := 46.0          ## Primera línea de la explicación.
-const HINT_GAP := 14.0            ## Separación entre explicación e indicación.
-const BOTTOM_PAD := 7.0
+const HINT_GAP := 16.0            ## Separación entre explicación e indicación.
+const BOTTOM_PAD := 11.0
+const TEXT_PAD := 16.0
+## El velo baja el campo sin esconderlo, que sigue siendo información.
+const VEIL_ALPHA := 0.6
+## Por encima del `z_index` de las vistas de monstruo (`BattleScreen._layout_monsters`).
+const FRONT_Z := 100
 
 var _font: Font = null
 var _result: int = Enums.BattleResult.ONGOING
@@ -34,11 +41,15 @@ func _ready() -> void:
 
 
 ## Muestra el desenlace. `regenerations` es el número de veces que un monstruo
-## se rehizo durante el combate.
-func show_result(result: int, regenerations: int, field_height: float) -> void:
+## se rehizo durante el combate. Cubre la pantalla entera y se pone delante de
+## todo: los monstruos se añaden después que esta capa, con `z_index` propio, y
+## le pasaban por encima.
+func show_result(result: int, regenerations: int, _field_height: float) -> void:
 	_result = result
 	_regenerations = regenerations
-	size = Vector2(BattleScreen.SCREEN.x, field_height)
+	size = BattleScreen.SCREEN
+	move_to_front()
+	z_index = FRONT_Z
 	visible = true
 	queue_redraw()
 
@@ -47,65 +58,69 @@ func hide_result() -> void:
 	visible = false
 
 
-func _draw() -> void:
-	# Velo sobre el campo: el desenlace pasa a primer plano sin borrar lo que
-	# había detrás, que sigue siendo información.
-	draw_rect(Rect2(Vector2.ZERO, size), Color(DesignTokens.ASH_950, 0.78))
-
-	var tone: Color = DesignTokens.TEXT_PRIMARY
-	var headline := ""
-	var detail := ""
-	var hint := "Enter para volver a intentarlo"
-
+## Lo que dice el desenlace: {headline, tone, detail, hint}. El titular de la
+## victoria va en `eco`, el color de lo purificado, y nunca solo: lleva el ✓ y
+## la frase.
+func outcome() -> Dictionary:
+	var said := {"headline": "", "tone": DesignTokens.TV_TEXT_ON_SLATE, "detail": "",
+		"hint": "Enter para volver a intentarlo"}
 	match _result:
 		Enums.BattleResult.VICTORY:
-			tone = DesignTokens.TEXT_PURIFIED
-			headline = "✓ VICTORIA"
-			detail = "La causa del daño quedó atajada."
-			hint = "Enter para jugar otra vez"
+			said["tone"] = DesignTokens.TV_ECO_3
+			said["headline"] = "✓ VICTORIA"
+			said["detail"] = "La causa del daño quedó atajada."
+			said["hint"] = "Enter para jugar otra vez"
 		Enums.BattleResult.DEFEAT:
-			tone = DesignTokens.TEXT_WARNING
-			headline = "✖ EL GRUPO CAE"
-			detail = _evidence("El monstruo sigue en pie.")
+			said["tone"] = DesignTokens.TV_FIRE_4
+			said["headline"] = "✖ EL GRUPO CAE"
+			said["detail"] = _evidence("El monstruo sigue en pie.")
 		Enums.BattleResult.FLED:
-			tone = DesignTokens.TEXT_SECONDARY
-			headline = "EL GRUPO SE RETIRA"
-			detail = _evidence("El bosque sigue ardiendo.")
-
+			said["tone"] = DesignTokens.TV_TEXT_HIGHLIGHT
+			said["headline"] = "EL GRUPO SE RETIRA"
+			said["detail"] = _evidence("El monstruo sigue en pie.")
 	if not continue_hint.is_empty():
-		hint = continue_hint
+		said["hint"] = continue_hint
+	return said
 
-	var pad: float = DesignTokens.SPACE_16
-	var detail_lines := _wrap(detail, PANEL_WIDTH - pad * 2.0)
-	# La ficha crece con el texto. Con altura fija, una explicación de dos
-	# líneas pisaba la indicación de Enter.
-	var panel_height: float = (DETAIL_TOP
-			+ detail_lines.size() * DesignTokens.LINE_HEIGHT
-			+ HINT_GAP + BOTTOM_PAD)
-	var origin := Vector2(
-		roundf((size.x - PANEL_WIDTH) * 0.5),
-		roundf((size.y - panel_height) * 0.5)
-	)
-	var panel := Rect2(origin, Vector2(PANEL_WIDTH, panel_height))
 
-	draw_rect(panel, DesignTokens.PANEL_FILL)
-	draw_rect(panel, tone, false, DesignTokens.BORDER_WIDTH)
+## Las líneas de la explicación, tal como se dibujan.
+func detail_lines() -> PackedStringArray:
+	return _wrap(outcome()["detail"], PANEL_WIDTH - TEXT_PAD * 2.0)
 
-	# El titular va al doble de tamaño, que es el único salto de escala que
-	# permite una fuente de mapa de bits.
-	draw_string(_font, origin + Vector2(pad, HEADLINE_BASELINE), headline,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_TITLE, tone)
 
-	var y: float = origin.y + DETAIL_TOP
-	for line in detail_lines:
-		draw_string(_font, Vector2(origin.x + pad, y), line,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-				DesignTokens.TEXT_PRIMARY)
+## La placa. Crece con el texto: con altura fija, una explicación de dos líneas
+## pisaba la indicación de Enter.
+func panel_rect() -> Rect2:
+	var height: float = DETAIL_TOP + detail_lines().size() * DesignTokens.LINE_HEIGHT \
+			+ HINT_GAP + BOTTOM_PAD
+	return Rect2(Vector2(roundf((size.x - PANEL_WIDTH) * 0.5), roundf((size.y - height) * 0.5)),
+			Vector2(PANEL_WIDTH, height))
+
+
+func _draw() -> void:
+	draw_rect(Rect2(Vector2.ZERO, size), Color(DesignTokens.TV_INK_0, VEIL_ALPHA))
+	var said := outcome()
+	var panel := panel_rect()
+	TvFrame.draw(self, TvFrame.PLATE, panel)
+
+	var headline: String = said["headline"]
+	var title_w := TvFrame.width(_font, headline, DesignTokens.FONT_SIZE_TITLE)
+	TvFrame.text(self, _font, Vector2(panel.position.x + roundf((PANEL_WIDTH - title_w) * 0.5),
+			panel.position.y + HEADLINE_BASELINE), headline, said["tone"],
+			DesignTokens.TV_UI_0, DesignTokens.FONT_SIZE_TITLE)
+
+	var y: float = panel.position.y + DETAIL_TOP
+	for line in detail_lines():
+		TvFrame.slate_text(self, _font, Vector2(_centered(panel, line), y), line)
 		y += DesignTokens.LINE_HEIGHT
 
-	draw_string(_font, Vector2(origin.x + pad, panel.end.y - BOTTOM_PAD), hint,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-			DesignTokens.TEXT_CRITICAL)
+	var hint: String = said["hint"]
+	TvFrame.slate_text(self, _font, Vector2(_centered(panel, hint), panel.end.y - BOTTOM_PAD), hint,
+			DesignTokens.TV_TEXT_HIGHLIGHT)
+
+
+func _centered(panel: Rect2, line: String) -> float:
+	return panel.position.x + roundf((PANEL_WIDTH - TvFrame.width(_font, line)) * 0.5)
 
 
 ## El dato que explica el desenlace, cuando lo hay.

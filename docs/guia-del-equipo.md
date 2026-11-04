@@ -1,6 +1,6 @@
 # Guía del equipo: de aquí hasta el juego terminado
 
-Para **Diego y su compañero**. **Desde el 2026-11-02 sigue el compañero con todo lo que falta** (decisión de Diego). Se empieza por el inventario de §3.1 y por §4.0, donde está el punto exacto en que quedó el combate. Del decorado (§4.2) ya están las seis regiones, y Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (§4.3, 2026-11-03); su matriz orgánica queda para después de la presentación. Dice cómo preparar el equipo, cómo se trabaja,
+Para **Diego y su compañero**. **Desde el 2026-11-03 el trabajo va repartido entre los dos: mira §3.2 antes de empezar** (decisión de Diego). El inventario de §3.1 y §4.0 dicen el punto exacto en que quedó el combate. Del decorado (§4.2) ya están las seis regiones, y Valdehoja tiene suelo por partes y decorado nuevos sobre su matriz de 60 × 34 (§4.3, 2026-11-03); su matriz orgánica queda para después de la presentación. Dice cómo preparar el equipo, cómo se trabaja,
 en qué punto exacto está el juego y, en orden, **todo lo que falta** hasta
 entregarlo. Cada tarea trae qué hacer, dónde, cómo se comprueba y cuándo está
 hecha.
@@ -136,11 +136,11 @@ Las reglas completas están en `AGENTS.md` y en `docs/guia-de-continuacion.md`
 
 ```bash
 PYTHONIOENCODING=utf-8 python tools/verify_palette.py tokens        # 280 tokens, sin deriva
-"$GODOT" --headless --path . res://tools/verify_usability.tscn     # 16/16
+"$GODOT" --headless --path . res://tools/verify_usability.tscn     # 28/28
 "$GODOT" --headless --path . res://tools/verify_camera.tscn        # 37/37
 "$GODOT" --headless --path . res://tools/verify_encounters.tscn    # 82/82
 "$GODOT" --headless --path . res://tools/verify_flow.tscn          # 23/23
-"$GODOT" --headless --path . res://tools/verify_party_ai.tscn      # 19/19
+"$GODOT" --headless --path . res://tools/verify_party_ai.tscn      # 34/34
 "$GODOT" --headless --path . res://tools/verify_movement.tscn      # 99/99
 for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   "$GODOT" --headless --path . res://tools/verify_zone.tscn -- $z  # todas en verde
@@ -196,15 +196,15 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 3 | Monstruos de mapa | `src/world/map_monster.gd` | `MonsterRoster`, `referencias/combate_accion.png` | HECHO 2026-11-01 |
 | 4 | Decorado del Bosque | `tools/gen_tierra_viva_decor.py` | README §Mundo, `Overworld` | HECHO 2026-11-01 |
 | 5 | Escena del combate (fondo, monstruo, grupo de espaldas) | `src/ui/battle/battle_screen.gd`, `tools/gen_tierra_viva_battle.py` | `assets/img/combate_enfermo.png`, `combate_purificado.png` | HECHO 2026-11-02 |
-| 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-02 (falta el titular de 22 px) |
+| 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-03, con el titular de 22 px |
 | 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | HECHO 2026-11-03 |
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
-| 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
+| 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | HECHO 2026-11-03, con el visto bueno de Diego |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
-| 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
+| 11 | Chapas de tipo y estado | `monster_view.gd`, `TvFrame.badge` | `components/TypeBadge`: en la placa y en los menús de habilidades | En la placa, HECHO (PR #30). Falta en el menú de habilidades (`action_menu.gd`, de Diego) |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
-| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
-| 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | ver §4.0 |
+| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | HECHO 2026-11-03 |
+| 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | HECHO 2026-11-03 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | HECHO 2026-11-03 (contraste 3,22:1, pendiente de Diego) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
 | 17 | Decorado de las seis regiones y de Valdehoja: HECHO (regiones 2026-11-02, PR #21, #22, #23, #25 y #26; Valdehoja 2026-11-03, sobre la matriz actual) | `tools/gen_world_decor.py` (viejo) | README §Mundo; añadir su función al `CATALOG` de `gen_tierra_viva_decor.py` | §4.2, el compañero |
@@ -222,6 +222,62 @@ terminar una fila, se marca HECHO con la fecha y el commit.
   o `tools/verify_terrain.tscn`;
 - la captura se compara con la referencia del sistema;
 - se anota en el anexo `docs/ux/anexos/2026-10-30-tierra-viva.md`.
+
+### 3.2 Reparto del trabajo (2026-11-03)
+
+Juan José sigue con lo que ya está especificado y no se pierde cuando entre el
+combate de acción (R2). Diego se queda con lo que necesita una decisión suya de
+diseño. Así no nos pisamos los archivos.
+
+**Juan José, antes de la presentación del miércoles 2026-11-04:**
+
+1. Pantalla de resultado (fila 14), en `result_overlay.gd`, con la pizarra o el
+   papel del sistema y el titular de 22 px que quedó pendiente en la fila 6.
+2. Cifras de daño (fila 13), en `damage_numbers.gd`, a doble tamaño y con `~`
+   si el monstruo se rehace.
+3. Chapas de tipo y estado (fila 11). Ya salen en la placa desde el PR #30. Si
+   no falta nada, se marca HECHO.
+4. Exportar otra vez el `.exe` cuando entre lo de los dos y jugarlo completo,
+   porque §4.15 dice que eso sigue pendiente.
+
+**Juan José, después de la presentación:**
+
+1. Progresión, parte 6 (§4.8).
+2. Guardado, parte 9 (§4.11), después de la progresión porque guarda sus
+   banderas. Al terminar se actualiza `docs/legal/privacidad.md`.
+3. Fauna en bandada, IA-2, con su prueba `verify_fauna.gd`.
+
+Cada una abre su anexo y espera la elección de Diego antes de programar.
+
+**Diego, antes de la presentación:**
+
+1. Menú del turno (fila 9), hecho con su visto bueno. Son cuatro entradas y la orden
+   va en Tab, decidido el 2026-11-03.
+2. Decisiones que quedaron abiertas:
+   - Cola de turnos (fila 12).
+   - Enmienda 15, las barras de PV verdes.
+   - Contraste del cartel de lugar, 3,22:1.
+   - Monstruos de mapa que tapan hitos en la Llanura y la Cuenca.
+   - Matriz orgánica de Valdehoja, si queda para después de la presentación.
+3. Comprobación general de §2 al final, cuando ya esté todo fusionado.
+
+**Diego, después de la presentación:**
+
+1. Anexo y direcciones del combate de acción, R2 (§4.5). Va primero porque de
+   ahí dependen los puzzles.
+2. Diálogos y retratos, parte 5 (§4.7), resolviendo primero el choque entre el
+   sistema y el contrato «Columna».
+3. HUD del mapa, interiores y vecinos, R3 (§4.6), y Valdehoja orgánica (§4.3).
+4. Personajes en PixelLab, fila 20 y Yara.
+5. Puzzles, menú, título, audio definitivo y final, partes 7, 8, 10, 11 y 12.
+6. Prueba con personas, cuando exista el combate nuevo.
+
+**Para no pisarnos:**
+
+- Juan José no toca `action_menu.gd`, `turn_order_strip.gd` ni `verify_party_ai`.
+- Diego no toca `result_overlay.gd` ni `damage_numbers.gd`.
+- `battle_screen.gd` nos puede tocar a los dos. Quien lo vaya a cambiar avisa
+  antes y hace un cambio corto.
 
 ---
 
@@ -251,22 +307,21 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
      `TvFrame.PLATE` de 184 × 44 en (10, 10), con el nombre, las chapas de
      tipo y de estado (CORRUPTO o PURIFICADO) y «PV» con su barra de 5 px y
      la cifra. Captura: `docs/ux/capturas/2026-11-03-placa-*.png`.
-   - **`CommandMenu`:** rejilla de 2 × 2 en (432, 284), 100 × 30, con los
-     marcos `cmd-luchar`, `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y
-     `cmd-selected` para el elegido. Está en `action_menu.gd`, el menú raíz.
-     **Antes, Diego decide** si se quedan las cuatro entradas del sistema
-     (recomendado: ECO abre las habilidades y ORDEN pasa a Tab) o las cinco
-     de hoy. `verify_party_ai` comprueba la fila de ORDEN y habrá que
-     adaptarla.
+   - **`CommandMenu`:** HECHO el 2026-11-03, con el visto bueno de Diego.
+     Rejilla de 2 × 2 en (432, 284), 100 × 30, con los marcos `cmd-luchar`,
+     `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y `cmd-selected` para el elegido, en
+     `action_menu.gd`. Diego decidió cuatro entradas. ECO abre las habilidades
+     y la orden pasa a Tab, con su acción `order`. Se mide con
+     `tools/verify_command_menu.py`. Capturas en
+     `docs/ux/capturas/2026-11-03-menu-*.png`.
    - **El aviso de papel:** HECHO el 2026-11-03. `BattleScreen._draw_message`
      dibuja `TvFrame.TEXTBOX` en `MESSAGE_RECT` (6, 282, 420 × 72), con el
      texto en papel a 15 px de interlínea y `▼` en `TV_RUST_2`. Los tonos del
      registro pasan al papel con `_paper_tone`. Captura:
-     `docs/ux/capturas/2026-11-03-aviso-*.png`. **Lo siguiente es el
-     `CommandMenu`**, que espera la decisión de Diego (cuatro o cinco
-     entradas).
-   - Los submenús (habilidades, bolsa, objetivo) no están en el sistema:
-     se usa `TvFrame.PLATE` como marco de lista, y se avisa a Diego.
+     `docs/ux/capturas/2026-11-03-aviso-*.png`.
+   - Los submenús (habilidades, bolsa, objetivo) no están en el sistema, así
+     que usan `TvFrame.PLATE` como marco de lista desde el 2026-11-03. Caben 5
+     filas y el caso real más largo son 5 aliados. Con el visto bueno de Diego.
    - **Aviso para Diego:** las barras de PV del sistema son verdes
      (`hp-high`). Eso choca con la regla vieja de «el verde solo significa
      purificado». Manda el sistema, pero hay que anotarlo como enmienda
