@@ -251,7 +251,7 @@ Cada una abre su anexo y espera la elección de Diego antes de programar.
 
 **Diego, antes de la presentación:**
 
-1. Dar el visto bueno al menú del turno (fila 9). Son cuatro entradas y la orden
+1. Menú del turno (fila 9), hecho con su visto bueno. Son cuatro entradas y la orden
    va en Tab, decidido el 2026-11-03.
 2. Decisiones que quedaron abiertas:
    - Cola de turnos (fila 12).
@@ -321,7 +321,7 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
      `docs/ux/capturas/2026-11-03-aviso-*.png`.
    - Los submenús (habilidades, bolsa, objetivo) no están en el sistema, así
      que usan `TvFrame.PLATE` como marco de lista desde el 2026-11-03. Caben 5
-     filas y el caso real más largo son 5 aliados. Falta el visto bueno de Diego.
+     filas y el caso real más largo son 5 aliados. Con el visto bueno de Diego.
    - **Aviso para Diego:** las barras de PV del sistema son verdes
      (`hp-high`). Eso choca con la regla vieja de «el verde solo significa
      purificado». Manda el sistema, pero hay que anotarlo como enmienda
