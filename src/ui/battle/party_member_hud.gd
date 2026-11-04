@@ -80,14 +80,24 @@ func set_paused(value: bool) -> void:
 	_paused = value
 
 
-## Muestra lo que quedó pendiente mientras la vista estaba en pausa.
-func flush() -> void:
-	if _pending_hp < 0.0:
+## Saca lo pendiente hasta ahora (ver `MonsterView.take_pending`).
+func take_pending() -> float:
+	var pending := _pending_hp
+	_pending_hp = -1.0
+	return pending
+
+
+## Muestra lo sacado con `take_pending`.
+func show_pending(target: float) -> void:
+	if target < 0.0:
 		queue_redraw()
 		return
-	var target: float = _pending_hp
-	_pending_hp = -1.0
 	_tween_hp(target)
+
+
+## Muestra lo que quedó pendiente mientras la vista estaba en pausa.
+func flush() -> void:
+	show_pending(take_pending())
 
 
 func _on_hp_changed(current: int, _maximum: int) -> void:

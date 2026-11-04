@@ -147,9 +147,13 @@ func _flow() -> void:
 	_check("derrota: vuelta a la casilla de llegada %s" % flow.world.arrival_cell, at == flow.world.arrival_cell)
 	_check("  con el grupo a 1 PV", state.party.all(func(c): return c.hp == 1))
 	# Victoria.
+	# Viene de la prueba de derrota, con el grupo a 1 PV.
+	for c in state.party:
+		c.hp = c.max_hp
 	await _encounter(flow, MapMonster.Advantage.NONE)
 	_check("sin ventaja, manda la velocidad", flow.screen._manager.opening_team == -1)
 	await _pace(flow)
+	_turn_by_turn(flow)
 	flow.result = Enums.BattleResult.VICTORY
 	await _leave(flow)
 	for _i in 200:
@@ -205,6 +209,54 @@ func _pace(flow: GameFlow) -> void:
 	flow.awaiting_confirm = false
 	_check("en el mundo, la indicación es seguir", screen.continue_hint == "Enter para continuar",
 		screen.continue_hint)
+
+
+## Por turnos (Juan José Rueda, 2026-11-03): en rondas reales, la vida de cada
+## bando baja con la acción que la quita, nunca las dos con la misma línea.
+func _turn_by_turn(flow: GameFlow) -> void:
+	var was_reduced := DesignTokens.reduced_motion
+	DesignTokens.reduced_motion = true
+	var screen: BattleScreen = flow.screen
+	var view: MonsterView = screen._monster_views[0]
+	var monster_drops := 0
+	var party_drops := 0
+	var together := 0
+	for round_i in 8:
+		while screen._phase != BattleScreen.Phase.CHOOSING and not screen._queue.is_empty():
+			screen._advance_queue()
+		screen._step_timer.stop()
+		if screen._phase != BattleScreen.Phase.CHOOSING:
+			break
+		# `_submit` ya enseña la primera línea: también hay que medirla.
+		var first := true
+		while first or (screen._phase == BattleScreen.Phase.PLAYING and not screen._queue.is_empty()):
+			var monster_was: float = view._shown_hp
+			var party_was := _party_hp(screen)
+			if first:
+				screen._submit(BattleAction.attack(screen._actor, view.monster))
+				first = false
+			else:
+				screen._advance_queue()
+			var monster_fell: bool = view._shown_hp < monster_was
+			var party_fell := _party_hp(screen) < party_was
+			monster_drops += int(monster_fell)
+			party_drops += int(party_fell)
+			together += int(monster_fell and party_fell)
+		screen._step_timer.stop()
+		if monster_drops > 0 and party_drops > 0:
+			break
+	_check("en rondas reales baja la vida de los dos bandos (monstruo %d, grupo %d)" % [
+		monster_drops, party_drops], monster_drops > 0 and party_drops > 0)
+	_check("ninguna línea baja las dos vidas a la vez (%d)" % together, together == 0)
+	screen._step_timer.stop()
+	DesignTokens.reduced_motion = was_reduced
+
+
+func _party_hp(screen: BattleScreen) -> float:
+	var total := 0.0
+	for hud in screen._huds:
+		total += hud._shown_hp
+	return total
 
 
 func _encounter(flow: GameFlow, adv: MapMonster.Advantage) -> void:

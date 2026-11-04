@@ -1296,3 +1296,20 @@ tiene anexo ni elección de Diego. Es provisional y **falta que Diego lo vea**.
 - **No medido:** si suena bien. Nadie del desarrollo lo ha oído todavía; los
   niveles de mezcla (`GameAudio.VOLUME_*`) son un primer intento.
 - **Sin opción de volumen:** llegará con las opciones (parte 10).
+
+#### Por turnos de verdad: cada acción con su bajada de vida · 2026-11-03
+
+Juan José Rueda, al jugar: al atacar baja también su vida a la vez; tiene que ser
+por turnos, y no se sabe cuándo le quitan vida.
+
+- **Causa:** el motor resuelve la ronda entera antes de enseñar nada. Las vistas
+  guardaban solo los PV finales y los soltaban con la primera línea del registro.
+  Las cifras de daño y sus sonidos, igual.
+- **Arreglo:** `BattleScreen._on_action_resolved` se lleva con cada acción lo que
+  acaba de pasar (`take_pending` en `MonsterView` y `PartyMemberHud`, más las
+  cifras) y lo suelta con su primera línea.
+- **Medido:** `verify_flow` 34/34 con dos comprobaciones nuevas sobre rondas reales.
+  Sin el arreglo falla: una línea baja las dos vidas. usability 16, encounters 82 y
+  party_ai 19.
+- **Queda igual:** la energía y las marcas de estado de las filas del grupo se
+  actualizan con el estado real, no al ritmo del registro.
