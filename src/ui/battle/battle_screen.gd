@@ -448,9 +448,43 @@ func _on_turn_started(combatant: Combatant) -> void:
 
 ## Cada línea del registro es un paso propio: si se volcaran juntas, el jugador
 ## vería cinco cosas a la vez y no relacionaría ninguna con su efecto.
+##
+## El motor resuelve la ronda entera antes de que se enseñe nada. Por eso cada
+## acción se lleva aquí lo que acaba de pasar (PV, cifras, purificación) y lo
+## suelta con su primera línea: primero baja la vida del monstruo y, cuando le
+## toca actuar a él, la tuya (Juan José Rueda, 2026-11-03).
 func _on_action_resolved(log_lines: Array) -> void:
+	var effects := _take_effects()
 	for line in log_lines:
-		_queue.append({"type": "log", "text": str(line), "order": _snapshot()})
+		_queue.append({"type": "log", "text": str(line), "order": _snapshot(),
+			"effects": effects})
+		effects = {}
+
+
+## Lo que ha pasado desde la última acción y aún no se ha enseñado.
+func _take_effects() -> Dictionary:
+	var monsters := []
+	for view in _monster_views:
+		monsters.append([view, view.take_pending()])
+	var party := []
+	for hud in _huds:
+		party.append([hud, hud.take_pending()])
+	var numbers := _pending_numbers.duplicate()
+	_pending_numbers.clear()
+	return {"monsters": monsters, "party": party, "numbers": numbers}
+
+
+func _show_effects(effects: Dictionary) -> void:
+	if effects.is_empty():
+		return
+	for entry in effects["monsters"]:
+		if is_instance_valid(entry[0]):
+			entry[0].show_pending(entry[1])
+	for entry in effects["party"]:
+		if is_instance_valid(entry[0]):
+			entry[0].show_pending(entry[1])
+	_pending_numbers.assign(effects["numbers"])
+	_release_numbers()
 
 
 func _on_combatant_defeated(combatant: Combatant) -> void:
@@ -499,7 +533,7 @@ func _advance_queue() -> void:
 			_set_message("-- Ronda %d --" % _round, DesignTokens.TEXT_SECONDARY)
 			_schedule(LOG_ROUND_SECONDS)
 		"log":
-			_flush_views()
+			_show_effects(event.get("effects", {}))
 			_set_message(str(event["text"]), _tone_for(str(event["text"])))
 			_play_line_sound(_message_tone)
 			_schedule(_read_seconds(str(event["text"]), event.get("beat", false)))
