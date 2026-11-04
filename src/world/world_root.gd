@@ -50,6 +50,8 @@ var arrival_cell := Vector2i.ZERO
 ## abre su conversación de `data/dialogue/talk.json`.
 var dialogue := DialogueRunner.new()
 var _talk := {}
+## Conversación ya oída -> la que se abre al volver a hablar.
+var _talk_again := {}
 ## Zona -> conversación que abre sola la primera vez que se entra (Yara de
 ## lejos, por el ave).
 var _on_enter := {}
@@ -109,6 +111,7 @@ func _ready() -> void:
 	add_child(dialogue)
 	var talk = JSON.parse_string(FileAccess.get_file_as_string("res://data/dialogue/talk.json"))
 	_talk = talk["talk"] if talk is Dictionary else {}
+	_talk_again = talk.get("talk_again", {}) if talk is Dictionary else {}
 	_on_enter = talk.get("on_enter", {}) if talk is Dictionary else {}
 	_on_start = talk.get("on_start", {}) if talk is Dictionary else {}
 	_demo_closed = talk.get("demo_closed", {}) if talk is Dictionary else {}
@@ -388,8 +391,15 @@ func try_talk() -> String:
 			continue
 		var key := "%s:%s" % [zone_id, child.get_meta("decor_id")]
 		if _talk.has(key):
-			_open_dialogue(_talk[key])
-			return _talk[key]
+			var id: String = _talk[key]
+			var state := get_node_or_null("/root/GameState")
+			if state != null:
+				if state.flag("heard_" + id):
+					id = _talk_again.get(id, id)
+				else:
+					state.set_flag("heard_" + id)
+			_open_dialogue(id)
+			return id
 	return ""
 
 
