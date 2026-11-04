@@ -790,3 +790,21 @@ const TYPE_PAUSE_AFTER := ".,;:!?"
 ## Rondas seguidas con la contramedida para atajar la causa de un monstruo
 ## regional (Diego, 2026-10-28: «sostener la contramedida»).
 const COUNTER_SUSTAIN_ROUNDS := 2
+
+
+# Combate de acción en el mapa, contrato «Tajo»
+# (docs/ux/anexos/2026-11-04-combate-accion.md).
+const DUR_STUN_WINDOW := 4.0      ## Aturdido: tiempo para la segunda contramedida.
+const DUR_TELEGRAPH := 0.8        ## Aviso en el suelo antes del golpe del monstruo.
+const DUR_DODGE := 0.25           ## Esquiva.
+const DUR_DODGE_COOLDOWN := 0.6   ## Pausa mínima entre esquivas.
+const DUR_HERO_ATTACK := 0.35     ## Pausa mínima entre tajos.
+const DUR_SLASH := 0.12           ## Lo que se ve el tajo.
+const DUR_MONSTER_REST := 1.4     ## Pausa del monstruo entre ataques.
+const DUR_TOAST := 3.5            ## Lo que dura el aviso de papel sin otro encima.
+const DODGE_DISTANCE := 48        ## Tres casillas: sale de la zona de aviso desde su centro.
+const MONSTER_BODY_RADIUS := 40   ## Medio ancho del monstruo de PixelLab (unos 110 px de sprite).
+const HERO_REACH := 28            ## Alcance del tajo más allá del cuerpo del monstruo.
+const ECO_REACH := 72             ## La habilidad eco llega más lejos que el tajo, también desde el cuerpo.
+const MONSTER_ATTACK_RADIUS := 40 ## Radio de la zona de aviso.
+const MONSTER_KEEP_DISTANCE := 56 ## El monstruo se acerca hasta aquí antes de atacar: sin taparse con el héroe.

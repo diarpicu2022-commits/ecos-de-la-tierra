@@ -72,6 +72,51 @@
 				"neutral"
 			]
 		},
+		"rosa": {
+			"name": "Doña Rosa",
+			"side": "left",
+			"name_color": "secondary",
+			"portrait": false,
+			"moods": [
+				"neutral"
+			]
+		},
+		"aurelio": {
+			"name": "Don Aurelio",
+			"side": "left",
+			"name_color": "secondary",
+			"portrait": false,
+			"moods": [
+				"neutral"
+			]
+		},
+		"tito": {
+			"name": "Tito",
+			"side": "left",
+			"name_color": "secondary",
+			"portrait": false,
+			"moods": [
+				"neutral"
+			]
+		},
+		"julian": {
+			"name": "Padre Julián",
+			"side": "left",
+			"name_color": "secondary",
+			"portrait": false,
+			"moods": [
+				"neutral"
+			]
+		},
+		"pescadora": {
+			"name": "Pescadora",
+			"side": "left",
+			"name_color": "secondary",
+			"portrait": false,
+			"moods": [
+				"neutral"
+			]
+		},
 		"rasgo": {
 			"name": "Rasgo",
 			"side": "right",

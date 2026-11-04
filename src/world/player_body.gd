@@ -144,6 +144,12 @@ func _update_sprite() -> void:
 		Vector2(SPRITE_SIZE))
 
 
+## Cambia la hoja del sprite: el héroe activo del combate de acción (Q y E).
+func set_sheet(texture: Texture2D) -> void:
+	_sprite.texture = texture
+	_update_sprite()
+
+
 ## Hacia qué lado librar la esquina, o `ZERO` si no se libra.
 func _corner_side(direction: Vector2i) -> Vector2i:
 	var across := Vector2i(direction.y, direction.x).abs()

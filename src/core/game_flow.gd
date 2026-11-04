@@ -34,6 +34,17 @@ const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 @export var play_opening := false
 ## Demo hasta el primer jefe. Las pruebas no la quieren.
 @export var demo := false
+## Conversación tras purificar cada zona, si la tiene.
+const AFTER_PURIFY := {"ashen_forest": "bosque_purificado"}
+
+## Combate de acción en el mapa, contrato «Tajo» (docs/ux/anexos/
+## 2026-11-04-combate-accion.md). Apagado, se pelea por turnos como antes.
+@export var action_combat := false
+## La partida empieza en la pantalla de título, sobre Valdehoja real.
+## Las pruebas arrancan directo en el mapa.
+@export var show_title := false
+## Casilla sobre la que se queda la cámara del título: la plaza.
+const TITLE_CELL := Vector2i(42, 22)
 
 var world := WorldRoot.new()
 var blinds := BattleBlinds.new()
@@ -46,6 +57,9 @@ var awaiting_confirm := false
 var battle_cell := Vector2i.ZERO
 
 var _battle_layer := CanvasLayer.new()
+var action: ActionCombat = null
+var action_hud := ActionHud.new()
+var title := TitleScreen.new()
 var _enemy: Monster = null
 var _purified_at: Callable
 var _ambient_frame := 0
@@ -60,6 +74,8 @@ func _ready() -> void:
 	add_child(world)
 	_battle_layer.layer = 15
 	add_child(_battle_layer)
+	action_hud.visible = false
+	_battle_layer.add_child(action_hud)
 	var blinds_layer := CanvasLayer.new()
 	blinds_layer.layer = 20
 	blinds_layer.add_child(blinds)
@@ -69,12 +85,42 @@ func _ready() -> void:
 	_on_zone_changed(world.zone_id)
 	GameAudio.start_ambient(_cell_is_alive())
 	GameAudio.play_music("music_world")
+	if show_title:
+		_open_title()
+		return
+	if play_opening:
+		await get_tree().process_frame
+		world.try_opening_talk()
+
+
+func _open_title() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 18
+	layer.add_child(title)
+	add_child(layer)
+	title.started.connect(_begin_game)
+	title.quit_requested.connect(func(): get_tree().quit())
+	world.body.input_enabled = false
+	world.body.visible = false
+	world.label.visible = false
+	world.body.global_position = Vector2(WorldRoot.feet_of(TITLE_CELL))
+	world.camera.snap_to_target()
+	title.open()
+
+
+## «Nueva partida»: Ilan aparece en su sitio y empieza la llamada de Yara.
+func _begin_game() -> void:
+	world.enter_zone(start_zone, start_cell)
+	world.body.visible = true
+	world.body.input_enabled = true
 	if play_opening:
 		await get_tree().process_frame
 		world.try_opening_talk()
 
 
 func _on_zone_changed(zone_id: String) -> void:
+	if action != null and action.running:
+		action.abort()
 	_purified_at = WorldDecor.purified_lookup(zone_id, get_node("/root/GameState"))
 
 
@@ -91,6 +137,9 @@ func _physics_process(_delta: float) -> void:
 
 func _on_encounter(adv: MapMonster.Advantage) -> void:
 	advantage = adv
+	if action_combat:
+		_start_action(adv)
+		return
 	GameAudio.play("blinds")
 	GameAudio.play_music("music_battle")
 	GameAudio.set_in_battle(true)
@@ -139,6 +188,68 @@ func _start_battle() -> void:
 	elif advantage == MapMonster.Advantage.MONSTER:
 		opening = Enums.Team.ENEMY
 	screen.start_battle(players, enemies, state.bag, opening)
+
+
+## La pelea empieza donde se tocaron: sin persiana y sin pantalla aparte.
+func _start_action(adv: MapMonster.Advantage) -> void:
+	var index: int = ZONE_ENCOUNTER[world.zone_id]
+	var state := get_node("/root/GameState")
+	state.ensure_party(index)
+	GameAudio.play_music("music_battle")
+	GameAudio.set_in_battle(true)
+	world.label.visible = false
+	_enemy = Encounters.build_monster(index)
+	add_child(_enemy)
+	action = ActionCombat.new()
+	add_child(action)
+	action.finished.connect(_on_action_finished)
+	action.start(world, action_hud, _enemy, state.party, state.bag, adv)
+
+
+## El desenlace se deja leer y después vuelve el mundo, como al dejar el combate
+## por turnos: victoria con la ola, derrota a la entrada y huida con gracia.
+func _on_action_finished(r: Enums.BattleResult) -> void:
+	result = r
+	battle_cell = world.monster.cell if world.monster != null else battle_cell
+	world.body.input_enabled = false
+	await get_tree().create_timer(RESULT_HOLD).timeout
+	var state := get_node("/root/GameState")
+	GameAudio.play_music("music_world")
+	GameAudio.set_in_battle(false)
+	match r:
+		Enums.BattleResult.VICTORY:
+			if world.monster != null:
+				var body_node := world.solids.get_node_or_null("solid_" + world.monster.name)
+				if body_node != null:
+					body_node.queue_free()
+				world.monster.queue_free()
+				world.monster = null
+			GameAudio.play("wave")
+			_waving = true
+			GameAudio.set_alive(true)
+			await world.purify_wave(battle_cell)
+			_waving = false
+			if AFTER_PURIFY.has(world.zone_id):
+				world.talk_once(AFTER_PURIFY[world.zone_id])
+		Enums.BattleResult.DEFEAT:
+			for c in state.party:
+				c.hp = 1
+			world.enter_zone(world.zone_id, world.arrival_cell)
+		Enums.BattleResult.FLED:
+			if world.monster != null:
+				world.monster.force(MapMonster.State.GIVE_UP)
+				world.monster.grace_frames = roundi(DesignTokens.DUR_FLEE_GRACE
+					* Engine.physics_ticks_per_second)
+				world.monster.active = true
+	action.cleanup()
+	action.queue_free()
+	action = null
+	action_hud.visible = false
+	if _enemy != null:
+		_enemy.queue_free()
+		_enemy = null
+	world.body.input_enabled = true
+	battle_over.emit(r)
 
 
 func _on_finished(r: Enums.BattleResult) -> void:

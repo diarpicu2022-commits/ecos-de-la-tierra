@@ -94,6 +94,28 @@ func _ready() -> void:
 	await _finish(runner)
 	_check("Ilan puede seguir paseando por el Bosque", world.body.input_enabled)
 
+	print("Los vecinos de Valdehoja")
+	world.enter_zone("valdehoja", Vector2i(40, 31))
+	await get_tree().process_frame
+	var heard := PackedStringArray()
+	for child in world.entities.get_children():
+		if not (child is Sprite2D and child.has_meta("decor_id")):
+			continue
+		var id := str(child.get_meta("decor_id"))
+		if not id.begins_with("npc_"):
+			continue
+		var cell := MapMonster.cell_of(Vector2i(child.position))
+		world.body.global_position = Vector2(WorldRoot.feet_of(cell + Vector2i.DOWN))
+		world.body.facing = Vector2i.UP
+		var conv := world.try_talk()
+		if conv.begins_with("vecino_"):
+			heard.append(id)
+			_check("%s habla sin retrato viejo" % id, runner.box.portrait == null and runner.box.lines.size() > 0)
+		await _finish(runner)
+	_check("hablan los cinco vecinos (%s)" % ", ".join(heard), heard.size() == 5)
+	world.enter_zone("ashen_forest", Vector2i(1, 16))
+	await get_tree().process_frame
+
 	print("Sin demo")
 	world.demo = false
 	await _cross(world, Vector2i(75, last))
