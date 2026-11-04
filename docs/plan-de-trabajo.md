@@ -43,6 +43,7 @@ válidos:
 ## Punto de retome
 
 > **2026-11-03. Reparto del trabajo entre Juan José y Diego: §3.2 de la guía.**
+> Menú del turno hecho, con cuatro entradas y la orden en Tab (rama `rediseno/combate-menu`). Antes de la presentación falta la comprobación general.
 >
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).
 > Rama de trabajo: `rediseno/terreno`. El paso 4a (masas de región, enmienda 14)

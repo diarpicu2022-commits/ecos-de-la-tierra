@@ -4,10 +4,16 @@ extends Control
 ## Menú de acción del turno. Es donde se toma la decisión, así que es el
 ## componente con más peso de la banda C del layout.
 ##
-## Es **genérico a propósito**: recibe una lista de entradas y no sabe si son
-## las cuatro opciones de la raíz, las Habilidades Ecológicas de un personaje o
-## los objetos de la Bolsa. Los tres menús se comportan igual, y el jugador solo
-## tiene que aprender a manejar uno.
+## Es **genérico a propósito**: recibe una lista de entradas y no sabe si son las
+## Habilidades Ecológicas de un personaje, los objetos de la Bolsa o los objetivos.
+## Tiene dos formas:
+##
+##   rejilla  el `CommandMenu` del sistema de diseño, la raíz del turno: 2 × 2,
+##            izquierda y derecha cambian de columna, arriba y abajo de fila, y
+##            dan la vuelta. Escape vuelve al mando anterior.
+##   lista    los submenús. Con `plate`, sobre el marco `TvFrame.PLATE` y con
+##            texto de pizarra (guía §4.0). Sin él, como el selector de región,
+##            que todavía no se ha rediseñado.
 ##
 ## Cada entrada es un diccionario:
 ##   label       texto visible
@@ -15,6 +21,7 @@ extends Control
 ##   enabled     si se puede elegir ahora mismo
 ##   cost        energía que cuesta, o -1 si no cuesta
 ##   payload     lo que el llamante necesite recuperar al elegir
+##   frame       en la rejilla, el marco fijo del mando (`TvFrame.CMD_*`)
 ##
 ## Las entradas que no se pueden pagar **no se ocultan ni se apagan en gris
 ## mudo**: se muestran con el coste en rojo. Es la corrección al fallo del port
@@ -28,9 +35,18 @@ signal cancelled()
 const ROW_HEIGHT := 12
 const CURSOR := "▶"
 const CURSOR_WIDTH := 8.0
+const GRID_COLUMNS := 2
+## Sangría de la lista dentro de la placa.
+const PLATE_PAD := float(DesignTokens.SPACE_4)
 
 var entries: Array[Dictionary] = []
 var focused: int = 0
+## La lista se dibuja sobre `TvFrame.PLATE`, con texto de pizarra.
+var plate := false
+
+var _grid := false
+## Mando del que se vino, para que Escape vuelva a él. -1 si no hay.
+var _previous := -1
 
 var _font: Font = null
 var _active: bool = false
@@ -44,15 +60,34 @@ func _ready() -> void:
 	set_process_input(false)
 
 
-## Carga las entradas y enfoca la primera que se pueda elegir.
-func set_entries(new_entries: Array) -> void:
-	entries.clear()
-	for entry in new_entries:
-		entries.append(entry as Dictionary)
-	focused = _first_selectable()
+## Carga las entradas y enfoca la primera que se pueda elegir, o `focus` si se
+## pide una. Con `grid`, en la rejilla del `CommandMenu`.
+func set_entries(new_entries: Array, grid: bool = false, focus: int = -1) -> void:
+	replace_entries(new_entries)
+	_grid = grid
+	_previous = -1
+	focused = focus if focus >= 0 and focus < entries.size() else _first_selectable()
 	_cursor_y = _row_top(focused)
 	queue_redraw()
 	_announce_focus()
+
+
+## Cambia el contenido sin mover el foco ni anunciarlo.
+func replace_entries(new_entries: Array) -> void:
+	entries.clear()
+	for entry in new_entries:
+		entries.append(entry as Dictionary)
+	queue_redraw()
+
+
+func is_grid() -> bool:
+	return _grid
+
+
+## Rectángulo del mando `index` en la rejilla, relativo al menú.
+func cell_rect(index: int) -> Rect2:
+	var step := TvFrame.CMD_SIZE + TvFrame.CMD_GAP
+	return Rect2(Vector2(index % GRID_COLUMNS, index / GRID_COLUMNS) * step, TvFrame.CMD_SIZE)
 
 
 ## Abre el menú y le cede el teclado. La entrada dura 160 ms y arranca en 0.94:
@@ -96,13 +131,24 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event.is_action("move_down"):
-		_move(1)
+		if _grid:
+			_move_grid(0, 1)
+		else:
+			_move(1)
 	elif event.is_action("move_up"):
-		_move(-1)
+		if _grid:
+			_move_grid(0, -1)
+		else:
+			_move(-1)
+	elif _grid and event.is_action("move_left"):
+		_move_grid(-1, 0)
+	elif _grid and event.is_action("move_right"):
+		_move_grid(1, 0)
 	elif event.is_action("confirm"):
 		_confirm()
 	elif event.is_action("cancel"):
 		GameAudio.play("ui_cancel")
+		_back_to_previous()
 		cancelled.emit()
 	else:
 		return
@@ -118,6 +164,31 @@ func _move(direction: int) -> void:
 	focused = wrapi(focused + direction, 0, entries.size())
 	GameAudio.play("ui_move")
 	_tween_cursor()
+	_announce_focus()
+
+
+## El anillo salta de mando en mando, sin recorrido, como en `preview.html`. Las
+## entradas deshabilitadas reciben foco, igual que en la lista.
+func _move_grid(dx: int, dy: int) -> void:
+	if entries.is_empty():
+		return
+	var rows: int = ceili(float(entries.size()) / GRID_COLUMNS)
+	var column: int = wrapi(focused % GRID_COLUMNS + dx, 0, GRID_COLUMNS)
+	var row: int = wrapi(focused / GRID_COLUMNS + dy, 0, rows)
+	_previous = focused
+	focused = mini(row * GRID_COLUMNS + column, entries.size() - 1)
+	GameAudio.play("ui_move")
+	queue_redraw()
+	_announce_focus()
+
+
+## Escape en la rejilla: vuelve al mando anterior, una sola vez.
+func _back_to_previous() -> void:
+	if not _grid or _previous < 0:
+		return
+	focused = _previous
+	_previous = -1
+	queue_redraw()
 	_announce_focus()
 
 
@@ -164,7 +235,20 @@ func _first_selectable() -> int:
 
 
 func _row_top(index: int) -> float:
-	return float(index * ROW_HEIGHT)
+	return (TvFrame.PLATE_EDGE_TOP if plate else 0.0) + float(index * ROW_HEIGHT)
+
+
+## Cuántas filas caben en el alto útil de la placa.
+func list_capacity() -> int:
+	return floori((size.y - TvFrame.PLATE_EDGE_TOP - TvFrame.PLATE_EDGE_BOTTOM) / ROW_HEIGHT)
+
+
+## Ancho que le queda a la etiqueta entre el cursor y el coste.
+func label_room(entry: Dictionary) -> float:
+	var pad := PLATE_PAD if plate else 0.0
+	var cost: int = int(entry.get("cost", -1))
+	var reserved: float = 0.0 if cost < 0 else _width("%d" % cost) + DesignTokens.SPACE_4
+	return size.x - pad * 2.0 - CURSOR_WIDTH - reserved
 
 
 # --- Dibujo ------------------------------------------------------------------
@@ -173,13 +257,26 @@ func _draw() -> void:
 	if entries.is_empty():
 		return
 
+	if _grid:
+		for i in range(entries.size()):
+			TvFrame.command(self, _font, str(entries[i].get("frame", TvFrame.CMD_FIGHT)),
+					cell_rect(i), str(entries[i].get("label", "")), i == focused)
+		return
+
 	# El cursor se dibuja como una banda, no solo como una flecha: a 11 px de
 	# texto una flecha sola no basta para saber dónde estás de un vistazo.
-	var band := Rect2(Vector2(0, roundf(_cursor_y)),
-			Vector2(size.x, ROW_HEIGHT))
-	draw_rect(band, DesignTokens.PANEL_FILL_DEEP)
-	draw_rect(Rect2(band.position, Vector2(2, band.size.y)),
-			DesignTokens.BORDER_FOCUS)
+	if plate:
+		TvFrame.draw(self, TvFrame.PLATE, Rect2(Vector2.ZERO, size))
+		# `TV_UI_0` y no `TV_UI_2`: el coste en aviso no llega a 4,5:1 sobre la
+		# segunda, y la banda es justo donde se lee.
+		draw_rect(Rect2(TvFrame.PLATE_EDGE_SIDE, roundf(_cursor_y),
+				size.x - TvFrame.PLATE_EDGE_SIDE * 2.0, ROW_HEIGHT), DesignTokens.TV_UI_0)
+	else:
+		var band := Rect2(Vector2(0, roundf(_cursor_y)),
+				Vector2(size.x, ROW_HEIGHT))
+		draw_rect(band, DesignTokens.PANEL_FILL_DEEP)
+		draw_rect(Rect2(band.position, Vector2(2, band.size.y)),
+				DesignTokens.BORDER_FOCUS)
 
 	for i in range(entries.size()):
 		_draw_row(i, entries[i])
@@ -190,33 +287,39 @@ func _draw_row(index: int, entry: Dictionary) -> void:
 	var baseline: float = top + 9.0
 	var is_focused: bool = index == focused
 	var enabled: bool = entry.get("enabled", true)
+	var pad := PLATE_PAD if plate else 0.0
 
 	if is_focused:
-		draw_string(_font, Vector2(0, baseline), CURSOR,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY,
-				DesignTokens.TEXT_CRITICAL)
+		_row_text(pad, baseline, CURSOR, DesignTokens.TV_TEXT_HIGHLIGHT if plate
+				else DesignTokens.TEXT_CRITICAL)
 
-	# El coste va a la derecha, y en rojo cuando no alcanza. Así el jugador ve
-	# cuánta energía le falta en vez de encontrarse una opción muerta.
-	var cost: int = int(entry.get("cost", -1))
-	var cost_label: String = "%d" % cost if cost >= 0 else ""
-	var reserved: float = 0.0 if cost_label.is_empty() \
-			else _width(cost_label) + DesignTokens.SPACE_4
-
-	var tone: Color = DesignTokens.TEXT_PRIMARY if is_focused \
-			else DesignTokens.TEXT_SECONDARY
 	# La etiqueta se recorta a lo que queda entre el cursor y el coste. Sin
 	# esto, un objetivo llamado «Espectro del Monocultivo» se salía del menú y
 	# se metía encima del mensaje de al lado.
-	draw_string(_font, Vector2(CURSOR_WIDTH, baseline),
-			_fit(str(entry.get("label", "")), size.x - CURSOR_WIDTH - reserved),
-			HORIZONTAL_ALIGNMENT_LEFT, -1, DesignTokens.FONT_SIZE_BODY, tone)
+	var tone: Color
+	if plate:
+		tone = DesignTokens.TV_TEXT_HIGHLIGHT if is_focused else DesignTokens.TV_TEXT_ON_SLATE
+	else:
+		tone = DesignTokens.TEXT_PRIMARY if is_focused else DesignTokens.TEXT_SECONDARY
+	_row_text(pad + CURSOR_WIDTH, baseline,
+			_fit(str(entry.get("label", "")), label_room(entry)), tone)
 
-	if not cost_label.is_empty():
-		var color: Color = DesignTokens.TEXT_SECONDARY if enabled \
-				else DesignTokens.TEXT_WARNING
-		draw_string(_font, Vector2(size.x - _width(cost_label), baseline),
-				cost_label, HORIZONTAL_ALIGNMENT_LEFT, -1,
+	# El coste va a la derecha, y en su tono de aviso cuando no alcanza. Así el
+	# jugador ve cuánta energía le falta en vez de encontrarse una opción muerta.
+	var cost: int = int(entry.get("cost", -1))
+	if cost >= 0:
+		var cost_label: String = "%d" % cost
+		var color: Color = DesignTokens.TV_RUST_4 if plate else DesignTokens.TEXT_WARNING
+		if enabled:
+			color = DesignTokens.TV_TEXT_MUTED_SLATE if plate else DesignTokens.TEXT_SECONDARY
+		_row_text(size.x - pad - _width(cost_label), baseline, cost_label, color)
+
+
+func _row_text(x: float, baseline: float, value: String, color: Color) -> void:
+	if plate:
+		TvFrame.slate_text(self, _font, Vector2(x, baseline), value, color)
+	else:
+		draw_string(_font, Vector2(x, baseline), value, HORIZONTAL_ALIGNMENT_LEFT, -1,
 				DesignTokens.FONT_SIZE_BODY, color)
 
 

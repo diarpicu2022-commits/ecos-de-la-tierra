@@ -26,6 +26,20 @@ const CMD_BAG := "cmd-bolsa"
 const CMD_RUN := "cmd-huir"
 const CMD_SELECTED := "cmd-selected"
 
+## `CommandMenu` (bundle.css, `.cmds`, `.cmd`, `.cmd-sel`): mandos de 100 × 30, con
+## 4 px entre columnas y 6 entre filas. El marco del elegido sobresale 2 px por
+## cada lado. La línea base sale de medir `combate_enfermo.png`.
+const CMD_SIZE := Vector2(100, 30)
+const CMD_GAP := Vector2(4, 6)
+const CMD_RING := 2.0
+const CMD_BASELINE := 17.0
+
+## Lo que ocupa el canto de `PLATE`, medido sobre el PNG: 3 px arriba, 2 abajo y
+## 2 a cada lado. Lo de dentro es el alto útil de una lista.
+const PLATE_EDGE_TOP := 3.0
+const PLATE_EDGE_BOTTOM := 2.0
+const PLATE_EDGE_SIDE := 2.0
+
 static var _boxes := {}
 
 
@@ -62,6 +76,19 @@ static func slate_text(ci: CanvasItem, font: Font, at: Vector2, value: String,
 
 static func paper_text(ci: CanvasItem, font: Font, at: Vector2, value: String) -> void:
 	text(ci, font, at, value, DesignTokens.TV_TEXT_ON_PAPER, DesignTokens.TV_TEXT_SHADOW_PAPER)
+
+
+## Un mando del `CommandMenu`: su marco fijo, el anillo si es el elegido y la
+## etiqueta blanca centrada con sombra `ink-1` (`TV_INK_0`: las rampas del CSS
+## cuentan desde 1).
+static func command(ci: CanvasItem, font: Font, frame: String, rect: Rect2, value: String,
+		selected: bool) -> void:
+	if selected:
+		draw(ci, CMD_SELECTED, rect.grow(CMD_RING))
+	draw(ci, frame, rect)
+	var x := rect.position.x + roundf((rect.size.x - width(font, value)) * 0.5)
+	text(ci, font, Vector2(x, rect.position.y + CMD_BASELINE), value,
+			DesignTokens.TV_TEXT_ON_SLATE, DesignTokens.TV_INK_0)
 
 
 static func width(font: Font, value: String, size: int = DesignTokens.FONT_SIZE_BODY) -> float:

@@ -136,11 +136,11 @@ Las reglas completas están en `AGENTS.md` y en `docs/guia-de-continuacion.md`
 
 ```bash
 PYTHONIOENCODING=utf-8 python tools/verify_palette.py tokens        # 280 tokens, sin deriva
-"$GODOT" --headless --path . res://tools/verify_usability.tscn     # 16/16
+"$GODOT" --headless --path . res://tools/verify_usability.tscn     # 28/28
 "$GODOT" --headless --path . res://tools/verify_camera.tscn        # 37/37
 "$GODOT" --headless --path . res://tools/verify_encounters.tscn    # 82/82
 "$GODOT" --headless --path . res://tools/verify_flow.tscn          # 23/23
-"$GODOT" --headless --path . res://tools/verify_party_ai.tscn      # 19/19
+"$GODOT" --headless --path . res://tools/verify_party_ai.tscn      # 34/34
 "$GODOT" --headless --path . res://tools/verify_movement.tscn      # 99/99
 for z in valdehoja ashen_forest tar_basin broken_coast withered_plain waning_peak greed_crypt; do
   "$GODOT" --headless --path . res://tools/verify_zone.tscn -- $z  # todas en verde
@@ -199,7 +199,7 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 6 | Tipografía Brote | `DesignTokens.FONT_PATH` → `assets/fonts/brote.fnt` | README §Tipografía | HECHO 2026-11-02 (falta el titular de 22 px) |
 | 7 | Placa del monstruo | `monster_view.gd` (`_draw_panel`) | `components/EnemyPlate` (10, 10), 184 px, pizarra | HECHO 2026-11-03 |
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
-| 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | ver §4.0 |
+| 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | HECHO 2026-11-03, con el visto bueno de Diego |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
 | 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
@@ -251,8 +251,8 @@ Cada una abre su anexo y espera la elección de Diego antes de programar.
 
 **Diego, antes de la presentación:**
 
-1. Menú del turno (fila 9), en `action_menu.gd`, con su ajuste en
-   `verify_party_ai`. Primero se decide si son cuatro o cinco entradas.
+1. Dar el visto bueno al menú del turno (fila 9). Son cuatro entradas y la orden
+   va en Tab, decidido el 2026-11-03.
 2. Decisiones que quedaron abiertas:
    - Cola de turnos (fila 12).
    - Enmienda 15, las barras de PV verdes.
@@ -307,22 +307,21 @@ Lo que más se ve después del mapa. Va por pasos, cada uno con su captura
      `TvFrame.PLATE` de 184 × 44 en (10, 10), con el nombre, las chapas de
      tipo y de estado (CORRUPTO o PURIFICADO) y «PV» con su barra de 5 px y
      la cifra. Captura: `docs/ux/capturas/2026-11-03-placa-*.png`.
-   - **`CommandMenu`:** rejilla de 2 × 2 en (432, 284), 100 × 30, con los
-     marcos `cmd-luchar`, `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y
-     `cmd-selected` para el elegido. Está en `action_menu.gd`, el menú raíz.
-     **Antes, Diego decide** si se quedan las cuatro entradas del sistema
-     (recomendado: ECO abre las habilidades y ORDEN pasa a Tab) o las cinco
-     de hoy. `verify_party_ai` comprueba la fila de ORDEN y habrá que
-     adaptarla.
+   - **`CommandMenu`:** HECHO el 2026-11-03, con el visto bueno de Diego.
+     Rejilla de 2 × 2 en (432, 284), 100 × 30, con los marcos `cmd-luchar`,
+     `cmd-eco`, `cmd-bolsa` y `cmd-huir`, y `cmd-selected` para el elegido, en
+     `action_menu.gd`. Diego decidió cuatro entradas. ECO abre las habilidades
+     y la orden pasa a Tab, con su acción `order`. Se mide con
+     `tools/verify_command_menu.py`. Capturas en
+     `docs/ux/capturas/2026-11-03-menu-*.png`.
    - **El aviso de papel:** HECHO el 2026-11-03. `BattleScreen._draw_message`
      dibuja `TvFrame.TEXTBOX` en `MESSAGE_RECT` (6, 282, 420 × 72), con el
      texto en papel a 15 px de interlínea y `▼` en `TV_RUST_2`. Los tonos del
      registro pasan al papel con `_paper_tone`. Captura:
-     `docs/ux/capturas/2026-11-03-aviso-*.png`. **Lo siguiente es el
-     `CommandMenu`**, que espera la decisión de Diego (cuatro o cinco
-     entradas).
-   - Los submenús (habilidades, bolsa, objetivo) no están en el sistema:
-     se usa `TvFrame.PLATE` como marco de lista, y se avisa a Diego.
+     `docs/ux/capturas/2026-11-03-aviso-*.png`.
+   - Los submenús (habilidades, bolsa, objetivo) no están en el sistema, así
+     que usan `TvFrame.PLATE` como marco de lista desde el 2026-11-03. Caben 5
+     filas y el caso real más largo son 5 aliados. Falta el visto bueno de Diego.
    - **Aviso para Diego:** las barras de PV del sistema son verdes
      (`hp-high`). Eso choca con la regla vieja de «el verde solo significa
      purificado». Manda el sistema, pero hay que anotarlo como enmienda

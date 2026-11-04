@@ -38,12 +38,12 @@ func _ready() -> void:
 	# medio fundir, y la auditoría de contraste mediría un color transitorio.
 	await get_tree().create_timer(0.3).timeout
 	await _shoot("menu raiz")
-	await _press("confirm")          # ATACAR, objetivo unico: se resuelve solo
+	await _press("confirm")          # LUCHAR, objetivo unico: se resuelve solo
 
-	# Turno 2 (Bruma): Habilidades -> Linea Cortafuegos. Aquí se ataja la causa.
+	# Turno 2 (Bruma): ECO -> Linea Cortafuegos. Aquí se ataja la causa.
 	await _await_choice()
-	await _press("move_down")        # HABILIDADES
-	await _shoot("habilidades enfocado")
+	await _press("move_right")       # ECO
+	await _shoot("eco enfocado")
 	await _press("confirm")
 	await _shoot("lista de habilidades")
 	await _press("confirm")          # Linea Cortafuegos
