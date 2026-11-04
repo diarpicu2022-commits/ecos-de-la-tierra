@@ -70,9 +70,7 @@ func setup(zone_id: String, post: Vector2i, lines: PackedStringArray, blocked: D
 	var cast := "%smonster_%s_sick.png" % [CAST, zone_id]
 	_faces_left = ResourceLoader.exists(cast)
 	for pose in ["rest", "alert", "chase"]:
-		var file := "monster_%s_sick.png" % zone_id if pose == "rest" \
-			else "monster_%s_%s_sick.png" % [zone_id, pose]
-		_textures[pose] = load(cast) if _faces_left else load(DECOR + file)
+		_textures[pose] = load(cast)
 	_sprite.centered = false
 	add_child(_sprite)
 	_build_territory()
@@ -329,7 +327,7 @@ func _sync() -> void:
 		_bands.pop_back().queue_free()
 	var vertical := facing.x == 0
 	var own := "_" + _zone if _zone == "greed_crypt" else ""
-	var band_tex: Texture2D = load(DECOR + "alert_shadow%s%s_sick.png" % ["_v" if vertical else "", own])
+	var band_tex: Texture2D = load(CAST + "alert_shadow%s%s.png" % ["_v" if vertical else "", own])
 	var t := DesignTokens.TILE_SIZE
 	for k in steps:
 		if k >= _bands.size():

@@ -66,6 +66,8 @@ func _ready() -> void:
 	print("Ola de purificación")
 	DesignTokens.reduced_motion = false
 	var first := Engine.get_physics_frames()
+	var expected := roundi(DesignTokens.DUR_ZONE_PURIFY * 60)
+	var sampled := false
 	world.purify_wave(origin)
 	var frames := 0
 	var checked := 0
@@ -110,10 +112,12 @@ func _ready() -> void:
 		if count < prev_pure:
 			shrank = true
 		prev_pure = count
-		if frames == 20:
+		# A la mitad real de la ola, no en un número fijo de capturas: en un equipo
+		# lento se renderizan pocos cuadros y nunca se llegaba a medir.
+		if not sampled and Engine.get_physics_frames() - first >= expected / 2:
+			sampled = true
 			near_far = Vector2(near.x / maxf(near.y, 1), far.x / maxf(far.y, 1))
 	var physics := Engine.get_physics_frames() - first
-	var expected := roundi(DesignTokens.DUR_ZONE_PURIFY * 60)
 	_check("dura %d cuadros de física (%d esperados)" % [physics, expected], absi(physics - expected) <= 1)
 	_check("ningún píxel mezclado: cada uno es el enfermo o el purificado de su sitio (%d fuera)" % mixed,
 		mixed == 0)

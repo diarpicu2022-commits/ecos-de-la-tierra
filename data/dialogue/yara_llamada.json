@@ -1,0 +1,8 @@
+{
+	"_doc": "Al empezar la partida, en casa de Ilan: Yara le llama por el ave para que vaya a su jardín, donde le cuenta lo que pasa (yara_inicio). Primera escena de historia (2026-11-03): texto propuesto por Juan José y Claude, pendiente de que Diego lo vea.",
+	"lines": [
+		{"who": "yara_ave", "mood": "neutral", "text": "Ilan, ¿me oyes? Soy Yara. Te hablo por el ave."},
+		{"who": "yara_ave", "mood": "alerta", "text": "El río huele a hierro y el semillero se muere. Ven a mi jardín, al este, cruzando el río."},
+		{"who": "ilan", "mood": "neutral", "text": "Voy para allá. Te buscaré junto al árbol."}
+	]
+}

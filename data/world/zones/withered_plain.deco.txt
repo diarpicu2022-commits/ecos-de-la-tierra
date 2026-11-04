@@ -25,19 +25,22 @@
 ; w = decor, weed, pisable                    matojo
 ; R = decor, rock, sólido                     piedra del campo
 ; @ = spawn, start, pisable                   llegada desde la Costa
+; à = decor, scarecrow, sólido, 1x1
+; á = decor, npc_campesina, sólido, 1x1
+; â = decor, npc_nina_llanura, sólido, 1x1
 ---
 UU uuu uu    u uuu uuu uuu u TT u  u u  u  UUu uuu uuu uUU u u uu  uuu u   uuu u u u u uuu uuu uuu uu  uuu  uTT    uuu u
 UU u u u u uu  uuu uuu uuu uuTT  u  uu u u UUu uuu  uu uUU  uu  uu  u   uu  uu uuu  uu     uuu uuu uuu  uu uuTT uu  uu u
 
                                                                                                       g          r   r
-           g    w  gg   w   r    R g    gr r    rr r r                 r   r r R     r r r  R  r r                  R
+           g    w  gg   w   r    R g    gr r    rr r r                 r   r r R     r r r  R  r r             â    R
   R         r           w            r  S       r      rr   g           rr   r  g  rr   gr g    rr    rr r b b   2b
                                                                                                             2r 2 w
     w       g                      g             r   r rr  wr   rr   R     gR    r  r  r        r  r
   gw    r   R                      r r  r  r    r  rg  rr  rg  r g rr   r   rr r   R    gr r   r   g  g   r  r r  2
      R  R    R            r     gr R   r   rr  r r   r rg      rR   g   rr  rr  r      r r  r   rr    r    gr  r   rr
-
-  w      R     R        r              r       rrr  r   r   r    R  Rr  r               r   wr  r  r  gr  r r  r    rw
+                   à
+  w      R     R      á r              r       rrr  r   r   r    R  Rr  r        à      r   wr  r  r  gr  r r  r    rw
                                                                                                                R    r
             1   1a a         r       r  rr r     r   r  rr rr    r rr      rw  rg    r rr  r   rr  r          g
    r                a1       r   r   R  g    r  w  r       r r          gr g   r r rw  rr   r      w
@@ -47,7 +50,7 @@ UU u u u u uu  uuu uuu uuu uuTT  u  uu u u UUu uuu  uu uUU  uu  uu  u   uu  uu u
 
  u  uUU    TT  uuu u   uu  UUu  uu  u   uu UUUU uu u u u   u u u u uuu  TT uuu u u UUu  u  u UU  u u u  uu         rr
 u  u UU uu TT  u   uuu uuu UU  uuu  uu uuu UUUU uu uuu uuu uuu u u  u  uTT  u  u u UUu uuu uuUU  u  uu u u r  r
-uu uu  uuu TTu u u UUTT TT uuu uuu UUu  UU uuTT UU  uu uUU uuu  uu              uu uuu u u TTTT uu  uu uuu r   g     r
+uu uu  uuu TTu u u UUTT TT uuu uuu UUu  UU uuTT UU  uu uUU uuu  uu              uu uuu u u TTTT uu  uu uuu r   g   à r
            TT      UUTT TT         UU   UU   TT UU      UU                                 TTTT
 u  uu  uuu   u  uu         uuu  uu   u u   uu      uu      uuu  uu  rr z       ruu u u uu        u uuu   u         r
 uu u   uuu uuu u   u u uu   u  uu   uu uu  u UU uu  u   uu uu      r r rrr      z    u  u  UU   u   uTT  u Rr  w  g r
@@ -71,7 +74,7 @@ TT UU  uuu uu  uuu UUu uUU  uu uUU uuu   u uuUU uu uuTT uu  u  uUU  uu  UU TT   
                                                                       X                     3r  33 3r   r  g
 u  uu  uuu uuu   u TTu uuu uuTT uu  uu u u uuu uTT uuu u u UU  uu       u   uu urz rz rw                             r
  u uuu u   uuu uuu TT  uuu uuTT uu  u  uuu uu   TT uu  uuu UUu  u   uu  u  uuu ur  r  rrrr       r w r         rrr  rr
-uu uuu uUU u UU uu uu  uuu uuu uuu UU    u TTu  u  u u  TT uuu uu   uu  uu uu    r  r    w  g          rwr     rr    r
+uu uuu uUU u UU uu uu  uuu uuu uuu UU    u TTu  u  u u  TT uuu uu   uu  uu uu    r  r    w  g  à       rwr     rr    r
         UU   UU                    UU      TT           TT
  u u       uu    u uu  uuu uu  u u   u uuu   u uuu u   u   uuu   u  uu  uu uuu uRr  rr  rr  r    r r    rr r r   r  g
  u u u   u uuu uu  uuu  uu TTu uTT uuu uuu u u   u uuUU uu uuu uuu  uu  uu TTUU      r rr  w    w   w   r   r  r r   r

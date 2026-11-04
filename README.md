@@ -22,9 +22,10 @@ primero que conviene leer antes de tocar nada.
 2. Abrir Godot → *Import* → seleccionar el archivo `project.godot` de esta
    carpeta.
 3. Ejecutar con F5. La escena principal es `scenes/game.tscn`: el juego
-   empieza en Valdehoja. Ilan anda por el mundo, cruza a las regiones y, al
-   tocar a su monstruo, entra en combate. Se juega con las flechas o WASD,
-   Enter o Espacio para confirmar y Escape para volver atrás.
+   empieza en Valdehoja. Ilan anda por el mundo, habla con Yara (Enter o
+   Espacio mirándola), cruza a las regiones y, al tocar a su monstruo, entra
+   en combate. Se juega con las flechas o WASD, Enter o Espacio para confirmar
+   y Escape para volver atrás.
    La demo de combates sueltos, con el selector de región, sigue en
    `scenes/main.tscn` (F6 con esa escena abierta).
    La prueba de concepto por consola sigue disponible en

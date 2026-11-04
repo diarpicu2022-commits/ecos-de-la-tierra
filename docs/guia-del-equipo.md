@@ -272,6 +272,19 @@ Cada una abre su anexo y espera la elección de Diego antes de programar.
 5. Puzzles, menú, título, audio definitivo y final, partes 7, 8, 10, 11 y 12.
 6. Prueba con personas, cuando exista el combate nuevo.
 
+**Cambio del 2026-11-03, por la noche: Juan José adelanta la primera escena de
+historia. Falta que Diego lo confirme.** Quedó en su lista de después de la
+presentación (§4.7), pero la historia es lo que más le falta al juego. Se integró
+la rama `parte-5/anexo` (ya no hace falta fusionarla) y se añadió solo esto:
+- La llamada de Yara por el ave al empezar (`data/dialogue/yara_llamada.json`,
+  texto nuevo) y la conversación del jardín y la del Bosque, que ya estaban.
+- La caja `DialogBox` del sistema en lugar de la del contrato «Columna». **Es la
+  decisión que §4.7 dejaba a Diego.** Se hizo como propuesta: si prefiere otra cosa,
+  el dibujo está aislado en `src/ui/dialogue/dialogue_box.gd`.
+- **No se hizo:** Rasgo en el juego, IA-3, IA-6, ni el Fragmento del Vínculo. Sigue
+  siendo de Diego (§4.7), y la progresión, de Juan José.
+- Detalle en `docs/ux/anexos/2026-10-28-dialogos.md`, «Enmienda propuesta».
+
 **Para no pisarnos:**
 
 - Juan José no toca `action_menu.gd`, `turn_order_strip.gd` ni `verify_party_ai`.
@@ -531,6 +544,9 @@ Sistema de diseño: `components/ActionHUD`, `PartyRow`, `LocationSign`,
    sobre el render), foco visible y teclado completo.
 
 ### 4.7 Parte 5: diálogos y retratos
+
+**Estado (2026-11-03):** integrada en `rediseno/terreno` la primera escena, con la
+caja del sistema (ver §3.2). Falta que Diego confirme la caja y lo que sigue abajo.
 
 Rama `parte-5/anexo`: caja de diálogo, retratos de las siete voces,
 conversación con Yara, Rasgo en brasa o ceniza y Yara por el ave. **Antes de

@@ -771,6 +771,22 @@ const SYNC_UP := 0.25
 const SYNC_DOWN := 0.15
 ## Decisiones buenas seguidas que bastan para salir del mínimo al tramo medio.
 const SYNC_RECOVER := 3
+# --- Diálogo ---------------------------------------------------------------
+# `components/DialogBox` del sistema de diseño, a 640 × 360. Sustituye a las
+# medidas del contrato «Columna» (propuesta pendiente de Diego).
+
+const DIALOGUE_POSITION := Vector2i(12, 276)
+const DIALOGUE_SIZE := Vector2i(616, 76)
+## Lo que cabe en una caja: dos líneas, como en el sistema, en 526 px de texto.
+const DIALOGUE_CHARS := 72
+const DIALOGUE_LINES := 2
+## Máquina de escribir: un carácter cada DUR_TYPE_CHAR y una pausa tras la
+## puntuación. Opcional; con movimiento reducido, texto completo directo.
+const DUR_TYPE_CHAR := 0.03
+const DUR_TYPE_PAUSE := 0.20
+const TYPE_PAUSE_AFTER := ".,;:!?"
+
+
 ## Rondas seguidas con la contramedida para atajar la causa de un monstruo
 ## regional (Diego, 2026-10-28: «sostener la contramedida»).
 const COUNTER_SUSTAIN_ROUNDS := 2

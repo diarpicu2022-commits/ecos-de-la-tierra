@@ -6,7 +6,7 @@ extends Node2D
 ##
 ## Cambio de zona: cuando el centro de la caja de colisión sale del mapa por
 ## una salida, empieza el fundido. Son dos medios fundidos lineales de
-## `DUR_ZONE_FADE` en `ASH_950`, el color más profundo de la paleta (no hay
+## `DUR_ZONE_FADE` en `TV_INK_0`, el color más profundo del sistema (no hay
 ## token «negro»). Durante el de salida el cuerpo se detiene. Con la pantalla
 ## ya cubierta se carga la zona de destino, el cuerpo aparece en `to_cell`
 ## mirando igual y **vuelve a leer el teclado**: si la tecla sigue pulsada,
@@ -46,6 +46,21 @@ var label := PlaceLabel.new()
 var monster: MapMonster = null
 ## Casilla por la que se entró en la zona: adonde se vuelve tras una derrota.
 var arrival_cell := Vector2i.ZERO
+## Diálogo en el mundo (contrato «Columna»): mirando a una persona, `confirm`
+## abre su conversación de `data/dialogue/talk.json`.
+var dialogue := DialogueRunner.new()
+var _talk := {}
+## Zona -> conversación que abre sola la primera vez que se entra (Yara de
+## lejos, por el ave).
+var _on_enter := {}
+var _on_start := {}
+## Demo hasta el primer jefe: las salidas cerradas abren una conversación en vez
+## de cambiar de zona, y `_demo_after` encadena conversaciones
+## (`docs/plan-para-terminar-la-historia.md`).
+var demo := false
+var _demo_closed := {}
+var _demo_after := {}
+var _held_monster: MapMonster = null
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
 var fade := Fade.NONE
@@ -71,10 +86,10 @@ var _fade_frames := 0
 func _ready() -> void:
 	DesignTokens.load_settings()
 	# Fuera de la zona solo se ve cuando el mapa es menor que la pantalla, en
-	# las bandas que deja al centrarse. Ese es el papel de `ASH_950` en la
+	# las bandas que deja al centrarse. Ese es el papel de `TV_INK_0` en la
 	# paleta («fondo más profundo y bandas del viewport»); sin esto, Godot pinta
 	# su gris por defecto, que no es un token.
-	RenderingServer.set_default_clear_color(DesignTokens.ASH_950)
+	RenderingServer.set_default_clear_color(DesignTokens.TV_INK_0)
 	_exits = ZoneRules.load_exits()
 	_names = ZoneRules.load_names()
 	# El rótulo va por debajo de la cortina: aparece con la zona, no encima del
@@ -85,12 +100,20 @@ func _ready() -> void:
 	add_child(label_layer)
 	var fade_layer := CanvasLayer.new()
 	fade_layer.layer = 10
-	curtain.color = DesignTokens.ASH_950
+	curtain.color = DesignTokens.TV_INK_0
 	curtain.size = get_viewport_rect().size
 	curtain.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	curtain.modulate.a = 0.0
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
+	add_child(dialogue)
+	var talk = JSON.parse_string(FileAccess.get_file_as_string("res://data/dialogue/talk.json"))
+	_talk = talk["talk"] if talk is Dictionary else {}
+	_on_enter = talk.get("on_enter", {}) if talk is Dictionary else {}
+	_on_start = talk.get("on_start", {}) if talk is Dictionary else {}
+	_demo_closed = talk.get("demo_closed", {}) if talk is Dictionary else {}
+	_demo_after = talk.get("demo_after", {}) if talk is Dictionary else {}
+	dialogue.finished.connect(_on_dialogue_finished)
 	entities.y_sort_enabled = true
 	add_child(ambient)
 	add_child(solids)
@@ -338,6 +361,90 @@ func _on_contact(advantage: MapMonster.Advantage) -> void:
 	encounter.emit(advantage)
 
 
+## La escena con la que empieza la partida, si la zona tiene y no se ha oído
+## (`on_start` de `talk.json`). Devuelve su id o "".
+func try_opening_talk() -> String:
+	var id: String = _on_start.get(zone_id, "")
+	var state := get_node_or_null("/root/GameState")
+	if id.is_empty() or dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return ""
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return id
+
+
+## Intenta hablar con lo que Ilan tiene delante. Devuelve el id de la
+## conversación abierta, o "" si no hay nadie con quien hablar.
+func try_talk() -> String:
+	if dialogue.is_running() or fade != Fade.NONE or not body.input_enabled:
+		return ""
+	var front := MapMonster.cell_of(Vector2i(body.global_position)) + body.facing
+	for child in entities.get_children():
+		if not (child is Sprite2D and child.has_meta("decor_id")):
+			continue
+		var feet := Vector2i(child.position)
+		if MapMonster.cell_of(feet) != front:
+			continue
+		var key := "%s:%s" % [zone_id, child.get_meta("decor_id")]
+		if _talk.has(key):
+			_open_dialogue(_talk[key])
+			return _talk[key]
+	return ""
+
+
+## La conversación de llegada de la zona, si no se ha oído. Devuelve su id o "".
+func try_arrival_talk() -> String:
+	var id: String = _on_enter.get(zone_id, "")
+	var state := get_node_or_null("/root/GameState")
+	if id.is_empty() or dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return ""
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return id
+
+
+## Mientras se habla, ni Ilan ni el monstruo se mueven.
+## Solo se reactiva el monstruo que paró la conversación, no uno que ya
+## estaba parado por el combate o la huida.
+func _open_dialogue(id: String) -> void:
+	body.input_enabled = false
+	_held_monster = monster if monster != null and monster.active else null
+	if _held_monster != null:
+		_held_monster.active = false
+	dialogue.start(id)
+
+
+func _on_dialogue_finished(id: String) -> void:
+	body.input_enabled = true
+	if is_instance_valid(_held_monster):
+		_held_monster.active = true
+	_held_monster = null
+	if demo and _demo_after.has(id):
+		_open_dialogue(_demo_after[id])
+
+
+## En la demo, una salida cerrada devuelve a Ilan al mapa y abre su conversación.
+func _close_for_demo(exit: Dictionary) -> bool:
+	var id: String = _demo_closed.get("%s>%s" % [exit["from"], exit["to"]], "")
+	if id.is_empty():
+		return false
+	var cell := ZoneRules.cell_of(exit, "cell")
+	var inward := Vector2i(
+		1 if cell.x == 0 else (-1 if cell.x == zone_size.x - 1 else 0),
+		1 if cell.y == 0 else (-1 if cell.y == zone_size.y - 1 else 0))
+	body.global_position = Vector2(feet_of(cell + inward))
+	_open_dialogue(id)
+	return true
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("confirm") and not dialogue.is_running():
+		if try_talk() != "":
+			get_viewport().set_input_as_handled()
+
+
 ## Pies del cuerpo de pie en `cell`: centro de la base de la casilla.
 static func feet_of(cell: Vector2i) -> Vector2i:
 	var t := DesignTokens.TILE_SIZE
@@ -350,10 +457,13 @@ func _physics_process(_delta: float) -> void:
 			var exit := _exit_crossed()
 			if exit.is_empty():
 				return
+			if demo and _close_for_demo(exit):
+				return
 			_fade_frames = roundi(DesignTokens.duration(DesignTokens.DUR_ZONE_FADE)
 				* Engine.physics_ticks_per_second)
 			if _fade_frames == 0:
 				enter_zone(exit["to"], ZoneRules.cell_of(exit, "to_cell"))
+				try_arrival_talk()
 				return
 			_pending = exit
 			body.input_enabled = false
@@ -371,6 +481,7 @@ func _physics_process(_delta: float) -> void:
 			if _fade_frame >= _fade_frames:
 				curtain.modulate.a = 0.0
 				_start(Fade.NONE)
+				try_arrival_talk()
 
 
 func _start(f: Fade) -> void:

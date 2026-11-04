@@ -24,6 +24,13 @@
 ; R = decor, rock, sólido                     roca partida
 ; u = decor, bush, sólido                     arbusto de la marisma, también sobre el follaje
 ; @ = spawn, start, pisable                   llegada desde el Bosque
+; à = decor, pumpjack, sólido, 3x2
+; á = decor, pumpjack, sólido, 3x2
+; â = decor, pumpjack, sólido, 3x2
+; ã = decor, pipe_run, pisable, 3x1
+; ä = decor, pipe_run, pisable, 3x1
+; å = decor, pipe_run, pisable, 3x1
+; æ = decor, npc_petrolero, sólido, 1x1
 ---
 u  TTu   u  uUU TT UU  uu  u   uu   u  uu  UUu   u  uTT UU u u  UU TTu   UU     TT u UU TT UUTT TT u   uUU
  u TT  uu  u UU TT UUu   u  uu   u u u   u UU  uu  u TT UU  u  uUU TT  u UU@    TT  uUU TT UUTT TT  uu  UU
@@ -31,20 +38,20 @@ u  TTu   u  uUU TT UU  uu  u   uu   u  uu  UUu   u  uTT UU u u  UU TTu   UU     
 u   uu  u   u  uTT  u  uu  u u  u  UU  uTT TT  uTT u UU u  TTTT u   u               uu  TT u u  UU TTu  u
  u u   u u u u  TT u u   u  u  u u UUu  TT TTu  TT  uUU  u TTTT  u u         g     u   uTT  u  uUU TT  u u
 u  TTTT TT u UU  u u   u u  uUU TT u u   u UUTT TT  uTT  u u   u u       g           u  u  TT  uu  u TT u
-   TTTT TT   UU              UU TT         UUTT TT   TT             R                      TT        TT
- u          u   u   uu  u  u        u  uu          u    u   uu  u                      u u   u   u  u    u
+   TTTT TT   UU              UU TT         UUTT TT   TT             R        âââ           TT        TT
+ u          u   u   uu  u  u        u  uu          u    u   uu  u            âââ       u u   u   u  u    u
 TT  uTT TT u   u u     u u   u     u u          u   u                  g             UU u  u UU  u UUu  u
 TT u TT TT  uu     TT      UU   UU      TT TTTT      UU                      R  g    UU  u  uUU u  UU  u u
                  u TTu  u  UU  uUU  u  uTT TTTT  u u UU      1       1
 TT u u  u  u u                                              a  aa1 aa              TT  uTT TTu  u  u u   u
-TT  u  u u  u  u                                                                   TTu  TT TT  u u  u  uu
+TT  u  u u  u  u                                                             æ     TTu  TT TT  u u  u  uu
 TT TT  u u                                                                         TTTT u  UUu  u  u u  TT
 TT TT                        u   u u u  TT  uu  u  u u                          u  TTTT    UU           TT
      u  u                      uu   u  uTT u   u u  u  u   o                     u       u     u u  u  u
-TT u TT          S             u u UUTT  u TTu  TT u u  TT              u  TTu  UU UUUU u  u u  u   uu  UU
-TT  uTT                      u  u  UUTT u  TT  uTT  u  uTT               u TT  uUU UUUU  u  u  u u u   uUU
+TT u TT          S    ááá      u u UUTT  u TTu  TT u u  TT      äää     u  TTu  UU UUUU u  u u  u   uu  UU
+TT  uTT               ááá    u  u  UUTT u  TT  uTT  u  uTT               u TT  uUU UUUU  u  u  u u u   uUU
 
-TT u u                  g     TT u TTTT TT u   u u u TT u  TTTT TT TT  u u u   uTT u TT TT u   uUU TT  uTT
+TT u u        ååå       g     TT u TTTT TT u   u u u TT u  TTTT TT TT  u u u   uTT u TT TT u   uUU TT  uTT
 TT  u  u                    R TTu  TTTT TT  uu  u   uTT  u TTTT TT TTu  u   uu  TT  uTT TT  uu  UU TTu  TT
 u  u   u                g     u TT UUu   u  u  u u  uu  UU  uTT TT  u  uTT TT  uTT UUu  u   uTT  u  u  uTT
                                 TT UU                   UU   TT TT      TT TT   TT UU        TT         TT
@@ -78,8 +85,8 @@ UU  uu  TT UU    u u TT TT u   uTT  u  o         o     oo    u  TT u TT  u u TT 
 
  u UUTT TT u     u u TT TT                                      TT TT  u u  uu  TT  u  u u               u
 u  UUTT TT  u   u   uTT TT                                      TT TTu  u  u   uTT u u  u              gu
-                                                                u   uu  u  UUUU TT u TT  u             R
-                                                                           UUUU TT   TT    g
+                                                                u   uu  u  UUUU TT u TT  u   ààà       R
+                                                                           UUUU TT   TT    g ààà
                                                                  u u   u u          u   u         o
  u TT              u   uUU u u  u   u  u                     u  u  TTu  UU                               u
 u  TT               uu  UU  u  u u u u                         u u TT  uUU                              u
@@ -89,7 +96,7 @@ TT  uu  u   u  uTT TTu   u UUTT UU u u  u  TTu  u  TTu   TT TT  UU     o   kocc 
 u  UUu  u  TTu  TT u   uu   uUU TT  uUU u  UUu  TT TTUU  TT     UU  o        o o 3 o    3o          UU  u
    UU      TT   TT           UU TT   UU    UU   TT TTUU  TT                                         UU
  u     u u     u    uu   u u       u     u     u                                                         u
-u  u u  TT  uUU TT  uu  TT  uTT  u  uu  TT  u  uTT u u  UU u TT TT TT  u                g       u  TTTT UU
+u  u u  TT  uUU TT  uu  TT  uTT  u  uu  TT  u  uTT u u  UU u TT TT TT  u           ããã  g       u  TTTT UU
  u  u  uTT u UU TT u   uTT u TT u  u   uTT u u  TT  u  uUU  uTT TT TTu                           u TTTT UU
 
 TT  u  u u u u  u   u  u u u u  TT  u  u u  uu  TT UUUU UU  u  uu  UUu  u  TT  uu  u TT u  u UU u  u u   u
