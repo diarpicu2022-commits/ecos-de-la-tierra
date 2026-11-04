@@ -459,7 +459,7 @@ func _take_effects() -> Dictionary:
 		monsters.append([view, view.take_pending()])
 	var party := []
 	for hud in _huds:
-		party.append([hud, hud.take_pending()])
+		party.append([hud, hud.take_pending(), hud.live_state()])
 	var numbers := _pending_numbers.duplicate()
 	_pending_numbers.clear()
 	return {"monsters": monsters, "party": party, "numbers": numbers}
@@ -474,6 +474,7 @@ func _show_effects(effects: Dictionary) -> void:
 	for entry in effects["party"]:
 		if is_instance_valid(entry[0]):
 			entry[0].show_pending(entry[1])
+			entry[0].show_state(entry[2])
 	_pending_numbers.assign(effects["numbers"])
 	_release_numbers()
 
@@ -481,8 +482,22 @@ func _show_effects(effects: Dictionary) -> void:
 func _on_combatant_defeated(combatant: Combatant) -> void:
 	_queue.append({
 		"type": "log", "beat": true, "order": _snapshot(),
-		"text": "%s queda fuera de combate." % combatant.display_name,
+		"text": "%s queda fuera de combate.%s" % [combatant.display_name, _who_goes_on(combatant)],
 	})
+
+
+## Si cae el líder ya nadie pide órdenes y el combate sigue solo: hay que decirlo,
+## o parece que las rondas pasan por un error.
+func _who_goes_on(fallen: Combatant) -> String:
+	if not companions_auto or fallen != _manager.leader:
+		return ""
+	var living: Array[String] = []
+	for combatant in _manager.player_party:
+		if combatant.is_alive():
+			living.append(combatant.display_name)
+	if living.is_empty():
+		return ""
+	return " %s sigue por su cuenta." % (living[0] if living.size() == 1 else "El grupo")
 
 
 func _on_enemy_joined(enemy: Combatant) -> void:
@@ -912,7 +927,7 @@ func _draw_party() -> void:
 		if art == null:
 			continue
 		var feet := character_feet(i, total)
-		var alpha: float = 1.0 if character.is_alive() else 0.3
+		var alpha: float = 0.3 if _huds[i].is_shown_down() else 1.0
 		var at := Vector2(roundf(feet.x - art.get_width() * 0.5), feet.y - art.get_height())
 		draw_texture(art, at, Color(1, 1, 1, alpha))
 

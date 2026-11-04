@@ -43,6 +43,8 @@ var order: int = PartyMind.Order.FOLLOW
 var leader: Combatant = null
 var _ai_rng := RandomNumberGenerator.new()
 var _last_leader_choice := -1
+## Quien ya se anunció como caído: cada uno, una sola vez.
+var _announced_defeats: Array[Combatant] = []
 
 var _turn_manager: TurnManager = null
 var _basic_attack: AttackSkill = null
@@ -262,7 +264,9 @@ func _collect_defeated() -> void:
 	everyone.append_array(player_party)
 	everyone.append_array(enemy_party)
 	for combatant in everyone:
-		if not combatant.is_alive() and _turn_manager.get_pending().has(combatant):
+		if not combatant.is_alive() and not _announced_defeats.has(combatant):
+			# Puede que ya hubiera actuado en esta ronda: se anuncia igual.
+			_announced_defeats.append(combatant)
 			_turn_manager.remove(combatant)
 			combatant_defeated.emit(combatant)
 

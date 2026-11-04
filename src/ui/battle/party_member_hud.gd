@@ -21,6 +21,10 @@ const HP_WOUNDED := 0.55
 const HP_CRITICAL := 0.25
 
 var character: Character = null
+## Lo que ya se ve de la chapa de estado y de la energía: como los PV, van con
+## las líneas del registro, no con el motor.
+var _shown_flag := ""
+var _shown_energy := 0
 
 var _font: Font = null
 ## PV mostrados en valor absoluto, no en proporción: así la cifra y la barra
@@ -49,6 +53,7 @@ func bind(target: Character) -> void:
 		return
 	_shown_hp = float(character.hp)
 	_pending_hp = -1.0
+	_show_live_state()
 	character.hp_changed.connect(_on_hp_changed)
 	character.energy_changed.connect(_on_any_change)
 	character.status_applied.connect(_on_status_change)
@@ -98,6 +103,23 @@ func show_pending(target: float) -> void:
 ## Muestra lo que quedó pendiente mientras la vista estaba en pausa.
 func flush() -> void:
 	show_pending(take_pending())
+	_show_live_state()
+
+
+## Estado y energía de este instante, para enseñarlos con su línea del registro.
+func live_state() -> Dictionary:
+	return {"flag": _live_flag(), "energy": character.energy}
+
+
+## Enseña lo sacado con `live_state`.
+func show_state(state: Dictionary) -> void:
+	_shown_flag = state["flag"]
+	_shown_energy = state["energy"]
+	queue_redraw()
+
+
+func _show_live_state() -> void:
+	show_state(live_state())
 
 
 func _on_hp_changed(current: int, _maximum: int) -> void:
@@ -131,12 +153,20 @@ func _ratio() -> float:
 	return clampf(_shown_hp / float(character.max_hp), 0.0, 1.0)
 
 
+## El motor resuelve antes de que se enseñe nada: «FUERA» sigue a lo que ya se
+## ve, no al estado real, o se adelantaría a las rondas que faltan por mostrar.
+func is_shown_down() -> bool:
+	return roundi(_shown_hp) <= 0
+
+
 func _on_status_change(_effect: StatusEffect) -> void:
-	queue_redraw()
+	if not _paused:
+		_show_live_state()
 
 
 func _on_any_change(_a = null, _b = null) -> void:
-	queue_redraw()
+	if not _paused:
+		_show_live_state()
 
 
 # --- Dibujo ------------------------------------------------------------------
@@ -147,7 +177,7 @@ func _on_any_change(_a = null, _b = null) -> void:
 func _draw() -> void:
 	if character == null:
 		return
-	var down: bool = not character.is_alive()
+	var down: bool = is_shown_down()
 	TvFrame.draw(self, TvFrame.PLATE_ACTIVE if _is_turn else TvFrame.ROW, Rect2(Vector2.ZERO, ROW))
 	var name_tone: Color = DesignTokens.TV_TEXT_HIGHLIGHT if _is_turn \
 			else DesignTokens.TV_TEXT_ON_SLATE
@@ -166,15 +196,17 @@ func _draw() -> void:
 	TvFrame.bar(self, Vector2(PAD + 2.0, 13), w, 5, _ratio(),
 			DesignTokens.TV_UI_3 if down else TvFrame.hp_fill(_ratio()))
 	var energy_ratio := 0.0 if character.max_energy <= 0 \
-			else clampf(float(character.energy) / character.max_energy, 0.0, 1.0)
+			else clampf(float(_shown_energy) / character.max_energy, 0.0, 1.0)
 	TvFrame.bar(self, Vector2(PAD + 2.0, 18), w, 4, energy_ratio, DesignTokens.TV_ENERGY)
 
 
 ## Marca corta del estado. A 168 px no cabe «Aturdimiento», y lo que importa es
 ## que haya algo raro con este personaje: el detalle lo da el registro.
 func _status_flag(down: bool) -> String:
-	if down:
-		return "FUERA"
+	return "FUERA" if down else _shown_flag
+
+
+func _live_flag() -> String:
 	var statuses: Array[StatusEffect] = character.get_statuses()
 	if statuses.is_empty():
 		return ""
