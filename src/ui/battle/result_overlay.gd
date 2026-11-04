@@ -23,6 +23,8 @@ const BOTTOM_PAD := 7.0
 var _font: Font = null
 var _result: int = Enums.BattleResult.ONGOING
 var _regenerations: int = 0
+## Sustituye a la indicación de la demo («jugar otra vez»).
+var continue_hint := ""
 
 
 func _ready() -> void:
@@ -69,6 +71,9 @@ func _draw() -> void:
 			tone = DesignTokens.TEXT_SECONDARY
 			headline = "EL GRUPO SE RETIRA"
 			detail = _evidence("El bosque sigue ardiendo.")
+
+	if not continue_hint.is_empty():
+		hint = continue_hint
 
 	var pad: float = DesignTokens.SPACE_16
 	var detail_lines := _wrap(detail, PANEL_WIDTH - pad * 2.0)

@@ -1252,3 +1252,24 @@ purificado) y enmienda 8 (solo se mueve lo purificado).
   - las demás zonas en verde, y movement, encounters y flow también.
 - **Capturas a 640 × 360:**
   `docs/ux/capturas/2026-11-03-fauna-valdehoja-{enfermo,sano}.png`.
+
+#### Ritmo del combate tras jugar el `.exe` · 2026-11-03
+
+Juan José Rueda, al jugarlo: los mensajes pasan tan rápido que no se entienden,
+tienen que tener su tiempo y poder pasarse a mano, y la victoria no da espacio.
+
+- **Mensajes:** de 0,75 s fijos a un tiempo según el texto
+  (`BattleScreen._read_seconds`): 1,2 s + 0,045 s por carácter, con un mínimo de
+  1,8 s y 0,8 s de más en los momentos clave. El aviso de ronda, 1,2 s. Enter los
+  adelanta, salvo en los primeros 0,25 s, para que una pulsación de más no se
+  coma una línea.
+- **Victoria, derrota y huida:** seguían esperando Enter, pero quien venía
+  pulsándolo salía sin verlas. Ahora no se pueden cerrar hasta pasado 1 s
+  (`GameFlow.RESULT_HOLD`), y en el mundo dicen «Enter para continuar» en vez de
+  «jugar otra vez», el texto de la demo.
+- **Cambia la decisión 1 del anexo de la batalla:** el registro ya no es «corto a
+  propósito». **Falta que Diego lo vea.**
+- **Medido:** `verify_flow` 32/32 con 9 comprobaciones nuevas; usability 16,
+  party_ai 19 y encounters 82.
+- **Sin sonido:** no es un fallo. No hay audio en el proyecto; es la parte 11
+  (guía §4.13), sin empezar.

@@ -18,6 +18,10 @@ extends Node
 
 signal battle_over(result: Enums.BattleResult)
 
+## Tiempo en que el desenlace no se puede cerrar: quien viene pulsando Enter
+## para pasar el registro no se lo salta sin verlo.
+const RESULT_HOLD := 1.0
+
 ## Combate de `Encounters` por zona.
 const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 	"withered_plain": 3, "waning_peak": 4, "greed_crypt": 5}
@@ -82,6 +86,7 @@ func _start_battle() -> void:
 	screen = BattleScreen.new()
 	screen.region = world.zone_id
 	screen.companions_auto = true
+	screen.continue_hint = "Enter para continuar"
 	screen.minds = state.party_minds
 	screen.sync = state.party_sync
 	_battle_layer.add_child(screen)
@@ -102,7 +107,9 @@ func _start_battle() -> void:
 
 func _on_finished(r: Enums.BattleResult) -> void:
 	result = r
-	awaiting_confirm = true
+	await get_tree().create_timer(RESULT_HOLD).timeout
+	if screen != null:
+		awaiting_confirm = true
 
 
 func _unhandled_input(event: InputEvent) -> void:

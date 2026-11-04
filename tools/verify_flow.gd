@@ -149,6 +149,7 @@ func _flow() -> void:
 	# Victoria.
 	await _encounter(flow, MapMonster.Advantage.NONE)
 	_check("sin ventaja, manda la velocidad", flow.screen._manager.opening_team == -1)
+	await _pace(flow)
 	flow.result = Enums.BattleResult.VICTORY
 	await _leave(flow)
 	for _i in 200:
@@ -159,6 +160,51 @@ func _flow() -> void:
 		state.is_zone_purified("ashen_forest") and flow.world.monster == null)
 	state.flags.clear()
 	flow.queue_free()
+
+
+## El ritmo del combate (Juan José Rueda, 2026-11-03): cada línea se queda según
+## lo que hay que leer, `confirm` la adelanta salvo justo al salir, y el
+## desenlace no se puede cerrar hasta pasado RESULT_HOLD.
+func _pace(flow: GameFlow) -> void:
+	var screen: BattleScreen = flow.screen
+	var long_line := "Golpe directo. No ataja la causa: el monstruo se rehará."
+	_check("una línea corta se queda al menos %.1f s" % BattleScreen.LOG_READ_MIN,
+		screen._read_seconds("Ilan ataca.", false) == BattleScreen.LOG_READ_MIN)
+	_check("una línea larga se queda más: %.1f s" % screen._read_seconds(long_line, false),
+		screen._read_seconds(long_line, false) > BattleScreen.LOG_READ_MIN)
+	_check("un momento clave se queda más todavía",
+		screen._read_seconds(long_line, true) > screen._read_seconds(long_line, false))
+
+	var press := InputEventAction.new()
+	press.action = "confirm"
+	press.pressed = true
+	var saved_phase: int = screen._phase
+	var saved_queue: Array[Dictionary] = screen._queue.duplicate()
+	screen._phase = BattleScreen.Phase.PLAYING
+	screen._queue.clear()
+	screen._queue.append({"type": "log", "text": "Primera."})
+	screen._queue.append({"type": "log", "text": "Segunda."})
+	screen._advance_queue()
+	screen._unhandled_input(press)
+	_check("Enter recién salida la línea no se la come", screen._message == "Primera.", screen._message)
+	screen._shown_at_msec -= roundi(BattleScreen.LOG_MIN_SHOW * 1000.0) + 1
+	screen._unhandled_input(press)
+	_check("después, Enter pasa a la siguiente", screen._message == "Segunda.", screen._message)
+	_check("sin Enter, el temporizador sigue en marcha", not screen._step_timer.is_stopped())
+	screen._step_timer.stop()
+	screen._queue.assign(saved_queue)
+	screen._phase = saved_phase
+
+	flow.awaiting_confirm = false
+	flow._on_finished(Enums.BattleResult.ONGOING)
+	_check("el desenlace no se puede cerrar al salir", not flow.awaiting_confirm)
+	var frames := roundi((GameFlow.RESULT_HOLD + 0.2) * Engine.physics_ticks_per_second)
+	for _i in frames:
+		await get_tree().physics_frame
+	_check("pasado %.1f s, Enter ya lo cierra" % GameFlow.RESULT_HOLD, flow.awaiting_confirm)
+	flow.awaiting_confirm = false
+	_check("en el mundo, la indicación es seguir", screen.continue_hint == "Enter para continuar",
+		screen.continue_hint)
 
 
 func _encounter(flow: GameFlow, adv: MapMonster.Advantage) -> void:
