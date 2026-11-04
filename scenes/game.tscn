@@ -6,3 +6,4 @@
 script = ExtResource("1_flow")
 play_opening = true
 demo = true
+action_combat = true

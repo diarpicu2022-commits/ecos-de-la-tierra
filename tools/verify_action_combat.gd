@@ -92,6 +92,23 @@ func _ready() -> void:
 	a.use_eco()
 	_check("el Escudo de Albedo de Ilan no aturde a la Llama", a.foe != ActionCombat.Foe.STUNNED)
 	_check("y el aviso lo explica", " ".join(a.hud.toast_lines()).contains("resiste"))
+	var widest := 0.0
+	for row in a.hud.wrapped_toast():
+		widest = maxf(widest, TvFrame.width(load(DesignTokens.FONT_PATH), row))
+	_check("el aviso largo cabe en el papel (%.0f de %.0f px)" % [widest, ActionHud.TOAST.size.x - 24.0],
+		widest <= ActionHud.TOAST.size.x - 24.0)
+
+	print("\nEl compañero en el mapa")
+	_check("Bruma aparece en el mapa como compañera", a.follower.visible and a.follower.is_inside_tree()
+		and a.companion().display_name == "Bruma")
+	var start_pos := flow.world.body.global_position
+	for i in 40:
+		flow.world.body.step(Vector2i.LEFT, false)
+		await get_tree().physics_frame
+	var gap := a.follower.position.distance_to(flow.world.body.global_position)
+	_check("sigue a Ilan a unos pasos (a %.0f px)" % gap, gap >= a.FOLLOW_GAP - 1.0 and gap <= 40.0)
+	await _shot("companera")
+	flow.world.body.global_position = start_pos
 
 	print("\nCambio de héroe")
 	var frame := Engine.get_physics_frames()
@@ -100,6 +117,9 @@ func _ready() -> void:
 		and Engine.get_physics_frames() == frame)
 	a.swap(-1)
 	_check("Q vuelve a Ilan", a.hero().display_name == "Ilan")
+	a.swap(1)
+	_check("al cambiar, el compañero pasa a ser Ilan", a.companion().display_name == "Ilan")
+	a.swap(-1)
 	a.swap(1)
 
 	print("\nLa ventana de aturdimiento")
@@ -132,6 +152,12 @@ func _ready() -> void:
 	_check("sale la ola y la zona queda purificada", ended[0] and state.is_zone_purified(ZONE))
 	_check("el monstruo deja el mapa y el HUD se va",
 		flow.world.monster == null and not flow.action_hud.visible and flow.action == null)
+	var left := 0
+	for n in flow.world.entities.get_children():
+		if n is Sprite2D and n.region_enabled and n.texture != null \
+				and n.texture.resource_path.contains("/cast/bruma"):
+			left += 1
+	_check("y el compañero también", left == 0)
 
 	print("\nAviso y esquiva")
 	state.flags.clear()
@@ -154,6 +180,24 @@ func _ready() -> void:
 	await _frames(roundi(DesignTokens.DUR_TELEGRAPH * Engine.physics_ticks_per_second) + 2)
 	_check("esquivando a tiempo, no recibe nada", h.hp == h.max_hp)
 	_check("la esquiva acaba y devuelve el control", not a.dodging and flow.world.body.input_enabled)
+
+	print("\nSin energía y sin objetos")
+	a.swap(1)
+	a.hero().energy = 0
+	_close_in()
+	_check("sin energía la habilidad eco no sale y se dice por qué",
+		not a.use_eco() and " ".join(a.hud.toast_lines()).contains("no tiene energía"))
+	var saved := a.bag
+	a.bag = Inventory.new()
+	_check("con la bolsa vacía no se usa nada y se dice", not a.use_item()
+		and " ".join(a.hud.toast_lines()).contains("vacía"))
+	a.bag = saved
+	var before := a.bag.get_amount(a.items()[0])
+	a.hero().hp = 10
+	a.slot = 0
+	_check("con objetos, V cura al héroe activo y gasta uno",
+		a.use_item() and a.hero().hp > 10 and a.bag.get_amount(a.items()[0]) == before - 1)
+	a.swap(-1)
 
 	print("\nPerder")
 	for c in a.party:

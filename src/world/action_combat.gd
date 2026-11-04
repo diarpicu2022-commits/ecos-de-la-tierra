@@ -24,6 +24,10 @@ signal toast(lines: PackedStringArray)
 
 enum Foe { REST, APPROACH, TELEGRAPH, STUNNED, PURIFIED }
 
+## El compañero va unos pasos detrás: los cuadros de rastro que lleva de retraso.
+const FOLLOW_FRAMES := 18
+const FOLLOW_GAP := 18.0
+
 var world: WorldRoot = null
 var hud: ActionHud = null
 var monster: Monster = null
@@ -48,6 +52,11 @@ var _attack_cooldown := 0
 var _dodge_dir := Vector2i.ZERO
 var _sheets := {}
 var _ground := ActionGround.new()
+## El compañero que no se maneja: sigue al activo por su rastro, con la postura
+## del grupo (en esta versión, seguir).
+var follower := Sprite2D.new()
+var _trail: Array[Vector2] = []
+var _follow_travel := 0.0
 var _warned_cause := false
 
 
@@ -73,6 +82,12 @@ func start(p_world: WorldRoot, p_hud: ActionHud, p_monster: Monster, p_party: Ar
 		var path := "res://assets/sprites/world/cast/%s.png" % key
 		if ResourceLoader.exists(path):
 			_sheets[key] = load(path)
+	follower.centered = false
+	follower.region_enabled = true
+	follower.offset = Vector2(-PlayerBody.SPRITE_SIZE.x / 2, -PlayerBody.SPRITE_SIZE.y)
+	follower.position = (hero_feet() - Vector2(world.body.facing) * FOLLOW_GAP).round()
+	world.entities.add_child(follower)
+	_trail.clear()
 	_apply_sheet()
 	monster.regenerated.connect(_on_regenerated)
 	hud.bind(self)
@@ -264,6 +279,68 @@ func _apply_sheet() -> void:
 	var key := str(h.display_name).to_lower()
 	if _sheets.has(key):
 		world.body.set_sheet(_sheets[key])
+	# Al cambiar, los dos se cambian el sitio: el que sale pasa a seguir.
+	var c := companion()
+	follower.visible = c != null
+	if c != null:
+		follower.texture = _sheets.get(str(c.display_name).to_lower())
+		_update_follower(Vector2.ZERO)
+
+
+## El compañero en pie que no se maneja, o null.
+func companion() -> Character:
+	for i in party.size():
+		if i != active and party[i].is_alive():
+			return party[i]
+	return null
+
+
+func _move_follower() -> void:
+	_trail.append(hero_feet())
+	if _trail.size() > FOLLOW_FRAMES:
+		_trail.pop_front()
+	var goal: Vector2 = _trail[0]
+	# No se mete encima del héroe: se queda a FOLLOW_GAP.
+	if goal.distance_to(hero_feet()) < FOLLOW_GAP:
+		_update_follower(Vector2.ZERO)
+		return
+	var before := follower.position
+	follower.position = goal.round()
+	_update_follower(follower.position - before)
+
+
+func _update_follower(step: Vector2) -> void:
+	if follower.texture == null:
+		return
+	var row := PlayerBody.ROW_DOWN
+	var dir := step if step != Vector2.ZERO else hero_feet() - follower.position
+	if absf(dir.x) >= absf(dir.y) and dir.x != 0.0:
+		row = PlayerBody.ROW_RIGHT if dir.x > 0 else PlayerBody.ROW_LEFT
+	elif dir.y != 0.0:
+		row = PlayerBody.ROW_DOWN if dir.y > 0 else PlayerBody.ROW_UP
+	var pose := 0
+	if step != Vector2.ZERO:
+		_follow_travel += step.length()
+		pose = 1 + int(_follow_travel / PlayerBody.STRIDE) % PlayerBody.WALK_FRAMES
+	var cell := Vector2(PlayerBody.SPRITE_SIZE)
+	follower.region_rect = Rect2(Vector2(pose * cell.x, row * cell.y), cell)
+
+
+## El golpe del monstruo alcanza al compañero si está en la zona de aviso.
+func _strike_companion() -> void:
+	var c := companion()
+	if c == null or follower.position.distance_to(strike_at) > DesignTokens.MONSTER_ATTACK_RADIUS:
+		return
+	var dealt := c.take_damage(skill_damage())
+	hud.number(follower.position, str(dealt), DesignTokens.TV_RUST_4)
+	if not c.is_alive():
+		_apply_sheet()
+
+
+func skill_damage() -> int:
+	var skill: Skill = monster.skills.pick_random() if not monster.skills.is_empty() \
+		else SkillLibrary.basic_attack()
+	return skill.calculate_damage(monster)
 
 
 # --- Daño y reglas ---------------------------------------------------------------
@@ -331,6 +408,8 @@ func abort() -> void:
 func cleanup() -> void:
 	if is_instance_valid(_ground):
 		_ground.queue_free()
+	if is_instance_valid(follower):
+		follower.queue_free()
 	if monster != null and monster.regenerated.is_connected(_on_regenerated):
 		monster.regenerated.disconnect(_on_regenerated)
 
@@ -358,6 +437,7 @@ func tick() -> void:
 		if _dodge_frames <= 0:
 			dodging = false
 			world.body.input_enabled = true
+	_move_follower()
 	_timer += 1
 	match foe:
 		Foe.REST:
@@ -396,11 +476,10 @@ func _strike() -> void:
 	var h := hero()
 	if h == null:
 		return
+	_strike_companion()
 	if dodging or hero_feet().distance_to(strike_at) > DesignTokens.MONSTER_ATTACK_RADIUS:
 		return
-	var skill: Skill = monster.skills.pick_random() if not monster.skills.is_empty() \
-		else SkillLibrary.basic_attack()
-	var dealt := h.take_damage(skill.calculate_damage(monster))
+	var dealt := h.take_damage(skill_damage())
 	GameAudio.play("hit")
 	hud.number(hero_feet(), str(dealt), DesignTokens.TV_RUST_4)
 	if h.is_alive():

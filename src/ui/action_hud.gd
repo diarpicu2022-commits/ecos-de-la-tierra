@@ -244,6 +244,31 @@ func _draw_toast() -> void:
 	var lines := toast_lines()
 	if lines.is_empty():
 		return
-	TvFrame.draw(self, TvFrame.TEXTBOX, TOAST)
-	for i in lines.size():
-		TvFrame.paper_text(self, _font, TOAST.position + Vector2(12, 22 + 15 * i), lines[i])
+	var rows := wrapped_toast()
+	# La caja crece hacia arriba si el aviso necesita más de dos líneas.
+	var box := TOAST
+	var extra := maxf(0.0, float(rows.size() - 2) * 15.0)
+	box.position.y -= extra
+	box.size.y += extra
+	TvFrame.draw(self, TvFrame.TEXTBOX, box)
+	for i in rows.size():
+		TvFrame.paper_text(self, _font, box.position + Vector2(12, 22 + 15 * i), rows[i])
+
+
+## Las líneas del aviso partidas por palabras para que quepan en el papel: un
+## nombre largo como «Llama de la Deforestación» no puede salirse.
+func wrapped_toast() -> PackedStringArray:
+	var out := PackedStringArray()
+	var room := TOAST.size.x - 24.0
+	for line in toast_lines():
+		var current := ""
+		for word in line.split(" ", false):
+			var candidate := word if current.is_empty() else current + " " + word
+			if current != "" and TvFrame.width(_font, candidate) > room:
+				out.append(current)
+				current = word
+			else:
+				current = candidate
+		if current != "":
+			out.append(current)
+	return out
