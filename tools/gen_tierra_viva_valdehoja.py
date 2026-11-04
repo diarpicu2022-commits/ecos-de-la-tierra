@@ -593,7 +593,14 @@ def write_parts(rows, G, cells, legend):
     part[fields] = "L"
     part[55:63, 1:76] = "B"          # la arboleda del sur
     part[fields] = "L"
-    part[16:30, 29:53] = "K"         # la plaza del Árbol del Vínculo
+    # La plaza del Árbol del Vínculo, siempre sana como el jardín de Yara: el
+    # pueblo no empieza muerto del todo (Diego, 2026-11-04). La Costa cura las
+    # tiendas al este de la plaza, donde no hay animales.
+    east = np.zeros((H, W), bool)
+    east[15:31, 53:77] = True
+    part[east & (part == ".")] = "K"
+    plaza = np.zeros((H, W), bool)
+    plaza[16:31, 29:53] = True       # con la fila 30, donde pisan sus gallinas
     part[near] = "C"                 # el río y el lago
     part[:13][near[:13]] = "A"       # lo alto del río: la acequia de la terraza
     part[0:4, 2:6] = "G"             # la bocamina
@@ -602,6 +609,7 @@ def write_parts(rows, G, cells, legend):
     garden_mask = np.zeros((H, W), bool)
     garden_mask[r0:r1 + 1, c0:W] = True
     part[garden_mask & ~near] = "Y"
+    part[plaza & ~near] = "Y"
     head = ["; Valdehoja, partes del pueblo. Lo escribe tools/gen_tierra_viva_valdehoja.py.",
             "; Y = yara_garden", "; B = ashen_forest", "; C = tar_basin", "; K = broken_coast",
             "; L = withered_plain", "; A = waning_peak", "; G = greed_crypt", "---"]

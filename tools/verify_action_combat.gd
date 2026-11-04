@@ -39,7 +39,7 @@ func _shot(tag: String) -> void:
 ## Ilan pegado al monstruo, mirándolo.
 func _close_in() -> void:
 	var m := flow.world.monster
-	flow.world.body.global_position = m.position + Vector2(-56, 0)
+	flow.world.body.global_position = m.position + Vector2(-64, 0)
 	flow.world.body.facing = Vector2i.RIGHT
 
 
@@ -68,6 +68,16 @@ func _ready() -> void:
 	_check("el mundo sigue a la vista y el monstruo deja de patrullar",
 		flow.world.visible and not flow.world.monster.active)
 	_check("el HUD está a la vista", flow.action_hud.visible)
+	# El monstruo no se pega a Ilan: se queda donde su sprite no lo tapa.
+	flow.world.body.global_position = flow.world.monster.position + Vector2(-140, 0)
+	a._enter(ActionCombat.Foe.APPROACH)
+	for i in 180:
+		if a.foe != ActionCombat.Foe.APPROACH:
+			break
+		await get_tree().physics_frame
+	var approach_gap := flow.world.monster.position.distance_to(flow.world.body.global_position)
+	_check("al acercarse, la Llama se queda a %.0f px de Ilan, sin taparlo (mínimo %d)" % [approach_gap, DesignTokens.MONSTER_BODY_RADIUS + 24],
+		approach_gap >= DesignTokens.MONSTER_BODY_RADIUS + 24)
 	_check("empieza Ilan, con su habilidad de DESHIELO",
 		a.hero().display_name == "Ilan" and a.eco_skill().weakness_type == Enums.EcoType.THAW)
 
