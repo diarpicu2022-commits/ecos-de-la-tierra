@@ -30,11 +30,11 @@ var _state: Node = null
 
 
 const PARTS := {
-	"bosque": ["ashen_forest", Vector2i(39, 26)],
-	"cuenca": ["tar_basin", Vector2i(44, 9)],
-	"costa": ["broken_coast", Vector2i(30, 21)],
-	"llanura": ["withered_plain", Vector2i(11, 8)],
-	"cumbre": ["waning_peak", Vector2i(14, 14)],
+	"bosque": ["ashen_forest", Vector2i(30, 58)],
+	"cuenca": ["tar_basin", Vector2i(76, 40)],
+	"costa": ["broken_coast", Vector2i(40, 30)],
+	"llanura": ["withered_plain", Vector2i(15, 22)],
+	"cumbre": ["waning_peak", Vector2i(40, 10)],
 	# Enmienda 12: la bocamina, abierta al purificar la Cripta.
 	"bocamina-abierta": ["greed_crypt", Vector2i(3, 5)],
 }
@@ -44,13 +44,13 @@ func _ready() -> void:
 	_state = get_node("/root/GameState")
 	_state.flags.clear()
 	_world.start_zone = "valdehoja"
-	_world.start_cell = Vector2i(9, 25)
+	_world.start_cell = Vector2i(40, 31)
 	add_child(_world)
 	await get_tree().physics_frame
 	DesignTokens.reduced_motion = true
 	_world.body.input_enabled = false
-	await _capture("casa", Vector2i(9, 25))
-	await _capture("jardin", Vector2i(29, 12))
+	await _capture("casa", Vector2i(40, 31))
+	await _capture("jardin", Vector2i(84, 27))
 	await _capture("bocamina", Vector2i(3, 5))
 	for tag in PARTS:
 		_state.flags.clear()
@@ -58,11 +58,11 @@ func _ready() -> void:
 		await _capture(tag, PARTS[tag][1])
 	_state.flags.clear()
 	_state.set_zone_purified("broken_coast")
-	await _capture("era", Vector2i(30, 21))
+	await _capture("era", Vector2i(40, 30))
 	for region in REGIONS:
 		_state.set_zone_purified(region)
-	await _capture("todo", Vector2i(30, 21))
-	await _record_motion(Vector2i(30, 21))
+	await _capture("todo", Vector2i(40, 30))
+	await _record_motion(Vector2i(40, 30))
 	_state.flags.clear()
 	get_tree().quit()
 

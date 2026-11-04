@@ -26,7 +26,6 @@ const PANEL_HEIGHT := 52
 const GAP := DesignTokens.SPACE_4
 const TOTAL_SIZE := Vector2(PANEL_WIDTH, SPRITE_SIZE + GAP + PANEL_HEIGHT)
 
-const SPRITE_DIR := "res://assets/sprites/monsters/"
 ## Monstruos del sistema de diseño (PixelLab, `tools/gen_tierra_viva_cast.py`):
 ## se buscan primero. Van a su tamaño y la vista se planta en sus pies: el
 ## origen es el centro de la fila de abajo del sprite.
@@ -111,12 +110,12 @@ func _load_art(suffix: String) -> Texture2D:
 	if script == null:
 		return null
 	var key: String = script.resource_path.get_file().get_basename()
-	for dir in [TIERRA_VIVA_DIR, SPRITE_DIR]:
-		var path: String = dir + key + suffix + ".png"
-		if ResourceLoader.exists(path):
-			_feet_origin = dir == TIERRA_VIVA_DIR
-			return load(path)
-	return null
+	var path: String = TIERRA_VIVA_DIR + key + suffix + ".png"
+	_feet_origin = true
+	if not ResourceLoader.exists(path):
+		push_error("MonsterView: falta el sprite del sistema %s" % path)
+		return null
+	return load(path)
 
 
 func _disconnect_current() -> void:
@@ -291,7 +290,7 @@ func _draw_sprite() -> void:
 		# Sin sprite todavía: se marca el hueco en vez de no dibujar nada, que
 		# es como se pierde una hora buscando un fallo que no existe.
 		draw_rect(Rect2(origin, Vector2(SPRITE_SIZE, SPRITE_SIZE)),
-				DesignTokens.ASH_700)
+				DesignTokens.TV_UI_2)
 		return
 
 	# Quien ya cayó se queda tenue, no desaparece: el jugador tiene que poder

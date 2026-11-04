@@ -107,10 +107,10 @@ func _draw() -> void:
 		var y := i * strip
 		match side:
 			Side.LEFT:
-				draw_rect(Rect2(0, y, w, strip), DesignTokens.ASH_950)
+				draw_rect(Rect2(0, y, w, strip), DesignTokens.TV_INK_0)
 			Side.RIGHT:
-				draw_rect(Rect2(full - w, y, w, strip), DesignTokens.ASH_950)
+				draw_rect(Rect2(full - w, y, w, strip), DesignTokens.TV_INK_0)
 			Side.BOTH:
 				var half := ceili(w / 2.0)
-				draw_rect(Rect2(0, y, half, strip), DesignTokens.ASH_950)
-				draw_rect(Rect2(full - half, y, half, strip), DesignTokens.ASH_950)
+				draw_rect(Rect2(0, y, half, strip), DesignTokens.TV_INK_0)
+				draw_rect(Rect2(full - half, y, half, strip), DesignTokens.TV_INK_0)

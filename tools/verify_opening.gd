@@ -39,7 +39,7 @@ func _ready() -> void:
 	_check("no se repite", world.try_opening_talk() == "")
 
 	print("\nEn el jardín")
-	var below := Vector2i(32, 8)
+	var below := Vector2i(86, 22)
 	world.enter_zone("valdehoja", below)
 	world.body.facing = Vector2i.UP
 	await get_tree().process_frame

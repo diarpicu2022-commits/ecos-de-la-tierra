@@ -64,6 +64,14 @@
 				"firme"
 			]
 		},
+		"demo": {
+			"name": "Demo",
+			"side": "left",
+			"name_color": "secondary",
+			"moods": [
+				"neutral"
+			]
+		},
 		"rasgo": {
 			"name": "Rasgo",
 			"side": "right",

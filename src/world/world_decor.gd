@@ -16,11 +16,10 @@ extends RefCounted
 ## su fila de abajo. La fauna silvestre solo se monta donde está purificado
 ## (enmienda 7). La aparición no se dibuja: solo dice dónde empieza Ilan.
 ##
-## Los sprites salen de `tools/gen_tierra_viva_decor.py` (estilo del sistema
-## de diseño, por zona: `<id>_<zona>_<estado>.png`) y, en las zonas que aún no
-## lo tienen, de `tools/gen_world_decor.py` (paso 4b, guía del equipo §4.2).
+## Los sprites salen de `tools/gen_tierra_viva_decor.py` y, en Valdehoja, de
+## `tools/gen_tierra_viva_valdehoja.py` (`<id>_<zona>_<estado>.png`). No hay
+## respaldo al decorado viejo: lo que falta da error en vez de verse viejo.
 
-const DECOR_DIR := "res://assets/sprites/world/decor/"
 const TIERRA_VIVA_DIR := "res://assets/sprites/world/tierra_viva/"
 
 ## Sprite de cada id de la leyenda cuando no se llama igual.
@@ -53,7 +52,7 @@ const VANISH_WHEN_PURE := ["blocker", "monster", "oil", "v1_oil", "v2_oil", "bar
 	"v1_bottle", "v2_buoy", "v3_torn_bag", "v3_trail", "bottle", "torn_bag", "v2_sack", "v2_salt", "salt",
 	"meltwater", "crack", "v1_meltwater", "v3_ice_block", "v3_meltpool",
 	"gold", "coins", "v1_gold", "v2_gold", "v3_gold", "v4_gold", "v5_gold", "v2_barrel", "v3_bottle",
-	"v5_ice_block", "banner"]
+	"v5_ice_block", "banner", "pumpjack", "pipe_run"]
 
 
 ## Monta las piezas de `zone_id`: los sprites van a `entities` y los cuerpos
@@ -108,7 +107,7 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 			# Solo el dibujo; la colisión sigue en tiles enteros.
 			var h := absi(hash(at))
 			feet += Vector2((h % (2 * JITTER_PX + 1)) - JITTER_PX, ((h / 7) % 3) - 1)
-		sprite.position = feet
+		sprite.position = feet + Vector2(entry["offset"])
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
 		_mark_motion(sprite, entry, at, pure, zone_id)
@@ -194,21 +193,18 @@ static func _mark_motion(sprite: Sprite2D, entry: Dictionary, at: Vector2i, pure
 	var kind: String = entry["kind"]
 	var frames: Array[Texture2D] = []
 	if kind == "decor" and pure and id in SWAYS:
-		for alt in ["%s%s_%s_pure_1.png" % [TIERRA_VIVA_DIR, id, zone_id],
-				"%s%s_pure_1.png" % [DECOR_DIR, id]]:
-			if ResourceLoader.exists(alt):
-				frames = [sprite.texture, load(alt)]
-				break
+		var alt := "%s%s_%s_pure_1.png" % [TIERRA_VIVA_DIR, id, zone_id]
+		if ResourceLoader.exists(alt):
+			frames = [sprite.texture, load(alt)]
 	elif kind == "fauna" or kind == "animal":
 		var base: String = SPRITE.get(id, id)
 		frames = [sprite.texture]
 		if base.ends_with("_0"):
 			# El segundo cuadro, primero el de Tierra Viva de la zona (en
-			# cualquiera de los dos estados, como `_texture`) y después el viejo.
+			# cualquiera de los dos estados, como `_texture`).
 			var stem := base.trim_suffix("_0")
 			for alt in ["%s%s_1_%s_pure.png" % [TIERRA_VIVA_DIR, stem, zone_id],
-					"%s%s_1_%s_sick.png" % [TIERRA_VIVA_DIR, stem, zone_id],
-					"%s%s_1_%s.png" % [DECOR_DIR, stem, "pure" if pure else "sick"]]:
+					"%s%s_1_%s_sick.png" % [TIERRA_VIVA_DIR, stem, zone_id]]:
 				if ResourceLoader.exists(alt):
 					frames.append(load(alt))
 					break
@@ -239,9 +235,11 @@ static func _texture(id: String, pure: bool, zone_id: String) -> Texture2D:
 		var path := "%s%s_%s_%s.png" % [TIERRA_VIVA_DIR, name, zone_id, state]
 		if ResourceLoader.exists(path):
 			return load(path)
-	for state in (["pure", "sick"] if pure else ["sick", "pure"]):
-		for base in ["%s_%s" % [name, zone_id], name]:
-			var path := "%s%s_%s.png" % [DECOR_DIR, base, state]
-			if ResourceLoader.exists(path):
-				return load(path)
+	# El monstruo no es decorado: su sprite es del reparto de PixelLab
+	# (`tools/gen_tierra_viva_cast.py`), en otra carpeta.
+	if id == "monster":
+		var cast := "%smonster_%s_%s.png" % [MapMonster.CAST, zone_id, "pure" if pure else "sick"]
+		if ResourceLoader.exists(cast):
+			return load(cast)
+	push_error("Falta el sprite de «%s» en %s" % [id, zone_id])
 	return null

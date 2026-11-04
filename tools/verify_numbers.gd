@@ -68,20 +68,20 @@ func _ready() -> void:
 	var two := font.get_string_size("38", HORIZONTAL_ALIGNMENT_LEFT, -1, DamageNumbers.SIZE).x
 	_check("el abanico separa dos cifras de dos dígitos (%.0f px)" % two, b.x - a.x >= two)
 	numbers.clear()
-	numbers.spawn(Vector2(100, 100), "1", DesignTokens.ASH_050)
-	numbers.spawn(Vector2(100, 100), "2", DesignTokens.ASH_050)
-	numbers.spawn(Vector2(200, 100), "3", DesignTokens.ASH_050)
+	numbers.spawn(Vector2(100, 100), "1", DesignTokens.TV_UI_6)
+	numbers.spawn(Vector2(100, 100), "2", DesignTokens.TV_UI_6)
+	numbers.spawn(Vector2(200, 100), "3", DesignTokens.TV_UI_6)
 	_check("sobre el mismo objetivo se abren en abanico",
 		numbers._entries[0]["origin"].x != numbers._entries[1]["origin"].x)
 	_check("una cifra de otro objetivo no se empuja", numbers._entries[2]["origin"].x == 200.0)
 
 	if DisplayServer.get_name() != "headless":
 		numbers.clear()
-		numbers.spawn(screen._anchor_for(monster), "~4", DesignTokens.ASH_400)
-		numbers.spawn(screen._anchor_for(monster), "38", DesignTokens.EMBER_300)
-		numbers.spawn(screen._anchor_for(players[0]), "26", DesignTokens.EMBER_400)
+		numbers.spawn(screen._anchor_for(monster), "~4", DesignTokens.TV_UI_4)
+		numbers.spawn(screen._anchor_for(monster), "38", DesignTokens.TV_GOLD_4)
+		numbers.spawn(screen._anchor_for(players[0]), "26", DesignTokens.TV_RUST_4)
 		numbers.spawn(screen._anchor_for(players[1]) if players.size() > 1 else Vector2(240, 200),
-			"+12", DesignTokens.ASH_050)
+			"+12", DesignTokens.TV_UI_6)
 		numbers.set_process(false)
 		numbers.queue_redraw()
 		await get_tree().create_timer(0.3).timeout

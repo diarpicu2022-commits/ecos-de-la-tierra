@@ -55,8 +55,13 @@ func _geometry() -> void:
 		_box.position == Vector2(12, 276) and _box.size == Vector2(616, 76)
 		and Rect2(Vector2.ZERO, Vector2(640, 360)).encloses(Rect2(_box.position, _box.size)))
 	_check("el retrato mide 40 × 44", _box.portrait_rect().size == Vector2(40, 44))
+	# Sin retrato no hay marco: el sistema lo pide solo «si lo hay», y el texto
+	# ocupa la caja.
+	_check("sin retrato, el texto ocupa la caja",
+		_box.text_rect().size.x == _box.size.x - TvFrame.SLICE * 2.0)
+	var face: Texture2D = load("res://assets/sprites/portraits/tierra_viva/yara.png")
 	for s in [DialogueBox.Side.LEFT, DialogueBox.Side.RIGHT]:
-		_box.show_line("Yara", YARA, s)
+		_box.show_line("Yara", YARA, s, face)
 		var tr := _box.text_rect()
 		var frame := _box.portrait_frame()
 		var box := Rect2(Vector2.ZERO, _box.size)

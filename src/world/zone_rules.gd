@@ -37,11 +37,12 @@ static func load_zone(zone_id: String) -> PackedStringArray:
 
 ## Capa de decorado, hito y entidades de una zona (contrato «Rastro»):
 ## `data/world/zones/<zona>.deco.txt`. La cabecera declara la leyenda, una
-## línea por carácter con la forma `; X = tipo, id, sólido|pisable[, AxB]`
-## (AxB: tamaño de la pieza en tiles, 1x1 si falta), y termina en `---`.
+## línea por carácter con la forma `; X = tipo, id, sólido|pisable[, AxB[, +x-y]]`
+## (AxB: tamaño de la pieza en tiles, 1x1 si falta; +x-y: desfase del sprite en
+## píxeles, para colocarlo donde lo pone la referencia), y termina en `---`.
 ## Debajo va una fila por fila del mapa; un espacio, o el final de una fila
 ## más corta, es «nada». Devuelve
-## `{"legend": {X: {kind, id, solid, size}}, "rows": PackedStringArray}`, o
+## `{"legend": {X: {kind, id, solid, size, offset}}, "rows": PackedStringArray}`, o
 ## un diccionario vacío si la zona no tiene capa.
 static func load_deco(zone_id: String) -> Dictionary:
 	var path := ZONES_DIR + zone_id + ".deco.txt"
@@ -51,7 +52,7 @@ static func load_deco(zone_id: String) -> Dictionary:
 	var split := lines.find("---")
 	if split < 0:
 		return {}
-	var entry := RegEx.create_from_string("^; (\\S) = (\\w+), (\\w+), (sólido|pisable)(?:, (\\d+)x(\\d+))?")
+	var entry := RegEx.create_from_string("^; (\\S) = (\\w+), (\\w+), (sólido|pisable)(?:, (\\d+)x(\\d+))?(?:, ([+-]\\d+)([+-]\\d+))?")
 	var legend := {}
 	for i in split:
 		var found := entry.search(lines[i])
@@ -62,6 +63,8 @@ static func load_deco(zone_id: String) -> Dictionary:
 				"solid": found.get_string(4) == "sólido",
 				"size": Vector2i(int(found.get_string(5)), int(found.get_string(6)))
 					if not found.get_string(5).is_empty() else Vector2i.ONE,
+				"offset": Vector2i(int(found.get_string(7)), int(found.get_string(8)))
+					if not found.get_string(7).is_empty() else Vector2i.ZERO,
 			}
 	var rows := lines.slice(split + 1)
 	if not rows.is_empty() and rows[rows.size() - 1].is_empty():

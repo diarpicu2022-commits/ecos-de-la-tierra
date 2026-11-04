@@ -9,9 +9,8 @@ extends CanvasLayer
 signal finished(conversation_id: String)
 
 const DATA := "res://data/dialogue/"
-const PORTRAITS := "res://assets/sprites/portraits/"
-## Retratos del sistema, de PixelLab (`tools/gen_tierra_viva_portraits.py`): se
-## buscan primero. Yara y Rasgo aún no tienen.
+## Retratos del sistema (`tools/gen_tierra_viva_portraits.py`). Quien no lo tenga
+## habla sin retrato: el sistema lo pide solo «si lo hay», y no se enseña uno viejo.
 const SYSTEM_PORTRAITS := "res://assets/sprites/portraits/tierra_viva/"
 
 var box := DialogueBox.new()
@@ -58,8 +57,7 @@ func _next() -> void:
 	var voice: Dictionary = _voices.get(line["who"], {})
 	var side: int = DialogueBox.Side.RIGHT if voice.get("side", "left") == "right" else DialogueBox.Side.LEFT
 	var system_face: String = SYSTEM_PORTRAITS + "%s.png" % line["who"]
-	var face: Texture2D = load(system_face if ResourceLoader.exists(system_face)
-		else PORTRAITS + "%s_%s.png" % [line["who"], line["mood"]])
+	var face: Texture2D = load(system_face) if ResourceLoader.exists(system_face) else null
 	box.show_line(voice.get("name", line["who"]), line["text"], side, face, name_color(voice))
 
 

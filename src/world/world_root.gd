@@ -6,7 +6,7 @@ extends Node2D
 ##
 ## Cambio de zona: cuando el centro de la caja de colisión sale del mapa por
 ## una salida, empieza el fundido. Son dos medios fundidos lineales de
-## `DUR_ZONE_FADE` en `ASH_950`, el color más profundo de la paleta (no hay
+## `DUR_ZONE_FADE` en `TV_INK_0`, el color más profundo del sistema (no hay
 ## token «negro»). Durante el de salida el cuerpo se detiene. Con la pantalla
 ## ya cubierta se carga la zona de destino, el cuerpo aparece en `to_cell`
 ## mirando igual y **vuelve a leer el teclado**: si la tecla sigue pulsada,
@@ -54,6 +54,12 @@ var _talk := {}
 ## lejos, por el ave).
 var _on_enter := {}
 var _on_start := {}
+## Demo hasta el primer jefe: las salidas cerradas abren una conversación en vez
+## de cambiar de zona, y `_demo_after` encadena conversaciones
+## (`docs/plan-para-terminar-la-historia.md`).
+var demo := false
+var _demo_closed := {}
+var _demo_after := {}
 var _held_monster: MapMonster = null
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
@@ -80,10 +86,10 @@ var _fade_frames := 0
 func _ready() -> void:
 	DesignTokens.load_settings()
 	# Fuera de la zona solo se ve cuando el mapa es menor que la pantalla, en
-	# las bandas que deja al centrarse. Ese es el papel de `ASH_950` en la
+	# las bandas que deja al centrarse. Ese es el papel de `TV_INK_0` en la
 	# paleta («fondo más profundo y bandas del viewport»); sin esto, Godot pinta
 	# su gris por defecto, que no es un token.
-	RenderingServer.set_default_clear_color(DesignTokens.ASH_950)
+	RenderingServer.set_default_clear_color(DesignTokens.TV_INK_0)
 	_exits = ZoneRules.load_exits()
 	_names = ZoneRules.load_names()
 	# El rótulo va por debajo de la cortina: aparece con la zona, no encima del
@@ -94,7 +100,7 @@ func _ready() -> void:
 	add_child(label_layer)
 	var fade_layer := CanvasLayer.new()
 	fade_layer.layer = 10
-	curtain.color = DesignTokens.ASH_950
+	curtain.color = DesignTokens.TV_INK_0
 	curtain.size = get_viewport_rect().size
 	curtain.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	curtain.modulate.a = 0.0
@@ -105,6 +111,8 @@ func _ready() -> void:
 	_talk = talk["talk"] if talk is Dictionary else {}
 	_on_enter = talk.get("on_enter", {}) if talk is Dictionary else {}
 	_on_start = talk.get("on_start", {}) if talk is Dictionary else {}
+	_demo_closed = talk.get("demo_closed", {}) if talk is Dictionary else {}
+	_demo_after = talk.get("demo_after", {}) if talk is Dictionary else {}
 	dialogue.finished.connect(_on_dialogue_finished)
 	entities.y_sort_enabled = true
 	add_child(ambient)
@@ -408,11 +416,27 @@ func _open_dialogue(id: String) -> void:
 	dialogue.start(id)
 
 
-func _on_dialogue_finished(_id: String) -> void:
+func _on_dialogue_finished(id: String) -> void:
 	body.input_enabled = true
 	if is_instance_valid(_held_monster):
 		_held_monster.active = true
 	_held_monster = null
+	if demo and _demo_after.has(id):
+		_open_dialogue(_demo_after[id])
+
+
+## En la demo, una salida cerrada devuelve a Ilan al mapa y abre su conversación.
+func _close_for_demo(exit: Dictionary) -> bool:
+	var id: String = _demo_closed.get("%s>%s" % [exit["from"], exit["to"]], "")
+	if id.is_empty():
+		return false
+	var cell := ZoneRules.cell_of(exit, "cell")
+	var inward := Vector2i(
+		1 if cell.x == 0 else (-1 if cell.x == zone_size.x - 1 else 0),
+		1 if cell.y == 0 else (-1 if cell.y == zone_size.y - 1 else 0))
+	body.global_position = Vector2(feet_of(cell + inward))
+	_open_dialogue(id)
+	return true
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -432,6 +456,8 @@ func _physics_process(_delta: float) -> void:
 		Fade.NONE:
 			var exit := _exit_crossed()
 			if exit.is_empty():
+				return
+			if demo and _close_for_demo(exit):
 				return
 			_fade_frames = roundi(DesignTokens.duration(DesignTokens.DUR_ZONE_FADE)
 				* Engine.physics_ticks_per_second)

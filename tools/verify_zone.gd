@@ -269,8 +269,10 @@ func _measure_ambient(world: WorldRoot, zone_id: String, spawn: Vector2i,
 		pure_water.x >= 0 and water_rows.has(4) and water_rows.has(WorldTiles.WATER_ALT_ROW)
 		and water_changes == frames / water_period, "filas %s" % str(water_rows.keys()))
 	_check("el agua enferma no se mueve", sick_water.x >= 0 and sick_water_still)
+	# Cada mata lleva su fase: según donde caiga, el primer y el último cambio
+	# entran o no en la ventana, así que se admite uno de diferencia.
 	_check("la hierba purificada se mece (%d cambios)" % sway_changes,
-		sway_pure != null and sway_changes == frames / WorldAmbient._frames(DesignTokens.DUR_AMBIENT_SWAY))
+		sway_pure != null and absi(sway_changes - frames / WorldAmbient._frames(DesignTokens.DUR_AMBIENT_SWAY)) <= 1)
 	_check("la hierba enferma no se mueve", sway_sick != null and sick_grass_still)
 	_check("un animal en lo purificado anda (%s)" % (animal_pure.name if animal_pure else "ninguno"),
 		animal_pure != null and moved)
@@ -330,6 +332,11 @@ func _measure_region_engine(world: WorldRoot, zone_id: String, spawn: Vector2i, 
 			soil = c
 	_check("purificada: el suelo se pinta purificado", soil.x >= 0 and _cell_pure(world, soil, lines))
 	state.flags.clear()
+
+
+func lines_at(zone_id: String, c: Vector2i) -> String:
+	var lines := ZoneRules.load_zone(zone_id)
+	return lines[c.y][c.x] if c.y < lines.size() and c.x < lines[c.y].length() else ""
 
 
 ## ¿La casilla está pintada en su estado purificado? El suelo purificado está
@@ -423,10 +430,16 @@ func _measure(zone_id: String) -> void:
 	for piece in pieces:
 		var entry: Dictionary = legend[piece["ch"]]
 		if String(entry["id"]).begins_with("house"):
+			# La puerta no va al centro en todos los edificios de PixelLab: se
+			# mide el frente entero. Que la puerta exacta caiga sobre su senda lo
+			# comprueba `tools/gen_tierra_viva_valdehoja.py` al generar.
 			var at: Vector2i = piece["at"]
-			var door := at + Vector2i(entry["size"].x / 2, entry["size"].y)
-			_check("la puerta de la casa en %s da a un camino" % at,
-				Rect2i(Vector2i.ZERO, size).has_point(door) and lines[door.y][door.x] == "=")
+			var front := false
+			for i in entry["size"].x:
+				var door := at + Vector2i(i, entry["size"].y)
+				if Rect2i(Vector2i.ZERO, size).has_point(door) and lines[door.y][door.x] == "=":
+					front = true
+			_check("la casa en %s tiene un camino delante de la puerta" % at, front)
 
 	print("\nCatálogo de lo que responde")
 	var region := _region_of(zone_id)

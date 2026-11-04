@@ -28,7 +28,9 @@ Para que la demo funcione falta esto:
 | Hacer el mensaje de fin de demo en el papel del sistema | No hay una pantalla diseñada para esto y no vamos a inventar una | Diego |
 | Exportar el `.exe` desde `master` y jugarlo completo | El que hay no tiene nada de lo de hoy | Juan José |
 
-**Para Diego, antes de seguir: haz pull de `rediseno/terreno`.** Juan José adelantó parte
+**Actualización del 2026-11-03, hecho en la rama `rediseno/demo-primer-jefe`:** las salidas cerradas, Rasgo después de Yara y el mensaje final, medidos con `tools/verify_demo.tscn`. Yara lleva retrato sacado de su sprite y Rasgo habla sin retrato hasta tener su original. Falta exportar el `.exe` y jugarlo completo. Nadie ha jugado aún el recorrido de punta a punta.
+
+**Nota de Juan José para Diego, ya atendida:** Juan José adelantó parte
 de esta tabla en el PR #48, a la vez que se escribía este plan, sin haberlo visto:
 
 - **Ya está en `rediseno/terreno`, aún no en `master`:** la caja `DialogBox` a 640 × 360 y

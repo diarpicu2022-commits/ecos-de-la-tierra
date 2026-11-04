@@ -29,6 +29,7 @@ El decorado (árboles sueltos, viñetas, hito, fuente) no va aquí: es el paso 4
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -362,15 +363,42 @@ def paint_water(img, wat, land, P, rng, frame=0):
 # Cada región tiene su pieza en sano y en enfermo, y las dos se colocan en los
 # mismos sitios: la ola descubre cada árbol sobre su versión quemada.
 
-## (pieza sana, pieza enferma, paso horizontal, paso vertical) por región.
+## (pieza sana, pieza enferma, paso horizontal, paso vertical) por región. Los
+## árboles son los originales del sistema (`assets/source/pixellab/obj2`, palmas
+## y frailejones de `tools/tierra_viva/zones.py`), a su tamaño: «nada viejo»,
+## 2026-11-03. Una pieza que no cabe en la masa se cambia por la de relleno.
 MASS = {
-    "bosque": ("tree", "burnt_embers", 14, 10),
-    "cuenca": ("tree", "burnt", 14, 10),
-    "costa": ("bush", "twigs", 11, 8),
-    "llanura": ("bush", "twigs", 11, 8),
-    "cumbre": ("frailejon", "frailejon_dry", 10, 9),
-    "valdehoja": ("tree", "burnt", 14, 10),
+    "bosque": ("oak", "burnt_oak", 40, 24),
+    "cuenca": ("oak", "burnt_oak", 40, 24),
+    "costa": ("palm", "palm_dry", 34, 22),
+    "llanura": ("oak", "burnt_oak", 44, 26),
+    "cumbre": ("frailejon_big", "frailejon_big_dry", 30, 20),
+    "valdehoja": ("oak", "burnt_oak", 40, 24),
 }
+## Pieza pequeña para los bordes y las franjas estrechas de la masa.
+MASS_FILL = {"oak": "hedge", "burnt_oak": "hedge_dry", "palm": "hedge", "palm_dry": "hedge_dry",
+             "frailejon_big": "frailejon", "frailejon_big_dry": "frailejon_dry"}
+
+
+_PROTO = {}
+
+
+def proto(name: str):
+    """Los originales del prototipo. Se cargan al usarlos, porque el prototipo
+    abre sus fuentes con rutas relativas a su carpeta."""
+    if not _PROTO:
+        here = os.getcwd()
+        folder = ROOT / "tools" / "tierra_viva"
+        sys.path.insert(0, str(folder))
+        os.chdir(folder)
+        import burnt
+        import scene2
+        import zones
+        _PROTO.update(soot=burnt.soot, oak=scene2.TREE, burnt_oak=scene2.BURNT, bush2=scene2.bush2, palm=zones.palm,
+                      frailejon=zones.frailejon)
+        os.chdir(here)
+    return _PROTO[name]
+
 
 ## Píxeles que una pieza del borde norte de la masa puede asomar por encima
 ## de sus casillas: la copa sube, no se corta en recto.
@@ -440,6 +468,16 @@ def trunk(img, cx, top, bottom, ramp):
 def piece(kind, P, rs):
     """Una pieza de masa. El pie es el centro de su fila de abajo."""
     leaf, wood, ash = P["leaf"], P["wood"], P["ash"]
+    if kind in ("oak", "burnt_oak"):
+        spr = proto(kind)
+        return spr[:, ::-1].copy() if rs.random() < 0.5 else spr.copy()
+    if kind in ("palm", "palm_dry"):
+        return proto("palm")("sano" if kind == "palm" else "enfermo", int(rs.integers(0, 8)),
+                             1 if rs.random() < 0.5 else -1)
+    if kind in ("hedge", "hedge_dry"):
+        return proto("bush2")("sano" if kind == "hedge" else "enfermo", int(rs.integers(0, 8)))
+    if kind in ("frailejon_big", "frailejon_big_dry"):
+        return proto("frailejon")("sano" if kind == "frailejon_big" else "enfermo", int(rs.integers(0, 8)))
     if kind == "tree":
         W, H = 28, 38
         img = np.zeros((H, W, 4), np.uint8)
@@ -513,6 +551,16 @@ def piece(kind, P, rs):
     raise KeyError(kind)
 
 
+def _fits(spr, fx, fy, reach) -> bool:
+    """La silueta de la pieza cae casi entera dentro de lo que la masa alcanza."""
+    H, W = reach.shape
+    h, w = spr.shape[:2]
+    ys, xs = np.nonzero(spr[..., 3] > 0)
+    Y, X = ys + fy - h + 1, xs + fx - w // 2
+    on = (Y >= 0) & (Y < H) & (X >= 0) & (X < W)
+    return not on.any() or reach[Y[on], X[on]].mean() >= 0.97
+
+
 def paint_mass(img, mask, region, state, P, rng):
     """Muro de piezas sobre la máscara del follaje, ordenadas por el pie.
     Devuelve la silueta de la masa."""
@@ -536,19 +584,29 @@ def paint_mass(img, mask, region, state, P, rng):
         soot = mask & ((xx + yy) % 2 == 0)
         img[soot] = darker(img[soot], P)
         img[mask & ((xx * 3 + yy * 5) % 7 == 0)] = P["ash"][1]
-    elif kind == "frailejon":
+    elif kind.startswith("frailejon"):
         img[mask] = P["grass"][2]
     else:
         img[mask] = P["leaf"][1]
     layer = np.zeros_like(img)
+    fill = MASS_FILL[kind]
+    bare = sick and kind in ("burnt_oak", "palm_dry", "frailejon_big_dry")
     for n, (fy, fx, seed) in enumerate(feet):
-        if sick and kind.startswith("burnt") and n % 3 and mask[min(fy + 10, H - 1), fx]:
-            # Lo quemado no es una espesura: queda el borde de la masa entero
-            # y uno de cada tres árboles dentro, con el suelo en hollín a la
-            # vista entre ellos (sistema de diseño, mapa del Bosque enfermo).
+        rs = np.random.default_rng(seed)
+        if bare and n % (2 if kind == "frailejon_big_dry" else 4) and mask[min(fy + 22, H - 1), fx]:
+            # Lo quemado no es una espesura: queda el borde sur de la masa y uno
+            # de cada cuatro árboles dentro, con el hollín a la vista (sistema
+            # de diseño, `bosque_enfermo.png`).
             continue
-        spr = piece(kind, P, np.random.default_rng(seed))
+        spr = piece(kind, P, rs)
+        if not _fits(spr, fx, fy, reach):
+            # No se corta un árbol en recto: si no cabe, entra la pieza pequeña.
+            spr = piece(fill, P, rs)
+            if not _fits(spr, fx, fy, reach):
+                continue
         h, w = spr.shape[:2]
+        if bare and h > 40:
+            blit(img, proto("soot")(64, 14, seed=abs(int(fx))), fx - 32, fy - 9)
         blit(layer, spr, fx - w // 2, fy - h + 1)
     on = (layer[..., 3] > 0) & reach
     shape = on | mask
@@ -731,7 +789,7 @@ def render_crypt(lines: list[str], state: str) -> np.ndarray:
     # muro visto desde arriba: corona de sillares y, donde da al suelo, su
     # cara de 8 px con hiladas y labio de luz
     face = np.zeros_like(wall)
-    for k in range(1, 9):
+    for k in range(1, CRYPT_FACE + 1):
         face |= wall & shift(floor, -k, 0)
     top = wall & ~face
     img[top] = stone[1]
@@ -771,7 +829,56 @@ def render_crypt(lines: list[str], state: str) -> np.ndarray:
         # finos de humo, tramados y escasos (es una rampa clara y baja el valor)
         wisp = floor & ~carpet & (crypt_light(H, W) > 0) & ((xx + yy * 3) % 5 == 0) & ((xx // 3 + yy) % 4 == 0)
         img[wisp] = P["smog"][0]
+    crypt_furnish(img, wall, floor, carpet, face, sick, rng)
     return img
+
+
+## Alto de la cara del muro norte (`z_cripta_enfermo.png`: se ve de frente).
+CRYPT_FACE = 28
+## Morado de la penumbra: se multiplica antes de llevar cada píxel a su token.
+CRYPT_TINT = {"enfermo": (0.93, 0.80, 1.06), "sano": (0.98, 0.94, 1.0)}
+
+
+def crypt_furnish(img, wall, floor, carpet, face, sick, rng) -> None:
+    """El ajuar de `tools/tierra_viva/cripta.py` sobre la matriz del juego:
+    antorchas en los muros, telarañas en los rincones y, por el suelo, urnas,
+    huesos, monedas y cofres; sano, helechos, brotes y raíces."""
+    proto("oak")
+    import cripta
+    H, W = wall.shape
+    state = "enfermo" if sick else "sano"
+    # antorchas: una cada 96 px por tramo de muro que da al suelo
+    ys, xs = np.where(face & shift(floor, -1, 0))
+    seen = set()
+    tr = cripta.torch(sick)
+    for y, x in sorted(zip(ys.tolist(), xs.tolist())):
+        if x % 96 < 2 and (y, x // 96) not in seen and x + 8 < W:
+            seen.add((y, x // 96))
+            blit(img, tr, x, y - CRYPT_FACE + 4)
+    # telarañas en las esquinas noroeste del suelo
+    corner = floor & ~carpet & shift(wall, 1, 0) & shift(wall, 0, 1)
+    ys, xs = np.where(corner)
+    for k, (y, x) in enumerate(zip(ys.tolist(), xs.tolist())):
+        if k % 3 == 0 and sick:
+            blit(img, cripta.web(k), x, y)
+    # lo que hay por el suelo: lejos del muro y de la alfombra
+    free = floor & ~ndi.binary_dilation(carpet | wall, iterations=10)
+    ys, xs = np.where(free)
+    if not len(ys):
+        return
+    n = len(ys) // 5200
+    for i, k in enumerate(rng.choice(len(ys), size=n, replace=False)):
+        y, x = int(ys[k]), int(xs[k])
+        if sick:
+            spr = (cripta.urn(True, i), cripta.skull_bones(), cripta.coins_decal(i), cripta.urn(True, i + 1),
+                   cripta.coins_decal(i + 7), cripta.chest(True))[i % 6]
+        else:
+            spr = (cripta.fern(i), cripta.sprout(), cripta.roots(i), cripta.fern(i + 3))[i % 4]
+        h, w = spr.shape[:2]
+        if x + w < W and y + h < H:
+            blit(img, spr, x, y)
+    tint = np.array(CRYPT_TINT[state])
+    img[..., :3] = np.clip(img[..., :3] * tint, 0, 255).astype(np.uint8)
 
 
 def paint_blight(img, ground, region: str, state: str, P: dict, rng) -> None:
@@ -787,20 +894,22 @@ def paint_blight(img, ground, region: str, state: str, P: dict, rng) -> None:
     yy, xx = np.indices(ground.shape)
     chk = (xx + yy) % 2 == 0
     if region == "llanura":
-        # charcos de lodo en el tono más bajo de su rampa, con grumos sueltos
-        # un tono arriba y borde de hierba seca oscura. Con el tono medio
-        # salían verde lima, y en este juego el verde dice «purificado».
-        blob = ground & (nz > np.quantile(nz, 0.93))
+        # tierra cuarteada (`z_llanura_enfermo.png`): la grieta sigue el borde
+        # de la mancha, cortada. Las manchas de lodo salían verdes, y en este
+        # juego el verde dice «purificado».
+        blob = ground & (nz > np.quantile(nz, 0.86))
         blob = ndi.binary_opening(blob, disk(2))
-        sl = P["sludge"]
-        img[blob] = sl[0]
-        img[blob & chk & ((xx * 3 + yy) % 7 == 0)] = sl[1]
-        img[edge(blob, 1)] = P["grass"][1]
+        crack = edge(blob, 1) & ((xx // 5 + yy // 3) % 3 != 0)
+        img[crack] = P["dirt"][1]
     else:
-        # hollín tramado: manchas de ceniza sobre el pajonal seco
-        blob = ground & (nz > np.quantile(nz, 0.80))
-        img[blob & chk] = P["ash"][0]
-        img[blob & ~chk & ((xx + 2 * yy) % 3 == 0)] = P["ash"][1]
+        # pedregal donde estaba el glaciar (`z_cumbre_enfermo.png`): ceniza
+        # clara con grava, no un rayado negro
+        blob = ground & (nz > np.quantile(nz, 0.86))
+        blob = ndi.binary_opening(blob, disk(3))
+        img[blob] = P["ash"][3]
+        img[blob & ((xx * 3 + yy * 7) % 11 == 0)] = P["ash"][2]
+        img[blob & ((xx * 5 + yy * 3) % 13 == 0)] = P["ash"][4]
+        img[edge(blob, 1)] = P["ash"][1]
 
 
 ## Píxeles que se corren los destellos del agua en el segundo cuadro.
@@ -847,7 +956,11 @@ def render(lines: list[str], state: str, region: str, frame: int = 0) -> np.ndar
 
 
 def main(argv: list[str]) -> int:
-    zones = argv or list(REGION)
+    # Valdehoja tiene su propio generador, con la matriz orgánica del sistema.
+    zones = argv or [z for z in REGION if z != "valdehoja"]
+    if "valdehoja" in zones:
+        print("  FALLA valdehoja: la escribe tools/gen_tierra_viva_valdehoja.py")
+        return 1
     OUT.mkdir(parents=True, exist_ok=True)
     for zone in zones:
         if zone not in REGION:

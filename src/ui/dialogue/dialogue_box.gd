@@ -165,6 +165,8 @@ func portrait_rect() -> Rect2:
 ## La columna de texto.
 func text_rect() -> Rect2:
 	var inset := float(TvFrame.SLICE)
+	if portrait == null:
+		return Rect2(inset, inset, size.x - inset * 2.0, size.y - inset * 2.0)
 	var width := size.x - inset * 2.0 - PORTRAIT_FRAME.x - PORTRAIT_GAP
 	var x := inset + PORTRAIT_FRAME.x + PORTRAIT_GAP if side == Side.LEFT else inset
 	return Rect2(x, inset, width, size.y - inset * 2.0)
@@ -184,8 +186,8 @@ func continue_origin() -> Vector2:
 func _draw() -> void:
 	TvFrame.draw(self, TvFrame.TEXTBOX, Rect2(Vector2.ZERO, size))
 	draw_rect(LEAF, DesignTokens.TV_ECO_4)
-	TvFrame.draw(self, TvFrame.PORTRAIT, portrait_frame())
 	if portrait != null:
+		TvFrame.draw(self, TvFrame.PORTRAIT, portrait_frame())
 		draw_texture_rect_region(portrait, portrait_rect(), _portrait_region())
 	_draw_tag()
 	var tr := text_rect()
