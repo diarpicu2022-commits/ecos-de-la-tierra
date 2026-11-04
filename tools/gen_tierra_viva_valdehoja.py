@@ -57,6 +57,9 @@ EXIT_EAST_ROW = 33  # la calle mayor cruza el borde este, salida al Bosque
 MINE = (3, 2)  # bocamina de 2 × 2, en una cara de roca; salida a la Cripta en (3, 0)
 GARDEN = (82, 16, 88, 25)  # jardín de Yara (col0, fila0, col1, fila1), con su seto
 SPAWN = (40, 31)  # en la calle mayor, al pie de la plaza: el encuadre de `v_plaza`
+# Calles que llegan al borde sin salida: se cierran con la valla de `scene2`.
+FENCE_WEST_ROWS = [*range(32, 42), 46, 47, *range(51, 60)]  # en la columna 1
+FENCE_SOUTH = (39, 62, 3)  # columna, fila y tramos: 40 px sobre las casillas 39 a 41
 
 
 def game_spec() -> dict:
@@ -213,6 +216,10 @@ def pieces(info) -> tuple[list[dict], dict]:
     for i, x, y in solve_trees(spots, info, "valdehoja5"):
         if x < 40 and y < 140 or (gx0 <= x <= gx1 and gy0 <= y <= gy1):
             continue
+        # Un roble fuera del mapa dejaría su colisión en la casilla de la valla,
+        # sin nada visible encima: ahí manda la valla.
+        if x < 0 and (y - 1) // T in FENCE_WEST_ROWS:
+            continue
         flip = not i % 2
         s, u = (BURNT[:, ::-1], TREE[:, ::-1]) if flip else (BURNT, TREE)
         out.append(piece("oak_flip" if flip else "oak", s, u, x, y, shadow=54, solid="trunk"))
@@ -251,6 +258,19 @@ def garden() -> list[dict]:
         hedge(k, c0 * T - 6, (r + 1) * T)
         hedge(k + 1, c1 * T - 6, (r + 1) * T)
         k += 2
+    return out
+
+
+def border_fences() -> list[tuple[dict, tuple[int, int]]]:
+    """Cierre de las calles del oeste y del sur. Cada pieza con la casilla que
+    ocupa. La referencia solo dibuja valla horizontal, así que al oeste se apila
+    su tramo de un tile, que mide 16 × 16 y coincide con su casilla sólida."""
+    out = []
+    one = fence(1)
+    for r in FENCE_WEST_ROWS:
+        out.append((both("fence_edge", one, T, (r + 1) * T, solid="cell"), (1, r)))
+    c, r, n = FENCE_SOUTH
+    out.append((both("fence_edge", fence(n), c * T + 4, (r + 1) * T), (c, r)))
     return out
 
 
@@ -478,6 +498,11 @@ def main() -> int:
     emit("entity", "seedbed", True, (1, 1), (0, 0), (83, 22))
     for o in order:
         place(o)
+    # Las vallas del borde, después de lo que ya ocupa su sitio: donde hay un
+    # tronco, el tronco ya cierra la casilla.
+    for o, cell in border_fences():
+        if grid.free(*cell):
+            place(o)
 
     # La bocamina, la aparición, las matas, los animales y la fauna.
     grid.claim(MINE[0], MINE[1], 2, 2, "blocker")

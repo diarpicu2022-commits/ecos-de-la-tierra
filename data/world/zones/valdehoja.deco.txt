@@ -85,124 +85,125 @@
 ; Ü = decor, oak, sólido, 2x1, -5+52
 ; Ý = decor, oak_flip, sólido, 2x1, +7+42
 ; Þ = decor, oak, sólido, 2x1, -5+52
-; ß = decor, oak, sólido, 2x1, -69-12
-; à = decor, oak_flip, sólido, 1x1, +7+0
-; á = decor, oak, sólido, 1x1, +15-12
-; â = decor, oak_flip, sólido, 2x1, -1-8
-; ã = decor, oak_flip, pisable, 1x1, +31+16
-; ä = decor, oak, pisable, 1x1, +23+4
-; å = decor, oak_flip, sólido, 1x1, -13-8
-; æ = decor, oak, sólido, 1x1, +3-8
-; ç = decor, npc_rosa, sólido, 1x1, -8+0
-; è = decor, npc_tona, pisable, 1x1, +16+14
-; é = decor, npc_tito, pisable, 1x1, +8+4
-; ê = decor, npc_julian, sólido, 1x1, -2-14
-; ë = decor, npc_aurelio, sólido, 1x1, +6-10
-; ì = decor, hedge_6, sólido, 1x1
-; í = decor, hedge_7, sólido, 1x1
-; î = decor, hedge_8, sólido, 1x1
-; ï = decor, hedge_9, sólido, 1x1
-; ð = decor, hedge_10, sólido, 1x1
-; ñ = decor, hedge_11, sólido, 1x1
-; ò = decor, hedge_12, sólido, 1x1
-; ó = decor, hedge_13, sólido, 1x1
-; ô = decor, hedge_14, sólido, 1x1
-; õ = decor, hedge_15, sólido, 1x1
-; ö = decor, hedge_16, sólido, 1x1
-; ø = decor, hedge_17, sólido, 1x1
-; ù = decor, hedge_18, sólido, 1x1
-; ú = decor, hedge_19, sólido, 1x1
-; û = decor, hedge_20, sólido, 1x1
-; ü = decor, hedge_21, sólido, 1x1
-; ý = decor, hedge_22, sólido, 1x1
-; þ = decor, hedge_23, sólido, 1x1
-; ÿ = decor, hedge_24, sólido, 1x1
-; Ā = decor, hedge_25, sólido, 1x1
-; ā = decor, hedge_26, sólido, 1x1
-; Ă = decor, hedge_27, sólido, 1x1
-; ă = decor, hedge_28, sólido, 1x1
-; Ą = decor, hedge_29, sólido, 1x1
-; ą = decor, hedge_30, sólido, 1x1
-; Ć = decor, hedge_31, sólido, 1x1
-; ć = decor, hedge_32, sólido, 1x1
-; Ĉ = decor, hedge_33, sólido, 1x1
-; ĉ = decor, pot, pisable, 1x1, -4-8
-; Ċ = decor, pot_1, pisable, 1x1, -4-8
-; ċ = decor, pot, pisable, 1x1, -3-8
-; Č = decor, pot_2, pisable, 1x1, -3-8
-; č = decor, pot_2, pisable, 1x1, -4-8
-; Ď = decor, pot_1, pisable, 1x1, -3-8
-; ď = decor, laundry, pisable, 1x1, +11+16
-; Đ = entity, blocker, sólido, 2x2
-; đ = spawn, start, pisable, 1x1
-; Ē = decor, grass, pisable, 1x1
-; ē = animal, chicken, pisable, 1x1
-; Ĕ = animal, dog, pisable, 1x1
-; ĕ = animal, goat, pisable, 1x1
-; Ė = fauna, bird, pisable, 1x1
-; ė = fauna, butterfly, pisable, 1x1
+; ß = decor, oak_flip, sólido, 1x1, +7+0
+; à = decor, oak, sólido, 1x1, +15-12
+; á = decor, oak_flip, sólido, 2x1, -1-8
+; â = decor, oak_flip, pisable, 1x1, +31+16
+; ã = decor, oak, pisable, 1x1, +23+4
+; ä = decor, oak_flip, sólido, 1x1, -13-8
+; å = decor, oak, sólido, 1x1, +3-8
+; æ = decor, npc_rosa, sólido, 1x1, -8+0
+; ç = decor, npc_tona, pisable, 1x1, +16+14
+; è = decor, npc_tito, pisable, 1x1, +8+4
+; é = decor, npc_julian, sólido, 1x1, -2-14
+; ê = decor, npc_aurelio, sólido, 1x1, +6-10
+; ë = decor, hedge_6, sólido, 1x1
+; ì = decor, hedge_7, sólido, 1x1
+; í = decor, hedge_8, sólido, 1x1
+; î = decor, hedge_9, sólido, 1x1
+; ï = decor, hedge_10, sólido, 1x1
+; ð = decor, hedge_11, sólido, 1x1
+; ñ = decor, hedge_12, sólido, 1x1
+; ò = decor, hedge_13, sólido, 1x1
+; ó = decor, hedge_14, sólido, 1x1
+; ô = decor, hedge_15, sólido, 1x1
+; õ = decor, hedge_16, sólido, 1x1
+; ö = decor, hedge_17, sólido, 1x1
+; ø = decor, hedge_18, sólido, 1x1
+; ù = decor, hedge_19, sólido, 1x1
+; ú = decor, hedge_20, sólido, 1x1
+; û = decor, hedge_21, sólido, 1x1
+; ü = decor, hedge_22, sólido, 1x1
+; ý = decor, hedge_23, sólido, 1x1
+; þ = decor, hedge_24, sólido, 1x1
+; ÿ = decor, hedge_25, sólido, 1x1
+; Ā = decor, hedge_26, sólido, 1x1
+; ā = decor, hedge_27, sólido, 1x1
+; Ă = decor, hedge_28, sólido, 1x1
+; ă = decor, hedge_29, sólido, 1x1
+; Ą = decor, hedge_30, sólido, 1x1
+; ą = decor, hedge_31, sólido, 1x1
+; Ć = decor, hedge_32, sólido, 1x1
+; ć = decor, hedge_33, sólido, 1x1
+; Ĉ = decor, pot, pisable, 1x1, -4-8
+; ĉ = decor, pot_1, pisable, 1x1, -4-8
+; Ċ = decor, pot, pisable, 1x1, -3-8
+; ċ = decor, pot_2, pisable, 1x1, -3-8
+; Č = decor, pot_2, pisable, 1x1, -4-8
+; č = decor, pot_1, pisable, 1x1, -3-8
+; Ď = decor, laundry, pisable, 1x1, +11+16
+; ď = decor, fence_edge, sólido, 1x1
+; Đ = decor, fence_edge_1, sólido, 3x1
+; đ = entity, blocker, sólido, 2x2
+; Ē = spawn, start, pisable, 1x1
+; ē = decor, grass, pisable, 1x1
+; Ĕ = animal, chicken, pisable, 1x1
+; ĕ = animal, dog, pisable, 1x1
+; Ė = animal, goat, pisable, 1x1
+; ė = fauna, bird, pisable, 1x1
+; Ę = fauna, butterfly, pisable, 1x1
 ---
 
 
-   ĐĐ                                                   JJJJJJ    KKKKKK
-   ĐĐ                        HHHHHH   IIIIII            JJJJJJ    KKKKKK
+   đđ                                                   JJJJJJ    KKKKKK
+   đđ                        HHHHHH   IIIIII            JJJJJJ    KKKKKK
      DDDDDD  EEEEEE          HHHHHH   IIIIII            JJJJJJ    KKKKKK
      DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII            JJJJJJ    KKKKKK
      DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII            JJJJJJ    KKKKKK
-     DDDDDDå EEEEEE  FFFFFF  HHHHHH   IIIIII                     æKKKKKK
-     DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII             Ç  È       Ċ  tt              ÕÕ
-     DDDDDD  EEEEEE  FFFFFF                                 Ė
-               ĉ  ss                      ê
+     DDDDDDä EEEEEE  FFFFFF  HHHHHH   IIIIII                     åKKKKKK
+     DDDDDD  EEEEEE  FFFFFF  HHHHHH   IIIIII             Ç  È       ĉ  tt              ÕÕ
+     DDDDDD  EEEEEE  FFFFFF                                 ė
+               Ĉ  ss                      é
 
 
                                     Ó    Ô
 
 
-                                                                                  ìîðñòôö
-            Í  Î                                                                  ùAAA  ú
-     Ë   Ì                 rr 6                  77                               ûAAA  ü
-                           rr  jjj       ė    llll                                ýAAA ėþ
-                    Ė          jjj            llll                                ÿAAA  Ā
-     Ï  Ð   Ñ   Ò                                                                 ā   B Ă
-                                     iiiiiii          OOOOOOO PPPPPPP             ăCĖ   Ą
-                                 ç   iiiiiii          OOOOOOO PPPPPPP             ąė    Ć
-                     àMMMMMM       è        éooo      OOOOOOO PPPPPPP             ć     Ĉ
-                      MMMMMM    nnn44      55ooo      OOOOOOO PPPPPPP QQQQQQ      íï  óõø
-   LLLLLL  NNNNNN     MMMMMM    nnn                  áOOOOOOO PPPPPPP QQQQQQ
+                                                                                  ëíïðñóõ
+            Í  Î                                                                  øAAA  ù
+     Ë   Ì                 rr 6                  77                               úAAA  û
+                           rr  jjj       Ę    llll                                üAAA Ęý
+                    ė          jjj            llll                                þAAA  ÿ
+     Ï  Ð   Ñ   Ò                                                                 Ā   B ā
+                                     iiiiiii          OOOOOOO PPPPPPP             ĂCė   ă
+                                 æ   iiiiiii          OOOOOOO PPPPPPP             ĄĘ    ą
+                     ßMMMMMM       ç        èooo      OOOOOOO PPPPPPP             Ć     ć
+                      MMMMMM    nnn44      55ooo      OOOOOOO PPPPPPP QQQQQQ      ìî  òôö
+   LLLLLL  NNNNNN     MMMMMM    nnn                  àOOOOOOO PPPPPPP QQQQQQ
    LLLLLL  NNNNNN     MMMMMM   8                99    OOOOOOO PPPPPPP QQQQQQ
-   LLLLLL  NNNNNN     MMMMMM      ē           ē        č Ď       Ċ  xxQQQQQQ
-   LLLLLL  NNNNNN     MMMMMM         ē     ē                          QQQQQQ
-   LLLLLL  NNNNNN       ĉ Č                                           QQQQQQ
-     Ċ ċ   NNNNNN                       đ
-  ÄÄ                                                                      ë           ÅÅ
-           uu  ww
-
-                           VVVVVV
-           TTTTTT  UUUUUU  VVVVVV     ĕ
-           TTTTTT  UUUUUU  VVVVVV     WWWWWWĔ
-           TTTTTT  UUUUUU  VVVVVV    ĕWWWWWW      ZZZZZZ
-   RRRRRR ďTTTTTT  UUUUUU  VVVVVV     WWWWWW      ZZZZZZ  aaaaaa
-   RRRRRR  TTTTTT  UUUUUU  VVVVVV     WWWWWW ââ   ZZZZZZ  aaaaaa
-   RRRRRR  TTTTTT  UUUUUU    ĉ Č      WWWWWW      ZZZZZZ  aaaaaa
-   RRRRRR            ĉ  00 11  22       č Ď       ZZZZZZ  aaaaaa
+   LLLLLL  NNNNNN     MMMMMM      Ĕ           Ĕ        Č č       ĉ  xxQQQQQQ
+   LLLLLL  NNNNNN     MMMMMM         Ĕ     Ĕ                          QQQQQQ
+   LLLLLL  NNNNNN       Ĉ ċ                                           QQQQQQ
+     ĉ Ċ   NNNNNN                       Ē
+ ďÄÄ                                                                      ê           ÅÅ
+ ď         uu  ww
+ ď
+ ď                         VVVVVV
+ ď         TTTTTT  UUUUUU  VVVVVV     Ė
+ ď         TTTTTT  UUUUUU  VVVVVV     WWWWWWĕ
+ ď         TTTTTT  UUUUUU  VVVVVV    ĖWWWWWW      ZZZZZZ
+ ď RRRRRR ĎTTTTTT  UUUUUU  VVVVVV     WWWWWW      ZZZZZZ  aaaaaa
+ ď RRRRRR  TTTTTT  UUUUUU  VVVVVV     WWWWWW áá   ZZZZZZ  aaaaaa
+ ď RRRRRR  TTTTTT  UUUUUU    Ĉ ċ      WWWWWW      ZZZZZZ  aaaaaa
+   RRRRRR            Ĉ  00 11  22       Č č       ZZZZZZ  aaaaaa
    RRRRRR  yy  zz                                         aaaaaa
    RRRRRR                                                 aaaaaa
-                                                            ĉ Č
-
-                                                                                       ÖÖ
+                                                            Ĉ ċ
+ ď
+ ď                                                                                     ÖÖ
                                   Á
                                                   ffffff
                      eeeeee                       ffffff  hhhhhh
-                     eeeeee            qqqq       ffffff  hhhhhh
- ßß bbbbbb           eeeeee            qqqq       ffffff ähhhhhh                 ĒĒĒĒĒĒĒĒ
-    bbbbbb  cccccc  ãeeeeee         ÀÀ            ffffff  hhhhhh  Ã              ĒĒĒĒĒĒĒĒ
-    bbbbbb  cccccc   eeeeee                   ÂÂ          hhhhhh                 ĒĒĒĒĒĒĒĒ
-    bbbbbb  cccccc   eeeeee                                                      ĒĒĒĒĒĒĒĒ
-    bbbbbb  cccccc                                                               ĒĒĒĒĒĒĒĒ
-    bbbbbb  cccccc    É  Ê                                                       ĒĒĒĒĒĒĒĒ
-            cccccc            Ė                                                  ĒĒĒĒĒĒĒĒ
-              Ċ  33                                                             ėĒĒĒĒĒĒĒĒ
- ĒĒĒ          ė                                                                  ĒĒĒĒĒĒĒĒ
- ĒĒĒ                                                                             ĒĒĒĒĒĒĒĒ
- ĒĒĒ  ÙÙ        ÚÚ          ÛÛ            ÆÆ      ÜÜ           ÝÝ         ÞÞ         ØØ
+ ď                   eeeeee            qqqq       ffffff  hhhhhh
+ ď  bbbbbb           eeeeee            qqqq       ffffff ãhhhhhh                 ēēēēēēēē
+ ď  bbbbbb  cccccc  âeeeeee         ÀÀ            ffffff  hhhhhh  Ã              ēēēēēēēē
+ ď  bbbbbb  cccccc   eeeeee                   ÂÂ          hhhhhh                 ēēēēēēēē
+ ď  bbbbbb  cccccc   eeeeee                                                      ēēēēēēēē
+ ď  bbbbbb  cccccc                                                               ēēēēēēēē
+ ď  bbbbbb  cccccc    É  Ê                                                       ēēēēēēēē
+ ď          cccccc            ė                                                  ēēēēēēēē
+ ď            ĉ  33                                                             Ęēēēēēēēē
+ ēēē          Ę                                                                  ēēēēēēēē
+ ēēē                                                                             ēēēēēēēē
+ ēēē  ÙÙ        ÚÚ          ÛÛ         ĐĐĐÆÆ      ÜÜ           ÝÝ         ÞÞ         ØØ
 
