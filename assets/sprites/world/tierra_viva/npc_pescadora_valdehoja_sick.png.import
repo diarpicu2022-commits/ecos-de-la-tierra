@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3sjn7w6gdfkp"
-path="res://.godot/imported/npc_tona_valdehoja_sick.png-3615e804c41ff8c97bcd51a3b6eb2526.ctex"
+uid="uid://ngqgscg1ib4g"
+path="res://.godot/imported/npc_pescadora_valdehoja_sick.png-c8e1af858ab5e70067e9b8f9e676e23a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/world/tierra_viva/npc_tona_valdehoja_sick.png"
-dest_files=["res://.godot/imported/npc_tona_valdehoja_sick.png-3615e804c41ff8c97bcd51a3b6eb2526.ctex"]
+source_file="res://assets/sprites/world/tierra_viva/npc_pescadora_valdehoja_sick.png"
+dest_files=["res://.godot/imported/npc_pescadora_valdehoja_sick.png-c8e1af858ab5e70067e9b8f9e676e23a.ctex"]
 
 [params]
 
