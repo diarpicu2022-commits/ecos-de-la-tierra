@@ -16,8 +16,10 @@ extends Node
 ##   causa no dura lo bastante para juzgar): solo se le pide decisión al
 ##   líder; cada compañero deja su línea en el registro; con un líder bueno la
 ##   sintonía sube y se gana en menos rondas que con uno malo.
-## - El menú de Ilan lleva la fila de orden, cabe sin recorte y cambia la
-##   orden al confirmar.
+## - El menú de Ilan son los cuatro mandos, sin fila de orden. Tab cambia la orden
+##   sin gastar el turno, solo para el líder y solo en la raíz, y el aviso de papel
+##   la dice sin salirse de `MESSAGE_RECT`.
+## - Lo deshabilitado recibe foco, dice el porqué y no se puede elegir.
 ## Sale con código 1 si algo falla.
 
 const C := PartyMind.Choice
@@ -208,14 +210,141 @@ En combate")
 	await get_tree().process_frame
 
 
-## La fila de orden en el menú de Ilan.
+## La orden en Tab, en el menú de Ilan.
 func _menu() -> void:
 	print("
 Menú del líder")
 	var holder := Node.new()
 	add_child(holder)
+	var screen := await _leader_screen(holder, true)
+	var labels: Array = screen._menu.entries.map(func(e): return str(e["label"]))
+	_check("el menú de Ilan son cuatro mandos, sin fila de orden (%s)" % ", ".join(labels),
+		labels == ["LUCHAR", "ECO", "BOLSA", "HUIR"] and screen._menu.is_grid())
+	var on_tab := false
+	if InputMap.has_action("order"):
+		for e in InputMap.action_get_events("order"):
+			on_tab = on_tab or (e is InputEventKey and (e as InputEventKey).physical_keycode == KEY_TAB)
+	_check("la acción «order» está en Tab", on_tab)
+	_check("el aviso de la raíz dice la orden actual y la tecla",
+		screen._message.contains("Orden: " + str(BattleScreen.ORDERS[screen._manager.order]["label"]))
+		and screen._message.contains("Tab"))
+	await _message_fit(screen)
+
+	var before: int = screen._manager.order
+	var actor: Character = screen._actor
+	var round_before: int = screen._manager._turn_manager.round_number
+	var queue_before: int = screen._queue.size()
+	screen._menu.focused = 2
+	await _press_tab()
+	var o: Dictionary = BattleScreen.ORDERS[screen._manager.order]
+	_check("Tab cambia la orden (%d → %d)" % [before, screen._manager.order],
+		screen._manager.order == (before + 1) % 3)
+	_check("Tab no gasta el turno", screen._phase == BattleScreen.Phase.CHOOSING
+		and screen._actor == actor and screen._queue.size() == queue_before
+		and screen._manager._turn_manager.round_number == round_before and screen._menu.is_active())
+	_check("el aviso enseña la descripción de la nueva orden: «%s»" % screen._message,
+		screen._message.begins_with(str(o["description"])))
+	_check("Tab no mueve el foco", screen._menu.focused == 2)
+	_check("al moverse, el aviso sigue diciendo la orden nueva",
+		str(screen._menu.entries[0]["description"]).contains("Orden: " + str(o["label"])))
+	await _press_tab()
+	await _press_tab()
+	_check("tres pulsaciones dan la vuelta a las tres órdenes", screen._manager.order == before)
+
+	# Fuera de la raíz, Tab no hace nada: el aviso está explicando otra cosa.
+	screen._menu.focused = 2
+	screen._on_option_chosen(screen._menu.entries[2])
+	var shown: String = screen._message
+	await _press_tab()
+	_check("en un submenú, Tab no cambia la orden",
+		screen._manager.order == before and screen._message == shown)
+	screen._on_menu_cancelled()
+	_check("al volver, el foco sigue en el mando del que se vino", screen._menu.focused == 2)
+
+	# Tampoco para quien no es el líder ni mientras se reproduce el registro.
+	for c in screen._manager.player_party:
+		if c != screen._manager.leader:
+			screen._actor = c
+			break
+	await _press_tab()
+	_check("Tab no actúa si el turno no es del líder", screen._manager.order == before)
+	screen._actor = screen._manager.leader
+	screen._phase = BattleScreen.Phase.PLAYING
+	await _press_tab()
+	_check("Tab no actúa fuera de la fase de elección", screen._manager.order == before)
+	screen._phase = BattleScreen.Phase.CHOOSING
+
+	# Lo deshabilitado: recibe foco, dice el porqué y no se puede elegir.
+	screen._manager.inventory = Inventory.new()
+	screen._root_focus = 0
+	screen._open_root_menu()
+	var bag: Dictionary = screen._menu.entries[2]
+	await _press("move_down")
+	_check("BOLSA vacía recibe el foco y dice el porqué: «%s»" % screen._message,
+		screen._menu.focused == 2 and not bool(bag["enabled"]) and screen._message.contains("vacía"))
+	await _press("confirm")
+	_check("confirmarla no abre nada ni gasta el turno",
+		screen._menu.is_grid() and screen._menu.focused == 2 and screen._phase == BattleScreen.Phase.CHOOSING)
+	var voice: AudioStreamPlayer = GameAudio._voices[wrapi(GameAudio._next_voice - 1, 0, GameAudio.VOICES)]
+	_check("y suena ui_denied", voice.stream == GameAudio._streams["ui_denied"])
+	holder.queue_free()
+	await get_tree().process_frame
+
+	var solo := Node.new()
+	add_child(solo)
+	var manual := await _leader_screen(solo, false)
+	var order_manual: int = manual._manager.order
+	await _press_tab()
+	_check("sin compañeros en automático, Tab no actúa y el aviso no la nombra",
+		manual._manager.order == order_manual and not manual._message.contains("Orden"))
+	solo.queue_free()
+	await get_tree().process_frame
+
+
+## Todas las combinaciones de aviso de la raíz contra `MESSAGE_RECT`: se reparten
+## con el mismo `_wrap` y la interlínea del dibujo.
+func _message_fit(screen: BattleScreen) -> void:
+	var rect := BattleScreen.MESSAGE_RECT
+	var pad: float = DesignTokens.SPACE_8 + 2.0
+	var room := rect.size.x - pad * 2.0
+	# Primera línea de base 18 px bajo el borde; `_draw_message` corta a 6 del fondo.
+	var capacity: int = floori((rect.size.y - 18.0 - 6.0) / BattleScreen.MESSAGE_LINE) + 1
+	var worst := 0
+	var widest := 0.0
+	var longest := ""
+	var messages: Array[String] = []
+	var saved: int = screen._manager.order
+	var actor: Character = screen._actor
+	var skills: Array[Skill] = actor.skills
+	var inventory: Inventory = screen._manager.inventory
+	for order in BattleScreen.ORDERS.size():
+		screen._manager.order = order
+		messages.append("%s %s" % [BattleScreen.ORDERS[order]["description"], BattleScreen.ORDER_KEY_HINT])
+		# Con lo que hay y con lo deshabilitado: es el texto más largo.
+		for empty in [false, true]:
+			actor.skills = ([] as Array[Skill]) if empty else skills
+			screen._manager.inventory = Inventory.new() if empty else inventory
+			for entry in screen._root_entries():
+				messages.append(str(entry["description"]))
+	actor.skills = skills
+	screen._manager.inventory = inventory
+	screen._manager.order = saved
+	for text in messages:
+		var lines: PackedStringArray = screen._wrap(text, room)
+		if lines.size() > worst:
+			worst = lines.size()
+			longest = text
+		for line in lines:
+			widest = maxf(widest, screen._width(line))
+	_check("los %d avisos posibles caben en el papel: %d líneas de %d, %d de %d px («%s»)" % [
+		messages.size(), worst, capacity, roundi(widest), roundi(room), longest.replace("\n", " / ")],
+		worst <= capacity and widest <= room)
+
+
+## Monta un combate y espera a la primera elección del líder.
+func _leader_screen(holder: Node, auto: bool) -> BattleScreen:
 	var screen := BattleScreen.new()
-	screen.companions_auto = true
+	screen.companions_auto = auto
 	holder.add_child(screen)
 	var players: Array[Combatant] = []
 	for c in Encounters.build_party(1):
@@ -230,17 +359,24 @@ Menú del líder")
 			break
 		screen._advance_queue()
 		await get_tree().process_frame
-	var labels: Array = screen._menu.entries.map(func(e): return str(e["label"]))
-	_check("el menú de Ilan lleva la fila de orden (%s)" % ", ".join(labels),
-		labels.size() == 5 and labels[-1].begins_with("ORDEN"))
-	var room: float = screen._menu.size.x - ActionMenu.CURSOR_WIDTH
-	var widest := 0.0
-	for o in BattleScreen.ORDERS:
-		widest = maxf(widest, screen._menu._width("ORDEN: " + o["label"]))
-	_check("las tres órdenes caben sin recorte (%d de %d px)" % [widest, room], widest <= room)
-	var before: int = screen._manager.order
-	screen._on_option_chosen(screen._menu.entries[-1])
-	_check("confirmar la fila cambia la orden sin gastar el turno (%d → %d)" % [before, screen._manager.order],
-		screen._manager.order == (before + 1) % 3 and screen._phase == BattleScreen.Phase.CHOOSING)
-	holder.queue_free()
-	await get_tree().process_frame
+	return screen
+
+
+## Una pulsación real de la tecla, no de la acción: es la que Godot podría quedarse
+## para mover el foco de los controles.
+func _press_tab() -> void:
+	for pressed in [true, false]:
+		var key := InputEventKey.new()
+		key.physical_keycode = KEY_TAB
+		key.pressed = pressed
+		Input.parse_input_event(key)
+		await get_tree().process_frame
+
+
+func _press(action: String) -> void:
+	for pressed in [true, false]:
+		var event := InputEventAction.new()
+		event.action = action
+		event.pressed = pressed
+		Input.parse_input_event(event)
+		await get_tree().process_frame
