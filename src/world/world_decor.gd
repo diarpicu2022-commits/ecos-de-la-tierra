@@ -108,7 +108,7 @@ static func build(zone_id: String, purified_at: Callable, entities: Node, solids
 			# Solo el dibujo; la colisión sigue en tiles enteros.
 			var h := absi(hash(at))
 			feet += Vector2((h % (2 * JITTER_PX + 1)) - JITTER_PX, ((h / 7) % 3) - 1)
-		sprite.position = feet
+		sprite.position = feet + Vector2(entry["offset"])
 		sprite.offset = Vector2(-texture.get_width() / 2, -texture.get_height() - lift)
 		entities.add_child(sprite)
 		_mark_motion(sprite, entry, at, pure, zone_id)

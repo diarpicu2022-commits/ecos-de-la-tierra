@@ -29,7 +29,7 @@ const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 	"withered_plain": 3, "waning_peak": 4, "greed_crypt": 5}
 
 @export var start_zone := "valdehoja"
-@export var start_cell := Vector2i(9, 25)
+@export var start_cell := Vector2i(40, 31)
 
 var world := WorldRoot.new()
 var blinds := BattleBlinds.new()

@@ -847,7 +847,11 @@ def render(lines: list[str], state: str, region: str, frame: int = 0) -> np.ndar
 
 
 def main(argv: list[str]) -> int:
-    zones = argv or list(REGION)
+    # Valdehoja tiene su propio generador, con la matriz orgánica del sistema.
+    zones = argv or [z for z in REGION if z != "valdehoja"]
+    if "valdehoja" in zones:
+        print("  FALLA valdehoja: la escribe tools/gen_tierra_viva_valdehoja.py")
+        return 1
     OUT.mkdir(parents=True, exist_ok=True)
     for zone in zones:
         if zone not in REGION:

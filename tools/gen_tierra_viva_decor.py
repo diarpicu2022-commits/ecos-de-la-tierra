@@ -1588,104 +1588,6 @@ def gold_grate(P: dict) -> np.ndarray:
 # la matriz orgánica. Cada pieza toma el estado de su parte del pueblo; en lo
 # enfermo, casas y madera «se apagan hacia el gris ceniza» (README §Mundo).
 
-def house(P: dict, sick: bool, stone: bool = False) -> np.ndarray:
-    """Casa del pueblo (huella de 3×3; sprite 52×60, que asoma 12 px por
-    arriba): tejado de teja, muro, zócalo de piedra, puerta y dos ventanas
-    con jardinera. `stone`: la casa de piedra de Ilan, con muro de piedra y
-    tejado de pizarra azul. Enferma, todo en la rampa de ceniza, ventanas a
-    oscuras y jardineras vacías."""
-    W, H = 52, 60
-    cx = W // 2
-    img = canvas(W, H)
-    foot(img, cx, 57, 25, 3, P, sick)
-    ash, st, w = P["ash"], P["stone"], P["wood"]
-    if sick:
-        roof, wall = [ash[1], ash[2], ash[3], ash[4]], [ash[3], ash[4], ash[5]]
-    elif stone:
-        rb = P["roof_blue"]
-        roof, wall = [rb[1], rb[2], rb[3], rb[4]], [st[3], st[4], st[5]]
-    else:
-        rr, wl = P["roof_red"], P["wall"]
-        roof, wall = [rr[1], rr[2], rr[3], rr[4]], [wl[2], wl[3], wl[4]]
-    t = canvas(W, H)
-    yy, xx = np.indices((H, W))
-    # zócalo de piedra
-    t[49:58, 3:49] = rgba(st[3] if not sick else ash[2])
-    t[49, 3:49] = rgba(st[4] if not sick else ash[3])
-    for y in (52, 55):
-        t[y, 3:49] = rgba(st[2] if not sick else ash[1])
-    for y0 in (49, 52, 55):
-        for x in range(5 + (y0 % 2) * 3, 49, 6):
-            t[y0 + 1:y0 + 3, x] = rgba(st[2] if not sick else ash[1])
-    # muro
-    t[28:49, 4:48] = rgba(wall[1])
-    t[28:49, 4:8] = rgba(wall[2])
-    t[28:49, 44:48] = rgba(wall[0])
-    if stone:
-        for y in range(30, 49, 4):
-            t[y, 4:48] = rgba(wall[0])
-            for x in range(6 + (y % 8 == 2) * 4, 48, 8):
-                t[y:y + 4, x] = rgba(wall[0])
-    # tejado a dos aguas visto desde arriba: faldón con hileras de teja
-    roofm = (yy >= 4) & (yy < 30) & (np.abs(xx + 0.5 - cx) <= 14 + (yy - 4) * 0.48)
-    t[roofm] = rgba(roof[2])
-    t[roofm & (xx < cx)] = rgba(roof[3])
-    for y in range(7, 30, 4):
-        t[roofm & (yy == y)] = rgba(roof[1])
-    t[roofm & (yy == 29)] = rgba(roof[0])
-    t[4:6, cx - 14:cx + 15] = rgba(roof[3])
-    # chimenea
-    t[0:8, 36:41] = rgba(st[4] if not sick else ash[3])
-    t[0, 35:42] = rgba(st[5] if not sick else ash[4])
-    # puerta
-    t[37:49, cx - 4:cx + 4] = rgba(w[2] if not sick else ash[1])
-    t[37:49, cx - 4] = rgba(w[3] if not sick else ash[2])
-    t[37, cx - 5:cx + 5] = rgba(st[4] if not sick else ash[3])
-    t[43, cx + 2] = rgba(P["gold"][4] if not sick else ash[3])
-    # ventanas con jardinera
-    for x0 in (10, 35):
-        t[34:41, x0:x0 + 8] = rgba(w[1] if not sick else ash[1])
-        t[35:40, x0 + 1:x0 + 7] = rgba(P["roof_blue"][1] if not sick else ash[0])
-        t[35:40, x0 + 4] = rgba(w[1] if not sick else ash[1])
-        t[41:43, x0 - 1:x0 + 9] = rgba(w[2] if not sick else ash[2])
-    t = tv.outlined(t, rgba(roof[0] if not sick else ash[0]))
-    if not sick:
-        fl, leaf = P["flower"], P["leaf"]
-        for x0 in (10, 35):
-            for k, x in enumerate(range(x0, x0 + 8, 2)):
-                t[40, x] = rgba(leaf[3])
-                t[39, x] = rgba(fl[(1, 3, 0, 4)[k]])
-    img[t[..., 3] > 0] = t[t[..., 3] > 0]
-    return img
-
-
-def well(P: dict, sick: bool) -> np.ndarray:
-    """El pozo de la era (2×2, 32×32): brocal de piedra, tejadillo de madera y
-    el cubo. Purificado, agua clara dentro; enfermo, agua turbia y la madera
-    carbonizada."""
-    img = canvas(32, 32)
-    foot(img, 16, 29, 14, 2.5, P, sick)
-    st = P["stone"]
-    wd = P["ash"] if sick else P["wood"]
-    s = canvas(32, 32)
-    ring = ellipse(32, 32, 16, 22, 12, 7)
-    s[ring] = rgba(st[3])
-    s[ring & ellipse(32, 32, 16, 20, 12, 4)] = rgba(st[4])
-    s[ellipse(32, 32, 16, 20.5, 8.5, 3.6)] = rgba(P["water"][2])
-    s[ellipse(32, 32, 16, 20, 6, 2)] = rgba(P["water"][4 if not sick else 3])
-    for x in (6, 25):
-        s[4:22, x:x + 2] = rgba(wd[2])
-        s[4:22, x] = rgba(wd[3])
-    roofm = ellipse(32, 32, 16, 5, 14, 4)
-    s[roofm] = rgba(wd[2])
-    s[roofm & (np.indices((32, 32))[0] < 4)] = rgba(wd[3])
-    s[8:14, 16] = rgba(wd[1])
-    s[14:17, 14:19] = rgba(wd[3])
-    s = tv.outlined(s, rgba(st[0]))
-    img[s[..., 3] > 0] = s[s[..., 3] > 0]
-    return img
-
-
 def mine_mouth(P: dict) -> np.ndarray:
     """La bocamina tapiada (2×2, 32×32; enmienda 12): arco de piedra, la boca
     negra y tablones clavados en cruz. Se abre al purificar la Cripta (solo
@@ -2022,6 +1924,9 @@ def crypt() -> dict[str, np.ndarray]:
 
 
 def village() -> dict[str, np.ndarray]:
+    """Lo que `tools/gen_tierra_viva_valdehoja.py` no saca de los originales de
+    PixelLab: la bocamina, el semillero, los animales y la fauna. El resto de
+    Valdehoja (casas, plaza, árboles, vecinos) lo escribe aquel generador."""
     out = {}
     for state in ("sick", "pure"):
         sick = state == "sick"
@@ -2030,24 +1935,7 @@ def village() -> dict[str, np.ndarray]:
         P["roof_blue"] = tv.ramp("roof_blue")
         P["straw"] = tv.ramp("straw")
         if sick:
-            P["plastic"] = tv.ramp("plastic")
-        out[f"house_{state}"] = house(P, sick)
-        out[f"house_stone_{state}"] = house(P, sick, stone=True)
-        out[f"well_{state}"] = well(P, sick)
-        out[f"yara_tree_{state}"] = oak(P, sick)
-        out[f"tree_{state}"] = tree(P, sick, 0)
-        out[f"tree_b_{state}"] = tree(P, sick, 1)
-        out[f"bush_{state}"] = shrub(P, sick)
-        out[f"stump_{state}"] = stump(P, sick)
-        out[f"grass_{state}"] = tall_grass(P, sick, 0)
-        out[f"weed_{state}"] = weed(P, sick)
-        out[f"pebbles_{state}"] = pebbles(P, sick)
-        out[f"flower_{state}"] = flowers(P, sick)
-        out[f"crop_row_{state}"] = crop_row(P, sick)
-        if sick:
-            out["litter_sick"] = litter(P)
             out["blocker_sick"] = mine_mouth(P)
-            out["rock_sick"] = rock(P)
             out["seedbed_sick"] = seedbed(P)
             # los animales son los mismos en los dos estados: el purificado
             # usa este sprite
@@ -2061,10 +1949,6 @@ def village() -> dict[str, np.ndarray]:
             out["bird_1_pure"] = bird(P, 1)
             out["butterfly_0_pure"] = butterfly(P, 0)
             out["butterfly_1_pure"] = butterfly(P, 1)
-            out["grass_pure_1"] = tall_grass(P, False, 1)
-            out["weed_pure_1"] = weed(P, False, 1)
-            out["flower_pure_1"] = flowers(P, False, 1)
-            out["crop_row_pure_1"] = crop_row(P, False, 1)
     return out
 
 
