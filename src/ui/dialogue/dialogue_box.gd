@@ -1,9 +1,11 @@
 class_name DialogueBox
 extends Control
 
-## La caja de diálogo (contrato «Columna», docs/ux/anexos/
-## 2026-10-28-dialogos.md). Panel del repertorio de 312 × 52 px, pegado abajo
-## y al lado de quien habla, con el retrato en el lado exterior.
+## La caja de diálogo del sistema de diseño (`components/DialogBox`): papel con
+## marco de madera en (12, 276), de 616 × 76, con el retrato en su marco, la chapa
+## con el nombre asomando por arriba, la hojita `eco` en la esquina y `▼` cuando
+## la línea está entera. Sustituye al panel de ceniza del contrato «Columna»
+## (propuesta pendiente de Diego; conserva su motor).
 ##
 ## - El texto se **parte en líneas antes de escribirse** (palabras enteras,
 ##   DIALOGUE_CHARS por línea, DIALOGUE_LINES como mucho): ninguna palabra
@@ -20,13 +22,24 @@ signal advanced
 enum Side { LEFT, RIGHT }
 
 const CONTINUE := "▼"
+## Medidas dentro de la caja. El marco de nueve partes ocupa `TvFrame.SLICE`.
+const PORTRAIT_FRAME := Vector2(56, 60)
+const PORTRAIT_GAP := 10.0
+const FIRST_BASELINE := 33.0
+const LINE_GAP := 15.0
+## La chapa del nombre asoma por encima de la caja.
+const TAG_HEIGHT := 18.0
+const TAG_RISE := 11.0
+const TAG_PAD := 10.0
+const TAG_BASELINE := 12.0
+const LEAF := Rect2(3, 3, 3, 3)
 
 ## Opción del jugador (parte 10). Encendida por defecto.
 static var typewriter_enabled := true
 
 var side: int = Side.LEFT
 var speaker := ""
-var name_color: Color = DesignTokens.TEXT_SECONDARY
+var name_color: Color = DesignTokens.TV_TEXT_ON_SLATE
 var portrait: Texture2D = null
 ## Líneas ya partidas y caracteres visibles de su total.
 var lines: PackedStringArray = []
@@ -39,6 +52,7 @@ var _wait := 0
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	position = Vector2(DesignTokens.DIALOGUE_POSITION)
 	size = Vector2(DesignTokens.DIALOGUE_SIZE)
 	visible = false
 
@@ -67,10 +81,10 @@ static func wrap_text(text: String) -> PackedStringArray:
 	return out
 
 
-## Muestra una línea de diálogo. `side` decide dónde va la caja; el retrato
-## queda siempre en el lado exterior.
+## Muestra una línea de diálogo. `from` decide de qué lado va el retrato: los de
+## casa a la izquierda, los de fuera a la derecha.
 func show_line(who: String, text: String, from: int, face: Texture2D = null,
-		who_color: Color = DesignTokens.TEXT_SECONDARY) -> void:
+		who_color: Color = DesignTokens.TV_TEXT_ON_SLATE) -> void:
 	speaker = who
 	side = from
 	portrait = face
@@ -79,10 +93,6 @@ func show_line(who: String, text: String, from: int, face: Texture2D = null,
 	total_chars = 0
 	for l in lines:
 		total_chars += l.length()
-	var screen := get_viewport_rect().size
-	var x := DesignTokens.DIALOGUE_MARGIN if side == Side.LEFT \
-		else int(screen.x) - DesignTokens.DIALOGUE_MARGIN - DesignTokens.DIALOGUE_SIZE.x
-	position = Vector2(x, int(screen.y) - DesignTokens.DIALOGUE_MARGIN - DesignTokens.DIALOGUE_SIZE.y)
 	visible = true
 	if DesignTokens.reduced_motion or not typewriter_enabled:
 		visible_chars = total_chars
@@ -140,50 +150,69 @@ func _char_at(index: int) -> String:
 	return ""
 
 
-## Rectángulo del retrato y origen del texto, dentro de la caja.
+## El marco del retrato, dentro de la caja.
+func portrait_frame() -> Rect2:
+	var inset := float(TvFrame.SLICE)
+	var x := inset if side == Side.LEFT else size.x - inset - PORTRAIT_FRAME.x
+	return Rect2(Vector2(x, inset), PORTRAIT_FRAME)
+
+
+## El retrato de 40 × 44, dentro de su marco.
 func portrait_rect() -> Rect2:
-	var p := DesignTokens.DIALOGUE_PADDING
-	var x := p if side == Side.LEFT else DesignTokens.DIALOGUE_SIZE.x - p - DesignTokens.PORTRAIT_SIZE
-	var y := (DesignTokens.DIALOGUE_SIZE.y - DesignTokens.PORTRAIT_SIZE) / 2
-	return Rect2(x, y, DesignTokens.PORTRAIT_SIZE, DesignTokens.PORTRAIT_SIZE)
+	return portrait_frame().grow(-TvFrame.SLICE)
 
 
+## La columna de texto.
 func text_rect() -> Rect2:
-	var p := DesignTokens.DIALOGUE_PADDING
-	var width := DesignTokens.DIALOGUE_SIZE.x - 2 * p - DesignTokens.PORTRAIT_SIZE - DesignTokens.PORTRAIT_GAP
-	var x := p + DesignTokens.PORTRAIT_SIZE + DesignTokens.PORTRAIT_GAP if side == Side.LEFT else p
-	return Rect2(x, p, width, DesignTokens.DIALOGUE_SIZE.y - 2 * p)
+	var inset := float(TvFrame.SLICE)
+	var width := size.x - inset * 2.0 - PORTRAIT_FRAME.x - PORTRAIT_GAP
+	var x := inset + PORTRAIT_FRAME.x + PORTRAIT_GAP if side == Side.LEFT else inset
+	return Rect2(x, inset, width, size.y - inset * 2.0)
+
+
+## La chapa con el nombre, sobre el arranque de la columna de texto.
+func tag_rect() -> Rect2:
+	var width := TvFrame.width(_font, speaker) + TAG_PAD * 2.0
+	return Rect2(text_rect().position.x, -TAG_RISE, width, TAG_HEIGHT)
+
+
+func continue_origin() -> Vector2:
+	var tr := text_rect()
+	return Vector2(tr.end.x - TvFrame.width(_font, CONTINUE), size.y - TvFrame.SLICE - 1.0)
 
 
 func _draw() -> void:
-	var box := Rect2(Vector2.ZERO, Vector2(DesignTokens.DIALOGUE_SIZE))
-	draw_rect(box, DesignTokens.PANEL_FILL)
-	draw_rect(box, DesignTokens.BORDER_IDLE, false, DesignTokens.BORDER_WIDTH)
-	var pr := portrait_rect()
+	TvFrame.draw(self, TvFrame.TEXTBOX, Rect2(Vector2.ZERO, size))
+	draw_rect(LEAF, DesignTokens.TV_ECO_4)
+	TvFrame.draw(self, TvFrame.PORTRAIT, portrait_frame())
 	if portrait != null:
-		draw_texture_rect(portrait, pr, false)
-	else:
-		draw_rect(pr, DesignTokens.PANEL_FILL_DEEP)
+		draw_texture_rect_region(portrait, portrait_rect(), _portrait_region())
+	_draw_tag()
 	var tr := text_rect()
-	var line_h := DesignTokens.LINE_HEIGHT
-	var size_px := DesignTokens.FONT_SIZE_BODY
-	var ascent := _font.get_ascent(size_px)
-	draw_string(_font, tr.position + Vector2(0, ascent), speaker, HORIZONTAL_ALIGNMENT_LEFT, -1,
-		size_px, name_color)
 	var left := visible_chars
 	for i in lines.size():
 		var shown := lines[i].substr(0, clampi(left, 0, lines[i].length()))
 		left -= lines[i].length()
-		draw_string(_font, tr.position + Vector2(0, line_h * (i + 1) + ascent), shown,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, size_px, DesignTokens.TEXT_PRIMARY)
+		TvFrame.paper_text(self, _font, Vector2(tr.position.x, FIRST_BASELINE + LINE_GAP * i), shown)
 	if is_complete():
-		draw_string(_font, continue_origin() + Vector2(0, ascent), CONTINUE,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, size_px, DesignTokens.EMBER_300)
+		draw_string(_font, continue_origin(), CONTINUE, HORIZONTAL_ALIGNMENT_LEFT, -1,
+			DesignTokens.FONT_SIZE_BODY, DesignTokens.TV_RUST_2)
 
 
-## Dónde va el ▼: en el hueco de 8 px justo a la derecha de la columna de
-## texto, a la altura de la última línea. Dentro de la columna taparía la
-## última letra de una línea de 40 caracteres.
-func continue_origin() -> Vector2:
-	var tr := text_rect()
-	return Vector2(tr.end.x + 1, tr.position.y + DesignTokens.LINE_HEIGHT * DesignTokens.DIALOGUE_LINES)
+## Chapa `eco` con el nombre en blanco. Quien sirve a la Compañía (Rasgo) la lleva
+## en pizarra con su nombre en fuego: sobre `eco` no se leería, y `eco` significa
+## lo purificado.
+func _draw_tag() -> void:
+	var tag := tag_rect()
+	var plain := name_color == DesignTokens.TV_TEXT_ON_SLATE
+	TvFrame.draw(self, TvFrame.TAG if plain else TvFrame.PLATE, tag)
+	TvFrame.text(self, _font, tag.position + Vector2(TAG_PAD, TAG_BASELINE), speaker, name_color,
+		DesignTokens.TV_ECO_1 if plain else DesignTokens.TV_UI_0)
+
+
+## Qué parte del retrato cabe en 40 × 44: los retratos de 48 × 48 se recortan por
+## el centro y por abajo, sin escalar.
+func _portrait_region() -> Rect2:
+	var tex_size := portrait.get_size()
+	var wanted := portrait_rect().size
+	return Rect2(Vector2(roundf((tex_size.x - wanted.x) * 0.5), 0.0), wanted)

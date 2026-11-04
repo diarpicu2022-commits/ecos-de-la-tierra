@@ -53,6 +53,7 @@ var _talk := {}
 ## Zona -> conversación que abre sola la primera vez que se entra (Yara de
 ## lejos, por el ave).
 var _on_enter := {}
+var _on_start := {}
 var _held_monster: MapMonster = null
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
@@ -103,6 +104,7 @@ func _ready() -> void:
 	var talk = JSON.parse_string(FileAccess.get_file_as_string("res://data/dialogue/talk.json"))
 	_talk = talk["talk"] if talk is Dictionary else {}
 	_on_enter = talk.get("on_enter", {}) if talk is Dictionary else {}
+	_on_start = talk.get("on_start", {}) if talk is Dictionary else {}
 	dialogue.finished.connect(_on_dialogue_finished)
 	entities.y_sort_enabled = true
 	add_child(ambient)
@@ -349,6 +351,19 @@ func _spawn_monster(id: String, lines: PackedStringArray, blocked: Dictionary) -
 func _on_contact(advantage: MapMonster.Advantage) -> void:
 	body.input_enabled = false
 	encounter.emit(advantage)
+
+
+## La escena con la que empieza la partida, si la zona tiene y no se ha oído
+## (`on_start` de `talk.json`). Devuelve su id o "".
+func try_opening_talk() -> String:
+	var id: String = _on_start.get(zone_id, "")
+	var state := get_node_or_null("/root/GameState")
+	if id.is_empty() or dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return ""
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return id
 
 
 ## Intenta hablar con lo que Ilan tiene delante. Devuelve el id de la

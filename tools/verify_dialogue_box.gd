@@ -1,24 +1,22 @@
 extends Node2D
 
-## Prueba de la caja de diálogo (contrato «Columna», paso 2), en el motor y a
-## 480 × 270:
+## Prueba de la caja de diálogo (`components/DialogBox`), en el motor y a 640 × 360:
 ##
 ##   godot --path . res://tools/verify_dialogue_box.tscn
 ##
-## - Geometría: 312 × 52, a 8 px abajo, a la izquierda (x = 8) o a la derecha
-##   (x = 160); el retrato en el lado exterior; 240 px de texto; el ▼ fuera de
-##   la columna de texto y del retrato.
-## - Texto: partido por palabras en ≤ 40 caracteres; las líneas no cambian
-##   mientras se escribe; ninguna línea pasa de 240 px medida con la fuente.
+## - Geometría: 616 × 76 en (12, 276); el retrato de 40 × 44 en su marco, a un lado
+##   o al otro; la chapa asoma por encima sin salirse; nada se pisa.
+## - Texto: partido por palabras en ≤ DIALOGUE_CHARS caracteres; las líneas no
+##   cambian mientras se escribe; ninguna se sale de la columna de texto.
 ## - Ritmo: cuadros hasta completar = los esperados por DUR_TYPE_CHAR y
 ##   DUR_TYPE_PAUSE; `confirm` completa y después avanza; con movimiento
 ##   reducido, completo en el primer cuadro.
-## - Contraste medido sobre el render: texto, nombre y nombre de Rasgo en
-##   brasa ≥ 4,5:1 sobre el panel; el ▼ ≥ 3:1.
-## Capturas en docs/ux/capturas/2026-10-28-dialogo-*.png.
+## - Contraste medido sobre el render: texto, nombre y nombre de Rasgo ≥ 4,5:1; el
+##   ▼ ≥ 3:1.
+## Capturas en docs/ux/capturas/<fecha>-dialogo-*.png.
 ## Sale con código 1 si algo falla.
 
-const OUT := "res://docs/ux/capturas/2026-10-28-dialogo-%s.png"
+const OUT := "res://docs/ux/capturas/%s-dialogo-%s.png"
 const YARA := "La tierra no enferma sola, Ilan. Alguien la exprimió durante generaciones."
 const RASGO := "La Compañía da pan a mil familias. ¿Y tú qué les das?"
 
@@ -28,7 +26,7 @@ var _box := DialogueBox.new()
 
 
 func _ready() -> void:
-	RenderingServer.set_default_clear_color(DesignTokens.ASH_950)
+	RenderingServer.set_default_clear_color(DesignTokens.TV_GRASS_3)
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	layer.add_child(_box)
@@ -53,25 +51,24 @@ func _geometry() -> void:
 	print("Geometría")
 	DesignTokens.reduced_motion = true
 	_box.show_line("Yara", YARA, DialogueBox.Side.LEFT)
-	_check("a la izquierda: %s, %s" % [_box.position, _box.size],
-		_box.position == Vector2(8, 210) and _box.size == Vector2(312, 52))
-	var pr := _box.portrait_rect()
-	var tr := _box.text_rect()
-	_check("retrato fuera a la izquierda (%s) y texto de %d px" % [pr, tr.size.x],
-		pr.position.x == 8 and pr.size == Vector2(48, 48) and tr.size.x == 240 and tr.position.x == 64)
-	_box.show_line("Rasgo", RASGO, DialogueBox.Side.RIGHT)
-	pr = _box.portrait_rect()
-	tr = _box.text_rect()
-	_check("a la derecha: %s, retrato fuera a la derecha (x = %d)" % [_box.position, pr.position.x],
-		_box.position == Vector2(160, 210) and pr.end.x == 312 - 8 and tr.position.x == 8)
+	_check("la caja: %s, %s" % [_box.position, _box.size],
+		_box.position == Vector2(12, 276) and _box.size == Vector2(616, 76)
+		and Rect2(Vector2.ZERO, Vector2(640, 360)).encloses(Rect2(_box.position, _box.size)))
+	_check("el retrato mide 40 × 44", _box.portrait_rect().size == Vector2(40, 44))
 	for s in [DialogueBox.Side.LEFT, DialogueBox.Side.RIGHT]:
 		_box.show_line("Yara", YARA, s)
-		var c := _box.continue_origin()
-		var arrow := Rect2(c, Vector2(6, 12))
-		tr = _box.text_rect()
-		_check("  el ▼ no toca el texto ni el retrato (lado %s)" % ["izquierdo", "derecho"][s],
-			arrow.position.x >= tr.end.x and not arrow.intersects(_box.portrait_rect())
-			and arrow.end.x <= _box.size.x)
+		var tr := _box.text_rect()
+		var frame := _box.portrait_frame()
+		var box := Rect2(Vector2.ZERO, _box.size)
+		var label: String = ["izquierdo", "derecho"][s]
+		_check("  lado %s: retrato y texto dentro y sin pisarse" % label,
+			box.encloses(frame) and box.encloses(tr) and not tr.intersects(frame))
+		var tag := _box.tag_rect()
+		_check("  lado %s: la chapa asoma por arriba y no se sale de la pantalla" % label,
+			tag.position.y < 0.0 and tag.end.y > 0.0 and _box.position.y + tag.position.y >= 0.0)
+		var arrow := Rect2(_box.continue_origin() - Vector2(0, 9), Vector2(7, 9))
+		_check("  lado %s: el ▼ queda dentro y sin tocar el retrato" % label,
+			box.encloses(arrow) and not arrow.intersects(frame))
 	DesignTokens.reduced_motion = false
 
 
@@ -86,9 +83,10 @@ func _wrapping() -> void:
 			ok = ok and l.length() <= DesignTokens.DIALOGUE_CHARS
 			widest = maxf(widest, font.get_string_size(l, HORIZONTAL_ALIGNMENT_LEFT, -1,
 				DesignTokens.FONT_SIZE_BODY).x)
-		_check("«%s…»: %d líneas, la más ancha %d px (≤ 240)" % [text.substr(0, 20), lines.size(), widest],
-			ok and widest <= 240)
-	_check("la frase de Yara (73 caracteres) cabe en 2 líneas", DialogueBox.wrap_text(YARA).size() == 2)
+		var room := _box.text_rect().size.x
+		_check("«%s…»: %d líneas, la más ancha %d px (≤ %d)" % [text.substr(0, 20), lines.size(), widest, room],
+			ok and widest <= room)
+	_check("la frase de Yara cabe en 2 líneas", DialogueBox.wrap_text(YARA).size() <= DesignTokens.DIALOGUE_LINES)
 
 
 func _rhythm() -> void:
@@ -113,7 +111,7 @@ func _rhythm() -> void:
 		frames += 1
 		stable = stable and _box.lines == lines
 		if frames == 20:
-			(await _shot()).save_png(ProjectSettings.globalize_path(OUT % "escribiendo"))
+			(await _shot()).save_png(ProjectSettings.globalize_path(OUT % [_day(), "escribiendo"]))
 	_check("se escribe en %d cuadros (%d esperados)" % [frames, expected], absi(frames - expected) <= 1)
 	_check("las líneas no cambian mientras se escribe", stable)
 	var got := [false]
@@ -131,32 +129,49 @@ func _rhythm() -> void:
 	DesignTokens.reduced_motion = false
 
 
-## Contraste sobre el render: el tono más presente de cada cosa contra el panel.
+## Contraste sobre el render: el tono más alejado del fondo contra ese fondo.
 func _contrast() -> void:
 	print("\nContraste medido sobre el render")
 	DesignTokens.reduced_motion = true
 	_box.show_line("Yara", YARA, DialogueBox.Side.LEFT, load("res://assets/sprites/portraits/yara_neutral.png"))
 	var left := await _shot()
-	left.save_png(ProjectSettings.globalize_path(OUT % "izquierda"))
-	var bg := _lum(DesignTokens.PANEL_FILL)
-	var tr := _box.text_rect()
+	left.save_png(ProjectSettings.globalize_path(OUT % [_day(), "izquierda"]))
+	var paper := _lum(DesignTokens.TV_PAPER)
 	var o := _box.position
-	_check("texto sobre el panel: %.1f:1 (≥ 4,5)" % _ratio(_brightest(left, Rect2(o + tr.position + Vector2(0, 12), Vector2(240, 24))), bg),
-		_ratio(_brightest(left, Rect2(o + tr.position + Vector2(0, 12), Vector2(240, 24))), bg) >= 4.5)
-	_check("nombre sobre el panel: %.1f:1 (≥ 4,5)" % _ratio(_brightest(left, Rect2(o + tr.position, Vector2(60, 12))), bg),
-		_ratio(_brightest(left, Rect2(o + tr.position, Vector2(60, 12))), bg) >= 4.5)
-	var c := o + _box.continue_origin()
-	_check("el ▼ sobre el panel: %.1f:1 (≥ 3)" % _ratio(_brightest(left, Rect2(c, Vector2(7, 12))), bg),
-		_ratio(_brightest(left, Rect2(c, Vector2(7, 12))), bg) >= 3.0)
+	var tr := _box.text_rect()
+	var ratio := _ratio(_darkest(left, Rect2(o + Vector2(tr.position.x, 24), Vector2(tr.size.x - 12, 26))), paper)
+	_check("texto sobre el papel: %.1f:1 (≥ 4,5)" % ratio, ratio >= 4.5)
+	ratio = _ratio(_darkest(left, Rect2(o + _box.continue_origin() - Vector2(0, 9), Vector2(7, 9))), paper)
+	_check("el ▼ sobre el papel: %.1f:1 (≥ 3)" % ratio, ratio >= 3.0)
+	var tag := Rect2(o + _box.tag_rect().position + Vector2(_box.TAG_PAD, 4), Vector2(20, 9))
+	ratio = _ratio(_brightest(left, tag), _lum(_fill("tag")))
+	_check("nombre sobre su chapa: %.1f:1 (≥ 4,5)" % ratio, ratio >= 4.5)
 	_box.show_line("Rasgo", RASGO, DialogueBox.Side.RIGHT, load("res://assets/sprites/portraits/rasgo_neutral.png"),
-		DesignTokens.EMBER_400)
+		DesignTokens.TV_FIRE_4)
 	var right := await _shot()
-	right.save_png(ProjectSettings.globalize_path(OUT % "derecha-rasgo"))
-	o = _box.position
-	tr = _box.text_rect()
-	_check("nombre de Rasgo en brasa: %.1f:1 (≥ 4,5)" % _ratio(_brightest(right, Rect2(o + tr.position, Vector2(60, 12))), bg),
-		_ratio(_brightest(right, Rect2(o + tr.position, Vector2(60, 12))), bg) >= 4.5)
+	right.save_png(ProjectSettings.globalize_path(OUT % [_day(), "derecha-rasgo"]))
+	tag = Rect2(o + _box.tag_rect().position + Vector2(_box.TAG_PAD, 4), Vector2(20, 9))
+	ratio = _ratio(_brightest(right, tag), _lum(_fill("plate")))
+	_check("nombre de Rasgo en fuego: %.1f:1 (≥ 4,5)" % ratio, ratio >= 4.5)
 	DesignTokens.reduced_motion = false
+
+
+func _day() -> String:
+	return Time.get_date_string_from_system()
+
+
+## El relleno de un marco: el píxel del centro de su imagen.
+func _fill(frame: String) -> Color:
+	var img: Image = (load(TvFrame.DIR + frame + ".png") as Texture2D).get_image()
+	return img.get_pixel(img.get_width() / 2, img.get_height() / 2)
+
+
+func _darkest(img: Image, r: Rect2) -> float:
+	var best := 1.0
+	for y in range(int(r.position.y), int(r.end.y)):
+		for x in range(int(r.position.x), int(r.end.x)):
+			best = minf(best, _lum(img.get_pixel(x, y)))
+	return best
 
 
 func _shot() -> Image:

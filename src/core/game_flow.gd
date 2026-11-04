@@ -30,6 +30,8 @@ const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 
 @export var start_zone := "valdehoja"
 @export var start_cell := Vector2i(9, 25)
+## La partida de verdad abre con la llamada de Yara. Las pruebas no la quieren.
+@export var play_opening := false
 
 var world := WorldRoot.new()
 var blinds := BattleBlinds.new()
@@ -64,6 +66,9 @@ func _ready() -> void:
 	_on_zone_changed(world.zone_id)
 	GameAudio.start_ambient(_cell_is_alive())
 	GameAudio.play_music("music_world")
+	if play_opening:
+		await get_tree().process_frame
+		world.try_opening_talk()
 
 
 func _on_zone_changed(zone_id: String) -> void:

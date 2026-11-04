@@ -2,7 +2,7 @@ class_name DialogueRunner
 extends CanvasLayer
 
 ## Lleva una conversación de `data/dialogue/<id>.json` línea a línea sobre una
-## `DialogueBox` (contrato «Columna»). Cada línea dice quién habla y con qué
+## `DialogueBox` (`components/DialogBox`). Cada línea dice quién habla y con qué
 ## expresión; el lado, el nombre y su color salen de `voices.json`. Avanza solo
 ## con `confirm`, y al terminar cierra la caja y emite `finished`.
 
@@ -10,6 +10,9 @@ signal finished(conversation_id: String)
 
 const DATA := "res://data/dialogue/"
 const PORTRAITS := "res://assets/sprites/portraits/"
+## Retratos del sistema, de PixelLab (`tools/gen_tierra_viva_portraits.py`): se
+## buscan primero. Yara y Rasgo aún no tienen.
+const SYSTEM_PORTRAITS := "res://assets/sprites/portraits/tierra_viva/"
 
 var box := DialogueBox.new()
 var conversation := ""
@@ -54,15 +57,17 @@ func _next() -> void:
 	var line: Dictionary = _lines[index]
 	var voice: Dictionary = _voices.get(line["who"], {})
 	var side: int = DialogueBox.Side.RIGHT if voice.get("side", "left") == "right" else DialogueBox.Side.LEFT
-	var face: Texture2D = load(PORTRAITS + "%s_%s.png" % [line["who"], line["mood"]])
+	var system_face: String = SYSTEM_PORTRAITS + "%s.png" % line["who"]
+	var face: Texture2D = load(system_face if ResourceLoader.exists(system_face)
+		else PORTRAITS + "%s_%s.png" % [line["who"], line["mood"]])
 	box.show_line(voice.get("name", line["who"]), line["text"], side, face, name_color(voice))
 
 
-## Color del nombre (contrato §1): brasa mientras la voz sirve a la Compañía,
-## ceniza cuando la bandera `ember_until` de `GameState` dice que la dejó.
+## Color del nombre: fuego mientras la voz sirve a la Compañía,
+## blanco cuando la bandera `ember_until` de `GameState` dice que la dejó.
 func name_color(voice: Dictionary) -> Color:
 	if voice.get("name_color", "") != "ember":
-		return DesignTokens.TEXT_SECONDARY
+		return DesignTokens.TV_TEXT_ON_SLATE
 	var state := get_node_or_null("/root/GameState")
 	var left: bool = state != null and voice.has("ember_until") and bool(state.flag(voice["ember_until"]))
-	return DesignTokens.TEXT_SECONDARY if left else DesignTokens.EMBER_400
+	return DesignTokens.TV_TEXT_ON_SLATE if left else DesignTokens.TV_FIRE_4

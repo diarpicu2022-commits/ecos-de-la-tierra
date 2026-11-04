@@ -5,8 +5,8 @@ extends Node
 ##   godot --path . res://tools/verify_dialogue_states.tscn
 ##
 ## - **Rasgo, brasa y ceniza:** sin la bandera `rasgo_left_company` su nombre
-##   sale en EMBER_400; con ella, en TEXT_SECONDARY. Se mide el color del
-##   nombre sobre el render y su contraste con el panel (≥ 4,5:1).
+##   sale en TV_FIRE_4 sobre pizarra; con ella, en blanco sobre su chapa. Se mide
+##   el color del nombre sobre el render y su contraste con la chapa (≥ 4,5:1).
 ## - **Yara a distancia:** al cruzar de Valdehoja al Bosque, tras el fundido,
 ##   se abre sola «yara_ave_bosque» con el retrato del ave, a la izquierda;
 ##   Ilan y el monstruo se paran; al terminar vuelven, y no se repite.
@@ -56,13 +56,15 @@ func _rasgo(world: WorldRoot) -> void:
 		var box := world.dialogue.box
 		var img := await _shot()
 		img.save_png(ProjectSettings.globalize_path(OUT % ("rasgo-ceniza" if left else "rasgo-brasa")))
-		var want := DesignTokens.TEXT_SECONDARY if left else DesignTokens.EMBER_400
-		var name_rect := Rect2(box.position + box.text_rect().position, Vector2(30, 12))
+		var want := DesignTokens.TV_TEXT_ON_SLATE if left else DesignTokens.TV_FIRE_4
+		var name_rect := Rect2(box.position + box.tag_rect().position + Vector2(box.TAG_PAD, 4),
+			Vector2(25, 9))
 		var got := _brightest(img, name_rect)
-		var ratio := _ratio(_lum(got), _lum(DesignTokens.PANEL_FILL))
+		var chip: Image = (load(TvFrame.DIR + ("tag" if left else "plate") + ".png") as Texture2D).get_image()
+		var ratio := _ratio(_lum(got), _lum(chip.get_pixel(chip.get_width() / 2, chip.get_height() / 2)))
 		_check("%s: el nombre sale en %s (medido %s) y contrasta %.1f:1 (≥ 4,5)" % [
 			"dejó la Compañía" if left else "sirve a la Compañía",
-			"TEXT_SECONDARY" if left else "EMBER_400", got.to_html(false), ratio],
+			"blanco" if left else "TV_FIRE_4", got.to_html(false), ratio],
 			got.is_equal_approx(want) and ratio >= 4.5 and box.side == DialogueBox.Side.RIGHT)
 		while world.dialogue.is_running():
 			box.confirm()

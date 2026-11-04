@@ -3,6 +3,9 @@
 	"talk": {
 		"valdehoja:person": "yara_inicio"
 	},
+	"on_start": {
+		"valdehoja": "yara_llamada"
+	},
 	"on_enter": {
 		"ashen_forest": "yara_ave_bosque"
 	}
