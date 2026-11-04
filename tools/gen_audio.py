@@ -132,6 +132,22 @@ def effects(rng) -> dict[str, np.ndarray]:
     }
 
 
+def combat_effects(rng) -> dict[str, np.ndarray]:
+    """Combate de acción en el mapa (contrato «Tajo»). Cada acción suena distinta
+    para que se distinga sin mirar, pero ninguna dice algo que no se vea."""
+    return {
+        # Tajo: aire cortado, del agudo al grave, corto.
+        "slash": 0.7 * noise(rng, 0.14, 1500, 7000) * env(times(0.14), 0.01, 0.12)
+                 + 0.3 * sweep(1800, 500, 0.14, 12),
+        # Esquiva: soplo más grave y largo que el tajo.
+        "dodge": 0.6 * noise(rng, 0.22, 300, 2500) * env(times(0.22), 0.05, 0.16),
+        # Cambio de héroe: dos notas que suben, como abrir paso.
+        "swap": seq([(pluck(note(7, 440.0), 0.18), 0.0), (pluck(note(12, 440.0), 0.22), 0.06)], 0.3),
+        # Aturdido: campana sostenida con trémolo, la cuenta atrás de la ventana.
+        "stun": tone(note(3, 440.0), 0.7, 3) * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * times(0.7))),
+    }
+
+
 # --- ambiente --------------------------------------------------------------------
 
 def wind(rng) -> np.ndarray:
@@ -242,6 +258,9 @@ def main() -> int:
     write("amb_life", life(rng), True)
     write("music_world", music_world(rng), True)
     write("music_battle", music_battle(rng), True)
+    # Semilla aparte: los audios de arriba siguen saliendo con los mismos bytes.
+    for name, sig in combat_effects(np.random.default_rng(SEED + 1)).items():
+        write(name, sig, False)
     return 0
 
 

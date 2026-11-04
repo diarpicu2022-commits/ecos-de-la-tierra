@@ -174,7 +174,7 @@ func attack() -> bool:
 	if _attack_cooldown > 0 or dodging or foe == Foe.PURIFIED:
 		return false
 	_attack_cooldown = _frames(DesignTokens.DUR_HERO_ATTACK)
-	GameAudio.play("ui_confirm")
+	GameAudio.play("slash")
 	_ground.slash()
 	if not _in_reach(DesignTokens.MONSTER_BODY_RADIUS + DesignTokens.HERO_REACH):
 		return false
@@ -215,7 +215,7 @@ func use_eco() -> bool:
 		_enter(Foe.STUNNED)
 		var dealt := monster.take_damage(skill.calculate_damage(h), skill.weakness_type)
 		hud.number(monster_feet(), str(dealt), DesignTokens.TV_GOLD_4)
-		GameAudio.play("hit")
+		GameAudio.play("stun")
 		toast.emit(PackedStringArray([
 			"%s frena a %s. ¡Está aturdido!" % [skill.display_name, monster.display_name],
 			"Úsala otra vez antes de que se rehaga."]))
@@ -230,7 +230,7 @@ func dodge() -> bool:
 	_dodge_frames = _frames(DesignTokens.DUR_DODGE)
 	_dodge_cooldown = _frames(DesignTokens.DUR_DODGE_COOLDOWN)
 	world.body.input_enabled = false
-	GameAudio.play("ui_move")
+	GameAudio.play("dodge")
 	return true
 
 
@@ -260,7 +260,7 @@ func swap(direction: int) -> bool:
 		return false
 	active = next
 	_apply_sheet()
-	GameAudio.play("ui_confirm")
+	GameAudio.play("swap")
 	return true
 
 
