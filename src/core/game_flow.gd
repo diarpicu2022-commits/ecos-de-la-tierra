@@ -198,6 +198,9 @@ func _start_action(adv: MapMonster.Advantage) -> void:
 	GameAudio.play_music("music_battle")
 	GameAudio.set_in_battle(true)
 	world.label.visible = false
+	# El contacto para a Ilan (WorldRoot._on_contact), como necesita la
+	# persiana. Aquí se pelea en el mapa: Ilan tiene que seguir moviéndose.
+	world.body.input_enabled = true
 	_enemy = Encounters.build_monster(index)
 	add_child(_enemy)
 	action = ActionCombat.new()
