@@ -71,6 +71,38 @@ func _ready() -> void:
 	_check("empieza Ilan, con su habilidad de DESHIELO",
 		a.hero().display_name == "Ilan" and a.eco_skill().weakness_type == Enums.EcoType.THAW)
 
+	print("\nSe pelea moviéndose, por el camino real del contacto")
+	a.running = false
+	flow._on_action_finished(Enums.BattleResult.FLED)
+	for i in 180:
+		if flow.action == null:
+			break
+		await get_tree().physics_frame
+	flow.world.monster.grace_frames = 0
+	_close_in()
+	flow.world._on_contact(MapMonster.Advantage.PLAYER)
+	await _frames(2)
+	a = flow.action
+	_check("tras el contacto, Ilan sigue aceptando el teclado", a != null and flow.world.body.input_enabled)
+	var from := flow.world.body.global_position
+	Input.action_press("move_left")
+	await _frames(20)
+	Input.action_release("move_left")
+	var moved := from.x - flow.world.body.global_position.x
+	_check("con la flecha se mueve en plena pelea (%.0f px)" % moved, moved >= 10.0)
+	_close_in()
+	a._attack_cooldown = 0
+	var cooldown_before := a._attack_cooldown
+	var press := InputEventAction.new()
+	press.action = "attack"
+	press.pressed = true
+	Input.parse_input_event(press)
+	await _frames(2)
+	var release := InputEventAction.new()
+	release.action = "attack"
+	Input.parse_input_event(release)
+	_check("la tecla de ataque responde en plena pelea", a._attack_cooldown > cooldown_before)
+
 	print("\nLa fuerza bruta no gana")
 	var regen := [0]
 	a.monster.regenerated.connect(func(_hp): regen[0] += 1)
