@@ -43,6 +43,12 @@ válidos:
 ## Punto de retome
 
 > **2026-11-03. Reparto del trabajo entre Juan José y Diego: §3.2 de la guía.**
+>
+> **2026-11-03, noche. Primera escena de historia integrada** (rama de Diego
+> `parte-5/anexo` y caja del sistema): Yara llama por el ave al empezar, cuenta lo que
+> pasa en su jardín y vuelve a hablar al entrar en el Bosque. **Falta que Diego confirme
+> la caja**: `docs/ux/anexos/2026-10-28-dialogos.md`, «Enmienda propuesta». Sigue la
+> parte 5 en la guía §4.7.
 > Menú del turno hecho, con cuatro entradas y la orden en Tab (rama `rediseno/combate-menu`). Antes de la presentación falta la comprobación general.
 >
 > **2026-11-01. Guía del equipo: `docs/guia-del-equipo.md`** (lo que falta, en orden).

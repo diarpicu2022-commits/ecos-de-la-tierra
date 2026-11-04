@@ -1,0 +1,8 @@
+{
+	"_doc": "Al entrar por primera vez en el Bosque de las Cenizas: Yara habla de lejos, por el ave mensajera (enmienda 1). Muestra del estado «a distancia».",
+	"lines": [
+		{"who": "yara_ave", "mood": "neutral", "text": "Ilan, te oigo por el ave. No estás solo ahí dentro."},
+		{"who": "yara_ave", "mood": "alerta", "text": "La ceniza está tibia. Algo grande ronda la fuente."},
+		{"who": "ilan", "mood": "determinado", "text": "Entonces la limpiaré antes de que se enfríe."}
+	]
+}

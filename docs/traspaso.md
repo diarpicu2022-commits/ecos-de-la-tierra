@@ -95,6 +95,8 @@ Las capturas necesitan ventana: `xvfb-run -a $GODOT --path . res://tools/<x>_cap
 - **2026-11-03, reparto:** el trabajo que falta queda repartido entre Juan José y Diego en la §3.2 de la guía. Esa sección manda sobre el «sigue el compañero» de la línea anterior.
 - **Menú del turno hecho** (2026-11-03, rama `rediseno/combate-menu`), con el visto bueno de Diego: `CommandMenu` de 2 × 2 con LUCHAR, ECO, BOLSA y HUIR, y la orden en Tab. `verify_usability` 28/28, `verify_party_ai` 34/34 y `verify_flow` 34/34. La comprobación general queda para el final.
 
+- **Historia, primera escena** (2026-11-03): integrada la rama `parte-5/anexo` con la caja `DialogBox` del sistema. Falta que Diego lo confirme (guía §3.2).
+
 ## 3. Lista de trabajo, en orden
 
 Cada tarea termina con verificación medida y parada para el visto bueno.
