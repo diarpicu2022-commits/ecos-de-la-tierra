@@ -201,9 +201,9 @@ terminar una fila, se marca HECHO con la fecha y el commit.
 | 8 | Filas del grupo | `party_member_hud.gd` | `components/PartyRow` (456, 196), 176 px, 27 px | HECHO 2026-11-02 |
 | 9 | Menú del turno | `action_menu.gd` | `components/CommandMenu`: 2 × 2 en (432, 284), 100 × 30, LUCHAR / ECO / BOLSA / HUIR | HECHO 2026-11-03, con el visto bueno de Diego |
 | 10 | Mensaje del combate | `battle_screen.gd` (`_draw_message`) | `components/DialogBox`: papel con marco de madera | HECHO 2026-11-03 |
-| 11 | Chapas de tipo y estado | (no existen) | `components/TypeBadge` | ver §4.0 |
+| 11 | Chapas de tipo y estado | `monster_view.gd`, `TvFrame.badge` | `components/TypeBadge`: en la placa y en los menús de habilidades | En la placa, HECHO (PR #30). Falta en el menú de habilidades (`action_menu.gd`, de Diego) |
 | 12 | Cola de turnos | `turn_order_strip.gd` | **No está en el sistema**: se pregunta a Diego si se quita | pendiente de decisión |
-| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | ver §4.0 |
+| 13 | Cifras de daño | `damage_numbers.gd` | README §Movimiento: doble tamaño, `~` si se rehace | HECHO 2026-11-03 |
 | 14 | Pantalla de resultado | `result_overlay.gd` | pizarra o papel del sistema, titular de 22 px | HECHO 2026-11-03 |
 | 15 | Cartel de lugar | `src/world/place_label.gd` | `components/LocationSign`: madera con clavos | HECHO 2026-11-03 (contraste 3,22:1, pendiente de Diego) |
 | 16 | Selector de región | `src/ui/region_select.gd` | `components/Regiones` | §4.12 |
@@ -271,6 +271,19 @@ Cada una abre su anexo y espera la elección de Diego antes de programar.
 4. Personajes en PixelLab, fila 20 y Yara.
 5. Puzzles, menú, título, audio definitivo y final, partes 7, 8, 10, 11 y 12.
 6. Prueba con personas, cuando exista el combate nuevo.
+
+**Cambio del 2026-11-03, por la noche: Juan José adelanta la primera escena de
+historia. Falta que Diego lo confirme.** Quedó en su lista de después de la
+presentación (§4.7), pero la historia es lo que más le falta al juego. Se integró
+la rama `parte-5/anexo` (ya no hace falta fusionarla) y se añadió solo esto:
+- La llamada de Yara por el ave al empezar (`data/dialogue/yara_llamada.json`,
+  texto nuevo) y la conversación del jardín y la del Bosque, que ya estaban.
+- La caja `DialogBox` del sistema en lugar de la del contrato «Columna». **Es la
+  decisión que §4.7 dejaba a Diego.** Se hizo como propuesta: si prefiere otra cosa,
+  el dibujo está aislado en `src/ui/dialogue/dialogue_box.gd`.
+- **No se hizo:** Rasgo en el juego, IA-3, IA-6, ni el Fragmento del Vínculo. Sigue
+  siendo de Diego (§4.7), y la progresión, de Juan José.
+- Detalle en `docs/ux/anexos/2026-10-28-dialogos.md`, «Enmienda propuesta».
 
 **Para no pisarnos:**
 
@@ -531,6 +544,9 @@ Sistema de diseño: `components/ActionHUD`, `PartyRow`, `LocationSign`,
    sobre el render), foco visible y teclado completo.
 
 ### 4.7 Parte 5: diálogos y retratos
+
+**Estado (2026-11-03):** integrada en `rediseno/terreno` la primera escena, con la
+caja del sistema (ver §3.2). Falta que Diego confirme la caja y lo que sigue abajo.
 
 Rama `parte-5/anexo`: caja de diálogo, retratos de las siete voces,
 conversación con Yara, Rasgo en brasa o ceniza y Yara por el ave. **Antes de

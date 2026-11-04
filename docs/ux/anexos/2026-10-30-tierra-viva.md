@@ -1426,3 +1426,24 @@ cuadros y quedan por revisar.
 - No se midió con personas, ni se oyó el sonido. `ui_denied` se comprobó por el
   sonido cargado en la voz. Tampoco se midió la apertura animada con
   `reduced_motion`.
+
+#### Combate con el sistema de diseño: las cifras de daño y las chapas · 2026-11-03
+
+Tareas de Juan José en el reparto de Diego (guía del equipo §3.2). Filas 13 y 11 del
+inventario.
+
+- **`DamageNumbers`** escribe las cifras a doble tamaño (`FONT_SIZE_TITLE`, 22 px),
+  con `~` si el monstruo se lo quita de encima. No se salen de la pantalla y el
+  abanico se reparte por objetivo: antes empujaba también cifras de otro personaje.
+- **Fallo visto en la captura y corregido:** las cifras del monstruo quedaban detrás
+  de su sprite, porque las vistas llevan `z_index` propio. Ahora van delante
+  (`FRONT_Z`), por debajo de la pantalla de resultado.
+- **Sin cambiar, a propósito:** los 260 ms de `DUR_DAMAGE_NUMBER` (el sistema no fija
+  duración para las cifras) y sus colores, que se eligen en `battle_screen.gd`,
+  compartido. Son `EMBER_*` y `ASH_*`, de la identidad anterior. **Para Diego.**
+- **Chapas (fila 11):** están en la placa desde el PR #30, pero `TypeBadge` también
+  las pide en los menús de habilidades y `action_menu.gd` no las usa. Ese archivo es
+  de Diego, así que la fila no se cierra. **Para Diego.**
+- **Medido:** `tools/verify_numbers.tscn` 12/12; usability 28, flow 34 y party_ai 34.
+- **Captura a 640 × 360:** `docs/ux/capturas/2026-11-03-cifras-ashen_forest.png`,
+  montada por la prueba con las cifras congeladas.

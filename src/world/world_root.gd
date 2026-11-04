@@ -46,6 +46,15 @@ var label := PlaceLabel.new()
 var monster: MapMonster = null
 ## Casilla por la que se entró en la zona: adonde se vuelve tras una derrota.
 var arrival_cell := Vector2i.ZERO
+## Diálogo en el mundo (contrato «Columna»): mirando a una persona, `confirm`
+## abre su conversación de `data/dialogue/talk.json`.
+var dialogue := DialogueRunner.new()
+var _talk := {}
+## Zona -> conversación que abre sola la primera vez que se entra (Yara de
+## lejos, por el ave).
+var _on_enter := {}
+var _on_start := {}
+var _held_monster: MapMonster = null
 
 ## Estado del fundido y opacidad de la cortina, 0 a 1. Las leen las pruebas.
 var fade := Fade.NONE
@@ -91,6 +100,12 @@ func _ready() -> void:
 	curtain.modulate.a = 0.0
 	fade_layer.add_child(curtain)
 	add_child(fade_layer)
+	add_child(dialogue)
+	var talk = JSON.parse_string(FileAccess.get_file_as_string("res://data/dialogue/talk.json"))
+	_talk = talk["talk"] if talk is Dictionary else {}
+	_on_enter = talk.get("on_enter", {}) if talk is Dictionary else {}
+	_on_start = talk.get("on_start", {}) if talk is Dictionary else {}
+	dialogue.finished.connect(_on_dialogue_finished)
 	entities.y_sort_enabled = true
 	add_child(ambient)
 	add_child(solids)
@@ -338,6 +353,74 @@ func _on_contact(advantage: MapMonster.Advantage) -> void:
 	encounter.emit(advantage)
 
 
+## La escena con la que empieza la partida, si la zona tiene y no se ha oído
+## (`on_start` de `talk.json`). Devuelve su id o "".
+func try_opening_talk() -> String:
+	var id: String = _on_start.get(zone_id, "")
+	var state := get_node_or_null("/root/GameState")
+	if id.is_empty() or dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return ""
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return id
+
+
+## Intenta hablar con lo que Ilan tiene delante. Devuelve el id de la
+## conversación abierta, o "" si no hay nadie con quien hablar.
+func try_talk() -> String:
+	if dialogue.is_running() or fade != Fade.NONE or not body.input_enabled:
+		return ""
+	var front := MapMonster.cell_of(Vector2i(body.global_position)) + body.facing
+	for child in entities.get_children():
+		if not (child is Sprite2D and child.has_meta("decor_id")):
+			continue
+		var feet := Vector2i(child.position)
+		if MapMonster.cell_of(feet) != front:
+			continue
+		var key := "%s:%s" % [zone_id, child.get_meta("decor_id")]
+		if _talk.has(key):
+			_open_dialogue(_talk[key])
+			return _talk[key]
+	return ""
+
+
+## La conversación de llegada de la zona, si no se ha oído. Devuelve su id o "".
+func try_arrival_talk() -> String:
+	var id: String = _on_enter.get(zone_id, "")
+	var state := get_node_or_null("/root/GameState")
+	if id.is_empty() or dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return ""
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return id
+
+
+## Mientras se habla, ni Ilan ni el monstruo se mueven.
+## Solo se reactiva el monstruo que paró la conversación, no uno que ya
+## estaba parado por el combate o la huida.
+func _open_dialogue(id: String) -> void:
+	body.input_enabled = false
+	_held_monster = monster if monster != null and monster.active else null
+	if _held_monster != null:
+		_held_monster.active = false
+	dialogue.start(id)
+
+
+func _on_dialogue_finished(_id: String) -> void:
+	body.input_enabled = true
+	if is_instance_valid(_held_monster):
+		_held_monster.active = true
+	_held_monster = null
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("confirm") and not dialogue.is_running():
+		if try_talk() != "":
+			get_viewport().set_input_as_handled()
+
+
 ## Pies del cuerpo de pie en `cell`: centro de la base de la casilla.
 static func feet_of(cell: Vector2i) -> Vector2i:
 	var t := DesignTokens.TILE_SIZE
@@ -354,6 +437,7 @@ func _physics_process(_delta: float) -> void:
 				* Engine.physics_ticks_per_second)
 			if _fade_frames == 0:
 				enter_zone(exit["to"], ZoneRules.cell_of(exit, "to_cell"))
+				try_arrival_talk()
 				return
 			_pending = exit
 			body.input_enabled = false
@@ -371,6 +455,7 @@ func _physics_process(_delta: float) -> void:
 			if _fade_frame >= _fade_frames:
 				curtain.modulate.a = 0.0
 				_start(Fade.NONE)
+				try_arrival_talk()
 
 
 func _start(f: Fade) -> void:

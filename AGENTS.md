@@ -1,5 +1,17 @@
 # Ecos de la Tierra — instrucciones para quien continúe el proyecto
 
+## Instrucción vigente de Diego para Juan José (2026-11-03)
+
+Esto manda sobre el reparto de `docs/guia-del-equipo.md` §3.2 hasta la presentación del 2026-11-04. Por tiempo presentamos una demo hasta el primer jefe. Lo demás queda en `docs/plan-para-terminar-la-historia.md`, que hay que leer antes de seguir.
+
+Si estás ayudando a Juan José:
+
+1. Las cifras de daño y la pantalla de resultado ya entraron con los PR #44, #45 y #46. No hay que hacer nada más ahí.
+2. No cambies `src/` ni `data/` hasta que Diego avise. Diego está montando la demo y tocando `world_root.gd`, `game_flow.gd`, `battle_screen.gd`, `exits.json` y Valdehoja, y un cambio paralelo chocaría.
+3. Espera el aviso de Diego de que la demo ya está en `master`. Entonces exporta el `.exe` desde `master` siguiendo la guía §4.15 y juega completo el recorrido de la sección 1 del plan.
+4. Reporta a Diego lo que falle en ese recorrido, con captura. No lo arregles por tu cuenta sin avisarle.
+5. Progresión y guardado siguen a tu cargo, pero después de la presentación. Cada una abre su anexo y espera la elección de Diego antes de programar.
+
 RPG 2D por turnos en Godot 4 + GDScript. Proyecto de Diseño de Interfaces de
 Software: **se evalúa el criterio de diseño, no solo que funcione.**
 
