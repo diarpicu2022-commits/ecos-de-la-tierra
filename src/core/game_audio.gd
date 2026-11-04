@@ -30,7 +30,7 @@ const VOICES := 8
 
 const UI_SOUNDS := ["ui_move", "ui_confirm", "ui_cancel", "ui_denied"]
 const EFFECT_SOUNDS := ["hit", "hit_resisted", "heal", "regen", "purify", "wave", "blinds",
-	"victory", "defeat"]
+	"victory", "defeat", "slash", "dodge", "swap", "stun"]
 const LOOPS := ["amb_wind", "amb_life", "music_world", "music_battle"]
 
 var alive := false

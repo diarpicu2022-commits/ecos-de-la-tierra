@@ -23,31 +23,33 @@
 ; e = decor, ash, pisable                     ceniza
 ; g = decor, grass, pisable                   hierba alta
 ; R = decor, rock, sólido                     roca partida
+; k = decor, bush, sólido                     arbusto seco del claro
+; L = decor, felled_log, sólido, 2x1          tronco caído del claro
 ; @ = spawn, start, pisable                   llegada desde Valdehoja
 ---
-TT TTUU TT UUUU UU TTTT UU UUTT UU UUTT UU TTTT    UUUU UU TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
-TT TTUU TT UUUU UU TTTT UU UUTT UU UUTT UU TTTT    UUUU UU TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
-
-TT TTUU TT UUTT TT TTTT TT TTUU TT TTUU UU TTTT      TT TT TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU                    TTTT TT TT
-TT TTUU TT UUTT TT TTTT TT TTUU TT TTUU UU TTTT      TT TT TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU          g         TTTT TT TT
-TT TTUU TT TTUU UU UUTT TT TT              UUTT      cc cc UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
-TT TTUU TT TTUU UU UUTT TT TT UU           UUTT      cc cc UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
-                              UU     S                                                                   bb          2
-TT TTUU    TT   UU TTUU UU UU            g   cc      TT cc TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT    bb                UUUU TT TT
-TT TTUU    TT   UU TTUU UU UU                cc      TT cc TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT                      UUUU TT TT
-                                                                                                            2   2bb 2
-UU  e              R                   g                                                                 UU     Rbb   UU   TTTT UU TT
-UU                   TT TT TT              UUcc      cc               TT   ccTT cc ccTT TT ccTT cc TTcc  UU           UU   TTTT UU TT
-                     TT TT TT              UUcc      cc      e        TTt  ccTT cc ccTT TT ccTT cc TTcc      cc cc TT TT   TTTT TT TT
-     aa g   1   1       UU                              ee e                                                 cc cc TT TT   TTTT TT TT
-  e      1              UU
- @                           TT UU UUcc TT UUTT    cc      e e   e         cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
-                             TT UU UUcc TT UUTT    cc      e     e  e      cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
+TT TTUU TT UUUU                                            TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
+TT TTUU TT UUUU           TT            UU                 TTUU TT TTUU TT TTTT TT TTTT TT UUTT UU TTUU TT TTTT TT TTUU UU TTTT TT TT
+                          TT            UU
+TT TTUU TT UUTT      ggg           TT               TT     TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU                    TTTT TT TT
+TT TTUU TT UUTT     ggggg          TT               TT     TTcc cc ccUU cc ccTT cc UUcc TT TTTT TT TTUU          g         TTTT TT TT
+TT TTUU TT TTUU     gggg                                   UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
+TT TTUU TT TTUU      LL    R                               UUTT cc cccc TT TTTT UU ccTT TT ccTT UU TTTT                    TTUU UU TT
+                             t       S     k          TT                                                 bb          2
+TT TTUU    TT                            g            TT   TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT    bb                UUUU TT TT
+TT TTUU    TT                                              TTTT cc cccc TT ccTT cc cccc TT TTcc cc TT                      UUUU TT TT
+                                                    ggg                                                     2   2bb 2
+UU  e              R    k          k   g           ggggg                                                 UU     Rbb   UU   TTTT UU TT
+UU                                      R           gUUg              TT   ccTT cc ccTT TT ccTT cc TTcc  UU           UU   TTTT UU TT
+                                                     UU      e        TTt  ccTT cc ccTT TT ccTT cc TTcc      cc cc TT TT   TTTT TT TT
+     aa g   1   1                          k            ee e                                                 cc cc TT TT   TTTT TT TT
+  e      1
+ @                           k                             e e   e         cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
+                                                           e     e  e      cccc cc cccc UU TTcc TT ccTT TT TTTT UU UU TT   TTTT TT UU
                1   1                                                                                                         UU
-TT UUUU               TTUU TTTT TT ccUU UU TTUU    TTTT TT cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc        UU TT TT
-TT UUUU               TTUU TTTT TT ccUU UU TTUU    TTTT TT cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc           TT TT
-TT TTTT UU TTUU UU UUUU TT TTUU TT ccUU cc cc      TTcc cc cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
-TT TTTT UU TTUU UU UUUU TT TTUU TT ccUU cc cc      TTcc cc cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
+TT UUUU                      gggg R           t       TT   cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc        UU TT TT
+TT UUUU                     gggggg                    TT   cccc cc cccc cc cccc cc cccc cc cccc TT ccTT cc cccc cc cc           TT TT
+TT TTTT UU TTUU              ggggg                  k      cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
+TT TTTT UU TTUU        R      ggg                          cccc cc cc        cc    cccc cc cccc cc TTcc UU TTTT UU            TTTT TT
 
 TT TTUU UU TTUU TT TTTT UU TTTT TT TTUU TT cc      cccc cc cccc    e    ee   e   e   cc cc cccc cc ccTT cc UUTT cc  e           TT TT
 TT TTUU UU TTUU TT TTTT UU TTTT TT TTUU TT cc      cccc cc cccc                      cc cc cccc cc ccTT cc UUTT cc              TT TT

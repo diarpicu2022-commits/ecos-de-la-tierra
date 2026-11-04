@@ -1,0 +1,4 @@
+El juego no recoge datos de nadie. No pide cuenta, no usa internet
+y no lleva analítica ni publicidad. Esta versión no guarda la partida.
+Godot solo escribe registros técnicos en tu equipo, en la carpeta
+AppData de Godot, dentro de «Ecos de la Tierra». Nada sale de ahí.
