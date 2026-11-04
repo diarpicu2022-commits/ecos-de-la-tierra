@@ -8,5 +8,12 @@
 	},
 	"on_enter": {
 		"ashen_forest": "yara_ave_bosque"
+	},
+	"demo_closed": {
+		"valdehoja>greed_crypt": "demo_cripta",
+		"ashen_forest>tar_basin": "demo_fin"
+	},
+	"demo_after": {
+		"yara_ave_bosque": "rasgo_bosque"
 	}
 }

@@ -1,0 +1,7 @@
+{
+	"_doc": "Demo: al salir del Bosque purificado hacia la Cuenca. Mensaje aprobado por Diego el 2026-11-03.",
+	"lines": [
+		{"who": "demo", "mood": "neutral", "text": "Aquí termina la demo. El Bosque de las Cenizas vuelve a respirar,"},
+		{"who": "demo", "mood": "neutral", "text": "pero Solmira sigue enferma. Ilan y Bruma siguen hacia la Cuenca de Alquitrán."}
+	]
+}

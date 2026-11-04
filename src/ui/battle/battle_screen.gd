@@ -394,17 +394,16 @@ func _release_numbers() -> void:
 		var target: Combatant = pending["target"] as Combatant
 		var anchor: Vector2 = _anchor_for(target)
 		if bool(pending["healing"]):
-			# La curación no puede ir en verde: el verde solo significa
-			# «la causa se atajó». El hueso es el tono de lo que está sano.
+			# La curación no va en verde: el verde solo significa «la causa se atajó».
 			_numbers.spawn(anchor, "+%d" % int(pending["amount"]),
-					DesignTokens.ASH_050)
+					DesignTokens.TV_UI_6)
 		elif bool(pending["resisted"]):
 			# Golpe que el monstruo se quita de encima: apagado y con `~`.
 			# Es la regla del juego, dicha con una cifra.
 			_numbers.spawn(anchor, "~%d" % int(pending["amount"]),
-					DesignTokens.ASH_400)
+					DesignTokens.TV_UI_4)
 		else:
-			var tone: Color = DesignTokens.EMBER_400 					if target.team == Enums.Team.PLAYER 					else DesignTokens.EMBER_300
+			var tone: Color = DesignTokens.TV_RUST_4 					if target.team == Enums.Team.PLAYER 					else DesignTokens.TV_GOLD_4
 			_numbers.spawn(anchor, str(int(pending["amount"])), tone)
 	_pending_numbers.clear()
 

@@ -76,7 +76,7 @@ func _rasgo(world: WorldRoot) -> void:
 func _distance(world: WorldRoot) -> void:
 	print("\nYara a distancia, por el ave")
 	world.body.facing = Vector2i.RIGHT
-	world.body.global_position = Vector2(WorldRoot.feet_of(Vector2i(60, 17)))
+	world.body.global_position = Vector2(WorldRoot.feet_of(Vector2i(90, 33)))
 	for i in 240:
 		await get_tree().physics_frame
 		if world.zone_id == "ashen_forest" and world.fade == WorldRoot.Fade.NONE:
@@ -88,7 +88,7 @@ func _distance(world: WorldRoot) -> void:
 	var box := world.dialogue.box
 	_check("habla «%s» con el retrato del ave, a la izquierda" % box.speaker,
 		box.speaker == "Yara" and box.side == DialogueBox.Side.LEFT
-		and box.portrait != null and box.portrait.resource_path.ends_with("yara_ave_neutral.png"))
+		and box.portrait != null and box.portrait.resource_path.ends_with("yara_ave.png"))
 	_check("Ilan y el monstruo se paran mientras habla",
 		not world.body.input_enabled and world.monster != null and not world.monster.active)
 	box.confirm()

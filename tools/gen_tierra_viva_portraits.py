@@ -5,8 +5,8 @@
 En el sistema, el retrato es el sprite de PixelLab de frente, recortado sin
 repintar a 40 × 44 (`assets/img/portrait_coral.png`). Escribe en
 `assets/sprites/portraits/tierra_viva/<quien>.png` los de quien tiene original en
-`assets/source/pixellab/`. Yara y Rasgo no lo tienen: siguen con su retrato de
-`tools/gen_portraits.py` hasta que se generen (guía del equipo §3.1, fila 20).
+`assets/source/pixellab/`. Yara sale de su sprite del pueblo, la variante de Toña,
+hasta que tenga original. Rasgo no tiene y habla sin retrato (guía §3.1, fila 20).
 """
 
 from __future__ import annotations
@@ -41,6 +41,12 @@ def main() -> int:
     for who in CAST:
         path = OUT / f"{who}.png"
         crop(SOURCE / who / "south.png").save(path)
+        print(f"  {path.relative_to(ROOT)}: {W}×{H}")
+    # Yara ya está recoloreada en su sprite: de `gen_tierra_viva_valdehoja.py`.
+    yara = ROOT / "assets" / "sprites" / "world" / "tierra_viva" / "yara_valdehoja_pure.png"
+    for who in ("yara", "yara_ave"):
+        path = OUT / f"{who}.png"
+        crop(yara).save(path)
         print(f"  {path.relative_to(ROOT)}: {W}×{H}")
     return 0
 

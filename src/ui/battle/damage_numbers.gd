@@ -30,10 +30,10 @@ const FRONT_Z := 50
 ## transparencia: mezclar alfa generaría colores que no son tokens, y la
 ## auditoría de paleta los marcaría como incumplimiento del contrato.
 const DIM := {
-	DesignTokens.EMBER_300: DesignTokens.EMBER_400,
-	DesignTokens.EMBER_400: DesignTokens.ASH_400,
-	DesignTokens.ASH_050: DesignTokens.ASH_400,
-	DesignTokens.ASH_400: DesignTokens.ASH_600,
+	DesignTokens.TV_GOLD_4: DesignTokens.TV_GOLD_3,
+	DesignTokens.TV_RUST_4: DesignTokens.TV_RUST_3,
+	DesignTokens.TV_UI_6: DesignTokens.TV_UI_4,
+	DesignTokens.TV_UI_4: DesignTokens.TV_UI_3,
 }
 
 var _font: Font = null
@@ -92,7 +92,7 @@ func _draw() -> void:
 		var color: Color = entry["color"]
 		# Último tramo: un escalón más apagado, y se va.
 		if t > 0.62:
-			color = DIM.get(color, DesignTokens.ASH_400)
+			color = DIM.get(color, DesignTokens.TV_UI_3)
 
 		var text: String = entry["text"]
 		var position := baseline_of(entry["origin"], text, t)
@@ -100,7 +100,7 @@ func _draw() -> void:
 		# Sombra de 1 px: la cifra tiene que leerse sobre el sprite, que puede
 		# ser tan claro como ella.
 		draw_string(_font, position + Vector2.ONE, text,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, SIZE, DesignTokens.ASH_950)
+				HORIZONTAL_ALIGNMENT_LEFT, -1, SIZE, DesignTokens.TV_INK_0)
 		draw_string(_font, position, text, HORIZONTAL_ALIGNMENT_LEFT, -1, SIZE, color)
 
 
