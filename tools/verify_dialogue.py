@@ -66,7 +66,7 @@ def main() -> int:
                 problems.append(f"voz desconocida «{who}»")
             elif mood not in voices[who]["moods"]:
                 problems.append(f"expresión «{mood}» que {who} no tiene")
-            elif who != "demo" and not (PORTRAITS / f"{who}_{mood}.png").exists():  # el aviso de la demo no tiene cara
+            elif who != "demo" and voices[who].get("portrait", True) and not (PORTRAITS / f"{who}_{mood}.png").exists():  # el aviso de la demo no tiene cara
                 problems.append(f"falta el retrato {who}_{mood}.png")
             if not text.strip():
                 problems.append("texto vacío")

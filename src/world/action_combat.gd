@@ -410,6 +410,8 @@ func cleanup() -> void:
 		_ground.queue_free()
 	if is_instance_valid(follower):
 		follower.queue_free()
+	# Fuera de la pelea se anda con Ilan, como siempre.
+	world.body.set_sheet(load(PlayerBody.SPRITE_PATH))
 	if monster != null and monster.regenerated.is_connected(_on_regenerated):
 		monster.regenerated.disconnect(_on_regenerated)
 

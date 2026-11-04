@@ -1,0 +1,9 @@
+{
+	"_doc": "Al terminar la ola tras purificar la Llama (CONTINUAR.md, bloque E.3). Cierra la pelea con historia: Bruma recupera su bosque y Yara, por el ave, señala la Cuenca, donde termina la demo.",
+	"lines": [
+		{"who": "bruma", "mood": "dolida", "text": "El bosque respira otra vez. Hacía años que no veía este verde."},
+		{"who": "ilan", "mood": "determinado", "text": "No era el fuego, Bruma. Era lo que lo alimentaba."},
+		{"who": "yara_ave", "mood": "neutral", "text": "Lo sentí desde el jardín, Ilan. La primera raíz volvió a beber."},
+		{"who": "yara_ave", "mood": "alerta", "text": "Pero la Cuenca de Alquitrán sigue negra. Id hacia el sur."}
+	]
+}

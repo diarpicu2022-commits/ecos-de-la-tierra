@@ -415,6 +415,18 @@ func try_arrival_talk() -> String:
 	return id
 
 
+## Abre una conversación desde fuera (la escena tras purificar una zona).
+## Solo la primera vez: queda marcada como oída.
+func talk_once(id: String) -> bool:
+	var state := get_node_or_null("/root/GameState")
+	if dialogue.is_running() or (state != null and state.flag("heard_" + id)):
+		return false
+	if state != null:
+		state.set_flag("heard_" + id)
+	_open_dialogue(id)
+	return true
+
+
 ## Mientras se habla, ni Ilan ni el monstruo se mueven.
 ## Solo se reactiva el monstruo que paró la conversación, no uno que ya
 ## estaba parado por el combate o la huida.

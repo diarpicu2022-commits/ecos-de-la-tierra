@@ -127,6 +127,7 @@ Solo lo que ayude al recorrido:
 
 - **Esquiva de 48 px y no de 32.** Con 32 no se salía de la zona de aviso de 40 px de radio. Se cambió midiendo.
 - **El ataque de la Llama hace daño sin quemadura ni humo.** Los estados del combate por turnos cuentan por turnos y aquí no hay turnos. ¿Se agregan con duración en segundos?
+- **Textos nuevos para revisar:** `data/dialogue/bosque_purificado.json` y los cinco `vecino_*.json`. La pescadora no tiene nombre en el sistema y sale como «Pescadora».
 - **La segunda contramedida no hace daño, purifica directamente.** Así no se rehace en el mismo golpe que la purifica.
 
 ## 5. Bitácora
@@ -140,3 +141,4 @@ Una línea por paso: fecha y hora, qué se hizo, qué se midió, commit y qué s
 - 2026-11-04 06:40. Bloque C, fases 1, 2 y 4 hechas, con el registro en `docs/ux/anexos/2026-11-04-combate-accion.md`. `verify_action_combat` 21/21 y las demás pruebas sin cambios. El interruptor `action_combat` sigue apagado en `game.tscn`. Sigue la fase 3, el compañero en el mapa, y después encenderlo.
 - 2026-11-04 07:30. Fases 3 y 5 hechas: Bruma sigue a Ilan en el mapa y cambian de sitio con Q/E; avisos largos partidos dentro del papel; sin energía y bolsa vacía con su aviso. `verify_action_combat` 29/29. **El combate de acción queda encendido en `game.tscn`.** Comprobación general sin fallos. Sigue el bloque D, música y sonido.
 - 2026-11-04 07:50. Bloque D, primera parte: cuatro sonidos del combate de acción (`slash`, `dodge`, `swap`, `stun`) generados por código con semilla aparte, así que los 17 audios de antes salen con los mismos bytes. `verify_audio` 35/35 y `verify_action_combat` 29/29. **No se tocó la música:** Claude no puede oír y cambiarla a ciegas puede empeorarla. Diego tiene que escuchar los cuatro sonidos nuevos. Sigue el bloque E.
+- 2026-11-04 08:20. Bloque E.3 hecho: tras la ola hablan Bruma, Ilan y Yara por el ave (`bosque_purificado.json`) y Yara manda hacia la Cuenca, donde termina la demo. Al acabar la pelea se vuelve a andar con Ilan. Bloque E.2 hecho: Doña Rosa, Don Aurelio, Tito, el padre Julián y la pescadora dicen una línea, sin retrato viejo. `verify_demo` 21/21, `verify_action_combat` 32/32 y `verify_opening` 11/11. Los textos son nuevos y Diego tiene que revisarlos. Sigue E.1, el Bosque contra su referencia.

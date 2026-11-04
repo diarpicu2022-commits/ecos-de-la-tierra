@@ -34,6 +34,9 @@ const ZONE_ENCOUNTER := {"ashen_forest": 0, "tar_basin": 1, "broken_coast": 2,
 @export var play_opening := false
 ## Demo hasta el primer jefe. Las pruebas no la quieren.
 @export var demo := false
+## Conversación tras purificar cada zona, si la tiene.
+const AFTER_PURIFY := {"ashen_forest": "bosque_purificado"}
+
 ## Combate de acción en el mapa, contrato «Tajo» (docs/ux/anexos/
 ## 2026-11-04-combate-accion.md). Apagado, se pelea por turnos como antes.
 @export var action_combat := false
@@ -192,6 +195,8 @@ func _on_action_finished(r: Enums.BattleResult) -> void:
 			GameAudio.set_alive(true)
 			await world.purify_wave(battle_cell)
 			_waving = false
+			if AFTER_PURIFY.has(world.zone_id):
+				world.talk_once(AFTER_PURIFY[world.zone_id])
 		Enums.BattleResult.DEFEAT:
 			for c in state.party:
 				c.hp = 1

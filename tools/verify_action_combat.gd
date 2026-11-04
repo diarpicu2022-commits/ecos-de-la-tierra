@@ -150,6 +150,18 @@ func _ready() -> void:
 			break
 		await get_tree().physics_frame
 	_check("sale la ola y la zona queda purificada", ended[0] and state.is_zone_purified(ZONE))
+	var runner := flow.world.dialogue
+	_check("después hablan Bruma y Yara por el ave", runner.is_running()
+		and runner.conversation == "bosque_purificado")
+	await _shot("bruma-habla")
+	var voices := PackedStringArray()
+	while runner.is_running():
+		if not voices.has(runner.box.speaker):
+			voices.append(runner.box.speaker)
+		runner.box.confirm()
+		await get_tree().process_frame
+	_check("hablan Bruma, Ilan y Yara (%s)" % ", ".join(voices),
+		voices.has("Bruma") and voices.has("Ilan") and voices.has("Yara"))
 	_check("el monstruo deja el mapa y el HUD se va",
 		flow.world.monster == null and not flow.action_hud.visible and flow.action == null)
 	var left := 0
@@ -158,6 +170,8 @@ func _ready() -> void:
 				and n.texture.resource_path.contains("/cast/bruma"):
 			left += 1
 	_check("y el compañero también", left == 0)
+	_check("fuera de la pelea se vuelve a andar con Ilan",
+		flow.world.body._sprite.texture.resource_path == PlayerBody.SPRITE_PATH)
 
 	print("\nAviso y esquiva")
 	state.flags.clear()
