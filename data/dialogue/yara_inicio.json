@@ -1,0 +1,11 @@
+{
+	"_doc": "Valdehoja, junto al semillero. Yara le cuenta a Ilan qué le pasa a la tierra. Cada caja cabe en 2 líneas de 40 caracteres (tools/verify_dialogue.py).",
+	"lines": [
+		{"who": "yara", "mood": "neutral", "text": "Mira el semillero, Ilan. Es lo único verde que queda en Valdehoja."},
+		{"who": "ilan", "mood": "neutral", "text": "Las terrazas se secan, y el río huele a hierro. ¿Qué está pasando?"},
+		{"who": "yara", "mood": "neutral", "text": "La tierra no enferma sola. Alguien la exprimió durante generaciones."},
+		{"who": "yara", "mood": "alerta", "text": "La Compañía Áurea. Sus fuegos, su crudo, su basura. Lo sentirás tú."},
+		{"who": "ilan", "mood": "determinado", "text": "Entonces iré a buscar dónde empieza el daño, y lo pararé."},
+		{"who": "yara", "mood": "neutral", "text": "Ve al Bosque de las Cenizas. Mi ave te seguirá. No vayas solo."}
+	]
+}
