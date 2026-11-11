@@ -1,109 +1,81 @@
 # Ecos de la Tierra
 
-> **Para seguir el desarrollo:** `docs/guia-del-equipo.md`. Todo lo visual sigue el
-> sistema de diseño «Tierra Viva» de `docs/ux/sistema-de-diseno/` (abre `index.html`).
+Ecos de la Tierra es un RPG 2D en pixel art sobre el cuidado del medio ambiente. Ilan sale de Valdehoja a recorrer las regiones dañadas, y cada una tiene un monstruo que nace de un problema real, como la deforestación o el monocultivo. El monstruo no cae a punta de golpes. Se regenera hasta que el jugador usa la habilidad ecológica que ataja la causa del daño, y ahí la región se cura.
 
-RPG 2D por turnos con estética pixel art y enfoque de concienciación ambiental.
-Godot Engine 4 + GDScript, exportable a PC y Android desde el mismo proyecto.
+Lo hicimos Juan José Rueda y yo como proyecto final de Diseño de Interfaces de Software (5.º semestre, Universidad Cooperativa de Colombia). Está hecho en Godot 4 con GDScript y se puede exportar a PC y a Android desde el mismo proyecto.
 
-La propuesta completa (historia, personajes, regiones y justificación técnica)
-está en `EcosDeLaTierra Propuesta Videojuego.md`.
+## Para qué sirve
 
-El juego se construye **por partes, una por sesión**. Qué está hecho, qué toca
-ahora y qué decisiones ya están cerradas: `docs/plan-de-trabajo.md`. Es lo
-primero que conviene leer antes de tocar nada.
+La idea es que el jugador aprenda jugando que los problemas ambientales se resuelven atacando su causa y no sus síntomas. Esa regla está metida en el combate, no en un texto que se lee. La historia completa, los personajes y las regiones están en `EcosDeLaTierra Propuesta Videojuego.md`.
 
-## Abrir el proyecto
+## Qué se puede jugar hoy
 
-1. Instalar **Godot Engine 4.3 o superior**, versión **estándar (no la .NET)**.
-   La .NET solo añade soporte de C#, que este proyecto no usa —es todo GDScript—
-   y encima exige instalar aparte el SDK de .NET.
-   Verificado en 4.3 y en 4.7.2.
-2. Abrir Godot → *Import* → seleccionar el archivo `project.godot` de esta
-   carpeta.
-3. Ejecutar con F5. La escena principal es `scenes/game.tscn`: el juego
-   empieza en Valdehoja. Ilan anda por el mundo, habla con Yara (Enter o
-   Espacio mirándola), cruza a las regiones y, al tocar a su monstruo, entra
-   en combate. Se juega con las flechas o WASD, Enter o Espacio para confirmar
-   y Escape para volver atrás.
-   La demo de combates sueltos, con el selector de región, sigue en
-   `scenes/main.tscn` (F6 con esa escena abierta).
-   La prueba de concepto por consola sigue disponible en
-   `tools/console_demo.tscn` (F6 con esa escena abierta).
+La versión de `master` es la **demo hasta el primer jefe**, la que presentamos el 4 de noviembre de 2026.
 
-También se puede ejecutar sin abrir el editor, desde la carpeta del proyecto:
+1. Ilan empieza en Valdehoja y habla con Yara junto al semillero.
+2. Sale por el este al Bosque de las Cenizas y se encuentra con el Comandante Rasgo.
+3. Pelea contra la Llama de la Deforestación. Solo la Línea Cortafuegos de Bruma ataja la causa.
+4. El bosque se cura, se abre el paso y la demo termina con un mensaje de lo que sigue en la historia.
 
-```
-godot --headless --path . --quit-after 3
-```
+El combate es de acción en el mismo mapa. Manejas a un héroe, cambias entre los del grupo, golpeas, esquivas y usas las habilidades y la bolsa, que siempre están a la vista.
 
-## La prueba de concepto
+## Controles
 
-`scenes/main.tscn` ejecuta cuatro escenarios seguidos y los escribe por consola:
+| Acción | Tecla |
+|---|---|
+| Moverse | Flechas o W A S D |
+| Correr | Shift |
+| Hablar o confirmar | Enter o Espacio |
+| Volver | Esc |
+| Golpear | Z |
+| Esquivar | X |
+| Habilidad ecológica | C |
+| Usar objeto | V |
+| Cambiar de héroe | Q y E |
+| Orden al grupo | Tab |
 
-1. **Regla 1** — comprobación directa: se tira al monstruo a 0 PV sin la
-   contramedida (se regenera) y después con ella aplicada (cae).
-2. **Bosque de las Cenizas** — combate real: dos turnos de fuerza bruta y luego
-   la Línea Cortafuegos. Termina en victoria.
-3. **Llanura Marchita** — el Espectro del Monocultivo se multiplica y sus clones
-   entran en la ronda en curso; hay que purificarlos uno a uno.
-4. **Cripta de la Avaricia** — el mismo combate dos veces: repitiendo siempre la
-   misma Habilidad Ecológica, el jefe aprende a resistirla (resistencia ~0,67 en
-   su tabla Q) y el grupo tiene que retirarse; combinando las cinco, el jefe se
-   purifica y el grupo gana.
+## Cómo jugarlo
 
-## Qué hay implementado
+1. Instala **Godot 4.3 o superior**, la versión estándar (no la .NET, porque el proyecto no usa C#). Lo probamos en 4.3 y en 4.7.2.
+2. En Godot entra a *Import* y elige el `project.godot` de esta carpeta.
+3. Dale F5. La escena principal es `scenes/game.tscn`.
 
-- Clases base del combate por turnos, con la arquitectura descrita en `src/README.md`.
-- **Sistema de debilidad ambiental**: los monstruos se regeneran mientras no se
-  aplique la Habilidad Ecológica correcta.
-- **IA de los monstruos** por pesos, y **tabla Q** del jefe final, que aumenta su
-  resistencia a la habilidad que el jugador repite.
-- Los cinco monstruos de región, el jefe final, los cinco personajes jugables,
-  el catálogo de habilidades, los estados alterados y la Bolsa.
-- Prueba de concepto por consola que verifica todo lo anterior sin interfaz.
+En Windows también está `Jugar.bat`, que abre el juego sin el editor. Busca Godot 4.7.2 en la carpeta de Descargas, así que si lo tienes en otra parte toca cambiar la ruta dentro del archivo.
 
-## La interfaz de batalla
+El juego no necesita cuenta ni internet.
 
-Diseñada siguiendo el proceso documentado en
-`docs/ux/anexos/2026-09-13-pantalla-de-batalla.md`, bajo la dirección
-«Ceniza y Brasa»: el mundo está apagado en grises y el único color saturado del
-juego es el verde de la purificación, que vuelve a la pantalla cuando el jugador
-ataja la causa del daño.
+## Cómo está hecho
 
-- `src/ui/design_tokens.gd` — paleta, espaciado, forma y duraciones. Ninguna
-  escena escribe un color suelto.
-- `src/ui/battle/` — la pantalla y sus componentes.
-- `tools/gen_font.py`, `gen_sprites.py`, `gen_characters.py` — generan la fuente
-  y todos los sprites. Los assets se pueden regenerar con
-  `python tools/gen_sprites.py`.
+- **Combate.** Las clases base (`Combatant`, `Monster`, `Skill`, `StatusEffect`, `Item`) viven en `src/` y su arquitectura está en `src/README.md`. Los monstruos deciden por pesos y el jefe final aprende con una tabla Q, así que si repites siempre la misma habilidad la empieza a resistir y toca combinarlas.
+- **Diseño.** Todo lo visual sigue el sistema de diseño «Tierra Viva», en `docs/ux/sistema-de-diseno/` (abre su `index.html`). Los anexos de cada pantalla, con sus referencias y su verificación, están en `docs/ux/anexos/`.
+- **Arte.** Los personajes y monstruos del mapa se hicieron con PixelLab y el resto lo generan los scripts de `tools/`.
+- **Pruebas.** Las verificaciones de movimiento, combate, flujo y usabilidad están en `tools/` y corren sin interfaz.
 
-## Privacidad
+| Carpeta | Qué hay |
+|---|---|
+| `scenes/` | Escenas de Godot (juego, batalla, mundo) |
+| `src/` | Todo el código |
+| `assets/` | Sprites, mapas, audio y fuentes |
+| `data/` | Mapas de las regiones, salidas y datos de combate |
+| `docs/` | Plan de trabajo, guía del equipo, diseño y aviso legal |
+| `tools/` | Generadores de arte y pruebas |
 
-El juego no recoge datos de nadie ni se conecta a internet. Detalle en
-[`docs/legal/privacidad.md`](docs/legal/privacidad.md).
-
-## Qué falta
-
-- La exploración top-down y los puzzles ambientales de cada región.
-- Los diálogos, el inventario fuera de combate y el guardado de partida.
-- Audio.
-
-## Estructura
-
-```
-project.godot                Configuración del proyecto y mapa de entradas.
-scenes/                      Escenas de Godot (main, batalla, mundo).
-src/                         Todo el código. Ver src/README.md.
-assets/                      Sprites, tilesets, audio y fuentes.
-docs/ux/anexos/              Anexos de diseño de interfaz.
-```
+Para seguir el desarrollo se lee primero `docs/plan-para-terminar-la-historia.md` y después `docs/guia-del-equipo.md`.
 
 ## Convenciones
 
-- Código en inglés: clases, métodos, variables y nombres de archivo.
-- Español solo en los textos que ve el jugador y en los comentarios.
-- Archivos y carpetas en `snake_case`; clases en `PascalCase` con `class_name`.
-- Programación orientada a objetos: la lógica compartida vive en la clase base
-  (`Combatant`, `Monster`, `Skill`, `StatusEffect`, `Item`), no repetida en cada
-  subclase.
+- Código en inglés (clases, métodos, variables y archivos) y español en los textos que ve el jugador y en los comentarios.
+- Archivos y carpetas en `snake_case` y clases en `PascalCase` con `class_name`.
+- La lógica compartida va en la clase base y no se repite en cada subclase.
+
+## Privacidad
+
+El juego no recoge datos de nadie ni se conecta a internet. El detalle está en [`docs/legal/privacidad.md`](docs/legal/privacidad.md).
+
+## Lo que falta
+
+El plan para acabar la historia, con las regiones que siguen y el jefe final, está en `docs/plan-para-terminar-la-historia.md`.
+
+## Equipo
+
+Diego Armando Pinta Cuasquen · Juan José Rueda
